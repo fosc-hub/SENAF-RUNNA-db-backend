@@ -113,6 +113,9 @@ entity VulneracionInformada {
     Nombre_y_Cargo_Operados
 }
 
+entity EstadoTipo {
+    description
+}
 
 ' Ingreso = Entrada = Nuevo Registro = Demanda
 ' pensar en que derivado = asignar, y hacer tabla intermedia entre users y demandas
@@ -121,7 +124,6 @@ entity Demanda {
     --
     attr: type
     Origen
-    Estado
     Asignado
     Date
     ID_Notificacion_Manual
@@ -137,6 +139,7 @@ entity Demanda {
     Usuario_Linea = FOREIGN_KEY(UsuarioLinea)
     Vulneracion_Informada = FOREIGN_KEY(VulneracionInformada)
     Legajo = FOREIGN_KEY(Legago) (default Null)
+    Estado = FOREIGN_KEY(EstadoTipo)
     --
     Evaluar()
 }
@@ -174,7 +177,7 @@ entity Respuesta {
     Demanda = FOREIGN_KEY(Demanda)
     Institucion = FOREIGN_KEY(InstitucionPrograma)
     --
-    method()
+    enviar_respuesta(mail)
 }
 
 entity DatosDelCaso {
