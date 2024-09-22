@@ -9,6 +9,7 @@ hide circle
 demanda_asignados "*" - "1" User
 Demanda "1" - "*" demanda_asignados
 Demanda "1" -- "1" Caratula
+Demanda "*" -- "1" Estado  
 
 Demanda "1" -- "1" LocalizacionDemanda
 LocalizacionDemanda "1" -- "*" Barrio
@@ -44,7 +45,6 @@ VulneracionInformada "*" -- "1" PrioridadIntervencion
 VulneracionInformada "*" -- "1" Problematica
 VulneracionInformada "*" -- "1" Ambito
 VulneracionInformada "*" -- "1" Operador
-
 
 
 @enduml
