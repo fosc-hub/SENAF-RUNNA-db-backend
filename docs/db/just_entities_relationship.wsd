@@ -28,6 +28,25 @@ demanda_AdultoConvivientes "*" -- "1" Demanda
 AdultoConviviente "1" -- "*" demanda_AdultoConvivientes
 Vinculo "1" - "*" AdultoConviviente
 
+demanda_AutorVulneracion "*" -- "1" Demanda
+AutorVulneracion "1" -- "*" demanda_AutorVulneracion
+Vinculo "1" - "*" AutorVulneracion
+
+Demanda "*" -- "1" UsuarioLinea
+UsuarioLinea "*" -- "1" VinculoUsuarioLinea
+UsuarioLinea "*" -- "1" InstitucionUsuarioLinea
+UsuarioLinea "*" -- "1" Responsable
+
+Demanda "*" --- "1" VulneracionInformada
+VulneracionInformada_DDVulnerados "*" -- "1" VulneracionInformada
+VulneracionInformada_DDVulnerados "*" -- "1" DDVulnerados
+VulneracionInformada "*" -- "1" PrioridadIntervencion
+VulneracionInformada "*" -- "1" Problematica
+VulneracionInformada "*" -- "1" Ambito
+VulneracionInformada "*" -- "1" Operador
+
+
+
 @enduml
 
 
