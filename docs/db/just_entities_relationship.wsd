@@ -5,7 +5,9 @@
 !define FOREIGN_KEY(x) <color:green>x</color>
 
 hide circle
+left to right direction
 
+' ---> Demanda parent relationship
 demanda_asignados "*" - "1" User
 Demanda "1" - "*" demanda_asignados
 Demanda "1" -- "1" Caratula
@@ -45,6 +47,24 @@ VulneracionInformada "*" -- "1" PrioridadIntervencion
 VulneracionInformada "*" -- "1" Problematica
 VulneracionInformada "*" -- "1" Ambito
 VulneracionInformada "*" -- "1" Operador
+' Demanda parent relationship  <---
+
+' ---> Demanda Child Relationship (Actividad + Evaluacion + Respuesta)
+Actividad "*" ---- "1" Demanda
+Actividad "*" - "1" ActividadTipo
+Actividad "*" - "1" InstitucionActividad
+
+Respuesta "*" -left- "1" Demanda
+Respuesta "*" - "1" InstitucionRespuesta
+
+Evaluacion "*" --down-- "1" Demanda
+Evaluacion "1" -left- "1" ValidacionDatos
+Evaluacion "1" -- "1" ValidacionActividades
+Evaluacion "*" -- "1" GravedadTipo
+Evaluacion "*" --- "1" UrgenciaTipo
+
+Evaluacion "*" --- "1" EvaluacionAccion
+EvaluacionAccion "1" --"*" AccionTipo
 
 
 @enduml
