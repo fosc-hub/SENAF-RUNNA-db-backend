@@ -7,86 +7,78 @@
 hide circle
 left to right direction
 
-' ---> Demanda parent relationship
-demanda_asignados "*" - "1" User
-Demanda "1" - "*" demanda_asignados
-Demanda "1" -- "1" Caratula
-Demanda "*" -- "1" Estado  
+' ---> T_DEMANDA parent relationship
+T_DEMANDA_USER "*" - "1" T_USER
+T_DEMANDA "1" - "*" T_DEMANDA_USER
+T_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
 
-Demanda "1" -- "1" LocalizacionDemanda
-LocalizacionDemanda "1" -- "*" Barrio
-LocalizacionDemanda "1" -- "*" Localidad
-LocalizacionDemanda "1" -- "*" Provincia
+T_DEMANDA "*" -- "1" T_LOCALIZACION_DEMANDA
+T_LOCALIZACION_DEMANDA "*" -- "1" Barrio
+T_LOCALIZACION_DEMANDA "*" -- "1" Localidad
+T_LOCALIZACION_DEMANDA "*" -- "1" Provincia
 
-demanda_NNyAConvivientes "*" - "1" Demanda
-NNyAConviviente "1" - "*" demanda_NNyAConvivientes
-NNyAConviviente "1" -- "*" NNyAConviente_DDVulnerados
-NNyAConviente_DDVulnerados "*" -- "1" DDVulnerados
-NNyAConviviente "1" -- "1" NNyAEstudios
-NNyAEstudios "*" -- "1" InstitucionEducativa
-NNyAConviviente "*" -- "1" InstitucionSanitaria
-Vinculo "1" --- "*" NNyAConviviente
+T_DEMANDA_NNyA "*" - "1" T_DEMANDA
+T_NNyA "1" - "*" T_DEMANDA_NNyA
+T_NNyA "1" -- "*" T_NNyA_DDV
+T_NNyA_DDV "*" -- "1" T_DDV
+T_NNyA "1" -- "1" T_NNyA_ESTUDIO
+T_NNyA_ESTUDIO "*" -- "1" T_INSTITUCION_EDUCATIVA
+T_NNyA "*" -- "1" T_INSTITUCION_SANITARIA
+T_VINCULO_NNyA_ADULTO "*" --- "1" T_NNyA
+T_VINCULO_NNyA_AUTORDV "*" --- "1" T_NNyA
+T_VINCULO_NNyA_NNyA "*" --- "1" T_NNyA
+T_VINCULO "1" --- "*" T_VINCULO_NNyA_NNyA
 
-demanda_AdultoConvivientes "*" -- "1" Demanda
-AdultoConviviente "1" -- "*" demanda_AdultoConvivientes
-Vinculo "1" - "*" AdultoConviviente
+T_DEMANDA_ADULTO "*" -- "1" T_DEMANDA
+T_ADULTO "1" -- "*" T_DEMANDA_ADULTO
+T_VINCULO_NNyA_ADULTO "*" - "1" T_ADULTO
+T_VINCULO "1" --- "*" T_VINCULO_NNyA_ADULTO
 
-demanda_AutorVulneracion "*" -- "1" Demanda
-AutorVulneracion "1" -- "*" demanda_AutorVulneracion
-Vinculo "1" - "*" AutorVulneracion
+T_DEMANDA_AUTORDV "*" -- "1" T_DEMANDA
+T_AUTORDV "1" -- "*" T_DEMANDA_AUTORDV
+T_VINCULO_NNyA_AUTORDV "*" - "1" T_AUTORDV
+T_VINCULO "1" --- "*" T_VINCULO_NNyA_AUTORDV
 
-Demanda "*" -- "1" UsuarioLinea
-UsuarioLinea "*" -- "1" VinculoUsuarioLinea
-UsuarioLinea "*" -- "1" InstitucionUsuarioLinea
-UsuarioLinea "*" -- "1" Responsable
+T_DEMANDA "*" -- "1" T_USUARIO_L
+T_USUARIO_L "*" -- "1" T_VINCULO_USUARIO_L
+T_USUARIO_L "*" -- "1" T_INSTITUCION_USUARIO_L
+T_USUARIO_L "*" -- "1" T_RESPONSABLE
 
-Demanda "*" --- "1" VulneracionInformada
-VulneracionInformada_DDVulnerados "*" -- "1" VulneracionInformada
-VulneracionInformada_DDVulnerados "*" -- "1" DDVulnerados
-VulneracionInformada "*" -- "1" PrioridadIntervencion
-VulneracionInformada "*" -- "1" Problematica
-VulneracionInformada "*" -- "1" Ambito
-VulneracionInformada "*" -- "1" Operador
-' Demanda parent relationship  <---
+T_DEMANDA "*" --- "1" T_VULNERACION_DEMANDA
+T_VULNERACION_DEMANDA_DDV "*" -- "1" T_VULNERACION_DEMANDA
+T_VULNERACION_DEMANDA_DDV "*" -- "1" T_DDV
+T_VULNERACION_DEMANDA "*" -- "1" T_PRIORIDAD_INTERVENCION
+T_VULNERACION_DEMANDA "*" -- "1" T_PROBLEMATICA
+T_VULNERACION_DEMANDA "*" -- "1" T_AMBITO
+T_VULNERACION_DEMANDA "*" -- "1" T_OPERADOR
+' T_DEMANDA parent relationship  <---
 
-' ---> Demanda Child Relationship (Actividad + Evaluacion + Respuesta)
-Actividad "*" ---- "1" Demanda
-Actividad "*" - "1" ActividadTipo
-Actividad "*" - "1" InstitucionActividad
+' ---> T_DEMANDA Child Relationship (Actividad + Evaluacion + Respuesta)
+T_ACTIVIDAD "*" ---- "1" T_DEMANDA
+T_ACTIVIDAD "*" - "1" T_ACTIVIDAD_TIPO
+T_ACTIVIDAD "*" - "1" T_INSTITUCION_ACTIVIDAD
 
-Respuesta "*" -- "1" Demanda
-Respuesta "*" - "1" InstitucionRespuesta
+T_RESPUESTA "*" -- "1" T_DEMANDA
+T_RESPUESTA "*" - "1" T_INSTITUCION_RESPUESTA
 
-DemandasVinculadas "*" - "1" Demanda
-DemandasVinculadas "*" - "1" Demanda
+T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
+T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
 ' DemandasVinculadas = Conexiones de la demanda = caso1=fkDemanda, caso2=fkDemanda
 
-Evaluacion "*" --down-- "1" Demanda
-Evaluacion "1" -left- "1" ValidacionDatos
-Evaluacion "1" -- "1" ValidacionActividades
-Evaluacion "*" -- "1" GravedadTipo
-Evaluacion "*" --- "1" UrgenciaTipo
+T_EVALUACION "*" --- "1" T_DEMANDA
+T_EVALUACION "1" -- "1" T_VALIDACION_DATOS
+T_EVALUACION "1" -- "1" T_VALIDACION_ACTIVIDADES
+T_EVALUACION "*" -- "1" T_GRAVEDAD_TIPO
+T_EVALUACION "*" - "1" T_URGENCIA_TIPO
 
-Evaluacion "*" --- "1" EvaluacionAccion
-EvaluacionAccion "1" --"*" AccionTipo
+T_EVALUACION "*" - "1" T_EVALUACION_ACCION
+T_EVALUACION_ACCION "1" --"*" T_ACCION_TIPO
 
 ' caratula = identificar legajo o expediente
 ' NNyA Relationship
-LEGAJO "1" - "1" NNyAConviviente
+T_LEGAJO "1" - "1" T_NNyA
 ' la caratula identifica el NNyA al que se le genera la demanda
 ' el legajo deberia estar relacionado con la caratula
 
 
 @enduml
-
-
-' entity Company {
-'     + PRIMARY_KEY(id)
-'     --
-'     attr: type
-'     --
-'     FOREIGN_KEY(Sectional) (null True)
-'     --
-'     method()
-' }
-

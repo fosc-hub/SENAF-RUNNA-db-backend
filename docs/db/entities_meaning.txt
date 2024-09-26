@@ -1,0 +1,43 @@
+T_DEMANDA : Tabla de relaciones de una demanda, y su estado
+T_DEMANDA_USER : Asignacion de Usuarios a Demandas, Derivación de Demandas
+Caratula : No entiendo la necesidad de storear una "Caratula", 
+    ni un Nombre o DNI, si los NNyA ya son guardados en una tabla aparte
+    y relacionados con la demanda
+T_ESTADO_DEMANDA
+T_LOCALIZACION_DEMANDA : datos de localizacion relacionados con la demanda. No
+    necesariamente con el NNyA, sino con el caso reportado ¿ COMO O EN QUE 
+    MOMENTO DEBERÍA SER ASIGNADA LA LOCALIZACION DE UN NNyA ? --> Al no depender
+    de la demanda, podría ser asignado al NNyA una vez confirmada la Localizacion
+
+Barrio, Localidad, Provincia : 3rd APIs + Storeo interno ?
+
+NNyA + T_DEMANDA_NNyA : el viejo "NNyA Conviviente" es en realidad un simple NNyA.
+    Puede tener multiples Demandas y la Demanda puede tener multiples NNyA
+    Dicho NNyA Va a ser despues relacionado con un legajo
+T_DDV : Derechos Vulnerados
+T_NNyA_DDV : Tabla intermedia derechos vulnerados con NNyA
+T_NNyA_ESTUDIO + T_INSTITUCION_EDUCATIVA : Datos de instituciones no van a ser de
+    ninguna API ni nada, van a ser storeados por un ADMIN o algo asi
+T_VINCULO_s : En un principio pensé que el vinculo era de una persona (Adulto-Autor-NNyA)
+    con la demanda, pensando que la demanda era referente a un NNyA unico, pero no.
+    Entonces una persona puede tener n vinculos con otra persona y viceversa.
+    Deberían ser varios tipos de vinculos, y/o VARIAS TABLAS
+    DE VINCULO, QUE PENSANDO DE MANERA LOGICA, no las diagramo
+T_AUTORDV : Autor de la vulneracion de los derechos del NNyA
+T_USUARIO_L = T_USUARIO_LINEA : tabla para storear el usuario que realiza el llamado a la linea 102.
+    EL vinculo, no entiendo de que se trata --> ¿ Es con el NNyA, o con el Adulto,
+     o con el autor, o con la demanda ?
+T_VULNERACION_DEMANDA : es la vulneracion de derechos informada en la demanda. LOS DDVulnerados
+    A CADA NNyA supongo serán seteados una vez la demanda sea evaluada. es un "PRESUNTO" o un "SUPUESTO"
+T_ACTIVIDAD : registro de las actividades de constatacion a realizarse en el ciclo de vida de la DEMANDA
+T_RESPUESTA : respuesta=notificacion enviada a un ente via servicio de mail, respecto a la constatacion/Evaluacion
+    de la demanda
+T_DEMANDAS_VINCULADAS : conexiones de la demanda = demandas que se relacionan entre sí, y hasta, 
+    podrían llegar a ser la misma
+T_EVALUACION : Evaluacion/Constatacion de la demanda luego de las pericias tecnicas necesarias (registradas
+    como actividades)
+T_VALIDACION_DATOS : Como tabla logica se podria entender. Por que en el formulario de evaluacion, tanto "La
+    informacion es Veridica ?" como "La informacion fue corroborada ?" corresponden a la misma estructura. Lo mismo
+    sucede con la T_VALIDACION_ACTIVIDADES y T_ACCIONES NECESARIAS. LO MISMO 
+    SUCEDE CON "ACCIONES NECESARIAS" y fue resuelto con una tabla intermedia 
+    T_EVALUACION_ACCION y otra tabla T_ACCION_TIPO
