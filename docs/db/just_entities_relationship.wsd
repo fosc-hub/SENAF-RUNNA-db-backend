@@ -1,0 +1,82 @@
+"@startuml just_entities_relationship"
+
+' !define ENTITY
+!define PRIMARY_KEY(x) <b><color:blue>x</color></b>
+!define FOREIGN_KEY(x) <color:green>x</color>
+
+hide circle
+left to right direction
+
+' ---> Demanda parent relationship
+demanda_asignados "*" - "1" User
+Demanda "1" - "*" demanda_asignados
+Demanda "1" -- "1" Caratula
+Demanda "*" -- "1" Estado  
+
+Demanda "1" -- "1" LocalizacionDemanda
+LocalizacionDemanda "1" -- "*" Barrio
+LocalizacionDemanda "1" -- "*" Localidad
+LocalizacionDemanda "1" -- "*" Provincia
+
+demanda_NNyAConvivientes "*" - "1" Demanda
+NNyAConviviente "1" - "*" demanda_NNyAConvivientes
+NNyAConviviente "1" -- "*" NNyAConviente_DDVulnerados
+NNyAConviente_DDVulnerados "*" -- "1" DDVulnerados
+NNyAConviviente "1" -- "1" NNyAEstudios
+NNyAEstudios "*" -- "1" InstitucionEducativa
+NNyAConviviente "*" -- "1" InstitucionSanitaria
+Vinculo "1" --- "*" NNyAConviviente
+
+demanda_AdultoConvivientes "*" -- "1" Demanda
+AdultoConviviente "1" -- "*" demanda_AdultoConvivientes
+Vinculo "1" - "*" AdultoConviviente
+
+demanda_AutorVulneracion "*" -- "1" Demanda
+AutorVulneracion "1" -- "*" demanda_AutorVulneracion
+Vinculo "1" - "*" AutorVulneracion
+
+Demanda "*" -- "1" UsuarioLinea
+UsuarioLinea "*" -- "1" VinculoUsuarioLinea
+UsuarioLinea "*" -- "1" InstitucionUsuarioLinea
+UsuarioLinea "*" -- "1" Responsable
+
+Demanda "*" --- "1" VulneracionInformada
+VulneracionInformada_DDVulnerados "*" -- "1" VulneracionInformada
+VulneracionInformada_DDVulnerados "*" -- "1" DDVulnerados
+VulneracionInformada "*" -- "1" PrioridadIntervencion
+VulneracionInformada "*" -- "1" Problematica
+VulneracionInformada "*" -- "1" Ambito
+VulneracionInformada "*" -- "1" Operador
+' Demanda parent relationship  <---
+
+' ---> Demanda Child Relationship (Actividad + Evaluacion + Respuesta)
+Actividad "*" ---- "1" Demanda
+Actividad "*" - "1" ActividadTipo
+Actividad "*" - "1" InstitucionActividad
+
+Respuesta "*" -left- "1" Demanda
+Respuesta "*" - "1" InstitucionRespuesta
+
+Evaluacion "*" --down-- "1" Demanda
+Evaluacion "1" -left- "1" ValidacionDatos
+Evaluacion "1" -- "1" ValidacionActividades
+Evaluacion "*" -- "1" GravedadTipo
+Evaluacion "*" --- "1" UrgenciaTipo
+
+Evaluacion "*" --- "1" EvaluacionAccion
+EvaluacionAccion "1" --"*" AccionTipo
+
+
+@enduml
+
+
+' entity Company {
+'     + PRIMARY_KEY(id)
+'     --
+'     attr: type
+'     --
+'     FOREIGN_KEY(Sectional) (null True)
+'     --
+'     method()
+' }
+
