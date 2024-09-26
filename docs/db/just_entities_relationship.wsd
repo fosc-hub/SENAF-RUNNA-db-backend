@@ -54,8 +54,12 @@ Actividad "*" ---- "1" Demanda
 Actividad "*" - "1" ActividadTipo
 Actividad "*" - "1" InstitucionActividad
 
-Respuesta "*" -left- "1" Demanda
+Respuesta "*" -- "1" Demanda
 Respuesta "*" - "1" InstitucionRespuesta
+
+DemandasVinculadas "*" - "1" Demanda
+DemandasVinculadas "*" - "1" Demanda
+' DemandasVinculadas = Conexiones de la demanda = caso1=fkDemanda, caso2=fkDemanda
 
 Evaluacion "*" --down-- "1" Demanda
 Evaluacion "1" -left- "1" ValidacionDatos
@@ -65,6 +69,12 @@ Evaluacion "*" --- "1" UrgenciaTipo
 
 Evaluacion "*" --- "1" EvaluacionAccion
 EvaluacionAccion "1" --"*" AccionTipo
+
+' caratula = identificar legajo o expediente
+' NNyA Relationship
+LEGAJO "1" - "1" NNyAConviviente
+' la caratula identifica el NNyA al que se le genera la demanda
+' el legajo deberia estar relacionado con la caratula
 
 
 @enduml
