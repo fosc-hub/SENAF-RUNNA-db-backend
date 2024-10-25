@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="238C30A4-7689-CD42-F73F-B0B8498B0263">
+<createdBy>facun</createdBy>
+<createdTime>2024-10-25 14:07:39 UTC</createdTime>
+<ownerDesignName>full-erd</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>
