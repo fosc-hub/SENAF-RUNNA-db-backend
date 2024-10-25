@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="full-erd" id="F550DCBF-AC9C-3CF2-E135-7079F1475C92" version="3.5">
+<createdBy>facun</createdBy>
+<createdTime>2024-10-25 13:49:02 UTC</createdTime>
+<ownerDesignName>full-erd</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>F550DCBF-AC9C-3CF2-E135-7079F1475C92</designId>
+</OSDM_Design>

@@ -1,4 +1,8 @@
 sql-deprecated
+*.bak  # Backup files
+*.log  # Logs
+*.tmp  # Temporary files
+*.lock # Lock files
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
