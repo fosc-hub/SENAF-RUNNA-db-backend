@@ -1,0 +1,47 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="540E0B33-0DE0-DF52-CD04-A9C49B617C65" name="T_DEMANDA">
+<createdBy>facun</createdBy>
+<createdTime>2024-10-25 14:14:11 UTC</createdTime>
+<ownerDesignName>full-erd</ownerDesignName>
+<engineerTo>
+<item key="DB5D6AF2-E8A1-BEAF-DE82-EE52E7F1CA5F" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<synonym>Demanda, Mesa de Entradas</synonym>
+<synonymToDisplay>Demanda, Mesa de Entradas</synonymToDisplay>
+<createSurrogateKey>true</createSurrogateKey>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="demanda_id" id="3EAF0EC0-5FB8-27D2-BCC0-5FE978F56D64">
+<createdBy>facun</createdBy>
+<createdTime>2024-10-25 14:17:16 UTC</createdTime>
+<ownerDesignName>full-erd</ownerDesignName>
+<engineerTo>
+<item key="DB5D6AF2-E8A1-BEAF-DE82-EE52E7F1CA5F" value="true"/>
+</engineerTo>
+<use>0</use>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="8274A64C-AA37-6128-A964-63B3E52AD878" name="T_DEMANDA PK">
+<createdBy>facun</createdBy>
+<createdTime>2024-10-25 14:17:22 UTC</createdTime>
+<ownerDesignName>full-erd</ownerDesignName>
+<engineerTo>
+<item key="DB5D6AF2-E8A1-BEAF-DE82-EE52E7F1CA5F" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<newElementsIDs>3EAF0EC0-5FB8-27D2-BCC0-5FE978F56D64</newElementsIDs>
+<usedAttributes>
+<attributeRef>3EAF0EC0-5FB8-27D2-BCC0-5FE978F56D64</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
