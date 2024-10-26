@@ -11,11 +11,12 @@ left to right direction
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    Fecha
-    Hora
+    fecha_ingreso
+    hora_ingreso
     id_notifacion_manual
     notificacion_nro
     descripcion
+    ultima_actualizacion
     --
     FOREIGN_KEY(T_ESTADO_DEMANDA)
     FOREIGN_KEY(T_LOCALIZACION)
@@ -25,8 +26,21 @@ entity T_DEMANDA {
     FOREIGN_KEY(AUTORDV_principal)
     --
 }
-T_DEMANDA_USER "*" - "1" T_USER
-T_DEMANDA "1" - "*" T_DEMANDA_USER
+entity T_DEMANDA_ASIGNADO {
+    + PRIMARY_KEY(id)
+    --
+    esta_activo = bool 'sigue en curso la verificacion / archivar=false
+    recibido = bool ' casilla mail = leido/no leido
+    --
+    FOREIGN_KEY(T_USER)
+    FOREIGN_KEY(T_DEMANDA)
+    --
+    AsignarUser(
+        user.esta_activo
+        )
+}
+T_DEMANDA_ASIGNADO "*" - "1" T_USER
+T_DEMANDA "1" - "*" T_DEMANDA_ASIGNADO
 T_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
 
 entity T_LOCALIZACION {
@@ -241,6 +255,22 @@ entity T_LEGAJO {
     --
 }
 T_LEGAJO "1" - "1" T_NNyA
+
+entity T_LEGAJO_ASIGNADO {
+    + PRIMARY_KEY(id)
+    --
+    esta_activo = bool 'sigue en curso la verificacion / archivar=false
+    recibido = bool ' casilla mail = leido/no leido
+    --
+    FOREIGN_KEY(T_USER)
+    FOREIGN_KEY(T_LEGAJO)
+    --
+    AsignarUser(
+        user.esta_activo
+        )
+}
+T_LEGAJO_ASIGNADO "*" - "1" T_USER
+T_LEGAJO "1" - "*" T_LEGAJO_ASIGNADO
 ' la caratula identifica el NNyA al que se le genera la demanda
 ' el legajo deberia estar relacionado con la caratula
 
