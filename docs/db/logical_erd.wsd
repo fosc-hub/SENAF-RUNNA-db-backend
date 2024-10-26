@@ -18,7 +18,7 @@ entity T_DEMANDA {
     descripcion
     ultima_actualizacion
     --
-    FOREIGN_KEY(T_ESTADO_DEMANDA)
+    FOREIGN_KEY(T_PRECALIFICACION_DEMANDA nullable=true)
     FOREIGN_KEY(T_LOCALIZACION)
     FOREIGN_KEY(T_USUARIO_LINEA)
     FOREIGN_KEY(NNyA_principal)
@@ -31,6 +31,7 @@ entity T_DEMANDA_ASIGNADO {
     --
     esta_activo = bool 'sigue en curso la verificacion / archivar=false
     recibido = bool ' casilla mail = leido/no leido
+    comentarios
     --
     FOREIGN_KEY(T_USER)
     FOREIGN_KEY(T_DEMANDA)
@@ -39,9 +40,24 @@ entity T_DEMANDA_ASIGNADO {
         user.esta_activo
         )
 }
+entity T_PRECALIFICACION_DEMANDA {
+    + PRIMARY_KEY(id)
+    --
+    fecha
+    hora
+    descripcion
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_ESTADO_DEMANDA)
+    --
+    TriggerOnInsertAsignarPreCalificacion(
+        demanda.precalificacion_id = prec.id
+        )
+}
 T_DEMANDA_ASIGNADO "*" - "1" T_USER
 T_DEMANDA "1" - "*" T_DEMANDA_ASIGNADO
-T_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
+T_DEMANDA "1" -- "1" T_PRECALIFICACION_DEMANDA
+T_PRECALIFICACION_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
 
 entity T_LOCALIZACION {
     + PRIMARY_KEY(id)
@@ -216,10 +232,39 @@ T_NNyA "1" -- "*" T_VULNERACION
 ' T_DEMANDA parent relationship  <---
 
 ' ---> T_DEMANDA Child Relationship (Actividad + Evaluacion + Respuesta)
+entity T_ACTIVIDAD {
+    + PRIMARY_KEY(id)
+    --
+    fecha
+    hora
+    descripcion
+    --
+    FOREIGN_KEY(archivos_adjuntos)
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_ACTIVIDAD_TIPO)
+    FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD)
+    --
+}
 T_ACTIVIDAD "*" ---- "1" T_DEMANDA
 T_ACTIVIDAD "*" - "1" T_ACTIVIDAD_TIPO
 T_ACTIVIDAD "*" - "1" T_INSTITUCION_ACTIVIDAD
 
+entity T_RESPUESTA {
+    + PRIMARY_KEY(id)
+    --
+    fecha
+    hora
+    mail
+    mensaje
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_INSTITUCION_RESPUESTA)
+    --
+    ServicioDeMailSMTP(
+        mail,
+        mensaje
+        )
+}
 T_RESPUESTA "*" -- "1" T_DEMANDA
 T_RESPUESTA "*" - "1" T_INSTITUCION_RESPUESTA
 
@@ -235,14 +280,113 @@ T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
 T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
 ' DemandasVinculadas = Conexiones de la demanda = caso1=fkDemanda, caso2=fkDemanda
 
+entity T_EVALUACION {
+    + PRIMARY_KEY(id)
+    --
+    fecha
+    hora
+    comentarios
+    decision = (
+        APERTURA DE LEGAJO,
+        RECHAZAR CASO
+    )
+    --
+    FOREIGN_KEY(archivos_adjuntos)
+    FOREIGN_KEY(T_DEMANDA)
+    --
+}
+entity T_VALIDACION_DATOS {
+    + PRIMARY_KEY(id)
+    --
+    dropdown = (
+        "La informacion es veridica ?",
+        "La informacion es fue corroborada ?"
+    )
+    bool
+    comentarios
+    --
+    FOREIGN_KEY(T_EVALUACION)
+    --
+    TriggerOnInsert(
+        unique(T_EVALUACION, dropdown_value),
+    )
+}
+entity T_ACTIVIDADES_REGISTRADAS {
+    + PRIMARY_KEY(id)
+    --
+    dropdown = (
+        "La informacion es veridica ?",
+        "La informacion es fue corroborada ?"
+    )
+    bool
+    comentarios
+    --
+    FOREIGN_KEY(T_EVALUACION)
+    --
+    TriggerOnInsert(
+        unique(T_EVALUACION, dropdown_value),
+    )
+}
+entity T_VALORACIONES {
+    + PRIMARY_KEY(id)
+    --
+    dropdown_desc = (
+        "Gravedad de la situacion",
+        "Urgencia de la situacion"
+    )
+    dropdown_options = (
+        "Baja",
+        "Media",
+        "Alta"
+    )
+    comentarios
+    --
+    FOREIGN_KEY(T_EVALUACION)
+    --
+    TriggerOnInsert(
+        unique(T_EVALUACION, dropdown_desc_value),
+    )
+}
+entity T_ACCIONES_NECESARIAS {
+    + PRIMARY_KEY(id)
+    --
+    dropdown = (
+        "Apertura de legajo",
+        "Acciones MPI / MPE",
+        "Archivar el caso",
+        "Rechazar el caso",
+    )
+    bool
+    comentarios
+    --
+    FOREIGN_KEY(T_EVALUACION)
+    --
+    TriggerOnInsert(
+        unique(T_EVALUACION, dropdown_desc_value),
+        CreationOfLegajo(
+            dropdown = "Apertura de legajo"
+            bool = true
+        )
+        CreationOfMPI_MPE(
+            dropdown = "Apertura de legajo"
+            bool = true
+        )
+        ArchivarCaso(
+            dropdown = "Archivar el caso"
+            bool = true
+        )
+        RechazarCaso(
+            dropdown = "Rechazar el caso"
+            bool = true
+        )
+    )
+}
 T_EVALUACION "*" --- "1" T_DEMANDA
-T_EVALUACION "1" -- "1" T_VALIDACION_DATOS
-T_EVALUACION "1" -- "1" T_VALIDACION_ACTIVIDADES
-T_EVALUACION "*" -- "1" T_GRAVEDAD_TIPO
-T_EVALUACION "*" - "1" T_URGENCIA_TIPO
+T_EVALUACION "1" -- "*" T_VALIDACION_DATOS
+T_EVALUACION "1" -- "*" T_ACTIVIDADES_REGISTRADAS
+T_EVALUACION "1" -- "*" T_VALORACIONES
+T_EVALUACION "1" -- "*" T_ACCIONES_NECESARIAS
 
-T_EVALUACION "*" - "1" T_EVALUACION_ACCION
-T_EVALUACION_ACCION "1" --"*" T_ACCION_TIPO
 
 ' caratula = identificar legajo o expediente
 ' NNyA Relationship
