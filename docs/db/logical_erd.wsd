@@ -1,0 +1,248 @@
+"@startuml logical_erd"
+
+' !define ENTITY
+!define PRIMARY_KEY(x) <b><color:blue>x</color></b>
+!define FOREIGN_KEY(x) <color:green>x</color>
+
+hide circle
+left to right direction
+
+' ---> T_DEMANDA parent relationship
+entity T_DEMANDA {
+    + PRIMARY_KEY(id)
+    --
+    Fecha
+    Hora
+    id_notifacion_manual
+    notificacion_nro
+    descripcion
+    --
+    FOREIGN_KEY(T_ESTADO_DEMANDA)
+    FOREIGN_KEY(T_LOCALIZACION)
+    FOREIGN_KEY(T_USUARIO_LINEA)
+    FOREIGN_KEY(NNyA_principal)
+    FOREIGN_KEY(VULNERACION_principal)
+    FOREIGN_KEY(AUTORDV_principal)
+    --
+}
+T_DEMANDA_USER "*" - "1" T_USER
+T_DEMANDA "1" - "*" T_DEMANDA_USER
+T_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
+
+entity T_LOCALIZACION {
+    + PRIMARY_KEY(id)
+    --
+    calle
+    numero
+    referencia_geo
+    --
+    FOREIGN_KEY(Barrio)
+    FOREIGN_KEY(Localidad)
+    FOREIGN_KEY(Provincia)
+    --
+    ValidarConAPI(
+        calle,
+        numero,
+        barrio,
+        localidad,
+        provincia
+        )
+}
+T_DEMANDA "*" -- "1" T_LOCALIZACION
+T_LOCALIZACION "*" -- "1" Barrio
+T_LOCALIZACION "*" -- "1" Localidad
+T_LOCALIZACION "*" -- "1" Provincia
+
+T_DEMANDA_NNyA "*" - "1" T_DEMANDA
+entity T_NNyA {
+    + PRIMARY_KEY(id)
+    --
+    --
+    FOREIGN_KEY(T_NNyA_EDUCACION)
+    FOREIGN_KEY(T_LEGAJO nullable=true)
+    FOREIGN_KEY(T_INSTITUCION_SANITARIA)
+    FOREIGN_KEY(T_VULNERACION_principal nullable=true)
+    FOREIGN_KEY(T_PERSONA)
+    --
+    ValidarAdultoFalse(
+        persona.adulto,
+        persona.fecha_nacimiento
+        )
+}
+
+T_NNyA "1" - "*" T_DEMANDA_NNyA
+entity T_NNyA_EDUCACION {
+    + PRIMARY_KEY(id)
+    --
+    curso
+    nivel
+    turno
+    comentarios
+    --
+    FOREIGN_KEY(T_INSTITUCION_EDUCATIVA)
+    FOREIGN_KEY(T_NNyA)
+    --
+}
+T_NNyA "1" -- "1" T_NNyA_EDUCACION
+T_NNyA_EDUCACION "*" -- "1" T_INSTITUCION_EDUCATIVA
+T_NNyA "*" -- "1" T_INSTITUCION_SANITARIA
+
+entity T_PERSONA {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    apellido
+    fecha_nacimiento
+    sexo
+    observaciones
+    adulto = bool
+    --
+    --
+}
+T_NNyA "1" - "1" T_PERSONA
+entity T_DEMANDA_PERSONA_CONVIVIENTE {
+    + PRIMARY_KEY(id)
+    --
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_PERSONA)
+    --
+}
+T_DEMANDA_PERSONA_CONVIVIENTE "*" -- "1" T_DEMANDA
+T_PERSONA "1" -- "*" T_DEMANDA_PERSONA_CONVIVIENTE
+entity T_VINCULO_PERSONA {
+    + PRIMARY_KEY(id)
+    --
+    --
+    FOREIGN_KEY(T_PERSONA)
+    FOREIGN_KEY(T_PERSONA)
+    --
+}
+T_VINCULO_PERSONA "*" - "1" T_PERSONA
+T_VINCULO_PERSONA "*" - "1" T_PERSONA
+T_VINCULO "1" --- "*" T_VINCULO_PERSONA
+
+entity T_DEMANDA_AUTORDV {
+    + PRIMARY_KEY(id)
+    --
+    convive = bool
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_PERSONA)
+    --
+}
+T_DEMANDA_AUTORDV "*" -- "1" T_DEMANDA
+T_PERSONA "1" -- "*" T_DEMANDA_AUTORDV
+
+entity T_USUARIO_LINEA {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    apellido
+    fecha_nacimiento
+    sexo
+    telefono
+    --
+    FOREIGN_KEY(T_VINCULO_USUARIO_LINEA)
+    FOREIGN_KEY(T_INSTITUCION_USUARIO_LINEA)
+    FOREIGN_KEY(T_RESPONSABLE)
+    --
+}
+T_DEMANDA "*" -- "1" T_USUARIO_LINEA
+T_USUARIO_LINEA "*" -- "1" T_VINCULO_USUARIO_LINEA
+entity T_INSTITUCION_USUARIO_LINEA {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    contacto
+    --
+}
+T_USUARIO_LINEA "*" -- "1" T_INSTITUCION_USUARIO_LINEA
+entity T_RESPONSABLE {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    apellido
+    --
+    FOREIGN_KEY(T_CARGO)
+}
+T_USUARIO_LINEA "*" -- "1" T_RESPONSABLE
+T_RESPONSABLE "*" -- "1" T_CARGO
+
+entity T_VULNERACION {
+    + PRIMARY_KEY(id)
+    --
+    motivo
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_NNyA)
+    FOREIGN_KEY(T_DDV)
+    FOREIGN_KEY(T_PRIORIDAD_INTERVENCION)
+    FOREIGN_KEY(T_PROBLEMATICA_IDENTIFICADA)
+    FOREIGN_KEY(T_AMBITO_VULNERACION)
+    FOREIGN_KEY(T_OPERADOR)
+    --
+}
+T_DEMANDA "1" --- "*" T_VULNERACION
+T_DDV "1" -- "*" T_VULNERACION
+' T_VULNERACION_DDV "*" -- "1" T_VULNERACION
+' T_VULNERACION_DDV "*" -- "1" T_DDV
+T_VULNERACION "*" -- "1" T_PRIORIDAD_INTERVENCION
+T_VULNERACION "*" -- "1" T_PROBLEMATICA_IDENTIFICADA
+T_VULNERACION "*" -- "1" T_AMBITO_VULNERACION
+entity T_OPERADOR {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    apellido
+    --
+}
+T_VULNERACION "*" -- "1" T_OPERADOR
+T_NNyA "1" -- "*" T_VULNERACION
+' T_DEMANDA parent relationship  <---
+
+' ---> T_DEMANDA Child Relationship (Actividad + Evaluacion + Respuesta)
+T_ACTIVIDAD "*" ---- "1" T_DEMANDA
+T_ACTIVIDAD "*" - "1" T_ACTIVIDAD_TIPO
+T_ACTIVIDAD "*" - "1" T_INSTITUCION_ACTIVIDAD
+
+T_RESPUESTA "*" -- "1" T_DEMANDA
+T_RESPUESTA "*" - "1" T_INSTITUCION_RESPUESTA
+
+entity T_DEMANDA_VINCULADA {
+    + PRIMARY_KEY(id)
+    --
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_DEMANDA)
+    --
+}
+T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
+T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
+' DemandasVinculadas = Conexiones de la demanda = caso1=fkDemanda, caso2=fkDemanda
+
+T_EVALUACION "*" --- "1" T_DEMANDA
+T_EVALUACION "1" -- "1" T_VALIDACION_DATOS
+T_EVALUACION "1" -- "1" T_VALIDACION_ACTIVIDADES
+T_EVALUACION "*" -- "1" T_GRAVEDAD_TIPO
+T_EVALUACION "*" - "1" T_URGENCIA_TIPO
+
+T_EVALUACION "*" - "1" T_EVALUACION_ACCION
+T_EVALUACION_ACCION "1" --"*" T_ACCION_TIPO
+
+' caratula = identificar legajo o expediente
+' NNyA Relationship
+entity T_LEGAJO {
+    + PRIMARY_KEY(id)
+    --
+    info_legajo
+    --
+    FOREIGN_KEY(T_NNyA)
+    --
+}
+T_LEGAJO "1" - "1" T_NNyA
+' la caratula identifica el NNyA al que se le genera la demanda
+' el legajo deberia estar relacionado con la caratula
+
+
+@enduml
