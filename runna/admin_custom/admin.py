@@ -25,35 +25,10 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
     pass
 
 
-"""
-# Registro de modelos personalizados
+from django.contrib import admin
+from infrastructure.models import ProductModel
 
-admin.site.register(Provincia)
-admin.site.register(Localidad)
-admin.site.register(Barrio)
-admin.site.register(LocalizacionDemanda)
-admin.site.register(InstitucionEducativa)
-admin.site.register(InstitucionSanitaria)
-admin.site.register(Vinculo)
-admin.site.register(Responsable)
-admin.site.register(UsuarioL)
-admin.site.register(EstadoDemanda)
-admin.site.register(PrioridadIntervencion)
-admin.site.register(Problematica)
-admin.site.register(Ambito)
-admin.site.register(Operador)
-admin.site.register(DDV)
-admin.site.register(NNyA)
-admin.site.register(Demanda)
-admin.site.register(DemandaNNyA)
-admin.site.register(ActividadTipo)
-admin.site.register(Actividad)
-admin.site.register(Evaluacion)
-admin.site.register(GravedadTipo)
-admin.site.register(UrgenciaTipo)
-admin.site.register(EvaluacionAccion)
-admin.site.register(Legajo)
-admin.site.register(Respuesta)
-admin.site.register(DemandaVinculada)
-
-"""
+@admin.register(ProductModel)
+class ProductAdmin(ModelAdmin):
+    list_display = ['name', 'price']
+    search_fields = ['name']
