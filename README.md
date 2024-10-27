@@ -674,3 +674,162 @@ The `test_use_cases.py` file should be placed in `/tests/core/`. This layout:
 - Provides **scalable test management** as your project grows.
 
 With this structure, each layer of your project is easily testable and independently verifiable, following **Clean Architecture** principles.
+
+Great! Let’s walk through the steps to **run your Clean Architecture-based Django project** smoothly. Below is a checklist to ensure everything is correctly set up and operational.
+
+---
+
+## **1. Install Dependencies**
+
+First, ensure you have all the necessary dependencies installed. In your project directory, run:
+
+```bash
+pip install -r requirements.txt
+```
+
+If you don’t have a `requirements.txt` file, here’s a sample to get started:
+
+```text
+Django>=4.2
+djangorestframework>=3.14
+django-unfold
+pytest
+pytest-django
+psycopg2-binary  # If you're using PostgreSQL
+```
+
+---
+
+## **2. Apply Database Migrations**
+
+Ensure your database schema is synchronized with your models by running the following commands:
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+If everything is set up correctly, you should see messages confirming the creation of the necessary tables.
+
+---
+
+## **3. Create a Superuser**
+
+To access the Django admin interface, you need to create a superuser account:
+
+```bash
+python manage.py createsuperuser
+```
+
+You will be prompted to enter a username, email, and password.
+
+---
+
+## **4. Collect Static Files**
+
+If your project includes static files (CSS, JavaScript, etc.), run:
+
+```bash
+python manage.py collectstatic
+```
+
+This will gather all static files into a single directory for easier serving.
+
+---
+
+## **5. Start the Development Server**
+
+Run the Django development server:
+
+```bash
+python manage.py runserver
+```
+
+You should see output similar to:
+
+```
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 27, 2024 - 15:34:57
+Django version 4.2, using settings 'my_project.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+```
+
+---
+
+## **6. Verify the Application**
+
+### **6.1. Access the Admin Panel**
+Go to:  
+[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+- Log in with the **superuser** credentials you created.
+- Ensure your **Unfold-admin** customizations are visible.
+
+### **6.2. Test the API**
+Go to the API endpoint for your product:
+
+[http://127.0.0.1:8000/api/products/](http://127.0.0.1:8000/api/products/)
+
+If the API is working correctly, you should see either an empty response or existing products (if added).
+
+---
+
+## **7. Running Tests**
+
+To ensure everything is working, run the tests:
+
+1. **Using pytest**:
+   ```bash
+   pytest
+   ```
+
+2. **Using Django's test runner**:
+   ```bash
+   python manage.py test
+   ```
+
+You should see output indicating that all tests have passed.
+
+---
+
+## **8. Handling Common Issues**
+
+1. **Port Conflict**:  
+   If port 8000 is already in use, run:
+   ```bash
+   python manage.py runserver 8080
+   ```
+
+2. **Database Connection Errors**:  
+   Ensure your database settings in `settings.py` are correct. If using PostgreSQL:
+   - Ensure PostgreSQL is running.
+   - Verify credentials, host, and port in `DATABASES`.
+
+3. **Static File Not Found in Development**:  
+   If you have trouble accessing static files, add the following to `settings.py`:
+   ```python
+   STATIC_URL = '/static/'
+   ```
+
+---
+
+## **9. Deployment Checklist (Optional)**
+
+If you plan to deploy the project to production, consider the following:
+- Use **`gunicorn`** or **`daphne`** as your WSGI or ASGI server.
+- Set `DEBUG = False` in `settings.py`.
+- Configure **allowed hosts**:
+  ```python
+  ALLOWED_HOSTS = ['yourdomain.com']
+  ```
+
+---
+
+## **Conclusion**
+
+By following these steps, you should now have your Django application up and running using the **Clean Architecture** approach. 🎉
+
+If you encounter any issues or have additional questions, feel free to ask!
