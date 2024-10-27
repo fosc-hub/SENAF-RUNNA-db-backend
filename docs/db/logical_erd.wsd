@@ -576,17 +576,7 @@ T_LEGAJO "1" - "*" T_LEGAJO_ASIGNADO
 
 @enduml
 
-
-' ---> T_DEMANDA parent relationship
-' T_VULNERACION_DDV "*" -- "1" T_VULNERACION
-' T_VULNERACION_DDV "*" -- "1" T_DDV
-' T_DEMANDA parent relationship  <---
-
-' ---> T_DEMANDA Child Relationship (Actividad + Evaluacion + Respuesta)
 ' DemandasVinculadas = Conexiones de la demanda = caso1=fkDemanda, caso2=fkDemanda
-
 ' caratula = identificar legajo o expediente
-' NNyA Relationship
-
 ' la caratula identifica el NNyA al que se le genera la demanda
-' el legajo deberia estar relacionado con la caratula
+' el legajo deberia estar relacionado con la caratula, ¿ osea el NNyA principal ?
