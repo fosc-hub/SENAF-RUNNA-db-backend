@@ -1,4 +1,4 @@
-"@startuml logical_erd"
+"@startuml full_logical_erd"
 
 ' !define ENTITY
 !define PRIMARY_KEY(x) <b><color:blue>x</color></b>
