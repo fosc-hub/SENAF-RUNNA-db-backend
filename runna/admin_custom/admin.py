@@ -1,13 +1,10 @@
-from django.contrib import admin
-
-"""
 # Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from django.contrib.auth.models import User, Group
 from unfold.admin import ModelAdmin
-from .models import *
+# from .models import *
 
 
 # Desregistrar User y Group para personalizarlos
@@ -28,6 +25,7 @@ class GroupAdmin(BaseGroupAdmin, ModelAdmin):
     pass
 
 
+"""
 # Registro de modelos personalizados
 
 admin.site.register(Provincia)
