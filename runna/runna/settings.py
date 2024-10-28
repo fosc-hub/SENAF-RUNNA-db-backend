@@ -58,7 +58,10 @@ INSTALLED_APPS = [
     'rest_framework',
  
     # third-party dependencies
-    'corsheaders'
+    'corsheaders',  # to enable CORS
+    
+    # track model changes
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +153,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+# settings.py
+AUTH_USER_MODEL = 'infrastructure.CustomUser'
+
