@@ -1,34 +1,53 @@
 # Register your models here.
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin
+# from django.contrib.auth.admin import GroupAdmin as BaseGroupAdmin
 from unfold.admin import ModelAdmin
-# from .models import *
+from infrastructure.models import CustomUser, Demanda, DemandaAsignado
+from simple_history.admin import SimpleHistoryAdmin
+
+@admin.action(description='Activate selected users')
+def activate_users(modeladmin, request, queryset):
+    queryset.update(is_active=True)
 
 
-# Desregistrar User y Group para personalizarlos
-admin.site.unregister(User)
-admin.site.unregister(Group)
-
-
-@admin.register(User)
-class UserAdmin(BaseUserAdmin, ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff')
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin, ModelAdmin):
+    """Customized admin for managing users with roles and permissions."""
+    list_display = ('username', 'email', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'groups')
     search_fields = ('username', 'email')
-    list_filter = ('is_staff', 'is_superuser', 'is_active')
-    ordering = ('username',)
+    fieldsets = (
+        ('Personal Info', {
+            'fields': ('username', 'password', 'email', 'first_name', 'last_name')
+        }),
+        ('Additional Info', {
+            'fields': ('fecha_nacimiento', 'sexo', 'telefono')
+        }),
+        ('Permissions', {
+            'fields': ('is_staff', 'is_active', 'groups', 'user_permissions')
+        }),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'password1', 'password2', 'is_staff', 'is_active')
+        }),
+    )
+    ordering = ('email',)
+    
+    actions = [activate_users]
 
 
-@admin.register(Group)
-class GroupAdmin(BaseGroupAdmin, ModelAdmin):
-    pass
+class DemandaAsignadoInline(admin.TabularInline):
+    model = DemandaAsignado
+    extra = 1
 
 
-from django.contrib import admin
-from infrastructure.models import ProductModel
-
-@admin.register(ProductModel)
-class ProductAdmin(ModelAdmin):
-    list_display = ['name', 'price']
-    search_fields = ['name']
+@admin.register(Demanda)
+class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    """Admin interface for managing demands with related assignments."""
+    list_display = ('descripcion', 'fecha_ingreso', 'ultima_actualizacion')
+    list_filter = ('fecha_ingreso',)
+    search_fields = ('descripcion', 'notificacion_nro')
+    inlines = [DemandaAsignadoInline]
