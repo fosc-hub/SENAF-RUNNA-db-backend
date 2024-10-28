@@ -1,3 +1,4 @@
+'''
 from infrastructure.models import ProductModel
 from core.entities import Product
 
@@ -14,3 +15,4 @@ class ProductRepository:
         """Retrieve all products from the database."""
         products = ProductModel.objects.all()
         return [Product(p.name, p.description, p.price) for p in products]
+'''

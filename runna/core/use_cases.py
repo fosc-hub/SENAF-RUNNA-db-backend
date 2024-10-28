@@ -1,3 +1,4 @@
+'''
 from core.entities import Product
 
 class ProductUseCase:
@@ -9,3 +10,5 @@ class ProductUseCase:
         """Applies discount to the product."""
         product.apply_discount(percentage)
         return product
+
+'''
