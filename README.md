@@ -833,3 +833,201 @@ If you plan to deploy the project to production, consider the following:
 By following these steps, you should now have your Django application up and running using the **Clean Architecture** approach. 🎉
 
 If you encounter any issues or have additional questions, feel free to ask!
+
+
+If you need to **authenticate users using an external API** while also **adding custom fields**, the best approach is to:
+
+- **Extend the Django `AbstractUser` model** to store additional user-related fields.
+- **Leverage Django’s authentication system** for managing sessions and permissions.
+- **Implement custom authentication logic** to validate credentials against the external API.
+
+---
+
+## **Recommended Approach: Custom User Model with External API Authentication**
+
+### **1. Extend `AbstractUser` for Custom Fields**
+
+This approach allows you to:
+- Add **custom fields** such as `fecha_nacimiento`, `telefono`, etc.
+- Use **Django’s session management** and permissions features.
+- Implement **custom authentication backend** to validate users via an external API.
+
+---
+
+### **Step-by-Step Implementation**
+
+#### **1. Create the Custom User Model**
+
+```python
+# models.py
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+class CustomUser(AbstractUser):
+    """Custom user model with additional fields."""
+    fecha_nacimiento = models.DateField(null=True, blank=True)
+    sexo = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
+    telefono = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return f"{self.username} ({self.email})"
+```
+
+**Explanation:**
+- This model extends `AbstractUser` to retain Django’s built-in functionality.
+- Custom fields like `fecha_nacimiento` and `telefono` are added.
+  
+Update your **`settings.py`** to use this new user model:
+```python
+AUTH_USER_MODEL = 'your_app.CustomUser'
+```
+
+---
+
+#### **2. Create a Custom Authentication Backend**
+
+The authentication backend will:
+1. **Authenticate the user using an external API.**
+2. If valid, **retrieve user details** from the external API or create a local user.
+
+```python
+# backends.py
+import requests
+from django.contrib.auth.backends import BaseBackend
+from django.conf import settings
+from your_app.models import CustomUser
+
+class ExternalAPIBackend(BaseBackend):
+    """
+    Custom authentication backend to authenticate users via an external API.
+    """
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        # Call the external API with the provided credentials
+        response = requests.post(
+            'https://external-api.com/auth/login/',
+            data={'username': username, 'password': password}
+        )
+
+        if response.status_code == 200:
+            user_data = response.json()
+            # Check if user exists locally; if not, create one
+            user, created = CustomUser.objects.get_or_create(
+                username=username,
+                defaults={
+                    'email': user_data.get('email'),
+                    'fecha_nacimiento': user_data.get('fecha_nacimiento'),
+                    'sexo': user_data.get('sexo'),
+                    'telefono': user_data.get('telefono'),
+                }
+            )
+            return user  # Return the authenticated user
+        return None  # Authentication failed
+
+    def get_user(self, user_id):
+        try:
+            return CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
+            return None
+```
+
+---
+
+#### **3. Configure Django to Use the Custom Authentication Backend**
+
+In **`settings.py`**, update the `AUTHENTICATION_BACKENDS` setting:
+
+```python
+AUTHENTICATION_BACKENDS = [
+    'your_app.backends.ExternalAPIBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Fallback to default backend
+]
+```
+
+---
+
+#### **4. Create Login View Using Django's `authenticate()` Function**
+
+```python
+# views.py
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful', 'username': user.username})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+    return JsonResponse({'error': 'POST request required'}, status=400)
+```
+
+---
+
+#### **5. Update URLs for Login**
+
+In **`urls.py`**, add the route for the login view:
+
+```python
+# urls.py
+from django.urls import path
+from your_app.views import login_view
+
+urlpatterns = [
+    path('login/', login_view, name='login'),
+]
+```
+
+---
+
+#### **6. Handling Sessions and Permissions**
+
+- **Django’s session management** works seamlessly with this setup, as the authenticated user is stored in the session.
+- You can still **use Django permissions** and groups on the `CustomUser` model.
+
+---
+
+### **7. Run Migrations and Test**
+
+1. Create the necessary database tables:
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+2. Test the **login endpoint** by sending a POST request:
+   ```bash
+   curl -X POST -d "username=testuser&password=secret" http://127.0.0.1:8000/login/
+   ```
+
+3. You should receive a JSON response confirming the login.
+
+---
+
+## **Advantages of This Approach**
+
+1. **Custom Fields Support**:
+   - You can store and manage user-related data specific to your application (like `fecha_nacimiento` and `telefono`).
+
+2. **External API Authentication**:
+   - Users are authenticated against an **external API** while still leveraging Django’s built-in session and permission system.
+
+3. **Flexible Authentication**:
+   - If the external API fails, you can **fallback** to Django’s internal authentication by keeping the default backend as a fallback.
+
+---
+
+## **Summary**
+
+This approach gives you the **best of both worlds**:
+- You get **custom user fields** by extending `AbstractUser`.
+- You can **authenticate users via an external API** using a **custom authentication backend**.
+- Django’s **session management, permissions, and admin interface** remain intact.
+
+Let me know if you encounter any issues or need further customization! 🚀
