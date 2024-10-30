@@ -7,7 +7,12 @@ from infrastructure.models import (
     Cargo, InstitucionUsuarioLinea, VinculoUsuarioLinea, Responsable, 
     UsuarioLinea, Localizacion, EstadoDemanda, PreCalificacionDemanda, 
     PrioridadIntervencion, ProblematicaIdentificada, AmbitoVulneracion, 
-    DDV, Operador, Vulneracion, DemandaVinculada
+    DDV, Operador, Vulneracion, DemandaVinculada, 
+    InstitucionSanitaria, NNyA, Persona, InstitucionEducativa, NNyAEducacion, 
+    DemandaPersonaConviviente, Vinculo, VinculoPersona, DemandaAutorDV, DemandaNNyA, 
+    Legajo, LegajoAsignado, ActividadTipo, InstitucionActividad, Actividad, 
+    InstitucionRespuesta, Respuesta, Evaluacion, ValidacionDatos, 
+    ActividadesRegistradas, Valoraciones, AccionesNecesarias
 )
 
 # ===== Custom User Management ===== #
@@ -153,3 +158,108 @@ class PreCalificacionDemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
     list_display = ('fecha', 'hora', 'descripcion', 'estado')
     list_filter = ('fecha', 'estado')
     search_fields = ('descripcion', 'estado__nombre')
+
+# Register models with custom admin configurations
+
+@admin.register(InstitucionSanitaria)
+class InstitucionSanitariaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+@admin.register(NNyA)
+class NNyAAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('persona', 'educacion', 'institucion_sanitaria')
+    search_fields = ('persona__nombre', 'persona__apellido')
+
+@admin.register(Persona)
+class PersonaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'sexo', 'adulto')
+    list_filter = ('sexo', 'adulto')
+    search_fields = ('nombre', 'apellido')
+
+@admin.register(InstitucionEducativa)
+class InstitucionEducativaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+@admin.register(NNyAEducacion)
+class NNyAEducacionAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('curso', 'nivel', 'turno', 'institucion_educativa')
+    search_fields = ('curso', 'nivel', 'institucion_educativa__nombre')
+
+@admin.register(DemandaPersonaConviviente)
+class DemandaPersonaConvivienteAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('demanda', 'persona')
+
+@admin.register(Vinculo)
+class VinculoAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+
+@admin.register(VinculoPersona)
+class VinculoPersonaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('persona1', 'persona2', 'vinculo')
+
+@admin.register(DemandaAutorDV)
+class DemandaAutorDVAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('demanda', 'persona', 'convive', 'principal')
+    list_filter = ('convive', 'principal')
+
+@admin.register(DemandaNNyA)
+class DemandaNNyAAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('demanda', 'nnya', 'principal')
+    list_filter = ('principal',)
+
+@admin.register(Legajo)
+class LegajoAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('info_legajo', 'nnya')
+
+@admin.register(LegajoAsignado)
+class LegajoAsignadoAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('legajo', 'user', 'esta_activo', 'recibido')
+    list_filter = ('esta_activo', 'recibido')
+
+@admin.register(ActividadTipo)
+class ActividadTipoAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+
+@admin.register(InstitucionActividad)
+class InstitucionActividadAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+
+@admin.register(Actividad)
+class ActividadAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('fecha', 'hora', 'descripcion', 'demanda', 'actividad_tipo', 'institucion_actividad')
+    search_fields = ('descripcion',)
+
+@admin.register(InstitucionRespuesta)
+class InstitucionRespuestaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('nombre',)
+
+@admin.register(Respuesta)
+class RespuestaAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('fecha', 'hora', 'mail', 'demanda', 'institucion_respuesta')
+
+@admin.register(Evaluacion)
+class EvaluacionAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('fecha', 'hora', 'comentarios', 'decision', 'demanda')
+    list_filter = ('decision',)
+
+@admin.register(ValidacionDatos)
+class ValidacionDatosAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('dropdown', 'bool_value', 'comentarios', 'evaluacion')
+    list_filter = ('dropdown', 'bool_value')
+
+@admin.register(ActividadesRegistradas)
+class ActividadesRegistradasAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('dropdown', 'bool_value', 'comentarios', 'evaluacion')
+    list_filter = ('dropdown', 'bool_value')
+
+@admin.register(Valoraciones)
+class ValoracionesAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('dropdown_desc', 'dropdown_options', 'comentarios', 'evaluacion')
+    list_filter = ('dropdown_desc', 'dropdown_options')
+
+@admin.register(AccionesNecesarias)
+class AccionesNecesariasAdmin(SimpleHistoryAdmin, ModelAdmin):
+    list_display = ('dropdown', 'bool_value', 'comentarios', 'evaluacion')
+    list_filter = ('dropdown', 'bool_value')
