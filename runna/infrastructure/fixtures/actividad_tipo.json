@@ -1,0 +1,9 @@
+[
+    {
+        "model": "infrastructure.actividadtipo",
+        "pk": 1,
+        "fields": {
+            "nombre": "Reunión de Seguimiento"
+        }
+    }
+]

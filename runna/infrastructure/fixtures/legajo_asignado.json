@@ -1,0 +1,12 @@
+[
+    {
+        "model": "infrastructure.legajoasignado",
+        "pk": 1,
+        "fields": {
+            "legajo": 1,
+            "user": 1,
+            "esta_activo": true,
+            "recibido": false
+        }
+    }
+]

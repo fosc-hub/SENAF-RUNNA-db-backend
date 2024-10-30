@@ -1,0 +1,9 @@
+[
+    {
+        "model": "infrastructure.institucionactividad",
+        "pk": 1,
+        "fields": {
+            "nombre": "Centro de Desarrollo Social"
+        }
+    }
+]

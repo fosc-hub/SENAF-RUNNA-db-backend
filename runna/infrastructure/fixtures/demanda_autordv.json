@@ -1,0 +1,12 @@
+[
+    {
+        "model": "infrastructure.demandaautordv",
+        "pk": 1,
+        "fields": {
+            "demanda": 1,
+            "persona": 1,
+            "convive": true,
+            "principal": true
+        }
+    }
+]

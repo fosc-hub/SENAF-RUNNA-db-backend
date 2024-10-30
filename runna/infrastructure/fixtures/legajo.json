@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.legajo",
+        "pk": 1,
+        "fields": {
+            "info_legajo": "Legajo del caso inicial",
+            "nnya": 1
+        }
+    }
+]

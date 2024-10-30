@@ -1040,3 +1040,14 @@ python manage.py loaddata infrastructure/fixtures/institucion_sanitaria.json --a
 python manage.py loaddata infrastructure/fixtures/demanda.json --app runna.demanda
 python manage.py loaddata infrastructure/fixtures/actividad.json --app runna.actividad
 python manage.py loaddata infrastructure/fixtures/acciones_necesarias.json --app runna.acciones_necesarias
+python manage.py loaddata infrastructure/fixtures/institucion_actividad.json --app runna.institucion_actividad
+python manage.py loaddata infrastructure/fixtures/institucion_respuesta.json --app runna.institucion_respuesta
+python manage.py loaddata infrastructure/fixtures/respuesta.json --app runna.respuesta
+python manage.py loaddata infrastructure/fixtures/actividad_tipo.json --app runna.actividad_tipo
+python manage.py loaddata infrastructure/fixtures/demanda_autordv.json --app runna.demanda_autordv
+python manage.py loaddata infrastructure/fixtures/demanda_nnya.json --app runna.demanda_nnya
+python manage.py loaddata infrastructure/fixtures/vinculo.json --app runna.vinculo
+python manage.py loaddata infrastructure/fixtures/legajo.json --app runna.legajo
+python manage.py loaddata infrastructure/fixtures/legajo_asignado.json --app runna.legajo_asignado
+python manage.py loaddata infrastructure/fixtures/valoraciones.json --app runna.valoraciones
+
