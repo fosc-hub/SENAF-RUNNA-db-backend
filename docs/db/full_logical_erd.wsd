@@ -17,12 +17,9 @@ entity T_DEMANDA {
     descripcion
     ultima_actualizacion
     --
-    FOREIGN_KEY(T_PRECALIFICACION_DEMANDA nullable=true)
+    FOREIGN_KEY(T_PRECALIFICACION_DEMANDA on_delete=models.SET_NULL null=True blank=True)
     FOREIGN_KEY(T_LOCALIZACION)
     FOREIGN_KEY(T_USUARIO_LINEA)
-    FOREIGN_KEY(NNyA_principal)
-    FOREIGN_KEY(VULNERACION_principal)
-    FOREIGN_KEY(AUTORDV_principal)
     --
 }
 
@@ -48,12 +45,7 @@ entity T_PRECALIFICACION_DEMANDA {
     hora
     descripcion
     --
-    FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_ESTADO_DEMANDA)
-    --
-    TriggerOnInsertAsignarPreCalificacion(
-        demanda.precalificacion_id = prec.id
-        )
 }
 
 entity T_LOCALIZACION {
@@ -131,6 +123,7 @@ entity T_VINCULO_PERSONA {
     + PRIMARY_KEY(id)
     --
     --
+    FOREIGN_KEY(T_VINCULO)
     FOREIGN_KEY(T_PERSONA)
     FOREIGN_KEY(T_PERSONA)
     --
@@ -140,10 +133,14 @@ entity T_DEMANDA_AUTORDV {
     + PRIMARY_KEY(id)
     --
     convive = bool
+    principal
     --
     FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_PERSONA)
     --
+    TriggerOnInsert(
+        unique(T_DEMANDA, principal=true),
+    )
 }
 
 entity T_USUARIO_LINEA {
@@ -182,6 +179,7 @@ entity T_VULNERACION {
     + PRIMARY_KEY(id)
     --
     motivo
+    principal = bool
     --
     FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_NNyA)
@@ -191,6 +189,9 @@ entity T_VULNERACION {
     FOREIGN_KEY(T_AMBITO_VULNERACION)
     FOREIGN_KEY(T_OPERADOR)
     --
+    TriggerOnInsert(
+        unique(T_DEMANDA, principal=true),
+    )
 }
 
 entity T_OPERADOR {
@@ -493,10 +494,14 @@ entity T_INSTITUCION_SANITARIA {
 entity T_DEMANDA_NNyA {
     + PRIMARY_KEY(id)
     --
+    principal = bool
     --
     FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_NNyA)
     --
+    TriggerOnInsert(
+        unique(T_DEMANDA, principal=true),
+    )
 }
 
 entity T_ACTIVIDAD_TIPO {
