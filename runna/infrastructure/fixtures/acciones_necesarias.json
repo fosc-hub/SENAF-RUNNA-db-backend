@@ -1,0 +1,12 @@
+[
+    {
+        "model": "infrastructure.accionesnecesarias",
+        "pk": 1,
+        "fields": {
+            "dropdown": "Apertura de legajo",
+            "bool_value": true,
+            "comentarios": "Acción requerida para el caso",
+            "evaluacion": 1
+        }
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "model": "infrastructure.vinculopersona",
+        "pk": 1,
+        "fields": {
+            "persona1": 1,
+            "persona2": 2,
+            "vinculo": 1
+        }
+    }
+]

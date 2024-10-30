@@ -1,0 +1,14 @@
+[
+    {
+        "model": "infrastructure.actividad",
+        "pk": 1,
+        "fields": {
+            "fecha": "2023-10-27",
+            "hora": "15:00:00",
+            "descripcion": "Actividad realizada para seguimiento",
+            "demanda": 1,
+            "actividad_tipo": 1,
+            "institucion_actividad": 1
+        }
+    }
+]

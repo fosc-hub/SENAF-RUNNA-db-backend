@@ -1,0 +1,14 @@
+[
+    {
+        "model": "infrastructure.persona",
+        "pk": 1,
+        "fields": {
+            "nombre": "Juan",
+            "apellido": "Perez",
+            "fecha_nacimiento": "1985-05-20",
+            "sexo": "M",
+            "observaciones": "None",
+            "adulto": true
+        }
+    }
+]

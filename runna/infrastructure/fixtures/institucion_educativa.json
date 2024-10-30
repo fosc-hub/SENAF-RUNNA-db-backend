@@ -1,0 +1,9 @@
+[
+    {
+        "model": "infrastructure.institucioneeducativa",
+        "pk": 1,
+        "fields": {
+            "nombre": "Escuela Primaria N° 12"
+        }
+    }
+]

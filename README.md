@@ -1031,3 +1031,12 @@ This approach gives you the **best of both worlds**:
 - Django’s **session management, permissions, and admin interface** remain intact.
 
 Let me know if you encounter any issues or need further customization! 🚀
+
+
+
+python manage.py loaddata infrastructure/fixtures/persona.json --app runna.persona
+python manage.py loaddata infrastructure/fixtures/nnya.json --app runna.nnya
+python manage.py loaddata infrastructure/fixtures/institucion_sanitaria.json --app runna.institucion_sanitaria
+python manage.py loaddata infrastructure/fixtures/demanda.json --app runna.demanda
+python manage.py loaddata infrastructure/fixtures/actividad.json --app runna.actividad
+python manage.py loaddata infrastructure/fixtures/acciones_necesarias.json --app runna.acciones_necesarias
