@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.demandavinculada",
+        "pk": 1,
+        "fields": {
+            "demanda": 1,
+            "vinculacion": 1
+        }
+    }
+]

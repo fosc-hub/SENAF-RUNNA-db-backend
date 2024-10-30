@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.operador",
+        "pk": 1,
+        "fields": {
+            "nombre": "Mar\u00eda",
+            "apellido": "P\u00e9rez"
+        }
+    }
+]

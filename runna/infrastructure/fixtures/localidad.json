@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.localidad",
+        "pk": 1,
+        "fields": {
+            "nombre": "La Plata",
+            "provincia": 1
+        }
+    }
+]

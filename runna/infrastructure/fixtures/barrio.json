@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.barrio",
+        "pk": 1,
+        "fields": {
+            "nombre": "Centro",
+            "localidad": 1
+        }
+    }
+]

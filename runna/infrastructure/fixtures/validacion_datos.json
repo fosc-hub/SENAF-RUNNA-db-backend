@@ -1,0 +1,12 @@
+[
+    {
+        "model": "infrastructure.validaciondatos",
+        "pk": 1,
+        "fields": {
+            "dropdown": "Veridica",
+            "bool_value": true,
+            "comentarios": "Datos verificados",
+            "evaluacion": 1
+        }
+    }
+]

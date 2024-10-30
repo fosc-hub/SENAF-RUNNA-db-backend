@@ -1,0 +1,9 @@
+[
+    {
+        "model": "infrastructure.vinculousuariolinea",
+        "pk": 1,
+        "fields": {
+            "nombre": "Tutor"
+        }
+    }
+]

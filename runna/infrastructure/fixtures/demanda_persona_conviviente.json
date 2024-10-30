@@ -1,0 +1,10 @@
+[
+    {
+        "model": "infrastructure.demandapersonaconviviente",
+        "pk": 1,
+        "fields": {
+            "demanda": 1,
+            "persona": 1
+        }
+    }
+]
