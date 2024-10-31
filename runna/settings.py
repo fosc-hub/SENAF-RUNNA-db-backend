@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y=k)d^2rlms)+dg!5a3aiygxsorf##qk6=p0&%d33$$2@(2!0%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['senaf-runna-db-backend-production.up.railway.app', '*']
 
@@ -173,3 +173,6 @@ CORS_ALLOWED_ORIGINS = [
 # settings.py
 AUTH_USER_MODEL = 'infrastructure.CustomUser'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://senaf-runna-db-backend-production.up.railway.app'
+]
