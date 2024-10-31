@@ -1,1 +1,1 @@
-web: python manage.py collectstatic --noinput && python manage.py migrate && python manage.py createsuperuser --noinput && gunicorn runna.wsgi:application
+web: python manage.py migrate && python manage.py createsuperuser && gunicorn runna.wsgi:application
