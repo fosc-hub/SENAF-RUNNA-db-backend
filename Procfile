@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn runna.wsgi:application
+web: python manage.py makemigrations && python manage.py migrate && python manage.py create_superuser && gunicorn runna.wsgi:application
