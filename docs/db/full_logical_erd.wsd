@@ -56,8 +56,6 @@ entity T_LOCALIZACION {
     referencia_geo
     --
     FOREIGN_KEY(T_BARRIO)
-    FOREIGN_KEY(T_LOCALIDAD)
-    FOREIGN_KEY(T_PROVINCIA)
     --
     ValidarConAPI(
         calle,
@@ -440,6 +438,7 @@ entity T_BARRIO {
     --
     nombre
     --
+    FOREIGN_KEY(T_LOCALIDAD)
 }
 
 entity T_LOCALIDAD {
@@ -447,6 +446,7 @@ entity T_LOCALIDAD {
     --
     nombre
     --
+    FOREIGN_KEY(T_PROVINCIA)
 }
 
 entity T_PROVINCIA {

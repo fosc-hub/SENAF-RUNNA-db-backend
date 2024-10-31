@@ -1,0 +1,9 @@
+[
+    {
+        "model": "infrastructure.cargo",
+        "pk": 1,
+        "fields": {
+            "nombre": "Gerente"
+        }
+    }
+]

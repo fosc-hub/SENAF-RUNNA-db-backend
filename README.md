@@ -1032,48 +1032,64 @@ This approach gives you the **best of both worlds**:
 
 Let me know if you encounter any issues or need further customization! 🚀
 
-python manage.py loaddata infrastructure/fixtures/acciones_necesarias.json --app infrastructure
+
 python manage.py loaddata infrastructure/fixtures/actividad_tipo.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/actividad.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/actividades_registradas.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/institucion_sanitaria.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/ambito_vulneracion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/barrio.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/ddv.json --app infrastructure
+
+
+python manage.py loaddata infrastructure/fixtures/acciones_necesarias.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/actividad.json --app infrastructure
+
+python manage.py loaddata infrastructure/fixtures/actividades_registradas.json --app infrastructure
+
+
+python manage.py loaddata infrastructure/fixtures/cargo.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/institucion_usuario_linea.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/responsable.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/vinculo_usuario_linea.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/usuario_linea.json --app infrastructure
+
+python manage.py loaddata infrastructure/fixtures/provincia.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/localidad.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/barrio.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/localizacion.json --app infrastructure
+
+python manage.py loaddata infrastructure/fixtures/estado_demanda.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/precalificacion_demanda.json --app infrastructure
+
+python manage.py loaddata infrastructure/fixtures/demanda.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/demanda_asignado.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/demanda_autordv.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/demanda_nnya.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/demanda_persona_conviviente.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/demanda_vinculada.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/dem
 
-python manage.py loaddata infrastructure/fixtures/demanda.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/estado_demanda.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/legajo.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/legajo_asignado.json --app infrastructure
+
+python manage.py loaddata infrastructure/fixtures/nnya_educacion.json --app infrastructure
+python manage.py loaddata infrastructure/fixtures/nnya.json --app infrastructure
+
 python manage.py loaddata infrastructure/fixtures/evaluacion.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/institucion_actividad.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/institucion_educativa.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/institucion_respuesta.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_sanitaria.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_usuario_linea.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/legajo_asignado.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/legajo.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/localidad.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/localizacion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/nnya_educacion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/nnya.json --app infrastructure
+
+
+
 python manage.py loaddata infrastructure/fixtures/persona.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/operador.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/precalificacion_demanda.json --app infrastructure
+
 python manage.py loaddata infrastructure/fixtures/prioridad_intervencion.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/problematica_identificada.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/responsable.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/usuario_linea.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/validacion_datos.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/valoraciones.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/provincia.json --app infrastructure
 
 python manage.py loaddata infrastructure/fixtures/respuesta.json --app infrastructure
 
 python manage.py loaddata infrastructure/fixtures/vinculo_persona.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/vinculo_usuario_linea.json --app infrastructure
 python manage.py loaddata infrastructure/fixtures/vinculo.json --app infrastructure
+
 python manage.py loaddata infrastructure/fixtures/vulneracion.json --app infrastructure
