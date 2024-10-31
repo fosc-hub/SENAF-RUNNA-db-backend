@@ -1,1 +1,1 @@
-web: gunicorn runna.wsgi
+web: python manage.py migrate && gunicorn <project_name>.wsg
