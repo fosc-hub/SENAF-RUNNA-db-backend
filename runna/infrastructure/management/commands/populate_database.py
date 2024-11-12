@@ -12,10 +12,10 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Load the ordered model list from JSON
         try:
-            with open('./infrastructure/management/commands/model_order.json', 'r') as f:
+            with open('./infrastructure/fixtures/sorted_models.json', 'r') as f:
                 model_order = json.load(f)['models']
         except FileNotFoundError:
-            self.stderr.write(self.style.ERROR('model_order.json not found!'))
+            self.stderr.write(self.style.ERROR('sorted_models.json not found!'))
             return
 
         for model_name in model_order:
