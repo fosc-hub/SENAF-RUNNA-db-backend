@@ -16,8 +16,10 @@ entity T_DEMANDA {
     notificacion_nro
     descripcion
     ultima_actualizacion
+    score = int
+    score_vulneracion = int
+    score_evaluacion = int
     --
-    FOREIGN_KEY(T_PRECALIFICACION_DEMANDA on_delete=models.SET_NULL null=True blank=True)
     FOREIGN_KEY(T_LOCALIZACION)
     FOREIGN_KEY(T_USUARIO_LINEA)
     --
@@ -44,8 +46,13 @@ entity T_PRECALIFICACION_DEMANDA {
     fecha
     hora
     descripcion
+    estado_demanda = (
+        URGENTE,
+        NO_URGENTE,
+        COMPLETAR
+    )
     --
-    FOREIGN_KEY(T_ESTADO_DEMANDA)
+    FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True)
 }
 
 entity T_LOCALIZACION {
@@ -108,9 +115,14 @@ entity T_PERSONA {
     --
 }
 
-entity T_DEMANDA_PERSONA_CONVIVIENTE {
+entity T_DEMANDA_PERSONA {
     + PRIMARY_KEY(id)
     --
+    conviviente = bool
+    autordv = bool
+    autordv_principal = bool
+    nnya = bool
+    nnya_principal = bool
     --
     FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_PERSONA)
@@ -125,20 +137,6 @@ entity T_VINCULO_PERSONA {
     FOREIGN_KEY(T_PERSONA)
     FOREIGN_KEY(T_PERSONA)
     --
-}
-
-entity T_DEMANDA_AUTORDV {
-    + PRIMARY_KEY(id)
-    --
-    convive = bool
-    principal
-    --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_PERSONA)
-    --
-    TriggerOnInsert(
-        unique(T_DEMANDA, principal=true),
-    )
 }
 
 entity T_USUARIO_LINEA {
@@ -176,28 +174,23 @@ entity T_RESPONSABLE {
 entity T_VULNERACION {
     + PRIMARY_KEY(id)
     --
-    motivo
-    principal = bool
+    principal_demanda = bool
+    actualidad = bool
+    sumatoria_de_pesos = int    -- sumatoria de pesos de las categorias
     --
     FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_NNyA)
-    FOREIGN_KEY(T_DDV)
-    FOREIGN_KEY(T_PRIORIDAD_INTERVENCION)
-    FOREIGN_KEY(T_PROBLEMATICA_IDENTIFICADA)
-    FOREIGN_KEY(T_AMBITO_VULNERACION)
-    FOREIGN_KEY(T_OPERADOR)
+    NNyA = FOREIGN_KEY(T_PERSONA nnya=true nullable=false blank=false)
+    AutorDV = FOREIGN_KEY(T_PERSONA autordv=true nullable=true blank=true)
+    FOREIGN_KEY(T_CATEGORIA_MOTIVO)
+    FOREIGN_KEY(T_CATEGORIA_SUBMOTIVO)
+    FOREIGN_KEY(T_GRAVEDAD_VULNERACION)
+    FOREIGN_KEY(T_URGENCIA_VULNERACION)
     --
     TriggerOnInsert(
         unique(T_DEMANDA, principal=true),
+        T_DEMANDA.score_vulneracion += sumatoria_de_pesos
+        T_DEMANDA.score += sumatoria_de_pesos
     )
-}
-
-entity T_OPERADOR {
-    + PRIMARY_KEY(id)
-    --
-    nombre
-    apellido
-    --
 }
 
 entity T_ACTIVIDAD {
@@ -207,7 +200,6 @@ entity T_ACTIVIDAD {
     hora
     descripcion
     --
-    FOREIGN_KEY(archivos_adjuntos)
     FOREIGN_KEY(T_DEMANDA)
     FOREIGN_KEY(T_ACTIVIDAD_TIPO)
     FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD)
@@ -240,103 +232,26 @@ entity T_DEMANDA_VINCULADA {
     --
 }
 
-entity T_EVALUACION {
+entity T_DECISION {
     + PRIMARY_KEY(id)
     --
     fecha
     hora
-    comentarios
+    justificacion = text
     decision = (
         APERTURA DE LEGAJO,
         RECHAZAR CASO
     )
     --
-    FOREIGN_KEY(archivos_adjuntos)
     FOREIGN_KEY(T_DEMANDA)
     --
-}
-
-entity T_VALIDACION_DATOS {
-    + PRIMARY_KEY(id)
-    --
-    dropdown = (
-        "La informacion es veridica ?",
-        "La informacion es fue corroborada ?"
-    )
-    bool
-    comentarios
-    --
-    FOREIGN_KEY(T_EVALUACION)
-    --
     TriggerOnInsert(
-        unique(T_EVALUACION, dropdown_value),
-    )
-}
-
-entity T_ACTIVIDADES_REGISTRADAS {
-    + PRIMARY_KEY(id)
-    --
-    dropdown = (
-        "La informacion es veridica ?",
-        "La informacion es fue corroborada ?"
-    )
-    bool
-    comentarios
-    --
-    FOREIGN_KEY(T_EVALUACION)
-    --
-    TriggerOnInsert(
-        unique(T_EVALUACION, dropdown_value),
-    )
-}
-
-entity T_VALORACIONES {
-    + PRIMARY_KEY(id)
-    --
-    dropdown_desc = (
-        "Gravedad de la situacion",
-        "Urgencia de la situacion"
-    )
-    dropdown_options = (
-        "Baja",
-        "Media",
-        "Alta"
-    )
-    comentarios
-    --
-    FOREIGN_KEY(T_EVALUACION)
-    --
-    TriggerOnInsert(
-        unique(T_EVALUACION, dropdown_desc_value),
-    )
-}
-
-entity T_ACCIONES_NECESARIAS {
-    + PRIMARY_KEY(id)
-    --
-    dropdown = (
-        "Apertura de legajo",
-        "Acciones MPI / MPE",
-        "Archivar el caso",
-        "Rechazar el caso",
-    )
-    bool
-    comentarios
-    --
-    FOREIGN_KEY(T_EVALUACION)
-    --
-    TriggerOnInsert(
-        unique(T_EVALUACION, dropdown_desc_value),
         CreationOfLegajo(
-            dropdown = "Apertura de legajo"
+            dropdown = "Apertura de legajo" || T_DEMANDA.score > 10 || T_DEMANDA.score_vulneracion > 10 || T_DEMANDA.score_evaluacion > 10
             bool = true
         )
         CreationOfMPI_MPE(
-            dropdown = "Apertura de legajo"
-            bool = true
-        )
-        ArchivarCaso(
-            dropdown = "Archivar el caso"
+            dropdown = "Apertura de legajo"  || T_DEMANDA.score > 10 || T_DEMANDA.score_vulneracion > 10 || T_DEMANDA.score_evaluacion > 10
             bool = true
         )
         RechazarCaso(
@@ -344,6 +259,30 @@ entity T_ACCIONES_NECESARIAS {
             bool = true
         )
     )
+}
+
+entity T_INDICADORES_VALORACION {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    descripcion
+    peso = int
+    --
+    --
+}
+
+entity T_EVALUACIONES {
+    + PRIMARY_KEY(id)
+    --
+    si_no = bool
+    --
+    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_INDICADORES_VALORACION)
+    --
+    TriggerOnInsert(
+        T_DEMANDA.score += T_INDICADORES_VALORACION.peso
+        T_DEMANDA.score_evaluacion += T_INDICADORES_VALORACION.peso
+        )
 }
 
 entity T_LEGAJO {
@@ -397,38 +336,45 @@ entity T_CARGO {
     --
 }
 
-entity T_DDV {
+entity T_CATEGORIA_MOTIVO {
     + PRIMARY_KEY(id)
     --
     nombre
+    peso = int
     --
     --
 }
 
-entity T_ESTADO_DEMANDA {
+entity T_CATEGORIA_SUBMOTIVO {
     + PRIMARY_KEY(id)
     --
     nombre
+    peso = int
+    --
+    FOREIGN_KEY(T_CATEGORIA_MOTIVO)
     --
 }
 
-entity T_AMBITO_VULNERACION {
+entity T_URGENCIA_VULNERACION {
     + PRIMARY_KEY(id)
     --
     nombre
+    peso = int
     --
 }
 
-entity T_PROBLEMATICA_IDENTIFICADA {
+entity T_GRAVEDAD_VULNERACION {
     + PRIMARY_KEY(id)
     --
     nombre
+    peso = int
     --
 }
 
 entity T_PRIORIDAD_INTERVENCION {
     + PRIMARY_KEY(id)
     --
+    peso = int
     nombre
     --
 }
@@ -491,19 +437,6 @@ entity T_INSTITUCION_SANITARIA {
     --
 }
 
-entity T_DEMANDA_NNyA {
-    + PRIMARY_KEY(id)
-    --
-    principal = bool
-    --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_NNyA)
-    --
-    TriggerOnInsert(
-        unique(T_DEMANDA, principal=true),
-    )
-}
-
 entity T_ACTIVIDAD_TIPO {
     + PRIMARY_KEY(id)
     --
@@ -514,15 +447,11 @@ entity T_ACTIVIDAD_TIPO {
 T_DEMANDA_ASIGNADO "*" - "1" T_USER
 T_DEMANDA "1" - "*" T_DEMANDA_ASIGNADO
 T_DEMANDA "1" -- "1" T_PRECALIFICACION_DEMANDA
-T_PRECALIFICACION_DEMANDA "*" -- "1" T_ESTADO_DEMANDA
 
 T_DEMANDA "*" -- "1" T_LOCALIZACION
 T_LOCALIZACION "*" -- "1" T_BARRIO
 T_LOCALIZACION "*" -- "1" T_LOCALIDAD
 T_LOCALIZACION "*" -- "1" T_PROVINCIA
-
-T_DEMANDA_NNyA "*" - "1" T_DEMANDA
-T_NNyA "1" - "*" T_DEMANDA_NNyA
 
 T_NNyA "1" -- "1" T_NNyA_EDUCACION
 T_NNyA_EDUCACION "*" -- "1" T_INSTITUCION_EDUCATIVA
@@ -530,15 +459,12 @@ T_NNyA "*" -- "1" T_INSTITUCION_SANITARIA
 
 T_NNyA "1" - "1" T_PERSONA
 
-T_DEMANDA_PERSONA_CONVIVIENTE "*" -- "1" T_DEMANDA
-T_PERSONA "1" -- "*" T_DEMANDA_PERSONA_CONVIVIENTE
+T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
+T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
 
 T_VINCULO_PERSONA "*" - "1" T_PERSONA
 T_VINCULO_PERSONA "*" - "1" T_PERSONA
 T_VINCULO "1" --- "*" T_VINCULO_PERSONA
-
-T_DEMANDA_AUTORDV "*" -- "1" T_DEMANDA
-T_PERSONA "1" -- "*" T_DEMANDA_AUTORDV
 
 T_DEMANDA "*" -- "1" T_USUARIO_LINEA
 T_USUARIO_LINEA "*" -- "1" T_VINCULO_USUARIO_LINEA
@@ -549,14 +475,16 @@ T_USUARIO_LINEA "*" -- "1" T_RESPONSABLE
 T_RESPONSABLE "*" -- "1" T_CARGO
 
 T_DEMANDA "1" --- "*" T_VULNERACION
-T_DDV "1" -- "*" T_VULNERACION
+T_CATEGORIA_MOTIVO "1" -- "*" T_CATEGORIA_SUBMOTIVO
+T_CATEGORIA_MOTIVO "1" -- "*" T_VULNERACION
+T_CATEGORIA_SUBMOTIVO "1" -- "*" T_VULNERACION
 
 T_VULNERACION "*" -- "1" T_PRIORIDAD_INTERVENCION
-T_VULNERACION "*" -- "1" T_PROBLEMATICA_IDENTIFICADA
-T_VULNERACION "*" -- "1" T_AMBITO_VULNERACION
+T_VULNERACION "*" -- "1" T_GRAVEDAD_VULNERACION
+T_VULNERACION "*" -- "1" T_URGENCIA_VULNERACION
 
-T_VULNERACION "*" -- "1" T_OPERADOR
-T_NNyA "1" -- "*" T_VULNERACION
+T_PERSONA "1" -- "*" T_VULNERACION
+T_PERSONA "1" -- "*" T_VULNERACION
 
 T_ACTIVIDAD "*" ---- "1" T_DEMANDA
 T_ACTIVIDAD "*" - "1" T_ACTIVIDAD_TIPO
@@ -568,11 +496,9 @@ T_RESPUESTA "*" - "1" T_INSTITUCION_RESPUESTA
 T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
 T_DEMANDA_VINCULADA "*" - "1" T_DEMANDA
 
-T_EVALUACION "*" --- "1" T_DEMANDA
-T_EVALUACION "1" -- "*" T_VALIDACION_DATOS
-T_EVALUACION "1" -- "*" T_ACTIVIDADES_REGISTRADAS
-T_EVALUACION "1" -- "*" T_VALORACIONES
-T_EVALUACION "1" -- "*" T_ACCIONES_NECESARIAS
+T_DECISION "*" --- "1" T_DEMANDA
+T_DEMANDA "1" -- "*" T_EVALUACIONES
+T_EVALUACIONES "*" -- "1" T_INDICADORES_VALORACION
 
 T_LEGAJO "1" - "1" T_NNyA
 
