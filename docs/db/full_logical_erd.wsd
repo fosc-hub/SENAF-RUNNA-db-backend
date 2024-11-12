@@ -76,9 +76,7 @@ entity T_NNyA {
     --
     --
     FOREIGN_KEY(T_NNyA_EDUCACION)
-    FOREIGN_KEY(T_LEGAJO nullable=true)
     FOREIGN_KEY(T_INSTITUCION_SANITARIA)
-    FOREIGN_KEY(T_VULNERACION_principal nullable=true)
     FOREIGN_KEY(T_PERSONA)
     --
     ValidarAdultoFalse(
@@ -96,7 +94,6 @@ entity T_NNyA_EDUCACION {
     comentarios
     --
     FOREIGN_KEY(T_INSTITUCION_EDUCATIVA)
-    FOREIGN_KEY(T_NNyA)
     --
 }
 
@@ -114,7 +111,7 @@ entity T_PERSONA {
 }
 
 entity T_DEMANDA_PERSONA {
-    + PRIMARY_KEY(id)
+    + COMPOSITE_KEY(T_DEMANDA, T_PERSONA)
     --
     conviviente = bool
     autordv = bool
@@ -128,7 +125,7 @@ entity T_DEMANDA_PERSONA {
 }
 
 entity T_VINCULO_PERSONA {
-    + PRIMARY_KEY(id)
+    + COMPOSITE_KEY(T_PERSONA, T_PERSONA)
     --
     --
     FOREIGN_KEY(T_VINCULO)
@@ -293,7 +290,7 @@ entity T_LEGAJO {
 }
 
 entity T_LEGAJO_ASIGNADO {
-    + PRIMARY_KEY(id)
+    + COMPOSITE_KEY(T_USER, T_LEGAJO)
     --
     esta_activo = bool 'sigue en curso la verificacion / archivar=false
     recibido = bool ' casilla mail = leido/no leido
@@ -366,14 +363,6 @@ entity T_GRAVEDAD_VULNERACION {
     --
     nombre
     peso = int
-    --
-}
-
-entity T_PRIORIDAD_INTERVENCION {
-    + PRIMARY_KEY(id)
-    --
-    peso = int
-    nombre
     --
 }
 
@@ -477,7 +466,6 @@ T_CATEGORIA_MOTIVO "1" -- "*" T_CATEGORIA_SUBMOTIVO
 T_CATEGORIA_MOTIVO "1" -- "*" T_VULNERACION
 T_CATEGORIA_SUBMOTIVO "1" -- "*" T_VULNERACION
 
-T_VULNERACION "*" -- "1" T_PRIORIDAD_INTERVENCION
 T_VULNERACION "*" -- "1" T_GRAVEDAD_VULNERACION
 T_VULNERACION "*" -- "1" T_URGENCIA_VULNERACION
 
