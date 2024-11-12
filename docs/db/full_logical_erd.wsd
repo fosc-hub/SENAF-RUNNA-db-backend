@@ -1,19 +1,17 @@
 "@startuml full_logical_erd"
 
-' !define ENTITY
 !define PRIMARY_KEY(x) <b><color:blue>x</color></b>
 !define FOREIGN_KEY(x) <color:green>x</color>
-
-hide circle
-left to right direction
+!define COMPOSITE_KEY(x, y) <color:LightSalmon>x, y</color>
 
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
     fecha_ingreso
     hora_ingreso
-    id_notifacion_manual
-    notificacion_nro
+    n_notificacion_102
+    n_sac
+    n_suac
     descripcion
     ultima_actualizacion
     score = int
@@ -26,7 +24,7 @@ entity T_DEMANDA {
 }
 
 entity T_DEMANDA_ASIGNADO {
-    + PRIMARY_KEY(id)
+    + COMPOSITE_KEY(T_USER, T_DEMANDA)
     --
     esta_activo = bool 'sigue en curso la verificacion / archivar=false
     recibido = bool ' casilla mail = leido/no leido
