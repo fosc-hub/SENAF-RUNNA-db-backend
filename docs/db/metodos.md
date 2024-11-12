@@ -21,3 +21,4 @@
 - Validar que el nnya de la vulneración tenga relación con la demanda así como también el autordv con la demanda
 - Validar que T_MOTIVO_VULNERACION_DDV seleccionado pertenezca al mismo T_DDV seleccionado (es decir ingresado)
 - Validar que la evaluación sea realizable solo si los *indicadores de valoración de Amenaza/Vulneración de Derechos respecto la demanda* seleccionada fueron respondidos
+- Validar que haya un único motivo de intervención principal por demanda

@@ -48,7 +48,10 @@
         "TDecision",
 
         "TVinculo",
-        "TVinculoPersona"
+        "TVinculoPersona",
+
+        "TMotivoIntervencion",
+        "TDemandaMotivoIntervencion"
 
     ]
 }

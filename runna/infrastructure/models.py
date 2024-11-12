@@ -81,6 +81,8 @@ class TPrecalificacionDemanda(models.Model):
     estado_demanda = models.CharField(max_length=20, choices=estado_demanda_choices)
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 
+    history = HistoricalRecords()
+
 class TPersona(models.Model):
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
@@ -99,6 +101,8 @@ class TDemandaPersona(models.Model):
     autordv_principal = models.BooleanField()
     nnya = models.BooleanField()
     nnya_principal = models.BooleanField()
+
+    history = HistoricalRecords()
 
 class TNNyA(models.Model):
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
@@ -301,5 +305,15 @@ class TInstitucionActividad(models.Model):
 
 class TInstitucionRespuesta(models.Model):
     nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+class TMotivoIntervencion(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TDemandaMotivoIntervencion(models.Model):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    motivo_intervencion = models.ForeignKey('TMotivoIntervencion', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
