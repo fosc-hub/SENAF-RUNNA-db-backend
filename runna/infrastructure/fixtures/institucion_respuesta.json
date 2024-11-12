@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.institucionrespuesta",
-        "pk": 1,
-        "fields": {
-            "nombre": "Defensoría del Pueblo"
-        }
-    }
-]

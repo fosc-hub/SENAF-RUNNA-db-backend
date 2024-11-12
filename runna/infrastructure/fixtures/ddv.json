@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.ddv",
-        "pk": 1,
-        "fields": {
-            "nombre": "DDV 1"
-        }
-    }
-]

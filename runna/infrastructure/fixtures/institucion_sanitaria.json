@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.institucionsanitaria",
-        "pk": 1,
-        "fields": {
-            "nombre": "Hospital Central"
-        }
-    }
-]

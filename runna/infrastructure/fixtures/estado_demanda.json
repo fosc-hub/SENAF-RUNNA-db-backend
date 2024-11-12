@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.estadodemanda",
-        "pk": 1,
-        "fields": {
-            "nombre": "En Proceso"
-        }
-    }
-]

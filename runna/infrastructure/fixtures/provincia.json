@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.provincia",
-        "pk": 1,
-        "fields": {
-            "nombre": "Buenos Aires"
-        }
-    }
-]

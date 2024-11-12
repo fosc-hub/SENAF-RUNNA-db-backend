@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.problematicaidentificada",
-        "pk": 1,
-        "fields": {
-            "nombre": "Falta de acceso a servicios"
-        }
-    }
-]

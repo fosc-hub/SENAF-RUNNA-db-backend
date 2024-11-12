@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.vinculo",
-        "pk": 1,
-        "fields": {
-            "nombre": "Padre-Hijo"
-        }
-    }
-]

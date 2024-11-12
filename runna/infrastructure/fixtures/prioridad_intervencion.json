@@ -1,9 +1,0 @@
-[
-    {
-        "model": "infrastructure.prioridadintervencion",
-        "pk": 1,
-        "fields": {
-            "nombre": "Alta"
-        }
-    }
-]
