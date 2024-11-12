@@ -1,0 +1,54 @@
+{
+    "models": [
+        "CustomUser",
+
+        "TProvincia",
+        "TLocalidad",
+        "TBarrio",
+        "TLocalizacion",
+
+        "TVinculoUsuarioLinea",
+        "TInstitucionUsuarioLinea",
+        "TCargo",
+        "TResponsable",
+        "TUsuarioLinea",
+
+        "TDemanda",
+        "TPrecalificacionDemanda",
+        "TPersona",
+        "TDemandaPersona",
+
+        "TInstitucionEducativa",
+        "TNNyAEducacion",
+        "TInstitucionSanitaria",
+        "TNNyA",
+
+        "TCategoriaMotivo",
+        "TCategoriaSubmotivo",
+        "TGravedadVulneracion",
+        "TUrgenciaVulneracion",
+        "TVulneracion",
+
+        "TInstitucionRespuesta",
+        "TRespuesta",
+
+        "TDemandaAsignado",
+
+        "TActividadTipo",
+        "TInstitucionActividad",
+        "TActividad",
+
+        "TDemandaVinculada",
+
+        "TLegajo",
+        "TLegajoAsignado",
+
+        "TIndicadoresValoracion",
+        "TEvaluaciones",
+        "TDecision",
+
+        "TVinculo",
+        "TVinculoPersona"
+
+    ]
+}

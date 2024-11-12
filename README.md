@@ -1032,64 +1032,75 @@ This approach gives you the **best of both worlds**:
 
 Let me know if you encounter any issues or need further customization! 🚀
 
+You can create a custom Django management command to automate the process of running `makemigrations`, `migrate`, and creating a superuser. Below is a step-by-step guide to implementing this:
 
-python manage.py loaddata infrastructure/fixtures/actividad_tipo.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_sanitaria.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/ambito_vulneracion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/ddv.json --app infrastructure
+### Step 1: Create the Command Structure
+In your Django app, create the following folder structure if it doesn't exist:
 
+```
+myapp/
+    management/
+        commands/
+            __init__.py
+            setup_project.py
+```
 
-python manage.py loaddata infrastructure/fixtures/acciones_necesarias.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/actividad.json --app infrastructure
+### Step 2: Implement the Command Logic
+In `setup_project.py`, implement the command:
 
-python manage.py loaddata infrastructure/fixtures/actividades_registradas.json --app infrastructure
+```python
+from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
+from django.contrib.auth.models import User
 
+class Command(BaseCommand):
+    help = 'Sets up the project by making migrations, migrating, and creating a superuser'
 
-python manage.py loaddata infrastructure/fixtures/cargo.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_usuario_linea.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/responsable.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/vinculo_usuario_linea.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/usuario_linea.json --app infrastructure
+    def handle(self, *args, **kwargs):
+        try:
+            # Step 1: Make migrations
+            self.stdout.write('Making migrations...')
+            call_command('makemigrations')
+            self.stdout.write(self.style.SUCCESS('Migrations created successfully.'))
 
-python manage.py loaddata infrastructure/fixtures/provincia.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/localidad.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/barrio.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/localizacion.json --app infrastructure
+            # Step 2: Apply migrations
+            self.stdout.write('Applying migrations...')
+            call_command('migrate')
+            self.stdout.write(self.style.SUCCESS('Migrations applied successfully.'))
 
-python manage.py loaddata infrastructure/fixtures/estado_demanda.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/precalificacion_demanda.json --app infrastructure
+            # Step 3: Create superuser
+            if not User.objects.filter(username='admin').exists():
+                self.stdout.write('Creating superuser...')
+                User.objects.create_superuser(
+                    username='admin',
+                    email='admin@gmail.com',
+                    password='pepe1234'
+                )
+                self.stdout.write(self.style.SUCCESS('Superuser created successfully.'))
+            else:
+                self.stdout.write(self.style.WARNING('Superuser already exists.'))
 
-python manage.py loaddata infrastructure/fixtures/demanda.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/demanda_asignado.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/demanda_autordv.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/demanda_nnya.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/demanda_persona_conviviente.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/demanda_vinculada.json --app infrastructure
+        except CommandError as e:
+            raise CommandError(f"Error: {e}")
+```
 
-python manage.py loaddata infrastructure/fixtures/legajo.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/legajo_asignado.json --app infrastructure
+### Step 3: Run the Custom Command
+Once the command is implemented, run it like this:
 
-python manage.py loaddata infrastructure/fixtures/nnya_educacion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/nnya.json --app infrastructure
+```bash
+python manage.py setup_project
+```
 
-python manage.py loaddata infrastructure/fixtures/evaluacion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_actividad.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_educativa.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/institucion_respuesta.json --app infrastructure
+### What This Command Does:
+1. **`makemigrations`**: Generates new migrations based on the changes in your models.
+2. **`migrate`**: Applies the migrations to the database.
+3. **Creates a superuser**:
+   - Username: `admin`
+   - Email: `admin@gmail.com`
+   - Password: `pepe1234`
 
+### Notes:
+- **Idempotence**: The command checks if the superuser already exists before creating it, ensuring it doesn't fail if run multiple times.
+- **Customizable**: You can easily modify the username, email, or password directly in the command or via arguments if needed.
 
-
-python manage.py loaddata infrastructure/fixtures/persona.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/operador.json --app infrastructure
-
-python manage.py loaddata infrastructure/fixtures/prioridad_intervencion.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/problematica_identificada.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/validacion_datos.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/valoraciones.json --app infrastructure
-
-python manage.py loaddata infrastructure/fixtures/respuesta.json --app infrastructure
-
-python manage.py loaddata infrastructure/fixtures/vinculo_persona.json --app infrastructure
-python manage.py loaddata infrastructure/fixtures/vinculo.json --app infrastructure
-
-python manage.py loaddata infrastructure/fixtures/vulneracion.json --app infrastructure
+This provides an efficient way to set up your project environment quickly.
