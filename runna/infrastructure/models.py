@@ -9,371 +9,297 @@ class CustomUser(AbstractUser):
     sexo = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
     telefono = models.CharField(max_length=20, blank=True)
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return f"{self.username} ({self.email})"
 
-# Region and Location Models
-class Provincia(models.Model):
-    nombre = models.CharField(max_length=100)
-    
-    history = HistoricalRecords()
-
-class Localidad(models.Model):
-    nombre = models.CharField(max_length=100)
-    provincia = models.ForeignKey('Provincia', on_delete=models.CASCADE)
+class TProvincia(models.Model):
+    nombre = models.CharField(max_length=255)
 
     history = HistoricalRecords()
 
-class Barrio(models.Model):
-    nombre = models.CharField(max_length=100)
-    localidad = models.ForeignKey('Localidad', on_delete=models.CASCADE)
+class TLocalidad(models.Model):
+    nombre = models.CharField(max_length=255)
+    provincia = models.ForeignKey('TProvincia', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
 
-# CustomUser and Institution Models
-class Cargo(models.Model):
-    nombre = models.CharField(max_length=100)
+class TBarrio(models.Model):
+    nombre = models.CharField(max_length=255)
+    localidad = models.ForeignKey('TLocalidad', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
 
-class InstitucionUsuarioLinea(models.Model):
-    nombre = models.CharField(max_length=100)
-    contacto = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class VinculoUsuarioLinea(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class Responsable(models.Model):
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    cargo = models.ForeignKey('Cargo', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class UsuarioLinea(models.Model):
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
-    sexo = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
-    telefono = models.CharField(max_length=20)
-    vinculo = models.ForeignKey('VinculoUsuarioLinea', on_delete=models.CASCADE)
-    institucion = models.ForeignKey('InstitucionUsuarioLinea', on_delete=models.CASCADE)
-    responsable = models.ForeignKey('Responsable', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-# Location Model
-class Localizacion(models.Model):
-    calle = models.CharField(max_length=100)
-    numero = models.CharField(max_length=10)
+class TLocalizacion(models.Model):
+    calle = models.CharField(max_length=255)
+    numero = models.IntegerField(null=True, blank=True)
     referencia_geo = models.TextField()
-    barrio = models.ForeignKey('Barrio', on_delete=models.CASCADE)
+    barrio = models.ForeignKey('TBarrio', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
 
-# Demand-Related Models
-class EstadoDemanda(models.Model):
-    nombre = models.CharField(max_length=100)
+class TUsuarioLinea(models.Model):
+    nombre = models.CharField(max_length=255)
+    apellido = models.CharField(max_length=255)
+    fecha_nacimiento = models.DateField()
+    sexo = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
+    telefono = models.CharField(max_length=15)
+    
+    vinculo = models.ForeignKey('TVinculoUsuarioLinea', related_name='vinculo', on_delete=models.SET_NULL, null=True, blank=True)
+    institucion = models.ForeignKey('TInstitucionUsuarioLinea', related_name='institucion', on_delete=models.SET_NULL, null=True, blank=True)
+    responsable = models.ForeignKey('TResponsable', related_name='responsable', on_delete=models.SET_NULL, null=True, blank=True)
+    
 
     history = HistoricalRecords()
 
-class PreCalificacionDemanda(models.Model):
+class TDemanda(models.Model):
+    fecha_ingreso = models.DateField()
+    hora_ingreso = models.TimeField()
+    n_notificacion_102 = models.IntegerField(null=True, blank=True)
+    n_sac = models.IntegerField(null=True, blank=True)
+    n_suac = models.IntegerField(null=True, blank=True)
+    descripcion = models.TextField()
+    ultima_actualizacion = models.DateTimeField(auto_now=True)
+    score = models.IntegerField()
+    score_vulneracion = models.IntegerField()
+    score_evaluacion = models.IntegerField()
+    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.CASCADE)
+    usuario_linea = models.ForeignKey('TUsuarioLinea', on_delete=models.CASCADE)
+
+    history = HistoricalRecords()
+
+class TPrecalificacionDemanda(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     descripcion = models.TextField()
-    estado = models.ForeignKey('EstadoDemanda', on_delete=models.CASCADE)
+    estado_demanda_choices = [
+        ('URGENTE', 'Urgente'),
+        ('NO_URGENTE', 'No Urgente'),
+        ('COMPLETAR', 'Completar')
+    ]
+    estado_demanda = models.CharField(max_length=20, choices=estado_demanda_choices)
+    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
+
+class TPersona(models.Model):
+    nombre = models.CharField(max_length=255)
+    apellido = models.CharField(max_length=255)
+    fecha_nacimiento = models.DateField()
+    sexo = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
+    observaciones = models.TextField(blank=True, null=True)
+    adulto = models.BooleanField()
 
     history = HistoricalRecords()
 
-class Demanda(models.Model):
-    fecha_ingreso = models.DateField()
-    hora_ingreso = models.TimeField()
-    id_notificacion_manual = models.CharField(max_length=100, null=True, blank=True)
-    notificacion_nro = models.CharField(max_length=100, null=True, blank=True)
-    descripcion = models.TextField()
-    ultima_actualizacion = models.DateTimeField(auto_now=True)
-    precalificacion = models.OneToOneField(
-        'PreCalificacionDemanda', on_delete=models.SET_NULL, null=True, blank=True
+class TDemandaPersona(models.Model):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
+    conviviente = models.BooleanField()
+    autordv = models.BooleanField()
+    autordv_principal = models.BooleanField()
+    nnya = models.BooleanField()
+    nnya_principal = models.BooleanField()
+
+class TNNyA(models.Model):
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
+    educacion = models.OneToOneField('TNNyAEducacion', on_delete=models.SET_NULL, null=True, blank=True)
+    
+    institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.SET_NULL, null=True, blank=True)
+
+    history = HistoricalRecords()
+
+class TNNyAEducacion(models.Model):
+    curso = models.CharField(max_length=255)
+    nivel = models.CharField(max_length=255)
+    turno = models.CharField(max_length=255)
+    comentarios = models.TextField()
+    institucion_educativa = models.ForeignKey('TInstitucionEducativa', on_delete=models.SET_NULL, null=True, blank=True)
+
+    history = HistoricalRecords()
+
+class TInstitucionEducativa(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TInstitucionSanitaria(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TVulneracion(models.Model):
+    vulneracion_principal_demanda = models.BooleanField(default=False)
+    sumatoria_pesos = models.IntegerField(default=0)
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    persona_nnya = models.ForeignKey(
+        'TPersona',
+        on_delete=models.CASCADE,
+        related_name='vulneracion_nnya'
     )
-    localizacion = models.ForeignKey('Localizacion', on_delete=models.CASCADE)
-    usuario_linea = models.ForeignKey('UsuarioLinea', on_delete=models.CASCADE)
+    persona_autordv = models.ForeignKey(
+        'TPersona',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='vulneracion_autordv'
+    )
+    categoria_motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.SET_NULL, null=True, blank=True)
+    categoria_submotivo = models.ForeignKey('TCategoriaSubmotivo', on_delete=models.SET_NULL, null=True, blank=True)
+    gravedad = models.ForeignKey('TGravedadVulneracion', on_delete=models.SET_NULL, null=True, blank=True)
+    urgencia = models.ForeignKey('TUrgenciaVulneracion', on_delete=models.SET_NULL, null=True, blank=True)
 
     history = HistoricalRecords()
 
-class DemandaAsignado(models.Model):
+class TGravedadVulneracion(models.Model):
+    nombre = models.CharField(max_length=255)
+    peso = models.IntegerField()
+
+    history = HistoricalRecords()
+
+class TUrgenciaVulneracion(models.Model):
+    nombre = models.CharField(max_length=255)
+    peso = models.IntegerField()
+
+    history = HistoricalRecords()
+
+class TDecision(models.Model):
+    fecha = models.DateField()
+    hora = models.TimeField()
+    decision = models.CharField(max_length=255, choices=[('APERTURA', 'Apertura de legajo'), ('RECHAZO', 'Rechazar caso')])
+    justificacion = models.TextField()
+    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
+
+    history = HistoricalRecords()
+
+# Add other entities based on the schema...
+
+class TInstitucionUsuarioLinea(models.Model):
+    nombre = models.CharField(max_length=255)
+    contacto = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TVinculoUsuarioLinea(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TCargo(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TResponsable(models.Model):
+    nombre = models.CharField(max_length=255)
+    apellido = models.CharField(max_length=255)
+    cargo = models.ForeignKey('TCargo', on_delete=models.SET_NULL, null=True, blank=True)
+
+    history = HistoricalRecords()
+
+class TDemandaAsignado(models.Model):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
     comentarios = models.TextField(null=True, blank=True)
-    demanda = models.ForeignKey(Demanda, on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
 
-# Vulneracion and Related Models
-class PrioridadIntervencion(models.Model):
-    nombre = models.CharField(max_length=100)
+class TActividadTipo(models.Model):
+    nombre = models.CharField(max_length=255)
 
     history = HistoricalRecords()
 
-class ProblematicaIdentificada(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class AmbitoVulneracion(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class DDV(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class Operador(models.Model):
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class Vulneracion(models.Model):
-    motivo = models.TextField()
-    principal = models.BooleanField()
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    nnya = models.ForeignKey('NNyA', on_delete=models.CASCADE)
-    operador = models.ForeignKey('Operador', on_delete=models.CASCADE)
-    prioridad_intervencion = models.ForeignKey('PrioridadIntervencion', on_delete=models.CASCADE)
-    problematica_identificada = models.ForeignKey('ProblematicaIdentificada', on_delete=models.CASCADE)
-    ambito_vulneracion = models.ForeignKey('AmbitoVulneracion', on_delete=models.CASCADE)
-    ddv = models.ForeignKey('DDV', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class DemandaVinculada(models.Model):
-    demanda = models.ForeignKey(Demanda, related_name='vinculadas', on_delete=models.CASCADE)
-    vinculacion = models.ForeignKey(Demanda, related_name='demandas', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class InstitucionSanitaria(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class NNyA(models.Model):
-    persona = models.OneToOneField('Persona', on_delete=models.CASCADE)
-    educacion = models.OneToOneField(
-        'NNyAEducacion', on_delete=models.SET_NULL, null=True, blank=True
-    )
-    institucion_sanitaria = models.ForeignKey('InstitucionSanitaria', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class Persona(models.Model):
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
-    sexo = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
-    observaciones = models.TextField(blank=True)
-    adulto = models.BooleanField(default=False)
-
-    history = HistoricalRecords()
-
-class InstitucionEducativa(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class NNyAEducacion(models.Model):
-    curso = models.CharField(max_length=50)
-    nivel = models.CharField(max_length=50)
-    turno = models.CharField(max_length=50)
-    comentarios = models.TextField(blank=True)
-    institucion_educativa = models.ForeignKey('InstitucionEducativa', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class DemandaPersonaConviviente(models.Model):
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class Vinculo(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class VinculoPersona(models.Model):
-    persona1 = models.ForeignKey('Persona', on_delete=models.CASCADE, related_name='persona1')
-    persona2 = models.ForeignKey('Persona', on_delete=models.CASCADE, related_name='persona2')
-    vinculo = models.ForeignKey('Vinculo', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class DemandaAutorDV(models.Model):
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    persona = models.ForeignKey('Persona', on_delete=models.CASCADE)
-    convive = models.BooleanField()
-    principal = models.BooleanField()
-
-    history = HistoricalRecords()
-
-class DemandaNNyA(models.Model):
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    nnya = models.ForeignKey('NNyA', on_delete=models.CASCADE)
-    principal = models.BooleanField()
-
-    history = HistoricalRecords()
-
-class Legajo(models.Model):
-    info_legajo = models.TextField()
-    nnya = models.OneToOneField('NNyA', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
-
-class LegajoAsignado(models.Model):
-    legajo = models.ForeignKey('Legajo', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
-    esta_activo = models.BooleanField(default=True)
-    recibido = models.BooleanField(default=False)
-
-    history = HistoricalRecords()
-
-class ActividadTipo(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class InstitucionActividad(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class Actividad(models.Model):
+class TActividad(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     descripcion = models.TextField()
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    actividad_tipo = models.ForeignKey('ActividadTipo', on_delete=models.CASCADE)
-    institucion_actividad = models.ForeignKey('InstitucionActividad', on_delete=models.CASCADE)
+
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    tipo = models.ForeignKey('TActividadTipo', on_delete=models.SET_NULL, null=True, blank=True)
+    institucion = models.ForeignKey('TInstitucionActividad', on_delete=models.SET_NULL, null=True, blank=True)
 
     history = HistoricalRecords()
 
-class InstitucionRespuesta(models.Model):
-    nombre = models.CharField(max_length=100)
-
-    history = HistoricalRecords()
-
-class Respuesta(models.Model):
+class TRespuesta(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     mail = models.EmailField()
     mensaje = models.TextField()
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
-    institucion_respuesta = models.ForeignKey('InstitucionRespuesta', on_delete=models.CASCADE)
+    
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    institucion = models.ForeignKey('TInstitucionRespuesta', on_delete=models.SET_NULL, null=True, blank=True)
 
     history = HistoricalRecords()
 
-class Evaluacion(models.Model):
-    fecha = models.DateField()
-    hora = models.TimeField()
-    comentarios = models.TextField()
-    decision = models.CharField(max_length=50, choices=[('APERTURA DE LEGAJO', 'Apertura'), ('RECHAZAR CASO', 'Rechazar')])
-    demanda = models.ForeignKey('Demanda', on_delete=models.CASCADE)
+class TDemandaVinculada(models.Model):
+    demanda_1 = models.ForeignKey('TDemanda', related_name='vinculadas_demanda_1', on_delete=models.CASCADE)
+    demanda_2 = models.ForeignKey('TDemanda', related_name='vinculadas_demanda_2', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
 
-class ValidacionDatos(models.Model):
-    dropdown = models.CharField(
-        max_length=100, 
-        choices=[
-            ("La informacion es veridica ?", "Veridica"),
-            ("La informacion es fue corroborada ?", "Corroborada")
-        ]
-    )
-    bool_value = models.BooleanField()
-    comentarios = models.TextField(blank=True)
-    evaluacion = models.ForeignKey('Evaluacion', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('evaluacion', 'dropdown')
+class TLegajoAsignado(models.Model):
+    legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
+    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    esta_activo = models.BooleanField(default=True)
+    recibido = models.BooleanField(default=False)
 
     history = HistoricalRecords()
 
-class ActividadesRegistradas(models.Model):
-    dropdown = models.CharField(
-        max_length=100, 
-        choices=[
-            ("La informacion es veridica ?", "Veridica"),
-            ("La informacion es fue corroborada ?", "Corroborada")
-        ]
-    )
-    bool_value = models.BooleanField()
-    comentarios = models.TextField(blank=True)
-    evaluacion = models.ForeignKey('Evaluacion', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('evaluacion', 'dropdown')
+class TIndicadoresValoracion(models.Model):
+    nombre = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    peso = models.IntegerField()
 
     history = HistoricalRecords()
 
-class Valoraciones(models.Model):
-    dropdown_desc = models.CharField(
-        max_length=100,
-        choices=[
-            ("Gravedad de la situacion", "Gravedad"),
-            ("Urgencia de la situacion", "Urgencia")
-        ]
-    )
-    dropdown_options = models.CharField(
-        max_length=50,
-        choices=[("Baja", "Baja"), ("Media", "Media"), ("Alta", "Alta")]
-    )
-    comentarios = models.TextField(blank=True)
-    evaluacion = models.ForeignKey('Evaluacion', on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('evaluacion', 'dropdown_desc')
+class TEvaluaciones(models.Model):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
+    indicador = models.ForeignKey('TIndicadoresValoracion', on_delete=models.CASCADE)
+    si_no = models.BooleanField()
 
     history = HistoricalRecords()
 
-class AccionesNecesarias(models.Model):
-    dropdown = models.CharField(
-        max_length=100,
-        choices=[
-            ("Apertura de legajo", "Apertura"),
-            ("Acciones MPI / MPE", "MPI/MPE"),
-            ("Archivar el caso", "Archivar"),
-            ("Rechazar el caso", "Rechazar")
-        ]
-    )
-    bool_value = models.BooleanField()
-    comentarios = models.TextField(blank=True)
-    evaluacion = models.ForeignKey('Evaluacion', on_delete=models.CASCADE)
+# Further models from schema...
 
-    class Meta:
-        unique_together = ('evaluacion', 'dropdown')
+
+class TCategoriaMotivo(models.Model):
+    nombre = models.CharField(max_length=255)
+    peso = models.IntegerField()
 
     history = HistoricalRecords()
 
-    # Signals for Custom Logic Based on Dropdown Choice
-    @staticmethod
-    def post_save_handler(sender, instance, **kwargs):
-        if instance.dropdown == "Apertura de legajo" and instance.bool_value:
-            # Custom logic for legajo creation
-            print("Legajo creation triggered")
-        elif instance.dropdown == "Archivar el caso" and instance.bool_value:
-            # Logic for archiving case
-            print("Case archived")
-        elif instance.dropdown == "Rechazar el caso" and instance.bool_value:
-            # Logic for rejecting case
-            print("Case rejected")
+class TCategoriaSubmotivo(models.Model):
+    nombre = models.CharField(max_length=255)
+    peso = models.IntegerField()
+    motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE)
 
-# Connect post_save signal
-from django.db.models.signals import post_save
-post_save.connect(AccionesNecesarias.post_save_handler, sender=AccionesNecesarias)
+    history = HistoricalRecords()
+
+class TLegajo(models.Model):
+    info_legajo = models.TextField()
+    nnya = models.OneToOneField('TNNyA', on_delete=models.CASCADE, null=False, blank=False)
+
+    history = HistoricalRecords()
+
+class TVinculo(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TVinculoPersona(models.Model):
+    vinculo = models.ForeignKey('TVinculo', on_delete=models.SET_NULL, null=True, blank=True)
+    persona_1 = models.ForeignKey('TPersona', related_name='persona_1', on_delete=models.CASCADE)
+    persona_2 = models.ForeignKey('TPersona', related_name='persona_2', on_delete=models.CASCADE)
+
+    history = HistoricalRecords()
+
+class TInstitucionActividad(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
+
+class TInstitucionRespuesta(models.Model):
+    nombre = models.CharField(max_length=255)
+
+    history = HistoricalRecords()
