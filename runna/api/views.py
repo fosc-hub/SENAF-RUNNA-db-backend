@@ -1001,3 +1001,184 @@ class TActividadViewSet(viewsets.ViewSet):
             self.tactividad_repo.create(tactividad)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TDemandaVinculadaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tdemanda_vinculada_use_case = TDemandaVinculadaUseCase()
+        self.tdemanda_vinculada_repo = TDemandaVinculadaRepository()
+
+    @extend_schema(
+        responses=TDemandaVinculadaSerializer(many=True),
+        description="Retrieve a list of all TDemandaVinculada entries."
+    )
+    def list(self, request):
+        """List all TDemandaVinculada."""
+        tdemanda_vinculadas = self.tdemanda_vinculada_repo.get_all()
+        serializer = TDemandaVinculadaSerializer(tdemanda_vinculadas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TDemandaVinculadaSerializer,
+        responses=TDemandaVinculadaSerializer,
+        description="Create a new TDemandaVinculada entry."
+    )
+    def create(self, request):
+        """Create a new TDemandaVinculada."""
+        serializer = TDemandaVinculadaSerializer(data=request.data)
+        if serializer.is_valid():
+            tdemanda_vinculada = self.tdemanda_vinculada_use_case.create_demanda_vinculada(**serializer.validated_data)
+            self.tdemanda_vinculada_repo.create(tdemanda_vinculada)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TLegajoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tlegajo_use_case = TLegajoUseCase()
+        self.tlegajo_repo = TLegajoRepository()
+
+    @extend_schema(
+        responses=TLegajoSerializer(many=True),
+        description="Retrieve a list of all TLegajo entries."
+    )
+    def list(self, request):
+        """List all TLegajo."""
+        tlegajos = self.tlegajo_repo.get_all()
+        serializer = TLegajoSerializer(tlegajos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TLegajoSerializer,
+        responses=TLegajoSerializer,
+        description="Create a new TLegajo entry."
+    )
+    def create(self, request):
+        """Create a new TLegajo."""
+        serializer = TLegajoSerializer(data=request.data)
+        if serializer.is_valid():
+            tlegajo = self.tlegajo_use_case.create_legajo(**serializer.validated_data)
+            self.tlegajo_repo.create(tlegajo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TLegajoAsignadoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tlegajo_asignado_use_case = TLegajoAsignadoUseCase()
+        self.tlegajo_asignado_repo = TLegajoAsignadoRepository()
+
+    @extend_schema(
+        responses=TLegajoAsignadoSerializer(many=True),
+        description="Retrieve a list of all TLegajoAsignado entries."
+    )
+    def list(self, request):
+        """List all TLegajoAsignado."""
+        tlegajo_asignados = self.tlegajo_asignado_repo.get_all()
+        serializer = TLegajoAsignadoSerializer(tlegajo_asignados, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TLegajoAsignadoSerializer,
+        responses=TLegajoAsignadoSerializer,
+        description="Create a new TLegajoAsignado entry."
+    )
+    def create(self, request):
+        """Create a new TLegajoAsignado."""
+        serializer = TLegajoAsignadoSerializer(data=request.data)
+        if serializer.is_valid():
+            tlegajo_asignado = self.tlegajo_asignado_use_case.create_legajo_asignado(**serializer.validated_data)
+            self.tlegajo_asignado_repo.create(tlegajo_asignado)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TIndicadoresValoracionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tindicadores_valoracion_use_case = TIndicadoresValoracionUseCase()
+        self.tindicadores_valoracion_repo = TIndicadoresValoracionRepository()
+
+    @extend_schema(
+        responses=TIndicadoresValoracionSerializer(many=True),
+        description="Retrieve a list of all TIndicadoresValoracion entries."
+    )
+    def list(self, request):
+        """List all TIndicadoresValoracion."""
+        tindicadores_valoraciones = self.tindicadores_valoracion_repo.get_all()
+        serializer = TIndicadoresValoracionSerializer(tindicadores_valoraciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TIndicadoresValoracionSerializer,
+        responses=TIndicadoresValoracionSerializer,
+        description="Create a new TIndicadoresValoracion entry."
+    )
+    def create(self, request):
+        """Create a new TIndicadoresValoracion."""
+        serializer = TIndicadoresValoracionSerializer(data=request.data)
+        if serializer.is_valid():
+            tindicadores_valoracion = self.tindicadores_valoracion_use_case.create_indicadores_valoracion(**serializer.validated_data)
+            self.tindicadores_valoracion_repo.create(tindicadores_valoracion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TEvaluacionesViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tevaluaciones_use_case = TEvaluacionesUseCase()
+        self.tevaluaciones_repo = TEvaluacionesRepository()
+
+    @extend_schema(
+        responses=TEvaluacionesSerializer(many=True),
+        description="Retrieve a list of all TEvaluaciones entries."
+    )
+    def list(self, request):
+        """List all TEvaluaciones."""
+        tevaluaciones = self.tevaluaciones_repo.get_all()
+        serializer = TEvaluacionesSerializer(tevaluaciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TEvaluacionesSerializer,
+        responses=TEvaluacionesSerializer,
+        description="Create a new TEvaluaciones entry."
+    )
+    def create(self, request):
+        """Create a new TEvaluaciones."""
+        serializer = TEvaluacionesSerializer(data=request.data)
+        if serializer.is_valid():
+            tevaluaciones = self.tevaluaciones_use_case.create_evaluaciones(**serializer.validated_data)
+            self.tevaluaciones_repo.create(tevaluaciones)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TDecisionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tdecision_use_case = TDecisionUseCase()
+        self.tdecision_repo = TDecisionRepository()
+
+    @extend_schema(
+        responses=TDecisionSerializer(many=True),
+        description="Retrieve a list of all TDecision entries."
+    )
+    def list(self, request):
+        """List all TDecision."""
+        tdecisions = self.tdecision_repo.get_all()
+        serializer = TDecisionSerializer(tdecisions, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TDecisionSerializer,
+        responses=TDecisionSerializer,
+        description="Create a new TDecision entry."
+    )
+    def create(self, request):
+        """Create a new TDecision."""
+        serializer = TDecisionSerializer(data=request.data)
+        if serializer.is_valid():
+            tdecision = self.tdecision_use_case.create_decision(**serializer.validated_data)
+            self.tdecision_repo.create(tdecision)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

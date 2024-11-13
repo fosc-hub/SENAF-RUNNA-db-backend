@@ -5,6 +5,8 @@ from api.views import (
     , TDemandaViewSet, TPrecalificacionDemandaViewSet, TPersonaViewSet, TDemandaPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet
     , TInstitucionSanitariaViewSet, TNNyAViewSet, TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TVulneracionViewSet
     , TInstitucionRespuestaViewSet, TRespuestaViewSet, TDemandaAsignadoViewSet, TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet
+    , TDemandaVinculadaViewSet, TLegajoViewSet, TLegajoAsignadoViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
+
 )
 
 router = DefaultRouter()
@@ -39,5 +41,11 @@ router.register(r'demanda-asignado', TDemandaAsignadoViewSet, basename='demanda-
 router.register(r'actividades-tipo', TActividadTipoViewSet, basename='actividades-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
 router.register(r'actividades', TActividadViewSet, basename='actividades')
+router.register(r'demanda-vinculada', TDemandaVinculadaViewSet, basename='demanda-vinculada')
+router.register(r'legajo', TLegajoViewSet, basename='legajo')
+router.register(r'legajo-asignado', TLegajoAsignadoViewSet, basename='legajo-asignado')
+router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
+router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')
+router.register(r'decision', TDecisionViewSet, basename='decision')
 
 urlpatterns = router.urls
