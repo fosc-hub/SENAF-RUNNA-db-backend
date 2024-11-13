@@ -252,3 +252,182 @@ class TCPCViewSet(viewsets.ViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class TLocalizacionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tlocalizacion_use_case = TLocalizacionUseCase()
+        self.tlocalizacion_repo = TLocalizacionRepository()
+
+    @extend_schema(
+        responses=TLocalizacionSerializer(many=True),
+        description="Retrieve a list of all TLocalizacion entries."
+    )
+    def list(self, request):
+        """List all TLocalizacion."""
+        tlocalizaciones = self.tlocalizacion_repo.get_all()
+        serializer = TLocalizacionSerializer(tlocalizaciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TLocalizacionSerializer,
+        responses=TLocalizacionSerializer,
+        description="Create a new TLocalizacion entry."
+    )
+    def create(self, request):
+        """Create a new TLocalizacion."""
+        serializer = TLocalizacionSerializer(data=request.data)
+        if serializer.is_valid():
+            tlocalizacion = self.tlocalizacion_use_case.create_localizacion(**serializer.validated_data)
+            self.tlocalizacion_repo.create(tlocalizacion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TVinculoUsuarioLineaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tvinculo_usuario_linea_use_case = TVinculoUsuarioLineaUseCase()
+        self.tvinculo_usuario_linea_repo = TVinculoUsuarioLineaRepository()
+
+    @extend_schema(
+        responses=TVinculoUsuarioLineaSerializer(many=True),
+        description="Retrieve a list of all TVinculoUsuarioLinea entries."
+    )
+    def list(self, request):
+        """List all TVinculoUsuarioLinea."""
+        tvinculo_usuario_lineas = self.tvinculo_usuario_linea_repo.get_all()
+        serializer = TVinculoUsuarioLineaSerializer(tvinculo_usuario_lineas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TVinculoUsuarioLineaSerializer,
+        responses=TVinculoUsuarioLineaSerializer,
+        description="Create a new TVinculoUsuarioLinea entry."
+    )
+    def create(self, request):
+        """Create a new TVinculoUsuarioLinea."""
+        serializer = TVinculoUsuarioLineaSerializer(data=request.data)
+        if serializer.is_valid():
+            tvinculo_usuario_linea = self.tvinculo_usuario_linea_use_case.create_vinculo_usuario_linea(**serializer.validated_data)
+            self.tvinculo_usuario_linea_repo.create(tvinculo_usuario_linea)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TInstitucionUsuarioLineaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tinstitucion_usuario_linea_use_case = TInstitucionUsuarioLineaUseCase()
+        self.tinstitucion_usuario_linea_repo = TInstitucionUsuarioLineaRepository()
+
+    @extend_schema(
+        responses=TInstitucionUsuarioLineaSerializer(many=True),
+        description="Retrieve a list of all TInstitucionUsuarioLinea entries."
+    )
+    def list(self, request):
+        """List all TInstitucionUsuarioLinea."""
+        tinstitucion_usuario_lineas = self.tinstitucion_usuario_linea_repo.get_all()
+        serializer = TInstitucionUsuarioLineaSerializer(tinstitucion_usuario_lineas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TInstitucionUsuarioLineaSerializer,
+        responses=TInstitucionUsuarioLineaSerializer,
+        description="Create a new TInstitucionUsuarioLinea entry."
+    )
+    def create(self, request):
+        """Create a new TInstitucionUsuarioLinea."""
+        serializer = TInstitucionUsuarioLineaSerializer(data=request.data)
+        if serializer.is_valid():
+            tinstitucion_usuario_linea = self.tinstitucion_usuario_linea_use_case.create_institucion_usuario_linea(**serializer.validated_data)
+            self.tinstitucion_usuario_linea_repo.create(tinstitucion_usuario_linea)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TCargoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tcargo_use_case = TCargoUseCase()
+        self.tcargo_repo = TCargoRepository()
+
+    @extend_schema(
+        responses=TCargoSerializer(many=True),
+        description="Retrieve a list of all TCargo entries."
+    )
+    def list(self, request):
+        """List all TCargo."""
+        tcargos = self.tcargo_repo.get_all()
+        serializer = TCargoSerializer(tcargos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TCargoSerializer,
+        responses=TCargoSerializer,
+        description="Create a new TCargo entry."
+    )
+    def create(self, request):
+        """Create a new TCargo."""
+        serializer = TCargoSerializer(data=request.data)
+        if serializer.is_valid():
+            tcargo = self.tcargo_use_case.create_cargo(**serializer.validated_data)
+            self.tcargo_repo.create(tcargo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TResponsableViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tresponsable_use_case = TResponsableUseCase()
+        self.tresponsable_repo = TResponsableRepository()
+
+    @extend_schema(
+        responses=TResponsableSerializer(many=True),
+        description="Retrieve a list of all TResponsable entries."
+    )
+    def list(self, request):
+        """List all TResponsable."""
+        tresponsables = self.tresponsable_repo.get_all()
+        serializer = TResponsableSerializer(tresponsables, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TResponsableSerializer,
+        responses=TResponsableSerializer,
+        description="Create a new TResponsable entry."
+    )
+    def create(self, request):
+        """Create a new TResponsable."""
+        serializer = TResponsableSerializer(data=request.data)
+        if serializer.is_valid():
+            tresponsable = self.tresponsable_use_case.create_responsable(**serializer.validated_data)
+            self.tresponsable_repo.create(tresponsable)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TUsuarioLineaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tusuario_linea_use_case = TUsuarioLineaUseCase()
+        self.tusuario_linea_repo = TUsuarioLineaRepository()
+
+    @extend_schema(
+        responses=TUsuarioLineaSerializer(many=True),
+        description="Retrieve a list of all TUsuarioLinea entries."
+    )
+    def list(self, request):
+        """List all TUsuarioLinea."""
+        tusuario_lineas = self.tusuario_linea_repo.get_all()
+        serializer = TUsuarioLineaSerializer(tusuario_lineas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TUsuarioLineaSerializer,
+        responses=TUsuarioLineaSerializer,
+        description="Create a new TUsuarioLinea entry."
+    )
+    def create(self, request):
+        """Create a new TUsuarioLinea."""
+        serializer = TUsuarioLineaSerializer(data=request.data)
+        if serializer.is_valid():
+            tusuario_linea = self.tusuario_linea_use_case.create_usuario_linea(**serializer.validated_data)
+            self.tusuario_linea_repo.create(tusuario_linea)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
