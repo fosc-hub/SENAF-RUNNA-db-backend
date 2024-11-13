@@ -7,19 +7,28 @@
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    fecha_ingreso
-    hora_ingreso
-    n_notificacion_102
-    n_sac
-    n_suac
-    descripcion
-    ultima_actualizacion
-    score = int
-    score_vulneracion = int
-    score_evaluacion = int
+    fecha_ingreso = date, not null
+    hora_ingreso = time, not null
+    origen = (
+        WEB,
+        TELEFONO,
+        MAIL,
+        PERSONAL,
+        OTRO
+    ) = not null
+    nro_notificacion_102 = int, nullable
+    nro_sac = int, nullable
+    nro_suac = int, nullable
+    nro_historia_clinica = int, nullable
+    nro_oficio_web = int, nullable
+    descripcion = text, nullable
+    ultima_actualizacion = date, not null, autogenerate
+    score = int, default=0
+    score_vulneracion = int, default=0
+    score_evaluacion = int, default=0
     --
-    FOREIGN_KEY(T_LOCALIZACION)
-    FOREIGN_KEY(T_USUARIO_LINEA)
+    FOREIGN_KEY(T_LOCALIZACION) = not null
+    FOREIGN_KEY(T_USUARIO_LINEA) = not null
     --
 }
 
@@ -57,10 +66,24 @@ entity T_LOCALIZACION {
     + PRIMARY_KEY(id)
     --
     calle
-    numero
+    tipo_calle = (
+        CALLE,
+        AVENIDA,
+        PASAJE,
+        RUTA,
+        BOULEVAR,
+        OTRO
+    )
+    calle_nro
+    piso_depto
+    lote
+    mza
+    casa_nro
     referencia_geo
     --
     FOREIGN_KEY(T_BARRIO)
+    FOREIGN_KEY(T_LOCALIDAD)
+    FOREIGN_KEY(T_CPC)
     --
     ValidarConAPI(
         calle,
@@ -72,17 +95,53 @@ entity T_LOCALIZACION {
 }
 
 entity T_NNyA {
-    + PRIMARY_KEY(id)
+    + PRIMARY_KEY( FOREIGN_KEY(T_PERSONA) )
     --
     --
     FOREIGN_KEY(T_NNyA_EDUCACION)
     FOREIGN_KEY(T_INSTITUCION_SANITARIA)
-    FOREIGN_KEY(T_PERSONA)
+    FOREIGN_KEY(T_PERSONA One-to-One)
     --
     ValidarAdultoFalse(
         persona.adulto,
         persona.fecha_nacimiento
         )
+}
+
+entity T_CONDICIONES_VULNERABILIDAD {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    descripcion
+    peso = int
+    --
+}
+
+entity T_NNyA_CONDICIONES_VULNERABILIDAD {
+    + COMPOSITE_KEY(T_NNyA, T_CONDICIONES_VULNERABILIDAD)
+    --
+    si_no = bool
+    --
+    FOREIGN_KEY(T_NNyA)
+    FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD)
+    --
+}
+
+entity T_MOTIVO_INTERVENCION {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    --
+}
+
+entity T_NNyA_MOTIVO_INTERVENCION {
+    + COMPOSITE_KEY(T_NNyA, T_MOTIVO_INTERVENCION)
+    --
+    motivo_principal = bool
+    --
+    FOREIGN_KEY(T_NNyA)
+    FOREIGN_KEY(T_MOTIVO_INTERVENCION)
+    --
 }
 
 entity T_NNyA_EDUCACION {
@@ -103,9 +162,25 @@ entity T_PERSONA {
     nombre
     apellido
     fecha_nacimiento
-    sexo
+    edad_aproximada
+    dni
+    situacion_dni = (
+        EN_TRAMITE,
+        VENCIDO,
+        EXTRAVIADO,
+        INEXISTENTE,
+        VALIDO,
+        OTRO
+    )
+    genero = (
+        MASCULINO,
+        FEMENINO,
+        OTRO
+    )
+    boton_antipanico = bool
     observaciones
     adulto = bool
+    nnya = bool
     --
     --
 }
@@ -114,8 +189,8 @@ entity T_DEMANDA_PERSONA {
     + COMPOSITE_KEY(T_DEMANDA, T_PERSONA)
     --
     conviviente = bool
-    autordv = bool
-    autordv_principal = bool
+    supuesto_autordv = bool
+    supuesto_autordv_principal = bool
     nnya = bool
     nnya_principal = bool
     --
@@ -124,9 +199,31 @@ entity T_DEMANDA_PERSONA {
     --
 }
 
-entity T_VINCULO_PERSONA {
+entity T_VINCULO {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    --
+    --
+}
+
+entity T_VINCULO_PERSONA_NNyA {
+    + COMPOSITE_KEY(T_PERSONA, T_NNyA)
+    --
+    conviven = bool
+    autordv = bool
+    garantiza_proteccion = bool (validar que sea adulto)
+    --
+    FOREIGN_KEY(T_VINCULO)
+    FOREIGN_KEY(T_NNyA)
+    FOREIGN_KEY(T_PERSONA)
+    --
+}
+
+entity T_VINCULO_PERSONA_PERSONA {
     + COMPOSITE_KEY(T_PERSONA, T_PERSONA)
     --
+    conviven = bool
     --
     FOREIGN_KEY(T_VINCULO)
     FOREIGN_KEY(T_PERSONA)
@@ -316,14 +413,6 @@ entity T_USER {
     --
 }
 
-entity T_VINCULO {
-    + PRIMARY_KEY(id)
-    --
-    nombre
-    --
-    --
-}
-
 entity T_CARGO {
     + PRIMARY_KEY(id)
     --
@@ -370,8 +459,19 @@ entity T_BARRIO {
     + PRIMARY_KEY(id)
     --
     nombre
+}
+
+entity T_CPC {
+    + PRIMARY_KEY(id)
     --
-    FOREIGN_KEY(T_LOCALIDAD)
+    nombre
+}
+
+entity T_DEPARTAMENTO {
+    + PRIMARY_KEY(id)
+    --
+    nombre
+    --
 }
 
 entity T_LOCALIDAD {
@@ -380,6 +480,7 @@ entity T_LOCALIDAD {
     nombre
     --
     FOREIGN_KEY(T_PROVINCIA)
+    FOREIGN_KEY(T_DEPARTAMENTO)
 }
 
 entity T_PROVINCIA {
@@ -431,47 +532,37 @@ entity T_ACTIVIDAD_TIPO {
     --
 }
 
-entity T_MOTIVO_INTERVENCION {
-    + PRIMARY_KEY(id)
-    --
-    nombre
-    --
-}
-
-entity T_DEMANDA_MOTIVO_INTERVENCION {
-    + COMPOSITE_KEY(T_DEMANDA, T_MOTIVO_INTERVENCION)
-    --
-    principal = bool
-    --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_MOTIVO_INTERVENCION)
-    --
-}
-
 
 T_DEMANDA_ASIGNADO "*" - "1" T_USER
 T_DEMANDA "1" - "*" T_DEMANDA_ASIGNADO
 T_DEMANDA "1" -- "1" T_PRECALIFICACION_DEMANDA
-T_DEMANDA "1" -- "*" T_DEMANDA_MOTIVO_INTERVENCION
-T_DEMANDA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
 T_DEMANDA "*" -- "1" T_LOCALIZACION
 T_LOCALIZACION "*" -- "1" T_BARRIO
 T_LOCALIZACION "*" -- "1" T_LOCALIDAD
-T_LOCALIZACION "*" -- "1" T_PROVINCIA
+T_LOCALIZACION "*" -- "1" T_CPC
+T_LOCALIDAD "*" -- "1" T_PROVINCIA
+T_LOCALIDAD "*" -- "1" T_DEPARTAMENTO
 
+T_NNyA "1" - "1" T_PERSONA
 T_NNyA "1" -- "1" T_NNyA_EDUCACION
 T_NNyA_EDUCACION "*" -- "1" T_INSTITUCION_EDUCATIVA
 T_NNyA "*" -- "1" T_INSTITUCION_SANITARIA
+T_NNyA "1" -- "*" T_NNyA_CONDICIONES_VULNERABILIDAD
+T_NNyA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
+T_NNyA "1" -- "*" T_NNyA_MOTIVO_INTERVENCION
+T_NNyA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
-T_NNyA "1" - "1" T_PERSONA
 
 T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
 T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
 
-T_VINCULO_PERSONA "*" - "1" T_PERSONA
-T_VINCULO_PERSONA "*" - "1" T_PERSONA
-T_VINCULO "1" --- "*" T_VINCULO_PERSONA
+T_VINCULO_PERSONA_NNyA "*" - "1" T_NNyA
+T_VINCULO_PERSONA_NNyA "*" - "1" T_PERSONA
+T_VINCULO_PERSONA_NNyA "*" - "1" T_VINCULO
+T_VINCULO_PERSONA_PERSONA "*" - "1" T_PERSONA
+T_VINCULO_PERSONA_PERSONA "*" - "1" T_PERSONA
+T_VINCULO "1" --- "*" T_VINCULO_PERSONA_PERSONA
 
 T_DEMANDA "*" -- "1" T_USUARIO_LINEA
 T_USUARIO_LINEA "*" -- "1" T_VINCULO_USUARIO_LINEA
