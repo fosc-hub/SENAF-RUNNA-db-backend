@@ -7,7 +7,7 @@ from api.views import (
     , TInstitucionRespuestaViewSet, TRespuestaViewSet, TDemandaAsignadoViewSet, TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet
     , TDemandaVinculadaViewSet, TLegajoViewSet, TLegajoAsignadoViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
     , TVinculoViewSet, TVinculoPersonaPersonaViewSet, TVinculoPersonaNNyAViewSet, TScoreViewSet, TCondicionesVulnerabilidadViewSet
-
+    , TNNyACondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TNNyAMotivoIntervencionViewSet
 )
 
 router = DefaultRouter()
@@ -53,5 +53,8 @@ router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basen
 router.register(r'vinculo-persona-nnya', TVinculoPersonaNNyAViewSet, basename='vinculo-persona-nnya')
 router.register(r'score', TScoreViewSet, basename='score')
 router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
+router.register(r'nnya-condiciones-vulnerabilidad', TNNyACondicionesVulnerabilidadViewSet, basename='nnya-condiciones-vulnerabilidad')
+router.register(r'motivo-intervencion', TMotivoIntervencionViewSet, basename='motivo-intervencion')
+router.register(r'nnya-motivo-intervencion', TNNyAMotivoIntervencionViewSet, basename='nnya-motivo-intervencion')
 
 urlpatterns = router.urls

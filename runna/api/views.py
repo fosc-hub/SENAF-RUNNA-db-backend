@@ -1332,3 +1332,93 @@ class TCondicionesVulnerabilidadViewSet(viewsets.ViewSet):
             self.tcondiciones_vulnerabilidad_repo.create(tcondiciones_vulnerabilidad)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TNNyACondicionesVulnerabilidadViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tnnya_condiciones_vulnerabilidad_use_case = TNNyACondicionesVulnerabilidadUseCase()
+        self.tnnya_condiciones_vulnerabilidad_repo = TNNyACondicionesVulnerabilidadRepository()
+
+    @extend_schema(
+        responses=TNNyACondicionesVulnerabilidadSerializer(many=True),
+        description="Retrieve a list of all TNNyACondicionesVulnerabilidad entries."
+    )
+    def list(self, request):
+        """List all TNNyACondicionesVulnerabilidad."""
+        tnnya_condiciones_vulnerabilidades = self.tnnya_condiciones_vulnerabilidad_repo.get_all()
+        serializer = TNNyACondicionesVulnerabilidadSerializer(tnnya_condiciones_vulnerabilidades, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TNNyACondicionesVulnerabilidadSerializer,
+        responses=TNNyACondicionesVulnerabilidadSerializer,
+        description="Create a new TNNyACondicionesVulnerabilidad entry."
+    )
+    def create(self, request):
+        """Create a new TNNyACondicionesVulnerabilidad."""
+        serializer = TNNyACondicionesVulnerabilidadSerializer(data=request.data)
+        if serializer.is_valid():
+            tnnya_condiciones_vulnerabilidad = self.tnnya_condiciones_vulnerabilidad_use_case.create_condiciones_vulnerabilidad(**serializer.validated_data)
+            self.tnnya_condiciones_vulnerabilidad_repo.create(tnnya_condiciones_vulnerabilidad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TMotivoIntervencionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tmotivo_intervencion_use_case = TMotivoIntervencionUseCase()
+        self.tmotivo_intervencion_repo = TMotivoIntervencionRepository()
+
+    @extend_schema(
+        responses=TMotivoIntervencionSerializer(many=True),
+        description="Retrieve a list of all TMotivoIntervencion entries."
+    )
+    def list(self, request):
+        """List all TMotivoIntervencion."""
+        tmotivo_intervenciones = self.tmotivo_intervencion_repo.get_all()
+        serializer = TMotivoIntervencionSerializer(tmotivo_intervenciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TMotivoIntervencionSerializer,
+        responses=TMotivoIntervencionSerializer,
+        description="Create a new TMotivoIntervencion entry."
+    )
+    def create(self, request):
+        """Create a new TMotivoIntervencion."""
+        serializer = TMotivoIntervencionSerializer(data=request.data)
+        if serializer.is_valid():
+            tmotivo_intervencion = self.tmotivo_intervencion_use_case.create_motivo_intervencion(**serializer.validated_data)
+            self.tmotivo_intervencion_repo.create(tmotivo_intervencion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TNNyAMotivoIntervencionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tnnya_motivo_intervencion_use_case = TNNyAMotivoIntervencionUseCase()
+        self.tnnya_motivo_intervencion_repo = TNNyAMotivoIntervencionRepository()
+
+    @extend_schema(
+        responses=TNNyAMotivoIntervencionSerializer(many=True),
+        description="Retrieve a list of all TNNyAMotivoIntervencion entries."
+    )
+    def list(self, request):
+        """List all TNNyAMotivoIntervencion."""
+        tnnya_motivo_intervenciones = self.tnnya_motivo_intervencion_repo.get_all()
+        serializer = TNNyAMotivoIntervencionSerializer(tnnya_motivo_intervenciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TNNyAMotivoIntervencionSerializer,
+        responses=TNNyAMotivoIntervencionSerializer,
+        description="Create a new TNNyAMotivoIntervencion entry."
+    )
+    def create(self, request):
+        """Create a new TNNyAMotivoIntervencion."""
+        serializer = TNNyAMotivoIntervencionSerializer(data=request.data)
+        if serializer.is_valid():
+            tnnya_motivo_intervencion = self.tnnya_motivo_intervencion_use_case.create_motivo_intervencion(**serializer.validated_data)
+            self.tnnya_motivo_intervencion_repo.create(tnnya_motivo_intervencion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
