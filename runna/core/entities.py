@@ -24,31 +24,31 @@ class CustomUser:
     def __str__(self):
         return f"{self.username} ({self.email})"
 
-class TProvincia:
+class Provincia:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TDepartamento:
+class Departamento:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TLocalidad:
-    def __init__(self, nombre: str, provincia: TProvincia, departamento: TDepartamento):
+class Localidad:
+    def __init__(self, nombre: str, provincia: Provincia, departamento: Departamento):
         self.nombre = nombre
         self.provincia = provincia
         self.departamento = departamento
 
-class TBarrio:
-    def __init__(self, nombre: str, localidad: TLocalidad):
+class Barrio:
+    def __init__(self, nombre: str, localidad: Localidad):
         self.nombre = nombre
         self.localidad = localidad
 
-class TCPC:
+class CPC:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TLocalizacion:
-    def __init__(self, calle: str, tipo_calle: str, barrio: TBarrio, localidad: TLocalidad, cpc: TCPC = None, piso_depto: int = None, lote: int = None, mza: int = None, casa_nro: int = None, referencia_geo: str = None):
+class Localizacion:
+    def __init__(self, calle: str, tipo_calle: str, barrio: Barrio, localidad: Localidad, cpc: CPC = None, piso_depto: int = None, lote: int = None, mza: int = None, casa_nro: int = None, referencia_geo: str = None):
         self.calle = calle
         self.tipo_calle = tipo_calle
         self.barrio = barrio
@@ -60,27 +60,27 @@ class TLocalizacion:
         self.casa_nro = casa_nro
         self.referencia_geo = referencia_geo
 
-class TInstitucionUsuarioLinea:
+class InstitucionUsuarioLinea:
     def __init__(self, nombre: str, contacto: str):
         self.nombre = nombre
         self.contacto = contacto
 
-class TVinculoUsuarioLinea:
+class VinculoUsuarioLinea:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TCargo:
+class Cargo:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TResponsable:
-    def __init__(self, nombre: str, apellido: str, cargo: TCargo = None):
+class Responsable:
+    def __init__(self, nombre: str, apellido: str, cargo: Cargo = None):
         self.nombre = nombre
         self.apellido = apellido
         self.cargo = cargo
 
-class TUsuarioLinea:
-    def __init__(self, nombre: str, apellido: str, genero: str, vinculo_usuario_linea: TVinculoUsuarioLinea, institucion_usuario_linea: TInstitucionUsuarioLinea, responsable: TResponsable = None, fecha_nacimiento: str = None, telefono: int = None):
+class UsuarioLinea:
+    def __init__(self, nombre: str, apellido: str, genero: str, vinculo_usuario_linea: VinculoUsuarioLinea, institucion_usuario_linea: InstitucionUsuarioLinea, responsable: Responsable = None, fecha_nacimiento: str = None, telefono: int = None):
         self.nombre = nombre
         self.apellido = apellido
         self.genero = genero
@@ -90,8 +90,8 @@ class TUsuarioLinea:
         self.fecha_nacimiento = fecha_nacimiento
         self.telefono = telefono
 
-class TDemanda:
-    def __init__(self, fecha_ingreso: str, hora_ingreso: str, origen: str, localizacion: TLocalizacion, usuario_linea: TUsuarioLinea, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None):
+class Demanda:
+    def __init__(self, fecha_ingreso: str, hora_ingreso: str, origen: str, localizacion: Localizacion, usuario_linea: UsuarioLinea, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None):
         self.fecha_ingreso = fecha_ingreso
         self.hora_ingreso = hora_ingreso
         self.origen = origen
@@ -104,15 +104,15 @@ class TDemanda:
         self.nro_oficio_web = nro_oficio_web
         self.descripcion = descripcion
 
-class TPrecalificacionDemanda:
-    def __init__(self, fecha: str, hora: str, descripcion: str, estado_demanda: str, demanda: TDemanda):
+class PrecalificacionDemanda:
+    def __init__(self, fecha: str, hora: str, descripcion: str, estado_demanda: str, demanda: Demanda):
         self.fecha = fecha
         self.hora = hora
         self.descripcion = descripcion
         self.estado_demanda = estado_demanda
         self.demanda = demanda
 
-class TPersona:
+class Persona:
     def __init__(self, nombre: str, apellido: str, fecha_nacimiento: str, situacion_dni: str, genero: str, edad_aproximada: int = None, dni: int = None, boton_antipanico: bool = False, observaciones: str = None, adulto: bool = False, nnya: bool = False):
         self.nombre = nombre
         self.apellido = apellido
@@ -126,8 +126,8 @@ class TPersona:
         self.adulto = adulto
         self.nnya = nnya
 
-class TDemandaPersona:
-    def __init__(self, demanda: TDemanda, persona: TPersona, conviviente: bool = False, supuesto_autordv: bool = False, supuesto_autordv_principal: bool = False, nnya: bool = False, nnya_principal: bool = False):
+class DemandaPersona:
+    def __init__(self, demanda: Demanda, persona: Persona, conviviente: bool = False, supuesto_autordv: bool = False, supuesto_autordv_principal: bool = False, nnya: bool = False, nnya_principal: bool = False):
         self.demanda = demanda
         self.persona = persona
         self.conviviente = conviviente
@@ -136,59 +136,59 @@ class TDemandaPersona:
         self.nnya = nnya
         self.nnya_principal = nnya_principal
 
-class TInstitucionEducativa:
+class InstitucionEducativa:
     def __init__(self, nombre: str, mail: str = None, telefono: int = None):
         self.nombre = nombre
         self.mail = mail
         self.telefono = telefono
 
-class TNNyAEducacion:
-    def __init__(self, curso: str, nivel: str, turno: str, comentarios: str = None, institucion_educativa: TInstitucionEducativa = None):
+class NNyAEducacion:
+    def __init__(self, curso: str, nivel: str, turno: str, comentarios: str = None, institucion_educativa: InstitucionEducativa = None):
         self.curso = curso
         self.nivel = nivel
         self.turno = turno
         self.comentarios = comentarios
         self.institucion_educativa = institucion_educativa
 
-class TInstitucionSanitaria:
+class InstitucionSanitaria:
     def __init__(self, nombre: str, mail: str = None, telefono: int = None):
         self.nombre = nombre
         self.mail = mail
         self.telefono = telefono
 
-class TNNyA:
-    def __init__(self, persona: TPersona, educacion: TNNyAEducacion, institucion_sanitaria: TInstitucionSanitaria):
+class NNyA:
+    def __init__(self, persona: Persona, educacion: NNyAEducacion, institucion_sanitaria: InstitucionSanitaria):
         self.persona = persona
         self.educacion = educacion
         self.institucion_sanitaria = institucion_sanitaria
 
-class TCategoriaMotivo:
+class CategoriaMotivo:
     def __init__(self, nombre: str, descripcion: str = None, peso: int = 0):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TCategoriaSubmotivo:
-    def __init__(self, nombre: str, descripcion: str = None, peso: int = 0, motivo: TCategoriaMotivo = None):
+class CategoriaSubmotivo:
+    def __init__(self, nombre: str, descripcion: str = None, peso: int = 0, motivo: CategoriaMotivo = None):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
         self.motivo = motivo
 
-class TGravedadVulneracion:
+class GravedadVulneracion:
     def __init__(self, nombre: str, descripcion: str = None, peso: int = 0):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TUrgenciaVulneracion:
+class UrgenciaVulneracion:
     def __init__(self, nombre: str, descripcion: str = None, peso: int = 0):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TVulneracion:
-    def __init__(self, principal_demanda: bool, transcurre_actualidad: bool, sumatoria_de_pesos: int, demanda: TDemanda, nnya: TPersona, autor_dv: TPersona = None, categoria_motivo: TCategoriaMotivo = None, categoria_submotivo: TCategoriaSubmotivo = None, gravedad_vulneracion: TGravedadVulneracion = None, urgencia_vulneracion: TUrgenciaVulneracion = None):
+class Vulneracion:
+    def __init__(self, principal_demanda: bool, transcurre_actualidad: bool, sumatoria_de_pesos: int, demanda: Demanda, nnya: Persona, autor_dv: Persona = None, categoria_motivo: CategoriaMotivo = None, categoria_submotivo: CategoriaSubmotivo = None, gravedad_vulneracion: GravedadVulneracion = None, urgencia_vulneracion: UrgenciaVulneracion = None):
         self.principal_demanda = principal_demanda
         self.transcurre_actualidad = transcurre_actualidad
         self.sumatoria_de_pesos = sumatoria_de_pesos
@@ -200,36 +200,36 @@ class TVulneracion:
         self.gravedad_vulneracion = gravedad_vulneracion
         self.urgencia_vulneracion = urgencia_vulneracion
 
-class TDecision:
-    def __init__(self, fecha: str, hora: str, justificacion: str, decision: str, demanda: TDemanda):
+class Decision:
+    def __init__(self, fecha: str, hora: str, justificacion: str, decision: str, demanda: Demanda):
         self.fecha = fecha
         self.hora = hora
         self.justificacion = justificacion
         self.decision = decision
         self.demanda = demanda
 
-class TDemandaAsignado:
-    def __init__(self, demanda: TDemanda, user: CustomUser, esta_activo: bool = True, recibido: bool = False, comentarios: str = None):
+class DemandaAsignado:
+    def __init__(self, demanda: Demanda, user: CustomUser, esta_activo: bool = True, recibido: bool = False, comentarios: str = None):
         self.demanda = demanda
         self.user = user
         self.esta_activo = esta_activo
         self.recibido = recibido
         self.comentarios = comentarios
 
-class TActividadTipo:
+class ActividadTipo:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TInstitucionActividad:
+class InstitucionActividad:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TInstitucionRespuesta:
+class InstitucionRespuesta:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TActividad:
-    def __init__(self, fecha: str, hora: str, descripcion: str, demanda: TDemanda, tipo: TActividadTipo = None, institucion: TInstitucionActividad = None):
+class Actividad:
+    def __init__(self, fecha: str, hora: str, descripcion: str, demanda: Demanda, tipo: ActividadTipo = None, institucion: InstitucionActividad = None):
         self.fecha = fecha
         self.hora = hora
         self.descripcion = descripcion
@@ -237,8 +237,8 @@ class TActividad:
         self.tipo = tipo
         self.institucion = institucion
 
-class TRespuesta:
-    def __init__(self, fecha: str, hora: str, mail: str, mensaje: str, demanda: TDemanda, institucion: TInstitucionRespuesta = None):
+class Respuesta:
+    def __init__(self, fecha: str, hora: str, mail: str, mensaje: str, demanda: Demanda, institucion: InstitucionRespuesta = None):
         self.fecha = fecha
         self.hora = hora
         self.mail = mail
@@ -246,48 +246,48 @@ class TRespuesta:
         self.demanda = demanda
         self.institucion = institucion
 
-class TDemandaVinculada:
-    def __init__(self, demanda_1: TDemanda, demanda_2: TDemanda):
+class DemandaVinculada:
+    def __init__(self, demanda_1: Demanda, demanda_2: Demanda):
         self.demanda_1 = demanda_1
         self.demanda_2 = demanda_2
 
-class TLegajo:
-    def __init__(self, info_legajo: str, nnya: TNNyA):
+class Legajo:
+    def __init__(self, info_legajo: str, nnya: NNyA):
         self.info_legajo = info_legajo
         self.nnya = nnya
 
-class TLegajoAsignado:
-    def __init__(self, legajo: TLegajo, user: CustomUser, esta_activo: bool = True, recibido: bool = False):
+class LegajoAsignado:
+    def __init__(self, legajo: Legajo, user: CustomUser, esta_activo: bool = True, recibido: bool = False):
         self.legajo = legajo
         self.user = user
         self.esta_activo = esta_activo
         self.recibido = recibido
 
-class TIndicadoresValoracion:
+class IndicadoresValoracion:
     def __init__(self, nombre: str, descripcion: str = None, peso: int = 0):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TEvaluaciones:
-    def __init__(self, demanda: TDemanda, indicador: TIndicadoresValoracion, si_no: bool = False):
+class Evaluaciones:
+    def __init__(self, demanda: Demanda, indicador: IndicadoresValoracion, si_no: bool = False):
         self.demanda = demanda
         self.indicador = indicador
         self.si_no = si_no
 
-class TVinculo:
+class Vinculo:
     def __init__(self, nombre: str):
         self.nombre = nombre
 
-class TVinculoPersonaPersona:
-    def __init__(self, conviven: bool, vinculo: TVinculo, persona_1: TPersona, persona_2: TPersona):
+class VinculoPersonaPersona:
+    def __init__(self, conviven: bool, vinculo: Vinculo, persona_1: Persona, persona_2: Persona):
         self.conviven = conviven
         self.vinculo = vinculo
         self.persona_1 = persona_1
         self.persona_2 = persona_2
 
-class TVinculoPersonaNNyA:
-    def __init__(self, conviven: bool, autordv: bool, garantiza_proteccion: bool, vinculo: TVinculo, nnya: TNNyA, persona: TPersona):
+class VinculoPersonaNNyA:
+    def __init__(self, conviven: bool, autordv: bool, garantiza_proteccion: bool, vinculo: Vinculo, nnya: NNyA, persona: Persona):
         self.conviven = conviven
         self.autordv = autordv
         self.garantiza_proteccion = garantiza_proteccion
@@ -295,8 +295,8 @@ class TVinculoPersonaNNyA:
         self.nnya = nnya
         self.persona = persona
 
-class TScore:
-    def __init__(self, demanda: TDemanda, nnya: TNNyA, score: int, score_vulneracion: int, score_evaluacion: int, score_condiciones_vulnerabilidad: int, score_motivo_intervencion: int):
+class Score:
+    def __init__(self, demanda: Demanda, nnya: NNyA, score: int, score_vulneracion: int, score_evaluacion: int, score_condiciones_vulnerabilidad: int, score_motivo_intervencion: int):
         self.demanda = demanda
         self.nnya = nnya
         self.score = score
@@ -305,25 +305,25 @@ class TScore:
         self.score_condiciones_vulnerabilidad = score_condiciones_vulnerabilidad
         self.score_motivo_intervencion = score_motivo_intervencion
 
-class TCondicionesVulnerabilidad:
+class CondicionesVulnerabilidad:
     def __init__(self, nombre: str, descripcion: str, peso: int):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TNNyACondicionesVulnerabilidad:
-    def __init__(self, nnya: TNNyA, condiciones_vulnerabilidad: TCondicionesVulnerabilidad, si_no: bool):
+class NNyACondicionesVulnerabilidad:
+    def __init__(self, nnya: NNyA, condiciones_vulnerabilidad: CondicionesVulnerabilidad, si_no: bool):
         self.nnya = nnya
         self.condiciones_vulnerabilidad = condiciones_vulnerabilidad
         self.si_no = si_no
 
-class TMotivoIntervencion:
+class MotivoIntervencion:
     def __init__(self, nombre: str, descripcion: str, peso: int):
         self.nombre = nombre
         self.descripcion = descripcion
         self.peso = peso
 
-class TNNyAMotivoIntervencion:
-    def __init__(self, nnya: TNNyA, motivo_intervencion: TMotivoIntervencion):
+class NNyAMotivoIntervencion:
+    def __init__(self, nnya: NNyA, motivo_intervencion: MotivoIntervencion):
         self.nnya = nnya
         self.motivo_intervencion = motivo_intervencion
