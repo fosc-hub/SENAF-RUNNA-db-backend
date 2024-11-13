@@ -1182,3 +1182,153 @@ class TDecisionViewSet(viewsets.ViewSet):
             self.tdecision_repo.create(tdecision)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TVinculoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tvinculo_use_case = TVinculoUseCase()
+        self.tvinculo_repo = TVinculoRepository()
+
+    @extend_schema(
+        responses=TVinculoSerializer(many=True),
+        description="Retrieve a list of all TVinculo entries."
+    )
+    def list(self, request):
+        """List all TVinculo."""
+        tvinculos = self.tvinculo_repo.get_all()
+        serializer = TVinculoSerializer(tvinculos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TVinculoSerializer,
+        responses=TVinculoSerializer,
+        description="Create a new TVinculo entry."
+    )
+    def create(self, request):
+        """Create a new TVinculo."""
+        serializer = TVinculoSerializer(data=request.data)
+        if serializer.is_valid():
+            tvinculo = self.tvinculo_use_case.create_vinculo(**serializer.validated_data)
+            self.tvinculo_repo.create(tvinculo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TVinculoPersonaPersonaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tvinculo_persona_persona_use_case = TVinculoPersonaPersonaUseCase()
+        self.tvinculo_persona_persona_repo = TVinculoPersonaPersonaRepository()
+
+    @extend_schema(
+        responses=TVinculoPersonaPersonaSerializer(many=True),
+        description="Retrieve a list of all TVinculoPersonaPersona entries."
+    )
+    def list(self, request):
+        """List all TVinculoPersonaPersona."""
+        tvinculo_persona_personas = self.tvinculo_persona_persona_repo.get_all()
+        serializer = TVinculoPersonaPersonaSerializer(tvinculo_persona_personas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TVinculoPersonaPersonaSerializer,
+        responses=TVinculoPersonaPersonaSerializer,
+        description="Create a new TVinculoPersonaPersona entry."
+    )
+    def create(self, request):
+        """Create a new TVinculoPersonaPersona."""
+        serializer = TVinculoPersonaPersonaSerializer(data=request.data)
+        if serializer.is_valid():
+            tvinculo_persona_persona = self.tvinculo_persona_persona_use_case.create_vinculo_persona_persona(**serializer.validated_data)
+            self.tvinculo_persona_persona_repo.create(tvinculo_persona_persona)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TVinculoPersonaNNyAViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tvinculo_persona_nnya_use_case = TVinculoPersonaNNyAUseCase()
+        self.tvinculo_persona_nnya_repo = TVinculoPersonaNNyARepository()
+
+    @extend_schema(
+        responses=TVinculoPersonaNNyASerializer(many=True),
+        description="Retrieve a list of all TVinculoPersonaNNyA entries."
+    )
+    def list(self, request):
+        """List all TVinculoPersonaNNyA."""
+        tvinculo_persona_nnyas = self.tvinculo_persona_nnya_repo.get_all()
+        serializer = TVinculoPersonaNNyASerializer(tvinculo_persona_nnyas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TVinculoPersonaNNyASerializer,
+        responses=TVinculoPersonaNNyASerializer,
+        description="Create a new TVinculoPersonaNNyA entry."
+    )
+    def create(self, request):
+        """Create a new TVinculoPersonaNNyA."""
+        serializer = TVinculoPersonaNNyASerializer(data=request.data)
+        if serializer.is_valid():
+            tvinculo_persona_nnya = self.tvinculo_persona_nnya_use_case.create_vinculo_persona_nnya(**serializer.validated_data)
+            self.tvinculo_persona_nnya_repo.create(tvinculo_persona_nnya)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TScoreViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tscore_use_case = TScoreUseCase()
+        self.tscore_repo = TScoreRepository()
+
+    @extend_schema(
+        responses=TScoreSerializer(many=True),
+        description="Retrieve a list of all TScore entries."
+    )
+    def list(self, request):
+        """List all TScore."""
+        tscores = self.tscore_repo.get_all()
+        serializer = TScoreSerializer(tscores, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TScoreSerializer,
+        responses=TScoreSerializer,
+        description="Create a new TScore entry."
+    )
+    def create(self, request):
+        """Create a new TScore."""
+        serializer = TScoreSerializer(data=request.data)
+        if serializer.is_valid():
+            tscore = self.tscore_use_case.create_score(**serializer.validated_data)
+            self.tscore_repo.create(tscore)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TCondicionesVulnerabilidadViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tcondiciones_vulnerabilidad_use_case = TCondicionesVulnerabilidadUseCase()
+        self.tcondiciones_vulnerabilidad_repo = TCondicionesVulnerabilidadRepository()
+
+    @extend_schema(
+        responses=TCondicionesVulnerabilidadSerializer(many=True),
+        description="Retrieve a list of all TCondicionesVulnerabilidad entries."
+    )
+    def list(self, request):
+        """List all TCondicionesVulnerabilidad."""
+        tcondiciones_vulnerabilidades = self.tcondiciones_vulnerabilidad_repo.get_all()
+        serializer = TCondicionesVulnerabilidadSerializer(tcondiciones_vulnerabilidades, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TCondicionesVulnerabilidadSerializer,
+        responses=TCondicionesVulnerabilidadSerializer,
+        description="Create a new TCondicionesVulnerabilidad entry."
+    )
+    def create(self, request):
+        """Create a new TCondicionesVulnerabilidad."""
+        serializer = TCondicionesVulnerabilidadSerializer(data=request.data)
+        if serializer.is_valid():
+            tcondiciones_vulnerabilidad = self.tcondiciones_vulnerabilidad_use_case.create_condiciones_vulnerabilidad(**serializer.validated_data)
+            self.tcondiciones_vulnerabilidad_repo.create(tcondiciones_vulnerabilidad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -6,6 +6,7 @@ from api.views import (
     , TInstitucionSanitariaViewSet, TNNyAViewSet, TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TVulneracionViewSet
     , TInstitucionRespuestaViewSet, TRespuestaViewSet, TDemandaAsignadoViewSet, TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet
     , TDemandaVinculadaViewSet, TLegajoViewSet, TLegajoAsignadoViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
+    , TVinculoViewSet, TVinculoPersonaPersonaViewSet, TVinculoPersonaNNyAViewSet, TScoreViewSet, TCondicionesVulnerabilidadViewSet
 
 )
 
@@ -47,5 +48,10 @@ router.register(r'legajo-asignado', TLegajoAsignadoViewSet, basename='legajo-asi
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')
 router.register(r'decision', TDecisionViewSet, basename='decision')
+router.register(r'vinculo', TVinculoViewSet, basename='vinculo')
+router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basename='vinculo-persona-persona')
+router.register(r'vinculo-persona-nnya', TVinculoPersonaNNyAViewSet, basename='vinculo-persona-nnya')
+router.register(r'score', TScoreViewSet, basename='score')
+router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
 
 urlpatterns = router.urls
