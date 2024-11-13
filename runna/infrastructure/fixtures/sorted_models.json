@@ -3,8 +3,10 @@
         "CustomUser",
 
         "TProvincia",
+        "TDepartamento",
         "TLocalidad",
         "TBarrio",
+        "TCPC",
         "TLocalizacion",
 
         "TVinculoUsuarioLinea",
@@ -48,10 +50,14 @@
         "TDecision",
 
         "TVinculo",
-        "TVinculoPersona",
+        "TVinculoPersonaPersona",
+        "TVinculoPersonaNNyA",
 
+        "TScore",
+        "TCondicionesVulnerabilidad",
+        "TNNyACondicionesVulnerabilidad",
         "TMotivoIntervencion",
-        "TDemandaMotivoIntervencion"
+        "TNNyAMotivoIntervencion"
 
     ]
 }
