@@ -4,6 +4,20 @@
 !define FOREIGN_KEY(x) <color:green>x</color>
 !define COMPOSITE_KEY(x, y) <color:LightSalmon>x, y</color>
 
+entity T_SCORE {
+    + COMPOSITE_KEY(T_DEMANDA, T_NNyA)
+    --
+    score = int, default=0
+    score_vulneracion = int, default=0
+    score_evaluacion = int, default=0
+    score_condiciones_vulnerabilidad = int, default=0
+    score_motivo_intervencion = int, default=0
+    --
+    FOREIGN_KEY(T_DEMANDA) = not null
+    FOREIGN_KEY(T_NNyA) = not null
+    --
+}
+
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
@@ -23,9 +37,6 @@ entity T_DEMANDA {
     nro_oficio_web = int, nullable
     descripcion = text, nullable
     ultima_actualizacion = date, not null, autogenerate
-    score = int, default=0
-    score_vulneracion = int, default=0
-    score_evaluacion = int, default=0
     --
     FOREIGN_KEY(T_LOCALIZACION) = not null
     FOREIGN_KEY(T_USUARIO_LINEA) = not null
@@ -35,12 +46,12 @@ entity T_DEMANDA {
 entity T_DEMANDA_ASIGNADO {
     + COMPOSITE_KEY(T_USER, T_DEMANDA)
     --
-    esta_activo = bool 'sigue en curso la verificacion / archivar=false
-    recibido = bool ' casilla mail = leido/no leido
-    comentarios
+    esta_activo = bool, default=true 'sigue en curso la verificacion / archivar=false
+    recibido = bool, default=false ' casilla mail = leido/no leido
+    comentarios = text, nullable
     --
-    FOREIGN_KEY(T_USER)
-    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_USER) = not null 
+    FOREIGN_KEY(T_DEMANDA) = not null
     --
     AsignarUser(
         user.esta_activo
@@ -50,22 +61,22 @@ entity T_DEMANDA_ASIGNADO {
 entity T_PRECALIFICACION_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    fecha
-    hora
-    descripcion
+    fecha = date, not null
+    hora = date, not null
+    descripcion = text, nullable
     estado_demanda = (
         URGENTE,
         NO_URGENTE,
         COMPLETAR
-    )
+    ) = not null
     --
-    FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True)
+    FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True One-to-One)
 }
 
 entity T_LOCALIZACION {
     + PRIMARY_KEY(id)
     --
-    calle
+    calle = string, not null
     tipo_calle = (
         CALLE,
         AVENIDA,
@@ -73,17 +84,16 @@ entity T_LOCALIZACION {
         RUTA,
         BOULEVAR,
         OTRO
-    )
-    calle_nro
-    piso_depto
-    lote
-    mza
-    casa_nro
-    referencia_geo
+    ) = not null
+    piso_depto = int, nullable
+    lote = int, nullable
+    mza = int, nullable
+    casa_nro = int, nullable
+    referencia_geo = text, nullable
     --
-    FOREIGN_KEY(T_BARRIO)
-    FOREIGN_KEY(T_LOCALIDAD)
-    FOREIGN_KEY(T_CPC)
+    FOREIGN_KEY(T_BARRIO) = not null
+    FOREIGN_KEY(T_LOCALIDAD) = not null
+    FOREIGN_KEY(T_CPC) = nullable
     --
     ValidarConAPI(
         calle,
@@ -98,9 +108,9 @@ entity T_NNyA {
     + PRIMARY_KEY( FOREIGN_KEY(T_PERSONA) )
     --
     --
-    FOREIGN_KEY(T_NNyA_EDUCACION)
-    FOREIGN_KEY(T_INSTITUCION_SANITARIA)
-    FOREIGN_KEY(T_PERSONA One-to-One)
+    FOREIGN_KEY(T_NNyA_EDUCACION One-to-One) = not null
+    FOREIGN_KEY(T_INSTITUCION_SANITARIA) = not null
+    FOREIGN_KEY(T_PERSONA One-to-One) = not null
     --
     ValidarAdultoFalse(
         persona.adulto,
@@ -111,26 +121,28 @@ entity T_NNyA {
 entity T_CONDICIONES_VULNERABILIDAD {
     + PRIMARY_KEY(id)
     --
-    nombre
-    descripcion
-    peso = int
+    nombre = string, not null
+    descripcion = text, nullable
+    peso = int, not null
     --
 }
 
 entity T_NNyA_CONDICIONES_VULNERABILIDAD {
     + COMPOSITE_KEY(T_NNyA, T_CONDICIONES_VULNERABILIDAD)
     --
-    si_no = bool
+    si_no = bool, default=false
     --
-    FOREIGN_KEY(T_NNyA)
-    FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD)
+    FOREIGN_KEY(T_NNyA) = not null
+    FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD) = not null
     --
 }
 
 entity T_MOTIVO_INTERVENCION {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
+    descripcion = text, nullable
+    peso = int, not null
     --
 }
 
@@ -147,23 +159,34 @@ entity T_NNyA_MOTIVO_INTERVENCION {
 entity T_NNyA_EDUCACION {
     + PRIMARY_KEY(id)
     --
-    curso
-    nivel
-    turno
-    comentarios
+    curso = string, not null
+    nivel = (
+        PRIMARIO,
+        SECUNDARIO,
+        TERCIARIO,
+        UNIVERSITARIO,
+        OTRO
+    ) = not null
+    turno = (
+        MANIANA,
+        TARDE,
+        NOCHE,
+        OTRO
+    ) = not null
+    comentarios = text, nullable
     --
-    FOREIGN_KEY(T_INSTITUCION_EDUCATIVA)
+    FOREIGN_KEY(T_INSTITUCION_EDUCATIVA) = not null
     --
 }
 
 entity T_PERSONA {
     + PRIMARY_KEY(id)
     --
-    nombre
-    apellido
-    fecha_nacimiento
-    edad_aproximada
-    dni
+    nombre = string, not null
+    apellido = string, not null
+    fecha_nacimiento = date, not null
+    edad_aproximada = int, nullable
+    dni = int, nullable
     situacion_dni = (
         EN_TRAMITE,
         VENCIDO,
@@ -171,16 +194,16 @@ entity T_PERSONA {
         INEXISTENTE,
         VALIDO,
         OTRO
-    )
+    ) = not null
     genero = (
         MASCULINO,
         FEMENINO,
         OTRO
-    )
-    boton_antipanico = bool
-    observaciones
-    adulto = bool
-    nnya = bool
+    ) = not null
+    boton_antipanico = bool, default=false
+    observaciones = text, nullable
+    adulto = bool, default=false
+    nnya = bool, default=false
     --
     --
 }
@@ -188,21 +211,21 @@ entity T_PERSONA {
 entity T_DEMANDA_PERSONA {
     + COMPOSITE_KEY(T_DEMANDA, T_PERSONA)
     --
-    conviviente = bool
-    supuesto_autordv = bool
-    supuesto_autordv_principal = bool
-    nnya = bool
-    nnya_principal = bool
+    conviviente = bool, default=false
+    supuesto_autordv = bool, default=false
+    supuesto_autordv_principal = bool, default=false
+    nnya = bool, default=false
+    nnya_principal = bool,  default=false
     --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_PERSONA)
+    FOREIGN_KEY(T_DEMANDA) = not null
+    FOREIGN_KEY(T_PERSONA) = not null
     --
 }
 
 entity T_VINCULO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
     --
     --
 }
@@ -210,104 +233,111 @@ entity T_VINCULO {
 entity T_VINCULO_PERSONA_NNyA {
     + COMPOSITE_KEY(T_PERSONA, T_NNyA)
     --
-    conviven = bool
-    autordv = bool
-    garantiza_proteccion = bool (validar que sea adulto)
+    conviven = bool, default=false
+    autordv = bool, default=false
+    garantiza_proteccion = bool (validar que sea adulto), default=false
     --
-    FOREIGN_KEY(T_VINCULO)
-    FOREIGN_KEY(T_NNyA)
-    FOREIGN_KEY(T_PERSONA)
+    FOREIGN_KEY(T_VINCULO) = not null
+    FOREIGN_KEY(T_NNyA) = not null
+    FOREIGN_KEY(T_PERSONA) = not null
     --
+    METODO(
+        sumar/resta x score segun autordv o garantiza_proteccion
+        )
 }
 
 entity T_VINCULO_PERSONA_PERSONA {
     + COMPOSITE_KEY(T_PERSONA, T_PERSONA)
     --
-    conviven = bool
+    conviven = bool, default=false
     --
-    FOREIGN_KEY(T_VINCULO)
-    FOREIGN_KEY(T_PERSONA)
-    FOREIGN_KEY(T_PERSONA)
+    FOREIGN_KEY(T_VINCULO) = not null
+    FOREIGN_KEY(T_PERSONA) = not null
+    FOREIGN_KEY(T_PERSONA) = not null
     --
 }
 
 entity T_USUARIO_LINEA {
     + PRIMARY_KEY(id)
     --
-    nombre
-    apellido
-    fecha_nacimiento
-    sexo
-    telefono
+    nombre = string, not null
+    apellido = string, not null
+    fecha_nacimiento = date, nullable
+    genero = (
+        MASCULINO,
+        FEMENINO,
+        OTRO
+    ) = not null
+    telefono = int, nullable
     --
-    FOREIGN_KEY(T_VINCULO_USUARIO_LINEA)
-    FOREIGN_KEY(T_INSTITUCION_USUARIO_LINEA)
-    FOREIGN_KEY(T_RESPONSABLE)
+    FOREIGN_KEY(T_VINCULO_USUARIO_LINEA) = not null
+    FOREIGN_KEY(T_INSTITUCION_USUARIO_LINEA) = not null
+    FOREIGN_KEY(T_RESPONSABLE) = nullable
     --
 }
 
 entity T_INSTITUCION_USUARIO_LINEA {
     + PRIMARY_KEY(id)
     --
-    nombre
-    contacto
+    nombre = string, not null
+    contacto = string, nullable
     --
 }
 
 entity T_RESPONSABLE {
     + PRIMARY_KEY(id)
     --
-    nombre
-    apellido
+    nombre = string, not null
+    apellido = string, not null
     --
-    FOREIGN_KEY(T_CARGO)
+    FOREIGN_KEY(T_CARGO) = not null
 }
 
 entity T_VULNERACION {
     + PRIMARY_KEY(id)
     --
-    principal_demanda = bool
-    actualidad = bool
-    sumatoria_de_pesos = int    -- sumatoria de pesos de las categorias
+    principal_demanda = bool, default=false
+    transcurre_actualidad = bool, default=false
+    sumatoria_de_pesos = int, default=0    -- sumatoria de pesos de las categorias
     --
-    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_DEMANDA) = not null
     NNyA = FOREIGN_KEY(T_PERSONA nnya=true nullable=false blank=false)
     AutorDV = FOREIGN_KEY(T_PERSONA autordv=true nullable=true blank=true)
-    FOREIGN_KEY(T_CATEGORIA_MOTIVO)
-    FOREIGN_KEY(T_CATEGORIA_SUBMOTIVO)
-    FOREIGN_KEY(T_GRAVEDAD_VULNERACION)
-    FOREIGN_KEY(T_URGENCIA_VULNERACION)
+    FOREIGN_KEY(T_CATEGORIA_MOTIVO) = not null
+    FOREIGN_KEY(T_CATEGORIA_SUBMOTIVO) = not null
+    FOREIGN_KEY(T_GRAVEDAD_VULNERACION) = not null
+    FOREIGN_KEY(T_URGENCIA_VULNERACION) = not null
     --
     TriggerOnInsert(
         unique(T_DEMANDA, principal=true),
-        T_DEMANDA.score_vulneracion += sumatoria_de_pesos
-        T_DEMANDA.score += sumatoria_de_pesos
+        T_SCORE.score_vulneracion += sumatoria_de_pesos
+        T_SCORE.score += sumatoria_de_pesos
     )
 }
 
 entity T_ACTIVIDAD {
     + PRIMARY_KEY(id)
     --
-    fecha
-    hora
-    descripcion
+    fecha = date
+    hora = time
+    descripcion = text, not null
     --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_ACTIVIDAD_TIPO)
-    FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD)
+    FOREIGN_KEY(T_DEMANDA) = not null
+    FOREIGN_KEY(T_ACTIVIDAD_TIPO) = not null
+    FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD) = not null
     --
 }
 
 entity T_RESPUESTA {
     + PRIMARY_KEY(id)
     --
-    fecha
-    hora
-    mail
-    mensaje
+    fecha = date, not null
+    hora = time, not null
+    mail = mail, not null
+    mensaje = text, not null
     --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_INSTITUCION_RESPUESTA)
+    FOREIGN_KEY(T_DEMANDA) = not null
+    FOREIGN_KEY(T_INSTITUCION_RESPUESTA) = not null
     --
     ServicioDeMailSMTP(
         mail,
@@ -316,7 +346,7 @@ entity T_RESPUESTA {
 }
 
 entity T_DEMANDA_VINCULADA {
-    + PRIMARY_KEY(id)
+    + COMPOSITE_KEY(T_DEMANDA, T_DEMANDA)
     --
     --
     FOREIGN_KEY(T_DEMANDA)
@@ -327,23 +357,23 @@ entity T_DEMANDA_VINCULADA {
 entity T_DECISION {
     + PRIMARY_KEY(id)
     --
-    fecha
-    hora
-    justificacion = text
+    fecha = date, not null
+    hora = time, not null
+    justificacion = text, not null
     decision = (
         APERTURA DE LEGAJO,
         RECHAZAR CASO
-    )
+    ) = not null
     --
-    FOREIGN_KEY(T_DEMANDA)
+    FOREIGN_KEY(T_DEMANDA) = not null
     --
     TriggerOnInsert(
         CreationOfLegajo(
-            dropdown = "Apertura de legajo" || T_DEMANDA.score > 10 || T_DEMANDA.score_vulneracion > 10 || T_DEMANDA.score_evaluacion > 10
+            dropdown = "Apertura de legajo" || T_SCORE.score > 10 || T_SCORE.score_vulneracion > 10 || T_SCORE.score_evaluacion > 10 || T_SCORE.score_condiciones_vulnerabilidad > 10 || T_SCORE.score_motivo_intervencion > 10
             bool = true
         )
         CreationOfMPI_MPE(
-            dropdown = "Apertura de legajo"  || T_DEMANDA.score > 10 || T_DEMANDA.score_vulneracion > 10 || T_DEMANDA.score_evaluacion > 10
+            dropdown = "Apertura de legajo"  || T_SCORE.score > 10 || T_SCORE.score_vulneracion > 10 || T_SCORE.score_evaluacion > 10 || T_SCORE.score_condiciones_vulnerabilidad > 10 || T_SCORE.score_motivo_intervencion > 10
             bool = true
         )
         RechazarCaso(
@@ -356,8 +386,8 @@ entity T_DECISION {
 entity T_INDICADORES_VALORACION {
     + PRIMARY_KEY(id)
     --
-    nombre
-    descripcion
+    nombre = string
+    descripcion = text
     peso = int
     --
     --
@@ -366,14 +396,14 @@ entity T_INDICADORES_VALORACION {
 entity T_EVALUACIONES {
     + PRIMARY_KEY(id)
     --
-    si_no = bool
+    si_no = bool, default=false
     --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_INDICADORES_VALORACION)
+    FOREIGN_KEY(T_DEMANDA) = not null
+    FOREIGN_KEY(T_INDICADORES_VALORACION) = not null
     --
     TriggerOnInsert(
-        T_DEMANDA.score += T_INDICADORES_VALORACION.peso
-        T_DEMANDA.score_evaluacion += T_INDICADORES_VALORACION.peso
+        T_SCORE.score += T_INDICADORES_VALORACION.peso
+        T_SCORE.score_evaluacion += T_INDICADORES_VALORACION.peso
         )
 }
 
@@ -389,8 +419,8 @@ entity T_LEGAJO {
 entity T_LEGAJO_ASIGNADO {
     + COMPOSITE_KEY(T_USER, T_LEGAJO)
     --
-    esta_activo = bool 'sigue en curso la verificacion / archivar=false
-    recibido = bool ' casilla mail = leido/no leido
+    esta_activo = bool, default=true 'sigue en curso la verificacion / archivar=false
+    recibido = bool, default=false ' casilla mail = leido/no leido
     --
     FOREIGN_KEY(T_USER)
     FOREIGN_KEY(T_LEGAJO)
@@ -406,7 +436,11 @@ entity T_USER {
     nombre
     apellido
     fecha_nacimiento
-    sexo
+    genero = (
+        MASCULINO,
+        FEMENINO,
+        OTRO
+    )
     telefono
     email
     --
@@ -423,7 +457,8 @@ entity T_CARGO {
 entity T_CATEGORIA_MOTIVO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
+    descripcion = text, not null
     peso = int
     --
     --
@@ -432,7 +467,8 @@ entity T_CATEGORIA_MOTIVO {
 entity T_CATEGORIA_SUBMOTIVO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
+    descripcion = text, not null
     peso = int
     --
     FOREIGN_KEY(T_CATEGORIA_MOTIVO)
@@ -442,7 +478,8 @@ entity T_CATEGORIA_SUBMOTIVO {
 entity T_URGENCIA_VULNERACION {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
+    descripcion = text, not null
     peso = int
     --
 }
@@ -450,7 +487,8 @@ entity T_URGENCIA_VULNERACION {
 entity T_GRAVEDAD_VULNERACION {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre = string, not null
+    descripcion = text, not null
     peso = int
     --
 }
@@ -459,6 +497,8 @@ entity T_BARRIO {
     + PRIMARY_KEY(id)
     --
     nombre
+    --
+    FOREIGN_KEY(T_LOCALIDAD)
 }
 
 entity T_CPC {
@@ -553,6 +593,8 @@ T_NNyA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
 T_NNyA "1" -- "*" T_NNyA_MOTIVO_INTERVENCION
 T_NNyA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
+T_SCORE "*" -- "1" T_DEMANDA
+T_SCORE "*" -- "1" T_NNyA
 
 T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
 T_PERSONA "1" -- "*" T_DEMANDA_PERSONA

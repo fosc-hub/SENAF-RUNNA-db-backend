@@ -11,7 +11,7 @@
 - - A su vez, se genera una sumatoria de pesos de las vulneraciones asociada a una demanda, lo que sería el **score** . -->
 - - Al momento de evaluar, se suman los pesos según la selección de cada sub-tipo de las evaluaciones, generando así también, un score de la evaluación, que se suma al score de la demanda. En el sheets, son los *indicadores de valoración de Amenaza/Vulneración de Derechos* . Va a haber muchos indicadores generables desde el admin, que por una tabla intermedia entre la evaluación y cada indicador, se lo va poder marcar como true/false, sumando o no de esa manera su peso asociado. Hay que hacer una *composite-key* o algo similar que  valide la *unicidad* entre esa selección y la evaluación
 - Sugerencia de apertura según el score
-
+- sumar/resta x score al score del nnya segun autordv o garantiza_proteccion
 
 ## Validaciones (Back):
 - NNyA principal no puede estar como principal en otra Demanda
