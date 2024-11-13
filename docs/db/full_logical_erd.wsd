@@ -290,7 +290,7 @@ entity T_RESPONSABLE {
     nombre = string, not null
     apellido = string, not null
     --
-    FOREIGN_KEY(T_CARGO) = not null
+    FOREIGN_KEY(T_CARGO) = nullable
 }
 
 entity T_VULNERACION {
@@ -555,6 +555,8 @@ entity T_INSTITUCION_EDUCATIVA {
     + PRIMARY_KEY(id)
     --
     nombre
+    mail = mail, nullable
+    telefono = int, nullable
     --
 }
 
@@ -562,6 +564,8 @@ entity T_INSTITUCION_SANITARIA {
     + PRIMARY_KEY(id)
     --
     nombre
+    mail = mail, nullable
+    telefono = int, nullable
     --
 }
 
