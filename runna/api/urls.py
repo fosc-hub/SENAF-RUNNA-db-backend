@@ -1,12 +1,14 @@
 from rest_framework.routers import DefaultRouter
-from api.views import LocalizacionViewSet, UsuarioLineaViewSet, DemandaViewSet, PersonaViewSet, VulneracionViewSet #, PrecalificacionDemandaViewSet, DecisionViewSet
+from api.views import (
+    CustomUserViewSet, TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet
+)
 
 router = DefaultRouter()
-router.register(r'localizaciones', LocalizacionViewSet, basename='localizacion')
-router.register(r'usuarios-linea', UsuarioLineaViewSet, basename='usuario-linea')
-router.register(r'demandas', DemandaViewSet, basename='demanda')
-router.register(r'personas', PersonaViewSet, basename='persona')
-router.register(r'vulneraciones', VulneracionViewSet, basename='vulneracion')
+router.register(r'user', CustomUserViewSet, basename='localizacion')
+router.register(r'provincias', TProvinciaViewSet, basename='usuario-linea')
+router.register(r'departamentos', TDepartamentoViewSet, basename='demanda')
+router.register(r'localidades', TLocalidadViewSet, basename='persona')
+router.register(r'barrios', TBarrioViewSet, basename='vulneracion')
 # router.register(r'precalificaciones', PrecalificacionDemandaViewSet, basename='precalificacion-demanda')
 # router.register(r'decisiones', DecisionViewSet, basename='decision')
 
