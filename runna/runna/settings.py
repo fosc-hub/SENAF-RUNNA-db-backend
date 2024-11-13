@@ -62,6 +62,10 @@ INSTALLED_APPS = [
     
     # track model changes
     'simple_history',
+
+    'drf_spectacular',
+    'drf_spectacular_sidecar',  # For Swagger UI assets
+
 ]
 
 MIDDLEWARE = [
@@ -157,3 +161,13 @@ CORS_ALLOWED_ORIGINS = [
 # settings.py
 AUTH_USER_MODEL = 'infrastructure.CustomUser'
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Use drf-spectacular schema
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'RUNNA API',
+    'DESCRIPTION': 'API documentation for the RUNNA re-Engineering project.',
+    'VERSION': '1.0.0',
+    'SCHEMA_PATH_PREFIX': r'/api',  # Adjust based on your endpoint structure
+}
