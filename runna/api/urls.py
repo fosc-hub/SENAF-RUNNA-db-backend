@@ -1,8 +1,9 @@
 from rest_framework.routers import DefaultRouter
 from api.views import (
     CustomUserViewSet, TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet,
-    TLocalizacionViewSet , TVinculoUsuarioLineaViewSet, TInstitucionUsuarioLineaViewSet, TCargoViewSet
-    , TResponsableViewSet, TUsuarioLineaViewSet
+    TLocalizacionViewSet , TVinculoUsuarioLineaViewSet, TInstitucionUsuarioLineaViewSet, TCargoViewSet , TResponsableViewSet, TUsuarioLineaViewSet
+    , TDemandaViewSet, TPrecalificacionDemandaViewSet, TPersonaViewSet, TDemandaPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet
+    
 )
 
 router = DefaultRouter()
@@ -18,5 +19,11 @@ router.register(r'institucion-usuario-linea', TInstitucionUsuarioLineaViewSet, b
 router.register(r'cargo', TCargoViewSet, basename='cargo')
 router.register(r'responsable', TResponsableViewSet, basename='responsable')
 router.register(r'usuario-linea', TUsuarioLineaViewSet, basename='usuario-linea')
+router.register(r'demanda', TDemandaViewSet, basename='demanda')
+router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
+router.register(r'persona', TPersonaViewSet, basename='persona')
+router.register(r'demanda-persona', TDemandaPersonaViewSet, basename='demanda-persona')
+router.register(r'institucion-educativa', TInstitucionEducativaViewSet, basename='institucion-educativa')
+router.register(r'nnya-educacion', TNNyAEducacionViewSet, basename='nnya-educacion')
 
 urlpatterns = router.urls

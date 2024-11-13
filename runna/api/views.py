@@ -431,3 +431,183 @@ class TUsuarioLineaViewSet(viewsets.ViewSet):
             self.tusuario_linea_repo.create(tusuario_linea)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TDemandaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tdemanda_use_case = TDemandaUseCase()
+        self.tdemanda_repo = TDemandaRepository()
+
+    @extend_schema(
+        responses=TDemandaSerializer(many=True),
+        description="Retrieve a list of all TDemanda entries."
+    )
+    def list(self, request):
+        """List all TDemanda."""
+        tdemandas = self.tdemanda_repo.get_all()
+        serializer = TDemandaSerializer(tdemandas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TDemandaSerializer,
+        responses=TDemandaSerializer,
+        description="Create a new TDemanda entry."
+    )
+    def create(self, request):
+        """Create a new TDemanda."""
+        serializer = TDemandaSerializer(data=request.data)
+        if serializer.is_valid():
+            tdemanda = self.tdemanda_use_case.create_demanda(**serializer.validated_data)
+            self.tdemanda_repo.create(tdemanda)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TPrecalificacionDemandaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tprecalificacion_demanda_use_case = TPrecalificacionDemandaUseCase()
+        self.tprecalificacion_demanda_repo = TPrecalificacionDemandaRepository()
+
+    @extend_schema(
+        responses=TPrecalificacionDemandaSerializer(many=True),
+        description="Retrieve a list of all TPrecalificacionDemanda entries."
+    )
+    def list(self, request):
+        """List all TPrecalificacionDemanda."""
+        tprecalificacion_demandas = self.tprecalificacion_demanda_repo.get_all()
+        serializer = TPrecalificacionDemandaSerializer(tprecalificacion_demandas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TPrecalificacionDemandaSerializer,
+        responses=TPrecalificacionDemandaSerializer,
+        description="Create a new TPrecalificacionDemanda entry."
+    )
+    def create(self, request):
+        """Create a new TPrecalificacionDemanda."""
+        serializer = TPrecalificacionDemandaSerializer(data=request.data)
+        if serializer.is_valid():
+            tprecalificacion_demanda = self.tprecalificacion_demanda_use_case.create_precalificacion_demanda(**serializer.validated_data)
+            self.tprecalificacion_demanda_repo.create(tprecalificacion_demanda)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TPersonaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tpersona_use_case = TPersonaUseCase()
+        self.tpersona_repo = TPersonaRepository()
+
+    @extend_schema(
+        responses=TPersonaSerializer(many=True),
+        description="Retrieve a list of all TPersona entries."
+    )
+    def list(self, request):
+        """List all TPersona."""
+        tpersonas = self.tpersona_repo.get_all()
+        serializer = TPersonaSerializer(tpersonas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TPersonaSerializer,
+        responses=TPersonaSerializer,
+        description="Create a new TPersona entry."
+    )
+    def create(self, request):
+        """Create a new TPersona."""
+        serializer = TPersonaSerializer(data=request.data)
+        if serializer.is_valid():
+            tpersona = self.tpersona_use_case.create_persona(**serializer.validated_data)
+            self.tpersona_repo.create(tpersona)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TDemandaPersonaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tdemanda_persona_use_case = TDemandaPersonaUseCase()
+        self.tdemanda_persona_repo = TDemandaPersonaRepository()
+
+    @extend_schema(
+        responses=TDemandaPersonaSerializer(many=True),
+        description="Retrieve a list of all TDemandaPersona entries."
+    )
+    def list(self, request):
+        """List all TDemandaPersona."""
+        tdemanda_personas = self.tdemanda_persona_repo.get_all()
+        serializer = TDemandaPersonaSerializer(tdemanda_personas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TDemandaPersonaSerializer,
+        responses=TDemandaPersonaSerializer,
+        description="Create a new TDemandaPersona entry."
+    )
+    def create(self, request):
+        """Create a new TDemandaPersona."""
+        serializer = TDemandaPersonaSerializer(data=request.data)
+        if serializer.is_valid():
+            tdemanda_persona = self.tdemanda_persona_use_case.create_demanda_persona(**serializer.validated_data)
+            self.tdemanda_persona_repo.create(tdemanda_persona)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TInstitucionEducativaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tinstitucion_educativa_use_case = TInstitucionEducativaUseCase()
+        self.tinstitucion_educativa_repo = TInstitucionEducativaRepository()
+
+    @extend_schema(
+        responses=TInstitucionEducativaSerializer(many=True),
+        description="Retrieve a list of all TInstitucionEducativa entries."
+    )
+    def list(self, request):
+        """List all TInstitucionEducativa."""
+        tinstitucion_educativas = self.tinstitucion_educativa_repo.get_all()
+        serializer = TInstitucionEducativaSerializer(tinstitucion_educativas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TInstitucionEducativaSerializer,
+        responses=TInstitucionEducativaSerializer,
+        description="Create a new TInstitucionEducativa entry."
+    )
+    def create(self, request):
+        """Create a new TInstitucionEducativa."""
+        serializer = TInstitucionEducativaSerializer(data=request.data)
+        if serializer.is_valid():
+            tinstitucion_educativa = self.tinstitucion_educativa_use_case.create_institucion_educativa(**serializer.validated_data)
+            self.tinstitucion_educativa_repo.create(tinstitucion_educativa)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TNNyAEducacionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tnnya_educacion_use_case = TNNyAEducacionUseCase()
+        self.tnnya_educacion_repo = TNNyAEducacionRepository()
+
+    @extend_schema(
+        responses=TNNyAEducacionSerializer(many=True),
+        description="Retrieve a list of all TNNyAEducacion entries."
+    )
+    def list(self, request):
+        """List all TNNyAEducacion."""
+        tnnya_educaciones = self.tnnya_educacion_repo.get_all()
+        serializer = TNNyAEducacionSerializer(tnnya_educaciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TNNyAEducacionSerializer,
+        responses=TNNyAEducacionSerializer,
+        description="Create a new TNNyAEducacion entry."
+    )
+    def create(self, request):
+        """Create a new TNNyAEducacion."""
+        serializer = TNNyAEducacionSerializer(data=request.data)
+        if serializer.is_valid():
+            tnnya_educacion = self.tnnya_educacion_use_case.create_nnya_educacion(**serializer.validated_data)
+            self.tnnya_educacion_repo.create(tnnya_educacion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
