@@ -611,3 +611,213 @@ class TNNyAEducacionViewSet(viewsets.ViewSet):
             self.tnnya_educacion_repo.create(tnnya_educacion)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TInstitucionSanitariaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tinstitucion_sanitaria_use_case = TInstitucionSanitariaUseCase()
+        self.tinstitucion_sanitaria_repo = TInstitucionSanitariaRepository()
+
+    @extend_schema(
+        responses=TInstitucionSanitariaSerializer(many=True),
+        description="Retrieve a list of all TInstitucionSanitaria entries."
+    )
+    def list(self, request):
+        """List all TInstitucionSanitaria."""
+        tinstitucion_sanitarias = self.tinstitucion_sanitaria_repo.get_all()
+        serializer = TInstitucionSanitariaSerializer(tinstitucion_sanitarias, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TInstitucionSanitariaSerializer,
+        responses=TInstitucionSanitariaSerializer,
+        description="Create a new TInstitucionSanitaria entry."
+    )
+    def create(self, request):
+        """Create a new TInstitucionSanitaria."""
+        serializer = TInstitucionSanitariaSerializer(data=request.data)
+        if serializer.is_valid():
+            tinstitucion_sanitaria = self.tinstitucion_sanitaria_use_case.create_institucion_sanitaria(**serializer.validated_data)
+            self.tinstitucion_sanitaria_repo.create(tinstitucion_sanitaria)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TNNyAViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tnnya_use_case = TNNyAUseCase()
+        self.tnnya_repo = TNNyARepository()
+
+    @extend_schema(
+        responses=TNNyASerializer(many=True),
+        description="Retrieve a list of all TNNyA entries."
+    )
+    def list(self, request):
+        """List all TNNyA."""
+        tnnyas = self.tnnya_repo.get_all()
+        serializer = TNNyASerializer(tnnyas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TNNyASerializer,
+        responses=TNNyASerializer,
+        description="Create a new TNNyA entry."
+    )
+    def create(self, request):
+        """Create a new TNNyA."""
+        serializer = TNNyASerializer(data=request.data)
+        if serializer.is_valid():
+            tnnya = self.tnnya_use_case.create_nnya(**serializer.validated_data)
+            self.tnnya_repo.create(tnnya)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TCategoriaMotivoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tcategoria_motivo_use_case = TCategoriaMotivoUseCase()
+        self.tcategoria_motivo_repo = TCategoriaMotivoRepository()
+
+    @extend_schema(
+        responses=TCategoriaMotivoSerializer(many=True),
+        description="Retrieve a list of all TCategoriaMotivo entries."
+    )
+    def list(self, request):
+        """List all TCategoriaMotivo."""
+        tcategoria_motivos = self.tcategoria_motivo_repo.get_all()
+        serializer = TCategoriaMotivoSerializer(tcategoria_motivos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TCategoriaMotivoSerializer,
+        responses=TCategoriaMotivoSerializer,
+        description="Create a new TCategoriaMotivo entry."
+    )
+    def create(self, request):
+        """Create a new TCategoriaMotivo."""
+        serializer = TCategoriaMotivoSerializer(data=request.data)
+        if serializer.is_valid():
+            tcategoria_motivo = self.tcategoria_motivo_use_case.create_categoria_motivo(**serializer.validated_data)
+            self.tcategoria_motivo_repo.create(tcategoria_motivo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TCategoriaSubmotivoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tcategoria_submotivo_use_case = TCategoriaSubmotivoUseCase()
+        self.tcategoria_submotivo_repo = TCategoriaSubmotivoRepository()
+
+    @extend_schema(
+        responses=TCategoriaSubmotivoSerializer(many=True),
+        description="Retrieve a list of all TCategoriaSubmotivo entries."
+    )
+    def list(self, request):
+        """List all TCategoriaSubmotivo."""
+        tcategoria_submotivos = self.tcategoria_submotivo_repo.get_all()
+        serializer = TCategoriaSubmotivoSerializer(tcategoria_submotivos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TCategoriaSubmotivoSerializer,
+        responses=TCategoriaSubmotivoSerializer,
+        description="Create a new TCategoriaSubmotivo entry."
+    )
+    def create(self, request):
+        """Create a new TCategoriaSubmotivo."""
+        serializer = TCategoriaSubmotivoSerializer(data=request.data)
+        if serializer.is_valid():
+            tcategoria_submotivo = self.tcategoria_submotivo_use_case.create_categoria_submotivo(**serializer.validated_data)
+            self.tcategoria_submotivo_repo.create(tcategoria_submotivo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TGravedadVulneracionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tgravedad_vulneracion_use_case = TGravedadVulneracionUseCase()
+        self.tgravedad_vulneracion_repo = TGravedadVulneracionRepository()
+
+    @extend_schema(
+        responses=TGravedadVulneracionSerializer(many=True),
+        description="Retrieve a list of all TGravedadVulneracion entries."
+    )
+    def list(self, request):
+        """List all TGravedadVulneracion."""
+        tgravedad_vulneraciones = self.tgravedad_vulneracion_repo.get_all()
+        serializer = TGravedadVulneracionSerializer(tgravedad_vulneraciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TGravedadVulneracionSerializer,
+        responses=TGravedadVulneracionSerializer,
+        description="Create a new TGravedadVulneracion entry."
+    )
+    def create(self, request):
+        """Create a new TGravedadVulneracion."""
+        serializer = TGravedadVulneracionSerializer(data=request.data)
+        if serializer.is_valid():
+            tgravedad_vulneracion = self.tgravedad_vulneracion_use_case.create_gravedad_vulneracion(**serializer.validated_data)
+            self.tgravedad_vulneracion_repo.create(tgravedad_vulneracion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TUrgenciaVulneracionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.turgencia_vulneracion_use_case = TUrgenciaVulneracionUseCase()
+        self.turgencia_vulneracion_repo = TUrgenciaVulneracionRepository()
+
+    @extend_schema(
+        responses=TUrgenciaVulneracionSerializer(many=True),
+        description="Retrieve a list of all TUrgenciaVulneracion entries."
+    )
+    def list(self, request):
+        """List all TUrgenciaVulneracion."""
+        turgencia_vulneraciones = self.turgencia_vulneracion_repo.get_all()
+        serializer = TUrgenciaVulneracionSerializer(turgencia_vulneraciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TUrgenciaVulneracionSerializer,
+        responses=TUrgenciaVulneracionSerializer,
+        description="Create a new TUrgenciaVulneracion entry."
+    )
+    def create(self, request):
+        """Create a new TUrgenciaVulneracion."""
+        serializer = TUrgenciaVulneracionSerializer(data=request.data)
+        if serializer.is_valid():
+            turgencia_vulneracion = self.turgencia_vulneracion_use_case.create_urgencia_vulneracion(**serializer.validated_data)
+            self.turgencia_vulneracion_repo.create(turgencia_vulneracion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TVulneracionViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tvulneracion_use_case = TVulneracionUseCase()
+        self.tvulneracion_repo = TVulneracionRepository()
+
+    @extend_schema(
+        responses=TVulneracionSerializer(many=True),
+        description="Retrieve a list of all TVulneracion entries."
+    )
+    def list(self, request):
+        """List all TVulneracion."""
+        tvulneraciones = self.tvulneracion_repo.get_all()
+        serializer = TVulneracionSerializer(tvulneraciones, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TVulneracionSerializer,
+        responses=TVulneracionSerializer,
+        description="Create a new TVulneracion entry."
+    )
+    def create(self, request):
+        """Create a new TVulneracion."""
+        serializer = TVulneracionSerializer(data=request.data)
+        if serializer.is_valid():
+            tvulneracion = self.tvulneracion_use_case.create_vulneracion(**serializer.validated_data)
+            self.tvulneracion_repo.create(tvulneracion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
