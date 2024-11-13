@@ -821,3 +821,183 @@ class TVulneracionViewSet(viewsets.ViewSet):
             self.tvulneracion_repo.create(tvulneracion)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TInstitucionRespuestaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tinstitucion_respuesta_use_case = TInstitucionRespuestaUseCase()
+        self.tinstitucion_respuesta_repo = TInstitucionRespuestaRepository()
+
+    @extend_schema(
+        responses=TInstitucionRespuestaSerializer(many=True),
+        description="Retrieve a list of all TInstitucionRespuesta entries."
+    )
+    def list(self, request):
+        """List all TInstitucionRespuesta."""
+        tinstitucion_respuestas = self.tinstitucion_respuesta_repo.get_all()
+        serializer = TInstitucionRespuestaSerializer(tinstitucion_respuestas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TInstitucionRespuestaSerializer,
+        responses=TInstitucionRespuestaSerializer,
+        description="Create a new TInstitucionRespuesta entry."
+    )
+    def create(self, request):
+        """Create a new TInstitucionRespuesta."""
+        serializer = TInstitucionRespuestaSerializer(data=request.data)
+        if serializer.is_valid():
+            tinstitucion_respuesta = self.tinstitucion_respuesta_use_case.create_institucion_respuesta(**serializer.validated_data)
+            self.tinstitucion_respuesta_repo.create(tinstitucion_respuesta)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TRespuestaViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.trespuesta_use_case = TRespuestaUseCase()
+        self.trespuesta_repo = TRespuestaRepository()
+
+    @extend_schema(
+        responses=TRespuestaSerializer(many=True),
+        description="Retrieve a list of all TRespuesta entries."
+    )
+    def list(self, request):
+        """List all TRespuesta."""
+        trespuestas = self.trespuesta_repo.get_all()
+        serializer = TRespuestaSerializer(trespuestas, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TRespuestaSerializer,
+        responses=TRespuestaSerializer,
+        description="Create a new TRespuesta entry."
+    )
+    def create(self, request):
+        """Create a new TRespuesta."""
+        serializer = TRespuestaSerializer(data=request.data)
+        if serializer.is_valid():
+            trespuesta = self.trespuesta_use_case.create_respuesta(**serializer.validated_data)
+            self.trespuesta_repo.create(trespuesta)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TDemandaAsignadoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tdemanda_asignado_use_case = TDemandaAsignadoUseCase()
+        self.tdemanda_asignado_repo = TDemandaAsignadoRepository()
+
+    @extend_schema(
+        responses=TDemandaAsignadoSerializer(many=True),
+        description="Retrieve a list of all TDemandaAsignado entries."
+    )
+    def list(self, request):
+        """List all TDemandaAsignado."""
+        tdemanda_asignados = self.tdemanda_asignado_repo.get_all()
+        serializer = TDemandaAsignadoSerializer(tdemanda_asignados, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TDemandaAsignadoSerializer,
+        responses=TDemandaAsignadoSerializer,
+        description="Create a new TDemandaAsignado entry."
+    )
+    def create(self, request):
+        """Create a new TDemandaAsignado."""
+        serializer = TDemandaAsignadoSerializer(data=request.data)
+        if serializer.is_valid():
+            tdemanda_asignado = self.tdemanda_asignado_use_case.create_demanda_asignado(**serializer.validated_data)
+            self.tdemanda_asignado_repo.create(tdemanda_asignado)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TActividadTipoViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tactividad_tipo_use_case = TActividadTipoUseCase()
+        self.tactividad_tipo_repo = TActividadTipoRepository()
+
+    @extend_schema(
+        responses=TActividadTipoSerializer(many=True),
+        description="Retrieve a list of all TActividadTipo entries."
+    )
+    def list(self, request):
+        """List all TActividadTipo."""
+        tactividad_tipos = self.tactividad_tipo_repo.get_all()
+        serializer = TActividadTipoSerializer(tactividad_tipos, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TActividadTipoSerializer,
+        responses=TActividadTipoSerializer,
+        description="Create a new TActividadTipo entry."
+    )
+    def create(self, request):
+        """Create a new TActividadTipo."""
+        serializer = TActividadTipoSerializer(data=request.data)
+        if serializer.is_valid():
+            tactividad_tipo = self.tactividad_tipo_use_case.create_actividad_tipo(**serializer.validated_data)
+            self.tactividad_tipo_repo.create(tactividad_tipo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TInstitucionActividadViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tinstitucion_actividad_use_case = TInstitucionActividadUseCase()
+        self.tinstitucion_actividad_repo = TInstitucionActividadRepository()
+
+    @extend_schema(
+        responses=TInstitucionActividadSerializer(many=True),
+        description="Retrieve a list of all TInstitucionActividad entries."
+    )
+    def list(self, request):
+        """List all TInstitucionActividad."""
+        tinstitucion_actividades = self.tinstitucion_actividad_repo.get_all()
+        serializer = TInstitucionActividadSerializer(tinstitucion_actividades, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TInstitucionActividadSerializer,
+        responses=TInstitucionActividadSerializer,
+        description="Create a new TInstitucionActividad entry."
+    )
+    def create(self, request):
+        """Create a new TInstitucionActividad."""
+        serializer = TInstitucionActividadSerializer(data=request.data)
+        if serializer.is_valid():
+            tinstitucion_actividad = self.tinstitucion_actividad_use_case.create_institucion_actividad(**serializer.validated_data)
+            self.tinstitucion_actividad_repo.create(tinstitucion_actividad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TActividadViewSet(viewsets.ViewSet):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.tactividad_use_case = TActividadUseCase()
+        self.tactividad_repo = TActividadRepository()
+
+    @extend_schema(
+        responses=TActividadSerializer(many=True),
+        description="Retrieve a list of all TActividad entries."
+    )
+    def list(self, request):
+        """List all TActividad."""
+        tactividades = self.tactividad_repo.get_all()
+        serializer = TActividadSerializer(tactividades, many=True)
+        return Response(serializer.data)
+
+    @extend_schema(
+        request=TActividadSerializer,
+        responses=TActividadSerializer,
+        description="Create a new TActividad entry."
+    )
+    def create(self, request):
+        """Create a new TActividad."""
+        serializer = TActividadSerializer(data=request.data)
+        if serializer.is_valid():
+            tactividad = self.tactividad_use_case.create_actividad(**serializer.validated_data)
+            self.tactividad_repo.create(tactividad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

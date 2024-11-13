@@ -4,6 +4,7 @@ from api.views import (
     TLocalizacionViewSet , TVinculoUsuarioLineaViewSet, TInstitucionUsuarioLineaViewSet, TCargoViewSet , TResponsableViewSet, TUsuarioLineaViewSet
     , TDemandaViewSet, TPrecalificacionDemandaViewSet, TPersonaViewSet, TDemandaPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet
     , TInstitucionSanitariaViewSet, TNNyAViewSet, TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TVulneracionViewSet
+    , TInstitucionRespuestaViewSet, TRespuestaViewSet, TDemandaAsignadoViewSet, TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet
 )
 
 router = DefaultRouter()
@@ -32,5 +33,11 @@ router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='ca
 router.register(r'gravedad-vulneracion', TGravedadVulneracionViewSet, basename='gravedad-vulneracion')
 router.register(r'urgencia-vulneracion', TUrgenciaVulneracionViewSet, basename='urgencia-vulneracion')
 router.register(r'vulneracion', TVulneracionViewSet, basename='vulneracion')
+router.register(r'institucion-respuesta', TInstitucionRespuestaViewSet, basename='institucion-respuesta')
+router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
+router.register(r'demanda-asignado', TDemandaAsignadoViewSet, basename='demanda-asignado')
+router.register(r'actividades-tipo', TActividadTipoViewSet, basename='actividades-tipo')
+router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
+router.register(r'actividades', TActividadViewSet, basename='actividades')
 
 urlpatterns = router.urls
