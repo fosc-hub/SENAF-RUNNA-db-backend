@@ -144,7 +144,7 @@ class TDemandaRepository:
     def get_all(self):
         """Retrieve all Demanda entries from the database."""
         demandas = TDemanda.objects.all()
-        return [Demanda(d.fecha_ingreso, d.hora_ingreso, d.origen, d.nro_notificacion_102, d.nro_sac, d.nro_suac, d.nro_historia_clinica, d.nro_oficio_web, d.descripcion, d.ultima_actualizacion, d.localizacion, d.usuario_linea) for d in demandas]
+        return [Demanda(d.fecha_ingreso, d.hora_ingreso, d.origen, d.localizacion, d.usuario_linea, d.ultima_actualizacion, d.nro_notificacion_102, d.nro_sac, d.nro_suac, d.nro_historia_clinica, d.nro_oficio_web, d.descripcion) for d in demandas]
 
 class TPrecalificacionDemandaRepository:
     def create(self, precalificacion_demanda: PrecalificacionDemanda):

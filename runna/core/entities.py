@@ -91,7 +91,7 @@ class UsuarioLinea:
         self.telefono = telefono
 
 class Demanda:
-    def __init__(self, fecha_ingreso: str, hora_ingreso: str, origen: str, localizacion: Localizacion, usuario_linea: UsuarioLinea, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None):
+    def __init__(self, fecha_ingreso: str, hora_ingreso: str, origen: str, localizacion: Localizacion, usuario_linea: UsuarioLinea, ultima_actualizacion: str, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None):
         self.fecha_ingreso = fecha_ingreso
         self.hora_ingreso = hora_ingreso
         self.origen = origen
@@ -101,6 +101,7 @@ class Demanda:
         self.nro_sac = nro_sac
         self.nro_suac = nro_suac
         self.nro_historia_clinica = nro_historia_clinica
+        self.ultima_actualizacion = ultima_actualizacion
         self.nro_oficio_web = nro_oficio_web
         self.descripcion = descripcion
 
