@@ -64,7 +64,7 @@ class TLocalizacion(models.Model):
         ('AVENIDA', 'Avenida'),
         ('PASAJE', 'Pasaje'),
         ('RUTA', 'Ruta'),
-        ('BOULEVAR', 'Boulevard'),
+        ('BOULEVARD', 'Boulevard'),
         ('OTRO', 'Otro')
     ]
     tipo_calle = models.CharField(max_length=10, choices=tipo_calle_choices, null=False, blank=False)
