@@ -1,0 +1,1 @@
+from .localizacion import TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
