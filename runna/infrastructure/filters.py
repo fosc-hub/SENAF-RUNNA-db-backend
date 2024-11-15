@@ -11,6 +11,7 @@ class TProvinciaFilter(filters.FilterSet):
 class TDepartamentoFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')
     provincia = filters.NumberFilter(field_name='provincia__id')
+    provincia__nombre = filters.CharFilter(field_name='provincia__nombre', lookup_expr='icontains')
 
     class Meta:
         model = TDepartamento
@@ -19,6 +20,7 @@ class TDepartamentoFilter(filters.FilterSet):
 class TLocalidadFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')
     departamento = filters.NumberFilter(field_name='departamento__id')
+    departamento__nombre = filters.CharFilter(field_name='departamento__nombre', lookup_expr='icontains')
 
     class Meta:
         model = TLocalidad
@@ -27,6 +29,7 @@ class TLocalidadFilter(filters.FilterSet):
 class TBarrioFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')
     localidad = filters.NumberFilter(field_name='localidad__id')
+    localidad__nombre = filters.CharFilter(field_name='localidad__nombre', lookup_expr='icontains')
 
     class Meta:
         model = TBarrio
@@ -35,6 +38,7 @@ class TBarrioFilter(filters.FilterSet):
 class TCPCFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')
     localidad = filters.NumberFilter(field_name='localidad__id')
+    localidad__nombre = filters.CharFilter(field_name='localidad__nombre', lookup_expr='icontains')
 
     class Meta:
         model = TCPC
@@ -42,7 +46,16 @@ class TCPCFilter(filters.FilterSet):
 
 class TLocalizacionFilter(filters.FilterSet):
     calle = filters.CharFilter(lookup_expr='icontains')
+    tipo_calle = filters.CharFilter(lookup_expr='icontains')
+    
     localidad = filters.NumberFilter(field_name='localidad__id')
+    localidad__nombre = filters.CharFilter(field_name='localidad__nombre', lookup_expr='icontains')
+    
+    barrio = filters.NumberFilter(field_name='barrio__id')
+    barrio__nombre = filters.CharFilter(field_name='barrio__nombre', lookup_expr='icontains')
+    
+    cpc = filters.NumberFilter(field_name='cpc__id')
+    cpc__nombre = filters.CharFilter(field_name='cpc__nombre', lookup_expr='icontains')
 
     class Meta:
         model = TLocalizacion
