@@ -40,7 +40,7 @@ from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 
 from core.use_cases import (
-    CustomUserUseCase, TProvinciaUseCase, TDepartamentoUseCase, TLocalidadUseCase, TBarrioUseCase, TCPCUseCase, TLocalizacionUseCase
+    UserUseCase, TProvinciaUseCase, TDepartamentoUseCase, TLocalidadUseCase, TBarrioUseCase, TCPCUseCase, TLocalizacionUseCase
     , TVinculoUsuarioLineaUseCase, TInstitucionUsuarioLineaUseCase, TCargoUseCase, TResponsableUseCase, TUsuarioLineaUseCase
     , TDemandaUseCase, TPrecalificacionDemandaUseCase, TPersonaUseCase, TDemandaPersonaUseCase, TInstitucionEducativaUseCase, TNNyAEducacionUseCase
     , TInstitucionSanitariaUseCase, TNNyAUseCase, TCategoriaMotivoUseCase, TCategoriaSubmotivoUseCase, TGravedadVulneracionUseCase, TUrgenciaVulneracionUseCase, TVulneracionUseCase
@@ -51,7 +51,7 @@ from core.use_cases import (
 )
 
 from api.serializers import (
-    CustomUserSerializer, TProvinciaSerializer, TDepartamentoSerializer, TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer
+    UserSerializer, TProvinciaSerializer, TDepartamentoSerializer, TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer
     , TVinculoUsuarioLineaSerializer, TInstitucionUsuarioLineaSerializer, TCargoSerializer, TResponsableSerializer, TUsuarioLineaSerializer
     , TDemandaSerializer, TPrecalificacionDemandaSerializer, TPersonaSerializer, TDemandaPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer
     , TInstitucionSanitariaSerializer, TNNyASerializer, TCategoriaMotivoSerializer, TCategoriaSubmotivoSerializer, TGravedadVulneracionSerializer, TUrgenciaVulneracionSerializer, TVulneracionSerializer
@@ -62,7 +62,7 @@ from api.serializers import (
 )
 
 from infrastructure.repositories import (
-    CustomUserRepository, TProvinciaRepository, TDepartamentoRepository, TLocalidadRepository, TBarrioRepository, TCPCRepository, TLocalizacionRepository
+    UserRepository, TProvinciaRepository, TDepartamentoRepository, TLocalidadRepository, TBarrioRepository, TCPCRepository, TLocalizacionRepository
     , TVinculoUsuarioLineaRepository, TInstitucionUsuarioLineaRepository, TCargoRepository, TResponsableRepository, TUsuarioLineaRepository
     , TDemandaRepository, TPrecalificacionDemandaRepository, TPersonaRepository, TDemandaPersonaRepository, TInstitucionEducativaRepository, TNNyAEducacionRepository
     , TInstitucionSanitariaRepository, TNNyARepository, TCategoriaMotivoRepository, TCategoriaSubmotivoRepository, TGravedadVulneracionRepository, TUrgenciaVulneracionRepository, TVulneracionRepository
@@ -72,30 +72,30 @@ from infrastructure.repositories import (
     , TNNyACondicionesVulnerabilidadRepository, TMotivoIntervencionRepository, TNNyAMotivoIntervencionRepository
 )
 
-class CustomUserViewSet(viewsets.ViewSet):
+class UserViewSet(viewsets.ViewSet):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.custom_user_use_case = CustomUserUseCase()
-        self.custom_user_repo = CustomUserRepository()
+        self.custom_user_use_case = UserUseCase()
+        self.custom_user_repo = UserRepository()
 
     @extend_schema(
-        responses=CustomUserSerializer(many=True),
-        description="Retrieve a list of all CustomUser entries."
+        responses=UserSerializer(many=True),
+        description="Retrieve a list of all User entries."
     )
     def list(self, request):
-        """List all CustomUser."""
+        """List all User."""
         custom_users = self.custom_user_repo.get_all()
-        serializer = CustomUserSerializer(custom_users, many=True)
+        serializer = UserSerializer(custom_users, many=True)
         return Response(serializer.data)
 
     @extend_schema(
-        request=CustomUserSerializer,
-        responses=CustomUserSerializer,
-        description="Create a new CustomUser entry."
+        request=UserSerializer,
+        responses=UserSerializer,
+        description="Create a new User entry."
     )
     def create(self, request):
-        """Create a new CustomUser."""
-        serializer = CustomUserSerializer(data=request.data)
+        """Create a new User."""
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             custom_user = self.custom_user_use_case.create_custom_user(**serializer.validated_data)
             self.custom_user_repo.create(custom_user)

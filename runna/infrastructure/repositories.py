@@ -1,5 +1,5 @@
 from infrastructure.models import (
-    CustomUser, TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
+    User, TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
     , TVinculoUsuarioLinea, TInstitucionUsuarioLinea, TCargo, TResponsable, TUsuarioLinea
     , TDemanda, TPrecalificacionDemanda, TPersona, TDemandaPersona, TInstitucionEducativa, TNNyAEducacion
     , TInstitucionSanitaria, TNNyA, TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TVulneracion
@@ -9,7 +9,7 @@ from infrastructure.models import (
     , TNNyACondicionesVulnerabilidad, TMotivoIntervencion, TNNyAMotivoIntervencion
 )
 from core.entities import (
-    CPC, Cargo, CustomUser, Departamento, InstitucionUsuarioLinea, Provincia, Localidad, Barrio, Localizacion, Responsable, UsuarioLinea, Demanda, PrecalificacionDemanda, Persona
+    CPC, Cargo, User, Departamento, InstitucionUsuarioLinea, Provincia, Localidad, Barrio, Localizacion, Responsable, UsuarioLinea, Demanda, PrecalificacionDemanda, Persona
     , DemandaPersona, NNyA, NNyAEducacion, InstitucionEducativa, InstitucionSanitaria, CategoriaMotivo, CategoriaSubmotivo
     , GravedadVulneracion, UrgenciaVulneracion, VinculoUsuarioLinea, Vulneracion, InstitucionRespuesta, Respuesta, DemandaAsignado, ActividadTipo
     , InstitucionActividad, Actividad, DemandaVinculada, Legajo, LegajoAsignado, IndicadoresValoracion, Evaluaciones, Decision
@@ -38,9 +38,9 @@ class ProductRepository:
         return [Product(p.name, p.description, p.price) for p in products]
 '''
 
-class CustomUserRepository:
-    def create(self, user: CustomUser):
-        CustomUser.objects.create(
+class UserRepository:
+    def create(self, user: User):
+        User.objects.create(
             username=user.username,
             email=user.email,
             fecha_nacimiento=user.fecha_nacimiento,
@@ -49,8 +49,8 @@ class CustomUserRepository:
         )
 
     def get_all(self):
-        users = CustomUser.objects.all()
-        return [CustomUser(u.username, u.email, u.fecha_nacimiento, u.genero, u.telefono) for u in users]
+        users = User.objects.all()
+        return [User(u.username, u.email, u.fecha_nacimiento, u.genero, u.telefono) for u in users]
 
 class TProvinciaRepository:
     def create(self, provincia: Provincia):

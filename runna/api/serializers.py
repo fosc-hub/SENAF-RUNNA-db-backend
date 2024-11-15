@@ -8,7 +8,7 @@ class ProductSerializer(serializers.Serializer):
 
 from rest_framework import serializers
 from infrastructure.models import (
-    CustomUser, TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
+    User, TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
     , TVinculoUsuarioLinea, TInstitucionUsuarioLinea, TCargo, TResponsable, TUsuarioLinea
     , TDemanda, TPrecalificacionDemanda, TPersona, TDemandaPersona, TInstitucionEducativa, TNNyAEducacion
     , TInstitucionSanitaria, TNNyA, TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TVulneracion
@@ -17,9 +17,9 @@ from infrastructure.models import (
     , TVinculo, TVinculoPersonaPersona, TVinculoPersonaNNyA, TScore, TCondicionesVulnerabilidad
     , TNNyACondicionesVulnerabilidad, TMotivoIntervencion, TNNyAMotivoIntervencion
 )
-class CustomUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = User
         fields = '__all__'
 
 class TProvinciaSerializer(serializers.ModelSerializer):

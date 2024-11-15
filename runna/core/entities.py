@@ -13,7 +13,7 @@ class Product:
 
 '''
 
-class CustomUser:
+class User:
     def __init__(self, username: str, email: str, fecha_nacimiento: str = None, genero: str = None, telefono: int = None):
         self.username = username
         self.email = email
@@ -210,7 +210,7 @@ class Decision:
         self.demanda = demanda
 
 class DemandaAsignado:
-    def __init__(self, demanda: Demanda, user: CustomUser, esta_activo: bool = True, recibido: bool = False, comentarios: str = None):
+    def __init__(self, demanda: Demanda, user: User, esta_activo: bool = True, recibido: bool = False, comentarios: str = None):
         self.demanda = demanda
         self.user = user
         self.esta_activo = esta_activo
@@ -258,7 +258,7 @@ class Legajo:
         self.nnya = nnya
 
 class LegajoAsignado:
-    def __init__(self, legajo: Legajo, user: CustomUser, esta_activo: bool = True, recibido: bool = False):
+    def __init__(self, legajo: Legajo, user: User, esta_activo: bool = True, recibido: bool = False):
         self.legajo = legajo
         self.user = user
         self.esta_activo = esta_activo

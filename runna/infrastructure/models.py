@@ -1,23 +1,6 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 from simple_history.models import HistoricalRecords
-
-
-class CustomUser(AbstractUser):
-    """Custom user model with additional fields."""
-    fecha_nacimiento = models.DateField(null=True, blank=True)
-    genero_choices = [
-        ('MASCULINO', 'Masculino'),
-        ('FEMENINO', 'Femenino'),
-        ('OTRO', 'Otro')
-    ]
-    genero = models.CharField(max_length=10, choices=genero_choices)
-    telefono = models.IntegerField(null=True, blank=True)
-
-    history = HistoricalRecords()
-
-    def __str__(self):
-        return f"{self.username} ({self.email})"
 
 class TProvincia(models.Model):
     nombre = models.CharField(max_length=255)
@@ -271,7 +254,7 @@ class TResponsable(models.Model):
 
 class TDemandaAsignado(models.Model):
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
     comentarios = models.TextField(null=True, blank=True)
@@ -316,7 +299,7 @@ class TDemandaVinculada(models.Model):
 
 class TLegajoAsignado(models.Model):
     legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
 

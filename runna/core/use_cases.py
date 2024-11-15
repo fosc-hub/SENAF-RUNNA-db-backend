@@ -16,7 +16,7 @@ class ProductUseCase:
 '''
 
 from core.entities import (
-    CustomUser, ActividadTipo, CategoriaMotivo, CategoriaSubmotivo, Decision, DemandaAsignado, DemandaPersona, GravedadVulneracion
+    User, ActividadTipo, CategoriaMotivo, CategoriaSubmotivo, Decision, DemandaAsignado, DemandaPersona, GravedadVulneracion
     , InstitucionActividad, InstitucionEducativa, InstitucionRespuesta, InstitucionSanitaria, NNyA, NNyAEducacion, Provincia
     , Departamento, Localidad, Barrio, CPC, Localizacion, InstitucionUsuarioLinea, UrgenciaVulneracion, VinculoUsuarioLinea
     , Cargo, Responsable, UsuarioLinea, Demanda, PrecalificacionDemanda, Persona, Vulneracion
@@ -25,9 +25,9 @@ from core.entities import (
     , MotivoIntervencion, NNyAMotivoIntervencion, VinculoPersonaPersona
     )
 
-class CustomUserUseCase:
+class UserUseCase:
     def create_custom_user(self, username, email, fecha_nacimiento=None, genero=None, elefono=None):
-        return CustomUser(username, email, fecha_nacimiento, genero, elefono)
+        return User(username, email, fecha_nacimiento, genero, elefono)
 
 class TProvinciaUseCase:
     def create_provincia(self, nombre):

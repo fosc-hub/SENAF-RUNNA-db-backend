@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from api.views import (
-    CustomUserViewSet, TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet,
+    UserViewSet, TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet,
     TLocalizacionViewSet , TVinculoUsuarioLineaViewSet, TInstitucionUsuarioLineaViewSet, TCargoViewSet , TResponsableViewSet, TUsuarioLineaViewSet
     , TDemandaViewSet, TPrecalificacionDemandaViewSet, TPersonaViewSet, TDemandaPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet
     , TInstitucionSanitariaViewSet, TNNyAViewSet, TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TVulneracionViewSet
@@ -11,7 +11,7 @@ from api.views import (
 )
 
 router = DefaultRouter()
-router.register(r'user', CustomUserViewSet, basename='user')
+router.register(r'user', UserViewSet, basename='user')
 router.register(r'provincias', TProvinciaViewSet, basename='provincias')
 router.register(r'departamentos', TDepartamentoViewSet, basename='departamentos')
 router.register(r'localidades', TLocalidadViewSet, basename='localidades')

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
+from django.contrib.auth.admin import UserAdmin
 
 from django.apps import apps
 
