@@ -35,6 +35,8 @@ class Command(BaseCommand):
                         obj_data[field.name] = fake.text()
                     elif field.get_internal_type() == 'IntegerField':
                         obj_data[field.name] = random.randint(1, 100)
+                    elif field.get_internal_type() == 'FloatField':
+                        obj_data[field.name] = random.uniform(1, 100)
                     elif field.get_internal_type() == 'BooleanField':
                         obj_data[field.name] = random.choice([True, False])
                     elif field.get_internal_type() == 'DateField':

@@ -7,6 +7,15 @@
         "TLocalidad",
         "TBarrio",
         "TCPC",
-        "TLocalizacion"
+        "TLocalizacion",
+
+        "TInstitucionUsuarioExterno",
+        "TVinculoUsuarioExterno",
+        "TCargoExterno",
+        "TResponsableExterno",
+        "TUsuarioExterno",
+        "TDemanda",
+        "TPrecalificacionDemanda",
+        "TScoreDemanda"
     ]
 }
