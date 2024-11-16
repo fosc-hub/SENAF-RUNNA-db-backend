@@ -5,11 +5,31 @@ from django.contrib.auth.admin import UserAdmin
 
 from django.apps import apps
 
+from infrastructure.models import CustomUser
+
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin):
+    """Admin for managing users with roles and permissions."""
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono')}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono')}),
+    )
+
+    list_display = ('username', 'email', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'groups')
+    search_fields = ('username', 'email')
+    ordering = ('email',)
+
+
 # Get all models from your app
 models = apps.get_models()
 
 for model in models:
     try:
+        if model == CustomUser:
+            continue
         admin.site.register(model)
     except admin.sites.AlreadyRegistered:
         pass  # Skip already registered models

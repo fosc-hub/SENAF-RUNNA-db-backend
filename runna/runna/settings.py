@@ -159,7 +159,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # settings.py
-# AUTH_USER_MODEL = 'infrastructure.CustomUser'
+AUTH_USER_MODEL = 'infrastructure.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Use drf-spectacular schema
@@ -175,6 +175,6 @@ SPECTACULAR_SETTINGS = {
     'SCHEMA_PATH_PREFIX': r'/api',  # Adjust based on your endpoint structure
 }
 
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
-# ]
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
