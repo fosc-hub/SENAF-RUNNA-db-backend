@@ -2,6 +2,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 
+
 # The following models are used to represent the location of a user in the system.
 class TProvincia(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
