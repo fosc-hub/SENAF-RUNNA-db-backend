@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
-from infrastructure.models import User
+from infrastructure.models import CustomUser
 
 class Command(BaseCommand):
     help = 'Sets up the project by making migrations, migrating, and creating a superuser'
@@ -18,9 +18,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Migrations applied successfully.'))
 
             # Step 3: Create superuser
-            if not User.objects.filter(username='admin').exists():
+            if not CustomUser.objects.filter(username='admin').exists():
                 self.stdout.write('Creating superuser...')
-                User.objects.create_superuser(
+                CustomUser.objects.create_superuser(
                     username='admin',
                     email='admin@gmail.com',
                     password='pepe1234'

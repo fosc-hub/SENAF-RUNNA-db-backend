@@ -7,10 +7,6 @@ class ProductSerializer(serializers.Serializer):
 '''
 
 from rest_framework import serializers
-from infrastructure.models import (
-    TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
-)
-
 from infrastructure.models import CustomUser
 from django.contrib.auth.models import Group, Permission
 
@@ -46,34 +42,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
         # Collect both direct and group permissions
         permissions = obj.user_permissions.all() | Permission.objects.filter(group__user=obj)
         return PermissionSerializer(permissions, many=True).data
-
-
-class TProvinciaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TProvincia
-        fields = '__all__'
-
-class TDepartamentoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDepartamento
-        fields = '__all__'
-
-class TLocalidadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TLocalidad
-        fields = '__all__'
-
-class TBarrioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TBarrio
-        fields = '__all__'
-
-class TCPCSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TCPC
-        fields = '__all__'
-
-class TLocalizacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TLocalizacion
-        fields = '__all__'
