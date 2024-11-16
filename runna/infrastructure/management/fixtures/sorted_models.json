@@ -1,5 +1,7 @@
 {
     "models": [
+        "CustomUser",
+
         "TProvincia",
         "TDepartamento",
         "TLocalidad",
