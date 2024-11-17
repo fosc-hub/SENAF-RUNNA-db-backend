@@ -279,6 +279,36 @@ class TDemandaViewSet(viewsets.ViewSet):
             raise NotFound(f"TDemanda with ID {pk} not found.")
         serializer = TDemandaSerializer(obj)
         return Response(serializer.data)
+    
+    @extend_schema(
+        request=TDemandaSerializer,
+        responses=TDemandaSerializer,
+        description="Create a new TDemanda"
+    )
+    def create(self, request):
+        """Create a new TDemanda."""
+        serializer = TDemandaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @extend_schema(
+        request=TDemandaSerializer,
+        responses=TDemandaSerializer,
+        description="Partially update an existing TDemanda"
+    )
+    def partial_update(self, request, pk=None):
+        """Partially update an existing TDemanda."""
+        try:
+            obj = TDemanda.objects.get(pk=pk)
+        except TDemanda.DoesNotExist:
+            raise NotFound(f"TDemanda with ID {pk} not found.")
+        serializer = TDemandaSerializer(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def filter_queryset(self, queryset):
         """Applies filters to the queryset."""
