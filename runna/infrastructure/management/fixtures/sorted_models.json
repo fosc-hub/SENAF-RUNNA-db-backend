@@ -24,6 +24,7 @@
         "TInstitucionSanitaria",
         "TNNyASalud",
         "TNNyAScore",
+        "TLegajo",
 
         "TCategoriaMotivo",
         "TCategoriaSubmotivo",
@@ -32,6 +33,16 @@
         "TVulneracion",
 
         "TCondicionesVulnerabilidad",
-        "TMotivoIntervencion"
+        "TMotivoIntervencion",
+
+        "TLocalizacionPersona",
+        "TDemandaPersona",
+        "TDemandaAsignado",
+        "TDemandaVinculada",
+        "TLegajoAsignado",
+        "TVinculoPersona",
+        "TVinculoPersonaPersona",
+        "TDemandaMotivoIntervencion",
+        "TPersonaCondicionesVulnerabilidad"
     ]
 }
