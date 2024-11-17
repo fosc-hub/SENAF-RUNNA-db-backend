@@ -10,6 +10,7 @@ TNNyAEducacion
 TInstitucionSanitaria
 TNNyASalud
 TNNyAScore
+TLegajo
 """
 
 class TPersona(models.Model):
@@ -137,3 +138,13 @@ class TNNyAScore(models.Model):
         verbose_name = _('Score del NNyA')
         verbose_name_plural = _('Scores de los NNyAs')
 
+class TLegajo(models.Model):
+    info_legajo = models.TextField()
+    nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+
+    history = HistoricalRecords()
+    
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Legajo')
+        verbose_name_plural = _('Legajos')

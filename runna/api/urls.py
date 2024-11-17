@@ -6,7 +6,7 @@ from api.views import (
     TCargoExternoViewSet, TResponsableExternoViewSet, TUsuarioExternoViewSet,
     TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 )
-from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet
+from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
 from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
 
 router = DefaultRouter()
@@ -33,6 +33,7 @@ router.register(r'nnya-educacion', TNNyAEducacionViewSet, basename='nnya-educaci
 router.register(r'institucion-sanitaria', TInstitucionSanitariaViewSet, basename='institucion-sanitaria')
 router.register(r'nnya-salud', TNNyASaludViewSet, basename='nnya-salud')
 router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
+router.register(r'legajo', TLegajoViewSet, basename='legajo')
 
 router.register(r'categoria-motivo', TCategoriaMotivoViewSet, basename='categoria-motivo')
 router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='categoria-submotivo')

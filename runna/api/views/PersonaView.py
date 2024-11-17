@@ -3,13 +3,13 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore
+    TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo
 )
 from api.serializers import (
-    TPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer, TInstitucionSanitariaSerializer, TNNyASaludSerializer, TNNyAScoreSerializer
+    TPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer, TInstitucionSanitariaSerializer, TNNyASaludSerializer, TNNyAScoreSerializer, TLegajoSerializer
 )
 from infrastructure.filters import (
-    TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter
+    TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter
 )
 
 class TPersonaViewSet(BaseViewSet):
@@ -181,6 +181,35 @@ class TNNyAScoreViewSet(BaseViewSet):
     @extend_schema(
         responses=TNNyAScoreSerializer,
         description="Retrieve a single TNNyAScore entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+class TLegajoViewSet(BaseViewSet):
+    model = TLegajo
+    serializer_class = TLegajoSerializer
+    filterset_class = TLegajoFilter
+    
+    http_method_names = ['get', 'patch' ] # Only allow GET and PATCH requests
+
+    @extend_schema(
+        request=TLegajoSerializer,
+        responses=TLegajoSerializer,
+        description="Partially update an existing TLegajo entry"
+    )
+    def partial_update(self, request, pk=None):
+        return super().partial_update(request, pk=pk)
+
+    @extend_schema(
+        responses=TLegajoSerializer(many=True),
+        description="Retrieve a list of TLegajo entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TLegajoSerializer,
+        description="Retrieve a single TLegajo entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

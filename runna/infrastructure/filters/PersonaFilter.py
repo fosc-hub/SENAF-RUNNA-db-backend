@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLocalizacion
+from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLocalizacion, TLegajo
 
 
 class TPersonaFilter(filters.FilterSet):
@@ -71,3 +71,12 @@ class TNNyAScoreFilter(filters.FilterSet):
     class Meta:
         model = TNNyAScore
         fields = ['score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivo_intervencion', 'nnya']
+
+
+class TLegajoFilter(filters.FilterSet):
+    info_legajo = filters.CharFilter(lookup_expr='icontains')
+    nnya = filters.ModelChoiceFilter(queryset=TPersona.objects.all())
+
+    class Meta:
+        model = TLegajo
+        fields = ['info_legajo', 'nnya']

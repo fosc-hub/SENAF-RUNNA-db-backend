@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore
+from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo
 
 class TPersonaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,3 +41,13 @@ class TNNyAScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = TNNyAScore
         fields = '__all__'
+
+class TLegajoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TLegajo
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        if 'nnya' in validated_data:
+            raise serializers.ValidationError({"nnya": "This field cannot be updated."})
+        return super().update(instance, validated_data)
