@@ -123,6 +123,7 @@ class TCargoExternoViewSet(viewsets.ViewSet):
         filter_backend = DjangoFilterBackend()
         return filter_backend.filter_queryset(self.request, queryset, self)
 
+
 class TResponsableExternoViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = TResponsableExternoFilter
@@ -150,6 +151,36 @@ class TResponsableExternoViewSet(viewsets.ViewSet):
             raise NotFound(f"TResponsableExterno with ID {pk} not found.")
         serializer = TResponsableExternoSerializer(obj)
         return Response(serializer.data)
+    
+    @extend_schema(
+        request=TResponsableExternoSerializer,
+        responses=TResponsableExternoSerializer,
+        description="Create a new TResponsableExterno"
+    )
+    def create(self, request):
+        """Create a new TResponsableExterno."""
+        serializer = TResponsableExternoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @extend_schema(
+        request=TResponsableExternoSerializer,
+        responses=TResponsableExternoSerializer,
+        description="Partially update an existing TResponsableExterno"
+    )
+    def partial_update(self, request, pk=None):
+        """Partially update an existing TResponsableExterno."""
+        try:
+            obj = TResponsableExterno.objects.get(pk=pk)
+        except TResponsableExterno.DoesNotExist:
+            raise NotFound(f"TResponsableExterno with ID {pk} not found.")
+        serializer = TResponsableExternoSerializer(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def filter_queryset(self, queryset):
         """Applies filters to the queryset."""
