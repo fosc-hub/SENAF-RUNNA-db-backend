@@ -16,6 +16,13 @@
         "TUsuarioExterno",
         "TDemanda",
         "TPrecalificacionDemanda",
-        "TScoreDemanda"
+        "TScoreDemanda",
+
+        "TPersona",
+        "TInstitucionEducativa",
+        "TNNyAEducacion",
+        "TInstitucionSanitaria",
+        "TNNyASalud",
+        "TNNyAScore"
     ]
 }
