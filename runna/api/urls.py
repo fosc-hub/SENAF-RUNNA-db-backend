@@ -9,6 +9,7 @@ from api.views import (
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
 from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
 from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet
+from api.views import TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet, TInstitucionRespuestaViewSet, TRespuestaViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -53,5 +54,14 @@ router.register(r'vinculo-persona', TVinculoPersonaViewSet, basename='vinculo-pe
 router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basename='vinculo-persona-persona')
 router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSet, basename='demanda-motivo-intervencion')
 router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
+
+router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
+router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
+router.register(r'actividad', TActividadViewSet, basename='actividad')
+router.register(r'institucion-respuesta', TInstitucionRespuestaViewSet, basename='institucion-respuesta')
+router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
+router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
+router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')
+router.register(r'decision', TDecisionViewSet, basename='decision')
 
 urlpatterns = router.urls
