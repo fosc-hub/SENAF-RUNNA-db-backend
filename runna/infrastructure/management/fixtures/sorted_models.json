@@ -23,6 +23,15 @@
         "TNNyAEducacion",
         "TInstitucionSanitaria",
         "TNNyASalud",
-        "TNNyAScore"
+        "TNNyAScore",
+
+        "TCategoriaMotivo",
+        "TCategoriaSubmotivo",
+        "TGravedadVulneracion",
+        "TUrgenciaVulneracion",
+        "TVulneracion",
+
+        "TCondicionesVulnerabilidad",
+        "TMotivoIntervencion"
     ]
 }
