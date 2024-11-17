@@ -215,39 +215,36 @@ class TUsuarioExternoViewSet(viewsets.ViewSet):
             raise NotFound(f"TUsuarioExterno with ID {pk} not found.")
         serializer = TUsuarioExternoSerializer(obj)
         return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
-
-class TUsuarioExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = TUsuarioExternoFilter
-
+    
     @extend_schema(
-        responses=TUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of all TUsuarioExterno entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TUsuarioExterno."""
-        queryset = TUsuarioExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TUsuarioExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(
+        request=TUsuarioExternoSerializer,
         responses=TUsuarioExternoSerializer,
-        description="Retrieve a single TUsuarioExterno"
+        description="Create a new TUsuarioExterno"
     )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TUsuarioExterno."""
+    def create(self, request):
+        """Create a new TUsuarioExterno."""
+        serializer = TUsuarioExternoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @extend_schema(
+        request=TUsuarioExternoSerializer,
+        responses=TUsuarioExternoSerializer,
+        description="Partially update an existing TUsuarioExterno"
+    )
+    def partial_update(self, request, pk=None):
+        """Partially update an existing TUsuarioExterno."""
         try:
             obj = TUsuarioExterno.objects.get(pk=pk)
         except TUsuarioExterno.DoesNotExist:
             raise NotFound(f"TUsuarioExterno with ID {pk} not found.")
-        serializer = TUsuarioExternoSerializer(obj)
-        return Response(serializer.data)
+        serializer = TUsuarioExternoSerializer(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def filter_queryset(self, queryset):
         """Applies filters to the queryset."""
