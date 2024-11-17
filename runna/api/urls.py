@@ -8,6 +8,7 @@ from api.views import (
 )
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
 from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
+from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -42,5 +43,15 @@ router.register(r'urgencia-vulneracion', TUrgenciaVulneracionViewSet, basename='
 router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
 router.register(r'motivo-intervencion', TMotivoIntervencionViewSet, basename='motivo-intervencion')
 router.register(r'vulneracion', TVulneracionViewSet, basename='vulneracion')
+
+router.register(r'localizacion-persona', TLocalizacionPersonaViewSet, basename='localizacion-persona')
+router.register(r'demanda-persona', TDemandaPersonaViewSet, basename='demanda-persona')
+router.register(r'demanda-asignado', TDemandaAsignadoViewSet, basename='demanda-asignado')
+router.register(r'demanda-vinculada', TDemandaVinculadaViewSet, basename='demanda-vinculada')
+router.register(r'legajo-asignado', TLegajoAsignadoViewSet, basename='legajo-asignado')
+router.register(r'vinculo-persona', TVinculoPersonaViewSet, basename='vinculo-persona')
+router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basename='vinculo-persona-persona')
+router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSet, basename='demanda-motivo-intervencion')
+router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
 
 urlpatterns = router.urls
