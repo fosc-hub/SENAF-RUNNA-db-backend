@@ -43,6 +43,16 @@
         "TVinculoPersona",
         "TVinculoPersonaPersona",
         "TDemandaMotivoIntervencion",
-        "TPersonaCondicionesVulnerabilidad"
+        "TPersonaCondicionesVulnerabilidad",
+
+        "TActividadTipo",
+        "TInstitucionActividad",
+        "TActividad",
+        "TInstitucionRespuesta",
+        "TRespuesta",
+        "TIndicadoresValoracion",
+        "TEvaluaciones",
+        "TDecision"
+
     ]
 }
