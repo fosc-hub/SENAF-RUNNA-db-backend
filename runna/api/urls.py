@@ -6,7 +6,7 @@ from api.views import (
     TCargoExternoViewSet, TResponsableExternoViewSet, TUsuarioExternoViewSet,
     TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 )
-
+from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -26,5 +26,11 @@ router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
 router.register(r'score-demanda', TScoreDemandaViewSet, basename='score-demanda')
 
+router.register(r'persona', TPersonaViewSet, basename='persona')
+router.register(r'institucion-educativa', TInstitucionEducativaViewSet, basename='institucion-educativa')
+router.register(r'nnya-educacion', TNNyAEducacionViewSet, basename='nnya-educacion')
+router.register(r'institucion-sanitaria', TInstitucionSanitariaViewSet, basename='institucion-sanitaria')
+router.register(r'nnya-salud', TNNyASaludViewSet, basename='nnya-salud')
+router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
 
 urlpatterns = router.urls
