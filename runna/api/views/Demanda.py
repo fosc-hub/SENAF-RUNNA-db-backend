@@ -1,9 +1,6 @@
-from rest_framework import status, viewsets
-from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
-from rest_framework.exceptions import NotFound
-from django_filters.rest_framework import DjangoFilterBackend
 
+from .BaseView import BaseViewSet
 
 from infrastructure.models import (
     TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TCargoExterno,
@@ -22,394 +19,234 @@ from infrastructure.filters import (
     TPrecalificacionDemandaFilter, TScoreDemandaFilter
 )
 
-class TInstitucionUsuarioExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+
+class TInstitucionUsuarioExternoViewSet(BaseViewSet):
+    model = TInstitucionUsuarioExterno
+    serializer_class = TInstitucionUsuarioExternoSerializer
     filterset_class = TInstitucionUsuarioExternoFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
         responses=TInstitucionUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of all TInstitucionUsuarioExterno entries with optional filtering."
+        description="Retrieve a list of TInstitucionUsuarioExterno entries with optional filtering."
     )
     def list(self, request):
-        """List all TInstitucionUsuarioExterno."""
-        queryset = TInstitucionUsuarioExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TInstitucionUsuarioExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request)
 
     @extend_schema(
         responses=TInstitucionUsuarioExternoSerializer,
-        description="Retrieve a single TInstitucionUsuarioExterno"
+        description="Retrieve a single TInstitucionUsuarioExterno entry."
     )
     def retrieve(self, request, pk=None):
-        """Retrieve a single TInstitucionUsuarioExterno."""
-        try:
-            obj = TInstitucionUsuarioExterno.objects.get(pk=pk)
-        except TInstitucionUsuarioExterno.DoesNotExist:
-            raise NotFound(f"TInstitucionUsuarioExterno with ID {pk} not found.")
-        serializer = TInstitucionUsuarioExternoSerializer(obj)
-        return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+        return super().retrieve(request, pk=pk)
 
 
-class TVinculoUsuarioExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TVinculoUsuarioExternoViewSet(BaseViewSet):
+    model = TVinculoUsuarioExterno
+    serializer_class = TVinculoUsuarioExternoSerializer
     filterset_class = TVinculoUsuarioExternoFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
         responses=TVinculoUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of all TVinculoUsuarioExterno entries with optional filtering."
+        description="Retrieve a list of TVinculoUsuarioExterno entries with optional filtering."
     )
     def list(self, request):
-        """List all TVinculoUsuarioExterno."""
-        queryset = TVinculoUsuarioExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TVinculoUsuarioExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request)
 
     @extend_schema(
         responses=TVinculoUsuarioExternoSerializer,
-        description="Retrieve a single TVinculoUsuarioExterno"
+        description="Retrieve a single TVinculoUsuarioExterno entry."
     )
     def retrieve(self, request, pk=None):
-        """Retrieve a single TVinculoUsuarioExterno."""
-        try:
-            obj = TVinculoUsuarioExterno.objects.get(pk=pk)
-        except TVinculoUsuarioExterno.DoesNotExist:
-            raise NotFound(f"TVinculoUsuarioExterno with ID {pk} not found.")
-        serializer = TVinculoUsuarioExternoSerializer(obj)
-        return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+        return super().retrieve(request, pk=pk)
 
 
-class TCargoExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TCargoExternoViewSet(BaseViewSet):
+    model = TCargoExterno
+    serializer_class = TCargoExternoSerializer
     filterset_class = TCargoExternoFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
         responses=TCargoExternoSerializer(many=True),
-        description="Retrieve a list of all TCargoExterno entries with optional filtering."
+        description="Retrieve a list of TCargoExterno entries with optional filtering."
     )
     def list(self, request):
-        """List all TCargoExterno."""
-        queryset = TCargoExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TCargoExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request)
 
     @extend_schema(
         responses=TCargoExternoSerializer,
-        description="Retrieve a single TCargoExterno"
+        description="Retrieve a single TCargoExterno entry."
     )
     def retrieve(self, request, pk=None):
-        """Retrieve a single TCargoExterno."""
-        try:
-            obj = TCargoExterno.objects.get(pk=pk)
-        except TCargoExterno.DoesNotExist:
-            raise NotFound(f"TCargoExterno with ID {pk} not found.")
-        serializer = TCargoExternoSerializer(obj)
-        return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+        return super().retrieve(request, pk=pk)
 
 
-class TResponsableExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TResponsableExternoViewSet(BaseViewSet):
+    model = TResponsableExterno
+    serializer_class = TResponsableExternoSerializer
     filterset_class = TResponsableExternoFilter
 
     @extend_schema(
-        responses=TResponsableExternoSerializer(many=True),
-        description="Retrieve a list of all TResponsableExterno entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TResponsableExterno."""
-        queryset = TResponsableExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TResponsableExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(
-        responses=TResponsableExternoSerializer,
-        description="Retrieve a single TResponsableExterno"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TResponsableExterno."""
-        try:
-            obj = TResponsableExterno.objects.get(pk=pk)
-        except TResponsableExterno.DoesNotExist:
-            raise NotFound(f"TResponsableExterno with ID {pk} not found.")
-        serializer = TResponsableExternoSerializer(obj)
-        return Response(serializer.data)
-    
-    @extend_schema(
         request=TResponsableExternoSerializer,
         responses=TResponsableExternoSerializer,
-        description="Create a new TResponsableExterno"
+        description="Create a new TResponsableExterno entry"
     )
     def create(self, request):
-        """Create a new TResponsableExterno."""
-        serializer = TResponsableExternoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        return super().create(request)
+
     @extend_schema(
         request=TResponsableExternoSerializer,
         responses=TResponsableExternoSerializer,
-        description="Partially update an existing TResponsableExterno"
+        description="Partially update an existing TResponsableExterno entry"
     )
     def partial_update(self, request, pk=None):
-        """Partially update an existing TResponsableExterno."""
-        try:
-            obj = TResponsableExterno.objects.get(pk=pk)
-        except TResponsableExterno.DoesNotExist:
-            raise NotFound(f"TResponsableExterno with ID {pk} not found.")
-        serializer = TResponsableExternoSerializer(obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, pk=pk)
 
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+    @extend_schema(
+        responses=TResponsableExternoSerializer(many=True),
+        description="Retrieve a list of TResponsableExterno entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TResponsableExternoSerializer,
+        description="Retrieve a single TResponsableExterno entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 
-class TUsuarioExternoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TUsuarioExternoViewSet(BaseViewSet):
+    model = TUsuarioExterno
+    serializer_class = TUsuarioExternoSerializer
     filterset_class = TUsuarioExternoFilter
 
     @extend_schema(
-        responses=TUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of all TUsuarioExterno entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TUsuarioExterno."""
-        queryset = TUsuarioExterno.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TUsuarioExternoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(
-        responses=TUsuarioExternoSerializer,
-        description="Retrieve a single TUsuarioExterno"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TUsuarioExterno."""
-        try:
-            obj = TUsuarioExterno.objects.get(pk=pk)
-        except TUsuarioExterno.DoesNotExist:
-            raise NotFound(f"TUsuarioExterno with ID {pk} not found.")
-        serializer = TUsuarioExternoSerializer(obj)
-        return Response(serializer.data)
-    
-    @extend_schema(
         request=TUsuarioExternoSerializer,
         responses=TUsuarioExternoSerializer,
-        description="Create a new TUsuarioExterno"
+        description="Create a new TUsuarioExterno entry"
     )
     def create(self, request):
-        """Create a new TUsuarioExterno."""
-        serializer = TUsuarioExternoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        return super().create(request)
+
     @extend_schema(
         request=TUsuarioExternoSerializer,
         responses=TUsuarioExternoSerializer,
-        description="Partially update an existing TUsuarioExterno"
+        description="Partially update an existing TUsuarioExterno entry"
     )
     def partial_update(self, request, pk=None):
-        """Partially update an existing TUsuarioExterno."""
-        try:
-            obj = TUsuarioExterno.objects.get(pk=pk)
-        except TUsuarioExterno.DoesNotExist:
-            raise NotFound(f"TUsuarioExterno with ID {pk} not found.")
-        serializer = TUsuarioExternoSerializer(obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, pk=pk)
 
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+    @extend_schema(
+        responses=TUsuarioExternoSerializer(many=True),
+        description="Retrieve a list of TUsuarioExterno entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TUsuarioExternoSerializer,
+        description="Retrieve a single TUsuarioExterno entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 
-class TDemandaViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TDemandaViewSet(BaseViewSet):
+    model = TDemanda
+    serializer_class = TDemandaSerializer
     filterset_class = TDemandaFilter
 
     @extend_schema(
-        responses=TDemandaSerializer(many=True),
-        description="Retrieve a list of all TDemanda entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TDemanda."""
-        queryset = TDemanda.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TDemandaSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(
-        responses=TDemandaSerializer,
-        description="Retrieve a single TDemanda"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TDemanda."""
-        try:
-            obj = TDemanda.objects.get(pk=pk)
-        except TDemanda.DoesNotExist:
-            raise NotFound(f"TDemanda with ID {pk} not found.")
-        serializer = TDemandaSerializer(obj)
-        return Response(serializer.data)
-    
-    @extend_schema(
         request=TDemandaSerializer,
         responses=TDemandaSerializer,
-        description="Create a new TDemanda"
+        description="Create a new TDemanda entry"
     )
     def create(self, request):
-        """Create a new TDemanda."""
-        serializer = TDemandaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().create(request)
 
     @extend_schema(
         request=TDemandaSerializer,
         responses=TDemandaSerializer,
-        description="Partially update an existing TDemanda"
+        description="Partially update an existing TDemanda entry"
     )
     def partial_update(self, request, pk=None):
-        """Partially update an existing TDemanda."""
-        try:
-            obj = TDemanda.objects.get(pk=pk)
-        except TDemanda.DoesNotExist:
-            raise NotFound(f"TDemanda with ID {pk} not found.")
-        serializer = TDemandaSerializer(obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, pk=pk)
 
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+    @extend_schema(
+        responses=TDemandaSerializer(many=True),
+        description="Retrieve a list of TDemanda entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TDemandaSerializer,
+        description="Retrieve a single TDemanda entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 
-class TPrecalificacionDemandaViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TPrecalificacionDemandaViewSet(BaseViewSet):
+    model = TPrecalificacionDemanda
+    serializer_class = TPrecalificacionDemandaSerializer
     filterset_class = TPrecalificacionDemandaFilter
 
     @extend_schema(
-        responses=TPrecalificacionDemandaSerializer(many=True),
-        description="Retrieve a list of all TPrecalificacionDemanda entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TPrecalificacionDemanda."""
-        queryset = TPrecalificacionDemanda.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TPrecalificacionDemandaSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-
-    @extend_schema(
-        responses=TPrecalificacionDemandaSerializer,
-        description="Retrieve a single TPrecalificacionDemanda"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TPrecalificacionDemanda."""
-        try:
-            obj = TPrecalificacionDemanda.objects.get(pk=pk)
-        except TPrecalificacionDemanda.DoesNotExist:
-            raise NotFound(f"TPrecalificacionDemanda with ID {pk} not found.")
-        serializer = TPrecalificacionDemandaSerializer(obj)
-        return Response(serializer.data)
-    
-    @extend_schema(
         request=TPrecalificacionDemandaSerializer,
         responses=TPrecalificacionDemandaSerializer,
-        description="Create a new TPrecalificacionDemanda"
+        description="Create a new TPrecalificacionDemanda entry"
     )
     def create(self, request):
-        """Create a new TPrecalificacionDemanda."""
-        serializer = TPrecalificacionDemandaSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().create(request)
 
     @extend_schema(
         request=TPrecalificacionDemandaSerializer,
         responses=TPrecalificacionDemandaSerializer,
-        description="Partially update an existing TPrecalificacionDemanda"
+        description="Partially update an existing TPrecalificacionDemanda entry"
     )
     def partial_update(self, request, pk=None):
-        """Partially update an existing TPrecalificacionDemanda."""
-        try:
-            obj = TPrecalificacionDemanda.objects.get(pk=pk)
-        except TPrecalificacionDemanda.DoesNotExist:
-            raise NotFound(f"TPrecalificacionDemanda with ID {pk} not found.")
-        serializer = TPrecalificacionDemandaSerializer(obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, pk=pk)
 
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+    @extend_schema(
+        responses=TPrecalificacionDemandaSerializer(many=True),
+        description="Retrieve a list of TPrecalificacionDemanda entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TPrecalificacionDemandaSerializer,
+        description="Retrieve a single TPrecalificacionDemanda entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 
-class TScoreDemandaViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TScoreDemandaViewSet(BaseViewSet):
+    model = TScoreDemanda
+    serializer_class = TScoreDemandaSerializer
     filterset_class = TScoreDemandaFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
         responses=TScoreDemandaSerializer(many=True),
-        description="Retrieve a list of all TScoreDemanda entries with optional filtering."
+        description="Retrieve a list of TScoreDemanda entries with optional filtering."
     )
     def list(self, request):
-        """List all TScoreDemanda."""
-        queryset = TScoreDemanda.objects.all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TScoreDemandaSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
+        return super().list(request)
 
     @extend_schema(
         responses=TScoreDemandaSerializer,
-        description="Retrieve a single TScoreDemanda"
+        description="Retrieve a single TScoreDemanda entry."
     )
     def retrieve(self, request, pk=None):
-        """Retrieve a single TScoreDemanda."""
-        try:
-            obj = TScoreDemanda.objects.get(pk=pk)
-        except TScoreDemanda.DoesNotExist:
-            raise NotFound(f"TScoreDemanda with ID {pk} not found.")
-        serializer = TScoreDemandaSerializer(obj)
-        return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
-
+        return super().retrieve(request, pk=pk)
