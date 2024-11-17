@@ -45,6 +45,12 @@ class TPrecalificacionDemandaSerializer(serializers.ModelSerializer):
         model = TPrecalificacionDemanda
         fields = '__all__'
 
+    def update(self, instance, validated_data):
+        if 'demanda' in validated_data:
+            raise serializers.ValidationError({"demanda": "This field cannot be updated."})
+        return super().update(instance, validated_data)
+
+
 
 class TScoreDemandaSerializer(serializers.ModelSerializer):
     class Meta:
