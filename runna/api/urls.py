@@ -7,6 +7,7 @@ from api.views import (
     TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 )
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet
+from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -32,5 +33,13 @@ router.register(r'nnya-educacion', TNNyAEducacionViewSet, basename='nnya-educaci
 router.register(r'institucion-sanitaria', TInstitucionSanitariaViewSet, basename='institucion-sanitaria')
 router.register(r'nnya-salud', TNNyASaludViewSet, basename='nnya-salud')
 router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
+
+router.register(r'categoria-motivo', TCategoriaMotivoViewSet, basename='categoria-motivo')
+router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='categoria-submotivo')
+router.register(r'gravedad-vulneracion', TGravedadVulneracionViewSet, basename='gravedad-vulneracion')
+router.register(r'urgencia-vulneracion', TUrgenciaVulneracionViewSet, basename='urgencia-vulneracion')
+router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
+router.register(r'motivo-intervencion', TMotivoIntervencionViewSet, basename='motivo-intervencion')
+router.register(r'vulneracion', TVulneracionViewSet, basename='vulneracion')
 
 urlpatterns = router.urls

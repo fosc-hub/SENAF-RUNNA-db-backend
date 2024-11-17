@@ -3,3 +3,4 @@ from .CustomUserView import CustomUserViewSet
 from .LocalizacionView import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet, TLocalizacionViewSet
 from .DemandaView import  TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet, TCargoExternoViewSet , TResponsableExternoViewSet, TUsuarioExternoViewSet, TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 from .PersonaView import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet
+from .VulneracionView import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
