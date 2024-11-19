@@ -430,22 +430,95 @@ entity T_LEGAJO_ASIGNADO {
         )
 }
 
-entity T_USER {
-    + PRIMARY_KEY(id)
+class AbstractBaseUser {
+    + password = Charfield
+    + last_login : blank=True, null=True
+    + is_active : default=True
+    
     --
-    nombre
-    apellido
-    fecha_nacimiento
-    genero = (
-        MASCULINO,
-        FEMENINO,
-        OTRO
-    )
-    telefono
-    email
+    __str__()
+    + save()
+    + get_username()
+    + clean()
+    + natural_key()
+    + set_password( make_password() )
+    + check_password()
+    + acheck_password
+    + set_unusable_password()
+    + has_usable_password()
+    + get_session_auth_hash()
+    + get_session_auth_fallback_hash()
+    + _get_session_auth_hash()
     --
+    @property : is_anonymous()
+    @property : is_authenticated()
+    --
+    @classmethod : get_email_field_name()
+    @classmethod : normalize_username()
+}
+
+class PermissionsMixin {
+    + is_superuser
+    + groups : ManyToManyField(Group)
+    + user_permissions : ManyToManyField(Permission)
+
+    --
+    get_user_permissions()
+    get_group_permissions()
+    get_all_permissions()
+    has_perm()
+    has_perms()
+    has_module_perms()
     --
 }
+
+class AbstractUser {
+    + username : unique, null=True
+    + first_name : blank=True
+    + last_name : blank=True
+    + email : unique, blank=True
+    + is_staff : default=False
+    + date_joined : default=timezone.now
+    - EMAIL_FIELD = "email"
+    - USERNAME_FIELD = "username"
+    - REQUIRED_FIELDS = ["email"]
+
+    --
+    + clean() : normalize_email(self.email)
+    + get_full_name()
+    + get_short_name()
+    + email_user()
+    --
+}
+
+class CustomUser {
+    + fecha_nacimiento : null=True, blank=True
+    + genero : MASCULINO, FEMENINO, OTRO
+    + telefono : null=True, blank=True
+}
+
+AbstractBaseUser <|-- AbstractUser
+PermissionsMixin <|-- AbstractUser
+AbstractUser <|-- CustomUser
+
+entity T_USER {
+    + PRIMARY_KEY(id)
+    + password
+    + last_login : blank=True, null=True
+    + username : unique, null=True
+    + first_name : blank=True
+    + last_name : blank=True
+    + email : unique, blank=True
+    + is_staff : default=False
+    + is_active : default=True
+    + date_joined : default=timezone.now
+    + is_superuser : default=False
+    + fecha_nacimiento : null=True, blank
+    + genero : MASCULINO, FEMENINO, OTRO
+    + telefono : null=True, blank
+}
+
+CustomUser <|-- T_USER
 
 entity T_CARGO {
     + PRIMARY_KEY(id)
