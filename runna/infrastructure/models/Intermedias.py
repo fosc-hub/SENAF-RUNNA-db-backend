@@ -96,7 +96,7 @@ class TLegajoAsignado(models.Model):
 
 
 class TVinculoPersona(models.Model):
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=255, null=False, blank=False)
 
     history = HistoricalRecords()
     

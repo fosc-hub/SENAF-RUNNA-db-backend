@@ -41,15 +41,25 @@ entity T_DEMANDA {
     --
 }
 
+entity T_LOCALIZACION_PERSONA {
+    + COMPOSITE_KEY(T_LOCALIZACION, T_PERSONA)
+    --
+    principal : bool, default=false
+    --
+    localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=CASCADE, null=False
+    persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
+    --
+}
+
 entity T_DEMANDA_ASIGNADO {
     + COMPOSITE_KEY(T_USER, T_DEMANDA)
     --
-    esta_activo : bool, default=true 'sigue en curso la verificacion / archivar=false
-    recibido : bool, default=false ' casilla mail : leido/no leido
-    comentarios : text, nullable
+    esta_activo : bool, default=true
+    recibido : bool, default=false
+    comentarios : text, null=True, blank=True
     --
-    FOREIGN_KEY(T_USER) : null=False 
-    FOREIGN_KEY(T_DEMANDA) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    user: FOREIGN_KEY(T_USER) : on_delete=CASCADE, null=False
     --
     AsignarUser(
         user.esta_activo
@@ -116,13 +126,14 @@ entity T_CONDICIONES_VULNERABILIDAD {
     --
 }
 
-entity T_NNyA_CONDICIONES_VULNERABILIDAD {
+entity T_PERSONA_CONDICIONES_VULNERABILIDAD {
     + COMPOSITE_KEY(T_NNyA, T_CONDICIONES_VULNERABILIDAD)
     --
-    si_no : bool, default=false
-    --
-    FOREIGN_KEY(T_NNyA) : null=False
-    FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD) : null=False
+    si_no : bool, null=False, blank=False
+    -- 
+    persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
+    condicion_vulnerabilidad: FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD) : on_delete=CASCADE, null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
@@ -135,13 +146,13 @@ entity T_MOTIVO_INTERVENCION {
     --
 }
 
-entity T_NNyA_MOTIVO_INTERVENCION {
+entity T_DEMANDA_MOTIVO_INTERVENCION {
     + COMPOSITE_KEY(T_NNyA, T_MOTIVO_INTERVENCION)
     --
-    motivo_principal : bool
+    si_no : bool, null=False, blank=False
     --
-    FOREIGN_KEY(T_NNyA)
-    FOREIGN_KEY(T_MOTIVO_INTERVENCION)
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    motivo_intervencion: FOREIGN_KEY(T_MOTIVO_INTERVENCION) : on_delete=CASCADE, null=False
     --
 }
 
@@ -204,49 +215,35 @@ entity T_PERSONA {
 entity T_DEMANDA_PERSONA {
     + COMPOSITE_KEY(T_DEMANDA, T_PERSONA)
     --
-    conviviente : bool, default=false
-    supuesto_autordv : bool, default=false
-    supuesto_autordv_principal : bool, default=false
-    nnya : bool, default=false
-    nnya_principal : bool,  default=false
+    conviviente : bool, null=False, blank=False
+    supuesto_autordv : bool, null=False, blank=False
+    supuesto_autordv_principal : bool, null=False, blank=False
+    nnya : bool, null=False, blank=False
+    nnya_principal : bool, null=False, blank=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
-    FOREIGN_KEY(T_PERSONA) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
 }
 
-entity T_VINCULO {
+entity T_VINCULO_PERSONA {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
+    nombre : string, null=False, blank=False
     --
     --
-}
-
-entity T_VINCULO_PERSONA_NNyA {
-    + COMPOSITE_KEY(T_PERSONA, T_NNyA)
-    --
-    conviven : bool, default=false
-    autordv : bool, default=false
-    garantiza_proteccion : bool (validar que sea adulto), default=false
-    --
-    FOREIGN_KEY(T_VINCULO) : null=False
-    FOREIGN_KEY(T_NNyA) : null=False
-    FOREIGN_KEY(T_PERSONA) : null=False
-    --
-    METODO(
-        sumar/resta x score segun autordv o garantiza_proteccion
-        )
 }
 
 entity T_VINCULO_PERSONA_PERSONA {
     + COMPOSITE_KEY(T_PERSONA, T_PERSONA)
     --
-    conviven : bool, default=false
+    conviven : bool, null=False, blank=False
+    autordv : bool, null=False, blank=False
+    garantiza_proteccion : bool, null=False, blank=False
     --
-    FOREIGN_KEY(T_VINCULO) : null=False
-    FOREIGN_KEY(T_PERSONA) : null=False
-    FOREIGN_KEY(T_PERSONA) : null=False
+    persona_1: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, related_name=persona_1
+    persona_2: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, related_name=persona_2
+    vinculo: FOREIGN_KEY(T_VINCULO_PERSONA) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
@@ -345,8 +342,8 @@ entity T_DEMANDA_VINCULADA {
     + COMPOSITE_KEY(T_DEMANDA, T_DEMANDA)
     --
     --
-    FOREIGN_KEY(T_DEMANDA)
-    FOREIGN_KEY(T_DEMANDA)
+    demanda_1: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    demanda_2: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     --
 }
 
@@ -423,11 +420,12 @@ entity T_LEGAJO {
 entity T_LEGAJO_ASIGNADO {
     + COMPOSITE_KEY(T_USER, T_LEGAJO)
     --
-    esta_activo : bool, default=true 'sigue en curso la verificacion / archivar=false
-    recibido : bool, default=false ' casilla mail : leido/no leido
+    esta_activo : bool, default=true
+    recibido : bool, default=false
+    comentarios : text, null=True, blank=True
     --
-    FOREIGN_KEY(T_USER)
-    FOREIGN_KEY(T_LEGAJO)
+    legajo: FOREIGN_KEY(T_LEGAJO) : on_delete=CASCADE, null=False
+    user: FOREIGN_KEY(T_USER) : on_delete=CASCADE, null=False
     --
     AsignarUser(
         user.esta_activo
@@ -714,14 +712,17 @@ T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_USUARIO_EXTERNO
 
+T_LOCALIZACION "1" -- "*" T_LOCALIZACION_PERSONA
+T_PERSONA "1" -- "*" T_LOCALIZACION_PERSONA
+
 T_PERSONA "1" -- "1" T_NNyA_EDUCACION
 T_NNyA_EDUCACION "*" -- "1" T_INSTITUCION_EDUCATIVA
 T_PERSONA "1" -- "1" T_NNyA_SALUD
 T_NNyA_SALUD "*" -- "1" T_INSTITUCION_SANITARIA
-T_NNyA "1" -- "*" T_NNyA_CONDICIONES_VULNERABILIDAD
-T_NNyA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
-T_NNyA "1" -- "*" T_NNyA_MOTIVO_INTERVENCION
-T_NNyA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
+T_PERSONA "1" -- "*" T_PERSONA_CONDICIONES_VULNERABILIDAD
+T_PERSONA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
+T_DEMANDA "1" -- "*" T_DEMANDA_MOTIVO_INTERVENCION
+T_DEMANDA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
 T_SCORE_DEMANDA "1" -- "1" T_DEMANDA
 T_NNyA_SCORE "1" -- "1" T_PERSONA
@@ -729,12 +730,9 @@ T_NNyA_SCORE "1" -- "1" T_PERSONA
 T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
 T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
 
-T_VINCULO_PERSONA_NNyA "*" - "1" T_NNyA
-T_VINCULO_PERSONA_NNyA "*" - "1" T_PERSONA
-T_VINCULO_PERSONA_NNyA "*" - "1" T_VINCULO
 T_VINCULO_PERSONA_PERSONA "*" - "1" T_PERSONA
 T_VINCULO_PERSONA_PERSONA "*" - "1" T_PERSONA
-T_VINCULO "1" --- "*" T_VINCULO_PERSONA_PERSONA
+T_VINCULO_PERSONA "1" --- "*" T_VINCULO_PERSONA_PERSONA
 
 T_DEMANDA "*" -- "1" T_USUARIO_EXTERNO
 T_USUARIO_EXTERNO "*" -- "1" T_VINCULO_USUARIO_EXTERNO
