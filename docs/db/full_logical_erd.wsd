@@ -74,24 +74,24 @@ entity T_PRECALIFICACION_DEMANDA {
 entity T_LOCALIZACION {
     + PRIMARY_KEY(id)
     --
-    calle : string, null=False
+    calle : string, null=False, blank=False
     tipo_calle : (
         CALLE,
         AVENIDA,
         PASAJE,
         RUTA,
-        BOULEVAR,
+        BOULEVARD,
         OTRO
-    ) : null=False
+    ) : null=False, blank=False
     piso_depto : int, nullable
     lote : int, nullable
     mza : int, nullable
     casa_nro : int, nullable
-    referencia_geo : text, nullable
+    referencia_geo : text, null=False, blank=False
     --
-    FOREIGN_KEY(T_BARRIO) : null=False
-    FOREIGN_KEY(T_LOCALIDAD) : null=False
-    FOREIGN_KEY(T_CPC) : nullable
+    barrio : FOREIGN_KEY(T_BARRIO) : on_delete=SET_NULL, null=True, blank=True
+    localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=CASCADE, null=False
+    cpc : FOREIGN_KEY(T_CPC) : on_delete=SET_NULL, null=True, blank=True
     --
     ValidarConAPI(
         calle,
@@ -585,37 +585,40 @@ entity T_GRAVEDAD_VULNERACION {
 entity T_BARRIO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
     --
-    FOREIGN_KEY(T_LOCALIDAD)
+    localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=CASCADE, null=False
 }
 
 entity T_CPC {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
+    --
+    localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=CASCADE, null=False
 }
 
 entity T_DEPARTAMENTO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
+    --
+    provincia : FOREIGN_KEY(T_PROVINCIA) : on_delete=CASCADE, null=False
     --
 }
 
 entity T_LOCALIDAD {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
     --
-    FOREIGN_KEY(T_PROVINCIA)
-    FOREIGN_KEY(T_DEPARTAMENTO)
+    departamento : FOREIGN_KEY(T_DEPARTAMENTO) : on_delete=CASCADE, null=False
 }
 
 entity T_PROVINCIA {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
     --
 }
 

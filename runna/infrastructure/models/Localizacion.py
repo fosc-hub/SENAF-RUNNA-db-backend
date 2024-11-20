@@ -16,6 +16,7 @@ class TProvincia(models.Model):
 
 class TDepartamento(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
+
     provincia = models.ForeignKey('infrastructure.TProvincia', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
@@ -27,6 +28,7 @@ class TDepartamento(models.Model):
 
 class TLocalidad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
+
     departamento = models.ForeignKey('infrastructure.TDepartamento', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
