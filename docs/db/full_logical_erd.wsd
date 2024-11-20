@@ -13,15 +13,14 @@ entity T_SCORE_DEMANDA {
     score_vulneracion : float, null=False
     score_motivo_intervencion : float, null=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False, blank=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, unique=True, null=False, blank=False
     --
 }
 
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    fecha_ingreso : date, null=False
-    hora_ingreso : time, null=False
+    fecha_y_hora_ingreso : datetime, null=False, default=datetime.now()
     origen : (
         WEB,
         TELEFONO,
@@ -35,10 +34,10 @@ entity T_DEMANDA {
     nro_historia_clinica : int, nullable
     nro_oficio_web : int, nullable
     descripcion : text, nullable
-    ultima_actualizacion : date, null=False, autogenerate
+    ultima_actualizacion : datetime, null=False, autogenerate
     --
-    FOREIGN_KEY(T_LOCALIZACION) : null=False
-    FOREIGN_KEY(T_USUARIO_EXTERNO) : null=False
+    localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=PROTECT, null=False
+    usuario_externo: FOREIGN_KEY(T_USUARIO_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
@@ -60,16 +59,16 @@ entity T_DEMANDA_ASIGNADO {
 entity T_PRECALIFICACION_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    fecha : date, null=False
-    hora : date, null=False
-    descripcion : text, nullable
+    fecha_y_hora : datetime, null=False, default=datetime.now()
+    descripcion : text, null=False, blank=False
     estado_demanda : (
         URGENTE,
         NO_URGENTE,
         COMPLETAR
-    ) : null=False
+    ) : null=False, blank=False
+    ultima_actualizacion : datetime, null=False, autogenerate
     --
-    FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True One-to-One)
+    demanda: FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True One-to-One)
 }
 
 entity T_LOCALIZACION {
@@ -261,26 +260,29 @@ entity T_USUARIO_EXTERNO {
     --
     nombre : string, null=False
     apellido : string, null=False
-    fecha_nacimiento : date, nullable
+    fecha_nacimiento : date, null=True, blank=True
     genero : (
         MASCULINO,
         FEMENINO,
         OTRO
-    ) : null=False
-    telefono : int, nullable
+    ) : null=False, blank=False
+    telefono : int, null=False, blank=False
+    mail : mail, null=False, blank=False, unique=True
     --
-    FOREIGN_KEY(T_VINCULO_USUARIO_EXTERNO) : null=False
-    FOREIGN_KEY(T_INSTITUCION_USUARIO_EXTERNO) : null=False
-    FOREIGN_KEY(T_RESPONSABLE_EXTERNO) : nullable
+    vinculo: FOREIGN_KEY(T_VINCULO_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
+    institucion: FOREIGN_KEY(T_INSTITUCION_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
+    responsable: FOREIGN_KEY(T_RESPONSABLE_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
 entity T_INSTITUCION_USUARIO_EXTERNO {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
-    contacto : string, nullable
+    nombre : string, null=False, blank=False
+    mail : mail, null=True, blank=True
+    telefono : int, null=True, blank=True
     --
+    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
 }
 
 entity T_RESPONSABLE_EXTERNO {
@@ -288,8 +290,10 @@ entity T_RESPONSABLE_EXTERNO {
     --
     nombre : string, null=False
     apellido : string, null=False
+    telefono : int, null=True
+    mail : mail, null=True
     --
-    FOREIGN_KEY(T_CARGO_EXTERNO) : nullable
+    cargo: FOREIGN_KEY(T_CARGO_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
 }
 
 entity T_VULNERACION {
@@ -522,14 +526,15 @@ CustomUser <|-- T_USER
 entity T_CARGO_EXTERNO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : null=False, blank=False
+    descripcion : text, null=True, blank=True
     --
 }
 
 entity T_CATEGORIA_MOTIVO {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
+    nombre : null=False
     descripcion : text, null=False
     peso : int
     --
@@ -605,7 +610,8 @@ entity T_PROVINCIA {
 entity T_VINCULO_USUARIO_EXTERNO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : null=False, blank=False
+    descripcion : text, null=True, blank=True
     --
 }
 
