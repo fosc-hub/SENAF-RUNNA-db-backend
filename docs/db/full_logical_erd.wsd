@@ -13,7 +13,7 @@ entity T_SCORE_DEMANDA {
     score_vulneracion : float, null=False
     score_motivo_intervencion : float, null=False
     --
-    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, unique=True, null=False, blank=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : OneToOneField, on_delete=CASCADE, unique=True, null=False, blank=False
     --
 }
 
@@ -102,20 +102,6 @@ entity T_LOCALIZACION {
         )
 }
 
-entity T_NNyA {
-    + PRIMARY_KEY( FOREIGN_KEY(T_PERSONA) )
-    --
-    --
-    FOREIGN_KEY(T_NNyA_EDUCACION One-to-One) : null=False
-    FOREIGN_KEY(T_INSTITUCION_SANITARIA) : null=False
-    FOREIGN_KEY(T_PERSONA One-to-One) : null=False
-    --
-    ValidarAdultoFalse(
-        persona.adulto,
-        persona.fecha_nacimiento
-        )
-}
-
 entity T_CONDICIONES_VULNERABILIDAD {
     + PRIMARY_KEY(id)
     --
@@ -162,34 +148,36 @@ entity T_NNyA_MOTIVO_INTERVENCION {
 entity T_NNyA_EDUCACION {
     + PRIMARY_KEY(id)
     --
-    curso : string, null=False
+    curso : string, null=False, blank=False
     nivel : (
         PRIMARIO,
         SECUNDARIO,
         TERCIARIO,
         UNIVERSITARIO,
         OTRO
-    ) : null=False
+    ) : null=False, blank=False
     turno : (
         MANIANA,
         TARDE,
         NOCHE,
         OTRO
-    ) : null=False
-    comentarios : text, nullable
+    ) : null=False, blank=False
+    comentarios : text, null=True, blank=True
     --
-    FOREIGN_KEY(T_INSTITUCION_EDUCATIVA) : null=False
+    institucion_educativa: FOREIGN_KEY(T_INSTITUCION_EDUCATIVA) : on_delete=CASCADE, null=False, blank=False
+    nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
     --
 }
 
 entity T_PERSONA {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
-    apellido : string, null=False
-    fecha_nacimiento : date, null=False
-    edad_aproximada : int, nullable
-    dni : int, nullable
+    nombre : string, null=False, blank=False
+    apellido : string, null=False, blank=False
+    fecha_nacimiento : date, null=True, blank=True
+    edad_aproximada : int, null=True, blank=True
+
+    dni : int, null=True, blank=True
     situacion_dni : (
         EN_TRAMITE,
         VENCIDO,
@@ -197,16 +185,18 @@ entity T_PERSONA {
         INEXISTENTE,
         VALIDO,
         OTRO
-    ) : null=False
+    ) : null=False, blank=False
     genero : (
         MASCULINO,
         FEMENINO,
         OTRO
-    ) : null=False
-    boton_antipanico : bool, default=false
-    observaciones : text, nullable
-    adulto : bool, default=false
-    nnya : bool, default=false
+    ) : null=False, blank=False
+
+    boton_antipanico : bool, default=False
+    observaciones : text, null=True, blank=True
+    adulto : bool, null=False, blank=False
+    nnya : bool, null=False, blank=False
+
     --
     --
 }
@@ -424,9 +414,9 @@ entity T_EVALUACIONES {
 entity T_LEGAJO {
     + PRIMARY_KEY(id)
     --
-    info_legajo
+    info_legajo : text, null=False, blank=False
     --
-    FOREIGN_KEY(T_NNyA)
+    nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
     --
 }
 
@@ -659,18 +649,43 @@ entity T_INSTITUCION_RESPUESTA {
 entity T_INSTITUCION_EDUCATIVA {
     + PRIMARY_KEY(id)
     --
-    nombre
-    mail : mail, nullable
-    telefono : int, nullable
+    nombre : string, null=False, blank=False
+    mail : mail, null=True, blank=True
+    telefono : int, null=True, blank=True
     --
+    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
 }
 
 entity T_INSTITUCION_SANITARIA {
     + PRIMARY_KEY(id)
     --
-    nombre
-    mail : mail, nullable
-    telefono : int, nullable
+    nombre : string, null=False, blank=False
+    mail : mail, null=True, blank=True
+    telefono : int, null=True, blank=True
+    --
+    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
+}
+
+entity T_NNyA_SALUD {
+    + PRIMARY_KEY(id)
+    --
+    observaciones : text, null=True, blank=True
+    --
+    institucion_sanitaria: FOREIGN_KEY(T_INSTITUCION_SANITARIA) : on_delete=CASCADE, null=False, blank=False
+    nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
+    --
+}
+
+entity T_NNyA_SCORE {
+    + PRIMARY_KEY(id)
+    --
+    ultima_actualizacion : datetime, null=False, autogenerate
+    score : float, null=False
+    score_condiciones_vulnerabilidad : float, null=False
+    score_vulneracion : float, null=False
+    score_motivo_intervencion : float, null=False
+    --
+    nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
     --
 }
 
@@ -699,17 +714,17 @@ T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_USUARIO_EXTERNO
 
-T_NNyA "1" - "1" T_PERSONA
-T_NNyA "1" -- "1" T_NNyA_EDUCACION
+T_PERSONA "1" -- "1" T_NNyA_EDUCACION
 T_NNyA_EDUCACION "*" -- "1" T_INSTITUCION_EDUCATIVA
-T_NNyA "*" -- "1" T_INSTITUCION_SANITARIA
+T_PERSONA "1" -- "1" T_NNyA_SALUD
+T_NNyA_SALUD "*" -- "1" T_INSTITUCION_SANITARIA
 T_NNyA "1" -- "*" T_NNyA_CONDICIONES_VULNERABILIDAD
 T_NNyA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
 T_NNyA "1" -- "*" T_NNyA_MOTIVO_INTERVENCION
 T_NNyA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
-T_SCORE_DEMANDA "*" -- "1" T_DEMANDA
-T_SCORE_DEMANDA "*" -- "1" T_NNyA
+T_SCORE_DEMANDA "1" -- "1" T_DEMANDA
+T_NNyA_SCORE "1" -- "1" T_PERSONA
 
 T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
 T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
@@ -754,7 +769,7 @@ T_DECISION "*" --- "1" T_DEMANDA
 T_DEMANDA "1" -- "*" T_EVALUACIONES
 T_EVALUACIONES "*" -- "1" T_INDICADORES_VALORACION
 
-T_LEGAJO "1" - "1" T_NNyA
+T_LEGAJO "1" - "1" T_PERSONA
 
 T_LEGAJO_ASIGNADO "*" - "1" T_USER
 T_LEGAJO "1" - "*" T_LEGAJO_ASIGNADO
