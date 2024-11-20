@@ -89,7 +89,7 @@ class TRespuesta(models.Model):
 
 
 class TIndicadoresValoracion(models.Model):
-    nombre = models.CharField(max_length=255)
+    nombre = models.CharField(max_length=255, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(default=0)
 
