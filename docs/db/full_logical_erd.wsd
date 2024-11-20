@@ -321,26 +321,24 @@ entity T_VULNERACION {
 entity T_ACTIVIDAD {
     + PRIMARY_KEY(id)
     --
-    fecha : date
-    hora : time
-    descripcion : text, null=False
+    fecha_y_hora : datetime, null=False, autogenerate
+    descripcion : text, null=False, blank=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
-    FOREIGN_KEY(T_ACTIVIDAD_TIPO) : null=False
-    FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    tipo: FOREIGN_KEY(T_ACTIVIDAD_TIPO) : on_delete=SET_NULL, null=True, blank=True
+    institucion: FOREIGN_KEY(T_INSTITUCION_ACTIVIDAD) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
 entity T_RESPUESTA {
     + PRIMARY_KEY(id)
     --
-    fecha : date, null=False
-    hora : time, null=False
-    mail : mail, null=False
-    mensaje : text, null=False
+    fecha_y_hora : datetime, null=False, autogenerate
+    mail : mail, null=False, blank=False
+    mensaje : text, null=False, blank=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
-    FOREIGN_KEY(T_INSTITUCION_RESPUESTA) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    institucion: FOREIGN_KEY(T_INSTITUCION_RESPUESTA) : on_delete=SET_NULL, null=True, blank=True
     --
     ServicioDeMailSMTP(
         mail,
@@ -360,23 +358,32 @@ entity T_DEMANDA_VINCULADA {
 entity T_DECISION {
     + PRIMARY_KEY(id)
     --
-    fecha : date, null=False
-    hora : time, null=False
-    justificacion : text, null=False
+    fecha_y_hora : datetime, autogenerate
+    justificacion : text, null=False, blank=False
     decision : (
-        APERTURA DE LEGAJO,
-        RECHAZAR CASO
+        APERTURA_DE_LEGAJO,
+        RECHAZAR_CASO
     ) : null=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     --
     TriggerOnInsert(
         CreationOfLegajo(
-            dropdown : "Apertura de legajo" || T_SCORE_DEMANDA.score > 10 || T_SCORE_DEMANDA.score_vulneracion > 10 || T_SCORE_DEMANDA.score_evaluacion > 10 || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10 || T_SCORE_DEMANDA.score_motivo_intervencion > 10
+            dropdown : "Apertura de legajo"
+             || T_SCORE_DEMANDA.score > 10
+             || T_SCORE_DEMANDA.score_vulneracion > 10
+             || T_SCORE_DEMANDA.score_evaluacion > 10
+             || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
+             || T_SCORE_DEMANDA.score_motivo_intervencion > 10
             bool : true
         )
         CreationOfMPI_MPE(
-            dropdown : "Apertura de legajo"  || T_SCORE_DEMANDA.score > 10 || T_SCORE_DEMANDA.score_vulneracion > 10 || T_SCORE_DEMANDA.score_evaluacion > 10 || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10 || T_SCORE_DEMANDA.score_motivo_intervencion > 10
+            dropdown : "Apertura de legajo" 
+             || T_SCORE_DEMANDA.score > 10
+             || T_SCORE_DEMANDA.score_vulneracion > 10
+             || T_SCORE_DEMANDA.score_evaluacion > 10
+             || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
+             || T_SCORE_DEMANDA.score_motivo_intervencion > 10
             bool : true
         )
         RechazarCaso(
@@ -389,20 +396,19 @@ entity T_DECISION {
 entity T_INDICADORES_VALORACION {
     + PRIMARY_KEY(id)
     --
-    nombre : string
-    descripcion : text
-    peso : int
-    --
+    nombre : string, null=False, blank=False
+    descripcion : text, null=True, blank=True
+    peso : int, default=0
     --
 }
 
 entity T_EVALUACIONES {
     + PRIMARY_KEY(id)
     --
-    si_no : bool, default=false
+    si_no : bool, null=False, blank=False
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
-    FOREIGN_KEY(T_INDICADORES_VALORACION) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    indicador: FOREIGN_KEY(T_INDICADORES_VALORACION) : on_delete=CASCADE, null=False
     --
     TriggerOnInsert(
         T_SCORE_DEMANDA.score += T_INDICADORES_VALORACION.peso
@@ -498,6 +504,9 @@ class CustomUser {
     + fecha_nacimiento : null=True, blank=True
     + genero : MASCULINO, FEMENINO, OTRO
     + telefono : null=True, blank=True
+    --
+    + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
+    --
 }
 
 AbstractBaseUser <|-- AbstractUser
@@ -519,6 +528,9 @@ entity T_USER {
     + fecha_nacimiento : null=True, blank
     + genero : MASCULINO, FEMENINO, OTRO
     + telefono : null=True, blank
+    --
+    + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
+    --
 }
 
 CustomUser <|-- T_USER
@@ -618,15 +630,22 @@ entity T_VINCULO_USUARIO_EXTERNO {
 entity T_INSTITUCION_ACTIVIDAD {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
+    mail : mail, null=True, blank=True
+    telefono : int, null=True, blank=True
+    --
+    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
 entity T_INSTITUCION_RESPUESTA {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
+    mail : mail, null=True, blank=True
+    telefono : int, null=True, blank=True
     --
+    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
 }
 
 entity T_INSTITUCION_EDUCATIVA {
@@ -650,7 +669,7 @@ entity T_INSTITUCION_SANITARIA {
 entity T_ACTIVIDAD_TIPO {
     + PRIMARY_KEY(id)
     --
-    nombre
+    nombre : string, null=False, blank=False
     --
 }
 
@@ -665,6 +684,12 @@ T_LOCALIZACION "*" -- "1" T_LOCALIDAD
 T_LOCALIZACION "*" -- "1" T_CPC
 T_LOCALIDAD "*" -- "1" T_PROVINCIA
 T_LOCALIDAD "*" -- "1" T_DEPARTAMENTO
+
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_ACTIVIDAD
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_RESPUESTA
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_USUARIO_EXTERNO
 
 T_NNyA "1" - "1" T_PERSONA
 T_NNyA "1" -- "1" T_NNyA_EDUCACION
