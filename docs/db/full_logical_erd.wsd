@@ -119,9 +119,14 @@ entity T_NNyA {
 entity T_CONDICIONES_VULNERABILIDAD {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
-    descripcion : text, nullable
-    peso : int, null=False
+    nombre : string, null=False, blank=False
+    descripcion : text, null=True, blank=True
+    peso : int, null=False, blank=False
+
+    nnya : bool, null=False, blank=False
+    adulto : bool, null=False, blank=False
+
+    --
     --
 }
 
@@ -301,15 +306,15 @@ entity T_VULNERACION {
     --
     principal_demanda : bool, default=false
     transcurre_actualidad : bool, default=false
-    sumatoria_de_pesos : int, default=0    -- sumatoria de pesos de las categorias
+    sumatoria_de_pesos : int, default=0
     --
-    FOREIGN_KEY(T_DEMANDA) : null=False
-    NNyA : FOREIGN_KEY(T_PERSONA nnya=true nullable=false blank=false)
-    AutorDV : FOREIGN_KEY(T_PERSONA autordv=true nullable=true blank=true)
-    FOREIGN_KEY(T_CATEGORIA_MOTIVO) : null=False
-    FOREIGN_KEY(T_CATEGORIA_SUBMOTIVO) : null=False
-    FOREIGN_KEY(T_GRAVEDAD_VULNERACION) : null=False
-    FOREIGN_KEY(T_URGENCIA_VULNERACION) : null=False
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
+    nnya: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, blank=False, related_name=vulneracion_nnya
+    autor_dv: FOREIGN_KEY(T_PERSONA) : on_delete=SET_NULL, null=True, blank=True, related_name=vulneracion_autordv
+    categoria_motivo: FOREIGN_KEY(T_CATEGORIA_MOTIVO) : on_delete=CASCADE, null=False
+    categoria_submotivo: FOREIGN_KEY(T_CATEGORIA_SUBMOTIVO) : on_delete=CASCADE, null=False
+    gravedad_vulneracion: FOREIGN_KEY(T_GRAVEDAD_VULNERACION) : on_delete=CASCADE, null=False
+    urgencia_vulneracion: FOREIGN_KEY(T_URGENCIA_VULNERACION) : on_delete=CASCADE, null=False
     --
     TriggerOnInsert(
         unique(T_DEMANDA, principal=true),
@@ -546,9 +551,9 @@ entity T_CARGO_EXTERNO {
 entity T_CATEGORIA_MOTIVO {
     + PRIMARY_KEY(id)
     --
-    nombre : null=False
-    descripcion : text, null=False
-    peso : int
+    nombre : string, null=False, blank=False
+    descripcion : text, null=True, blank=True
+    peso : int, null=False, blank=False
     --
     --
 }
@@ -556,11 +561,11 @@ entity T_CATEGORIA_MOTIVO {
 entity T_CATEGORIA_SUBMOTIVO {
     + PRIMARY_KEY(id)
     --
-    nombre : string, null=False
-    descripcion : text, null=False
-    peso : int
+    nombre : string, null=False, blank=False
+    descripcion : text, null=True, blank=True
+    peso : int, null=False, blank=False
     --
-    FOREIGN_KEY(T_CATEGORIA_MOTIVO)
+    motivo : FOREIGN_KEY(T_CATEGORIA_MOTIVO) : on_delete=CASCADE, null=False
     --
 }
 
@@ -569,7 +574,7 @@ entity T_URGENCIA_VULNERACION {
     --
     nombre : string, null=False
     descripcion : text, null=False
-    peso : int
+    peso : int, null=False, blank=False
     --
 }
 
@@ -578,7 +583,7 @@ entity T_GRAVEDAD_VULNERACION {
     --
     nombre : string, null=False
     descripcion : text, null=False
-    peso : int
+    peso : int, null=False, blank=False
     --
 }
 
