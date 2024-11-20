@@ -12,5 +12,7 @@ class CustomUser(AbstractUser):
     ]
     genero = models.CharField(max_length=10, choices=genero_choices)
     telefono = models.IntegerField(null=True, blank=True)
+    
+    localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.SET_NULL, null=True, blank=True)
 
     history = HistoricalRecords()
