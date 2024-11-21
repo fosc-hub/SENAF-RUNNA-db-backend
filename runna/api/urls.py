@@ -1,6 +1,5 @@
 from rest_framework.routers import DefaultRouter
 from api.views import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet, TLocalizacionViewSet
-from api.views import CustomUserViewSet
 from api.views import (
     TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet,
     TCargoExternoViewSet, TResponsableExternoViewSet, TUsuarioExternoViewSet,
@@ -18,7 +17,6 @@ router.register(r'localidad', TLocalidadViewSet, basename='localidad')
 router.register(r'barrio', TBarrioViewSet, basename='barrio')
 router.register(r'cpc', TCPCViewSet, basename='cpc')
 router.register(r'localizacion', TLocalizacionViewSet, basename='localizacion')
-router.register(r'user', CustomUserViewSet, basename='user')
 
 router.register(r'institucion-usuario-externo', TInstitucionUsuarioExternoViewSet, basename='institucion-usuario-externo')
 router.register(r'vinculo-usuario-externo', TVinculoUsuarioExternoViewSet, basename='vinculo-usuario-externo')
