@@ -7,7 +7,7 @@ class ProductSerializer(serializers.Serializer):
 '''
 
 from rest_framework import serializers
-from infrastructure.models import CustomUser
+from customAuth.models import CustomUser
 from django.contrib.auth.models import Group, Permission
 
 class PermissionSerializer(serializers.ModelSerializer):
@@ -32,7 +32,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = [
             'id', 'username', 'first_name', 'last_name', 'email',
-            'fecha_nacimiento', 'genero', 'telefono', 'is_staff',
+            'fecha_nacimiento', 'genero', 'telefono', 'localidad', 'is_staff',
             'is_active', 'is_superuser', 'groups', 'user_permissions',
             'all_permissions'
         ]
