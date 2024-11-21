@@ -1,11 +1,13 @@
 from rest_framework import viewsets
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
-from infrastructure.models import CustomUser
-from api.serializers import CustomUserSerializer
+from customAuth.models import CustomUser
+from customAuth.serializers import CustomUserSerializer
 from rest_framework.exceptions import NotFound
-from infrastructure.filters import CustomUserFilter
+from customAuth.filters import CustomUserFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
 class CustomUserViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
@@ -44,3 +46,14 @@ class CustomUserViewSet(viewsets.ViewSet):
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
         return queryset
+
+class CurrentUserView(APIView):
+    """
+    Retrieve the details of the currently authenticated user.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user  # This is the currently authenticated user
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
