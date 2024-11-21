@@ -1,4 +1,3 @@
-from .CustomUserFilter import CustomUserFilter
 from .LocalizacionFilter import TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter
 from .DemandaFilters import TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter, TCargoExternoFilter, TResponsableExternoFilter, TUsuarioExternoFilter, TDemandaFilter, TPrecalificacionDemandaFilter, TScoreDemandaFilter
 from .PersonaFilter import TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter
