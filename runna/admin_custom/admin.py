@@ -5,16 +5,16 @@ from django.contrib.auth.admin import UserAdmin
 
 from django.apps import apps
 
-from infrastructure.models import CustomUser
+from customAuth.models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     """Admin for managing users with roles and permissions."""
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono')}),
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono')}),
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
     )
 
     list_display = ('username', 'email', 'is_staff', 'is_active')

@@ -19,7 +19,7 @@ class Command(BaseCommand):
             return
 
         for model_name in model_order:
-            model = apps.get_model('infrastructure', model_name)  # Adjust 'myapp' to your app name
+            model = apps.get_model(model_name)  # Adjust 'myapp' to your app name
             self.stdout.write(f'Populating model: {model_name}')
 
             for _ in range(10):  # Number of objects per model

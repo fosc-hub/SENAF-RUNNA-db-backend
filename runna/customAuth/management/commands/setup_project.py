@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
-from infrastructure.models import CustomUser
+from customAuth.models import CustomUser
 
 class Command(BaseCommand):
     help = 'Sets up the project by making migrations, migrating, and creating a superuser'
