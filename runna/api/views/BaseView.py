@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 
 class BaseViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     model = None
     serializer_class = None

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'infrastructure',
     'api',
     'admin_custom',
+    'customAuth',
     
     # restframework dependencies
     'rest_framework',
@@ -159,9 +160,15 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 # settings.py
-AUTH_USER_MODEL = 'infrastructure.CustomUser'
+AUTH_USER_MODEL = 'customAuth.CustomUser'
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Use drf-spectacular schema
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',

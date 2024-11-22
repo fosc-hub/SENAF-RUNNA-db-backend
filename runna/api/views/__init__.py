@@ -1,5 +1,4 @@
 from .BaseView import BaseViewSet
-from .CustomUserView import CustomUserViewSet
 from .LocalizacionView import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet, TLocalizacionViewSet
 from .DemandaView import  TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet, TUsuarioExternoViewSet, TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 from .PersonaView import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet

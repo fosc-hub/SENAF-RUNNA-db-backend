@@ -54,7 +54,7 @@ class TDemandaAsignado(models.Model):
     comentarios = models.TextField(null=True, blank=True)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
     
@@ -84,7 +84,7 @@ class TLegajoAsignado(models.Model):
     comentarios = models.TextField(null=True, blank=True)
     
     legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
-    user = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
 
     history = HistoricalRecords()
     

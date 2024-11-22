@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import CustomUser
+from customAuth.models import CustomUser
 from django.contrib.auth.models import Group
 
 class CustomUserFilter(filters.FilterSet):
@@ -9,7 +9,9 @@ class CustomUserFilter(filters.FilterSet):
     is_active = filters.BooleanFilter()  # Filter by active status
     is_superuser = filters.BooleanFilter()
     groups = filters.ModelMultipleChoiceFilter(queryset=Group.objects.all())  # Filter by group
+    localidad = filters.ModelMultipleChoiceFilter(queryset=Group.objects.all())
 
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'is_staff', 'is_active', 'groups']
+        
