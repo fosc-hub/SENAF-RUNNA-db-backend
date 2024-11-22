@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TCargoExterno, TResponsableExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda
+    TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda
 )
 
 
@@ -13,18 +13,6 @@ class TInstitucionUsuarioExternoSerializer(serializers.ModelSerializer):
 class TVinculoUsuarioExternoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TVinculoUsuarioExterno
-        fields = '__all__'
-
-        
-class TCargoExternoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TCargoExterno
-        fields = '__all__'
-
-
-class TResponsableExternoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TResponsableExterno
         fields = '__all__'
 
 

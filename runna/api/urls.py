@@ -3,7 +3,7 @@ from api.views import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet
 from api.views import CustomUserViewSet
 from api.views import (
     TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet,
-    TCargoExternoViewSet, TResponsableExternoViewSet, TUsuarioExternoViewSet,
+    TUsuarioExternoViewSet,
     TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 )
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
@@ -22,8 +22,6 @@ router.register(r'user', CustomUserViewSet, basename='user')
 
 router.register(r'institucion-usuario-externo', TInstitucionUsuarioExternoViewSet, basename='institucion-usuario-externo')
 router.register(r'vinculo-usuario-externo', TVinculoUsuarioExternoViewSet, basename='vinculo-usuario-externo')
-router.register(r'cargo-externo', TCargoExternoViewSet, basename='cargo-externo')
-router.register(r'responsable-externo', TResponsableExternoViewSet, basename='responsable-externo')
 router.register(r'usuario-externo', TUsuarioExternoViewSet, basename='usuario-externo')
 router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')

@@ -36,7 +36,7 @@ for model in models:
 
 # from infrastructure.models import (
 #     CustomUser, Demanda, DemandaAsignado, Provincia, Localidad, Barrio, 
-#     Cargo, InstitucionUsuarioLinea, VinculoUsuarioLinea, Responsable, 
+#     InstitucionUsuarioLinea, VinculoUsuarioLinea, 
 #     UsuarioLinea, Localizacion, EstadoDemanda, PreCalificacionDemanda, 
 #     PrioridadIntervencion, ProblematicaIdentificada, AmbitoVulneracion, 
 #     DDV, Operador, Vulneracion, DemandaVinculada, 
@@ -113,10 +113,6 @@ for model in models:
 #     search_fields = ('calle', 'barrio__nombre')
 
 # # ===== User-Related Models ===== #
-# @admin.register(Cargo)
-# class CargoAdmin(SimpleHistoryAdmin, ModelAdmin):
-#     list_display = ('nombre',)
-#     search_fields = ('nombre',)
 
 # @admin.register(InstitucionUsuarioLinea)
 # class InstitucionUsuarioLineaAdmin(SimpleHistoryAdmin, ModelAdmin):
@@ -127,11 +123,6 @@ for model in models:
 # class VinculoUsuarioLineaAdmin(SimpleHistoryAdmin, ModelAdmin):
 #     list_display = ('nombre',)
 #     search_fields = ('nombre',)
-
-# @admin.register(Responsable)
-# class ResponsableAdmin(SimpleHistoryAdmin, ModelAdmin):
-#     list_display = ('nombre', 'apellido', 'cargo')
-#     search_fields = ('nombre', 'apellido', 'cargo__nombre')
 
 # @admin.register(UsuarioLinea)
 # class UsuarioLineaAdmin(SimpleHistoryAdmin, ModelAdmin):

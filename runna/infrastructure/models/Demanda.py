@@ -5,8 +5,6 @@ from django.utils.translation import gettext_lazy as _
 """
 
 Renombrar '...UsuarioLinea' por '...UsuarioExterno'
-Renombrar 'Cargo' por 'CargoExterno'
-Renombrar 'Responsable' por 'ResponsableExterno'
 
 """
 
@@ -37,34 +35,6 @@ class TVinculoUsuarioExterno(models.Model):
         verbose_name_plural = _('Vinculos de los Usuarios Externos')
 
 
-class TCargoExterno(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
-
-    history = HistoricalRecords()
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Cargo del Responsable Externo')
-        verbose_name_plural = _('Cargos de los Responsables Externos')
-
-
-class TResponsableExterno(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    apellido = models.CharField(max_length=255, null=False, blank=False)
-    telefono = models.IntegerField(null=True, blank=True)
-    mail = models.EmailField(null=True, blank=True)
-
-    cargo = models.ForeignKey('TCargoExterno', on_delete=models.SET_NULL, null=True, blank=True)
-
-    history = HistoricalRecords()
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Responsable del Usuario Externo')
-        verbose_name_plural = _('Responsables de los Usuarios Externos')
-
-
 class TUsuarioExterno(models.Model):
     nombre = models.CharField(max_length=255, null=False)
     apellido = models.CharField(max_length=255, null=False)
@@ -80,7 +50,6 @@ class TUsuarioExterno(models.Model):
 
     vinculo = models.ForeignKey('TVinculoUsuarioExterno', on_delete=models.CASCADE, null=False)
     institucion = models.ForeignKey('TInstitucionUsuarioExterno', on_delete=models.CASCADE, null=False)
-    responsable = models.ForeignKey('TResponsableExterno', on_delete=models.SET_NULL, null=True, blank=True)
 
     history = HistoricalRecords()
     

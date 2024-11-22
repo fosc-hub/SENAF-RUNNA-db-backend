@@ -3,18 +3,16 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TCargoExterno,
-    TResponsableExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda
+    TInstitucionUsuarioExterno, TVinculoUsuarioExterno,
+    TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda
 )
 from api.serializers import (
     TInstitucionUsuarioExternoSerializer, TVinculoUsuarioExternoSerializer,
-    TCargoExternoSerializer, TResponsableExternoSerializer,
     TUsuarioExternoSerializer, TDemandaSerializer,
     TPrecalificacionDemandaSerializer, TScoreDemandaSerializer
 )
 from infrastructure.filters import (
     TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter,
-    TCargoExternoFilter, TResponsableExternoFilter,
     TUsuarioExternoFilter, TDemandaFilter,
     TPrecalificacionDemandaFilter, TScoreDemandaFilter
 )
@@ -59,64 +57,6 @@ class TVinculoUsuarioExternoViewSet(BaseViewSet):
     @extend_schema(
         responses=TVinculoUsuarioExternoSerializer,
         description="Retrieve a single TVinculoUsuarioExterno entry."
-    )
-    def retrieve(self, request, pk=None):
-        return super().retrieve(request, pk=pk)
-
-
-class TCargoExternoViewSet(BaseViewSet):
-    model = TCargoExterno
-    serializer_class = TCargoExternoSerializer
-    filterset_class = TCargoExternoFilter
-    
-    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
-
-    @extend_schema(
-        responses=TCargoExternoSerializer(many=True),
-        description="Retrieve a list of TCargoExterno entries with optional filtering."
-    )
-    def list(self, request):
-        return super().list(request)
-
-    @extend_schema(
-        responses=TCargoExternoSerializer,
-        description="Retrieve a single TCargoExterno entry."
-    )
-    def retrieve(self, request, pk=None):
-        return super().retrieve(request, pk=pk)
-
-
-class TResponsableExternoViewSet(BaseViewSet):
-    model = TResponsableExterno
-    serializer_class = TResponsableExternoSerializer
-    filterset_class = TResponsableExternoFilter
-
-    @extend_schema(
-        request=TResponsableExternoSerializer,
-        responses=TResponsableExternoSerializer,
-        description="Create a new TResponsableExterno entry"
-    )
-    def create(self, request):
-        return super().create(request)
-
-    @extend_schema(
-        request=TResponsableExternoSerializer,
-        responses=TResponsableExternoSerializer,
-        description="Partially update an existing TResponsableExterno entry"
-    )
-    def partial_update(self, request, pk=None):
-        return super().partial_update(request, pk=pk)
-
-    @extend_schema(
-        responses=TResponsableExternoSerializer(many=True),
-        description="Retrieve a list of TResponsableExterno entries with optional filtering."
-    )
-    def list(self, request):
-        return super().list(request)
-
-    @extend_schema(
-        responses=TResponsableExternoSerializer,
-        description="Retrieve a single TResponsableExterno entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

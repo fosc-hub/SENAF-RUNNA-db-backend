@@ -11,8 +11,6 @@
 
         "TInstitucionUsuarioExterno",
         "TVinculoUsuarioExterno",
-        "TCargoExterno",
-        "TResponsableExterno",
         "TUsuarioExterno",
         "TDemanda",
         "TPrecalificacionDemanda",

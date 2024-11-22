@@ -263,7 +263,6 @@ entity T_USUARIO_EXTERNO {
     --
     vinculo: FOREIGN_KEY(T_VINCULO_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
     institucion: FOREIGN_KEY(T_INSTITUCION_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
-    responsable: FOREIGN_KEY(T_RESPONSABLE_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
     --
 }
 
@@ -277,16 +276,6 @@ entity T_INSTITUCION_USUARIO_EXTERNO {
     localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
 }
 
-entity T_RESPONSABLE_EXTERNO {
-    + PRIMARY_KEY(id)
-    --
-    nombre : string, null=False
-    apellido : string, null=False
-    telefono : int, null=True
-    mail : mail, null=True
-    --
-    cargo: FOREIGN_KEY(T_CARGO_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
-}
 
 entity T_VULNERACION {
     + PRIMARY_KEY(id)
@@ -528,14 +517,6 @@ entity T_USER {
 
 CustomUser <|-- T_USER
 
-entity T_CARGO_EXTERNO {
-    + PRIMARY_KEY(id)
-    --
-    nombre : null=False, blank=False
-    descripcion : text, null=True, blank=True
-    --
-}
-
 entity T_CATEGORIA_MOTIVO {
     + PRIMARY_KEY(id)
     --
@@ -736,9 +717,6 @@ T_DEMANDA "*" -- "1" T_USUARIO_EXTERNO
 T_USUARIO_EXTERNO "*" -- "1" T_VINCULO_USUARIO_EXTERNO
 
 T_USUARIO_EXTERNO "*" -- "1" T_INSTITUCION_USUARIO_EXTERNO
-
-T_USUARIO_EXTERNO "*" -- "1" T_RESPONSABLE_EXTERNO
-T_RESPONSABLE_EXTERNO "*" -- "1" T_CARGO_EXTERNO
 
 T_DEMANDA "1" -- "*" T_VULNERACION
 T_CATEGORIA_MOTIVO "1" -- "*" T_CATEGORIA_SUBMOTIVO

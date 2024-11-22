@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import  TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TCargoExterno, TResponsableExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TLocalizacion
+from infrastructure.models import  TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TLocalizacion
  
 class TInstitucionUsuarioExternoFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
@@ -17,23 +17,6 @@ class TVinculoUsuarioExternoFilter(filters.FilterSet):
         model = TVinculoUsuarioExterno
         fields = ['nombre']
 
-class TCargoExternoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
-    class Meta:
-        model = TCargoExterno
-        fields = ['nombre']
-
-class TResponsableExternoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
-    apellido = filters.CharFilter(lookup_expr='icontains')  # Partial match for apellido
-    telefono = filters.NumberFilter()  # Exact match for telefono
-    mail = filters.CharFilter(lookup_expr='icontains')  # Partial match for mail
-    cargo = filters.ModelChoiceFilter(queryset=TCargoExterno.objects.all())  # Exact match for cargo
-
-    class Meta:
-        model = TResponsableExterno
-        fields = ['nombre', 'apellido', 'telefono', 'mail', 'cargo']
-
 class TUsuarioExternoFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
     apellido = filters.CharFilter(lookup_expr='icontains')  # Partial match for apellido
@@ -50,11 +33,9 @@ class TUsuarioExternoFilter(filters.FilterSet):
 
     institucion = filters.ModelChoiceFilter(queryset=TInstitucionUsuarioExterno.objects.all())  # Exact match for institucion
 
-    responsable = filters.ModelChoiceFilter(queryset=TResponsableExterno.objects.all())  # Exact match for responsable
-
     class Meta:
         model = TUsuarioExterno
-        fields = ['nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion', 'responsable']
+        fields = ['nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion']
 
 class TDemandaFilter(filters.FilterSet):
     fecha_y_hora_ingreso = filters.DateTimeFilter()  # Exact match for fecha_y_hora_ingreso
