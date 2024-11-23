@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion
+from infrastructure.models import TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion, TVulneracionHistory
 
 
 class TCategoriaMotivoFilter(filters.FilterSet):
@@ -66,6 +66,7 @@ class TVulneracionFilter(filters.FilterSet):
         fields = {
             'principal_demanda': ['exact'],
             'transcurre_actualidad': ['exact'],
+            'deleted': ['exact'],
             'sumatoria_de_pesos': ['exact', 'gte', 'lte'],
             'demanda': ['exact'],
             'nnya': ['exact'],
@@ -74,4 +75,14 @@ class TVulneracionFilter(filters.FilterSet):
             'categoria_submotivo': ['exact'],
             'gravedad_vulneracion': ['exact'],
             'urgencia_vulneracion': ['exact'],
+        }
+
+
+class TVulneracionHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TVulneracionHistory
+        fields = {
+            'vulneracion_parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
         }
