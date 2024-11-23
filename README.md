@@ -2073,3 +2073,139 @@ Here are some suggestions for naming the folder:
 - For a more general-purpose folder for Django Signals: Use `signals`.
 
 Let me know if you need further guidance on structuring or implementing your signals!
+To design the `TVulneracionHistory` table that tracks the `action`, `user`, `timestamp`, and copies all fields of the `TVulneracion` table, you can create a separate model that works as an explicit audit log. Here's how you can structure it:
+
+---
+
+### **1. TVulneracionHistory Model**
+
+```python
+from django.db import models
+from infrastructure.models import CustomUser
+
+class TVulneracionHistory(models.Model):
+    ACTION_CHOICES = [
+        ('CREATE', 'Create'),
+        ('UPDATE', 'Update'),
+        ('DELETE', 'Delete'),
+    ]
+
+    action = models.CharField(max_length=10, choices=ACTION_CHOICES)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    # Fields from TVulneracion
+    principal_demanda = models.BooleanField(default=False)
+    transcurre_actualidad = models.BooleanField(default=False)
+    sumatoria_de_pesos = models.IntegerField(default=0)
+
+    demanda = models.ForeignKey('TDemanda', on_delete=models.SET_NULL, null=True, blank=True)
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False, related_name='history_vulneracion_nnya')
+    autor_dv = models.ForeignKey('TPersona', on_delete=models.SET_NULL, null=True, blank=True, related_name='history_vulneracion_autordv')
+
+    categoria_motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE, null=False)
+    categoria_submotivo = models.ForeignKey('TCategoriaSubmotivo', on_delete=models.CASCADE, null=False)
+    gravedad_vulneracion = models.ForeignKey('TGravedadVulneracion', on_delete=models.CASCADE, null=False)
+    urgencia_vulneracion = models.ForeignKey('TUrgenciaVulneracion', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Vulneracion')
+        verbose_name_plural = _('Historial de Vulneraciones')
+
+    def __str__(self):
+        return f"Action: {self.action}, Timestamp: {self.timestamp}, User: {self.user}"
+```
+
+---
+
+### **2. Populate History Table Using Django Signals**
+
+You can use Django signals to automatically populate the `TVulneracionHistory` table whenever a `TVulneracion` object is created, updated, or deleted.
+
+#### **Signal Handlers**
+
+Create signal handlers for `post_save` and `post_delete` events:
+
+```python
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from infrastructure.models import TVulneracion, TVulneracionHistory
+
+@receiver(post_save, sender=TVulneracion)
+def log_vulneracion_save(sender, instance, created, **kwargs):
+    action = 'CREATE' if created else 'UPDATE'
+    TVulneracionHistory.objects.create(
+        action=action,
+        user=get_current_authenticated_user(),  # Replace with logic to get the current user
+        principal_demanda=instance.principal_demanda,
+        transcurre_actualidad=instance.transcurre_actualidad,
+        sumatoria_de_pesos=instance.sumatoria_de_pesos,
+        demanda=instance.demanda,
+        nnya=instance.nnya,
+        autor_dv=instance.autor_dv,
+        categoria_motivo=instance.categoria_motivo,
+        categoria_submotivo=instance.categoria_submotivo,
+        gravedad_vulneracion=instance.gravedad_vulneracion,
+        urgencia_vulneracion=instance.urgencia_vulneracion,
+    )
+
+@receiver(post_delete, sender=TVulneracion)
+def log_vulneracion_delete(sender, instance, **kwargs):
+    TVulneracionHistory.objects.create(
+        action='DELETE',
+        user=get_current_authenticated_user(),  # Replace with logic to get the current user
+        principal_demanda=instance.principal_demanda,
+        transcurre_actualidad=instance.transcurre_actualidad,
+        sumatoria_de_pesos=instance.sumatoria_de_pesos,
+        demanda=instance.demanda,
+        nnya=instance.nnya,
+        autor_dv=instance.autor_dv,
+        categoria_motivo=instance.categoria_motivo,
+        categoria_submotivo=instance.categoria_submotivo,
+        gravedad_vulneracion=instance.gravedad_vulneracion,
+        urgencia_vulneracion=instance.urgencia_vulneracion,
+    )
+```
+
+---
+
+### **3. Capturing the User**
+
+#### **Middleware to Attach User**
+Use Django Simple History's `get_request` function to capture the currently logged-in user:
+
+1. **Middleware**:
+   ```python
+   from threading import local
+
+   _thread_locals = local()
+
+   def get_current_authenticated_user():
+       return getattr(_thread_locals, 'user', None)
+
+   class ThreadLocalMiddleware:
+       """
+       Middleware to store the current request user in thread-local storage.
+       """
+       def __init__(self, get_response):
+           self.get_response = get_response
+
+       def __call__(self, request):
+           _thread_locals.user = getattr(request, 'user', None)
+           return self.get_response(request)
+   ```
+
+2. **Add Middleware**:
+   Add `ThreadLocalMiddleware` to your `MIDDLEWARE` settings.
+
+---
+
+### **4. Use Cases for the History Table**
+- **Audit Logs**: Maintain a full history of changes to `TVulneracion` for compliance or debugging.
+- **Version Control**: Restore deleted or previous versions of `TVulneracion` entries if necessary.
+- **Analytics**: Analyze patterns in updates or deletions.
+
+---
+
+Let me know if you need further help implementing or testing this solution!
