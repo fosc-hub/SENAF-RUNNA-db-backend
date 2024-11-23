@@ -5,6 +5,4 @@ class InfrastructureConfig(AppConfig):
     name = 'infrastructure'
 
     def ready(self):
-        print("InfrastructureConfig is ready!")  # Add this line
-
         import infrastructure.signals
