@@ -16,6 +16,8 @@ class TPersonaViewSet(BaseViewSet):
     model = TPersona
     serializer_class = TPersonaSerializer
     filterset_class = TPersonaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TPersonaSerializer,
@@ -74,6 +76,8 @@ class TNNyAEducacionViewSet(BaseViewSet):
     model = TNNyAEducacion
     serializer_class = TNNyAEducacionSerializer
     filterset_class = TNNyAEducacionFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TNNyAEducacionSerializer,
@@ -132,6 +136,8 @@ class TNNyASaludViewSet(BaseViewSet):
     model = TNNyASalud
     serializer_class = TNNyASaludSerializer
     filterset_class = TNNyASaludFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TNNyASaludSerializer,
@@ -184,6 +190,7 @@ class TNNyAScoreViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+
 
 class TLegajoViewSet(BaseViewSet):
     model = TLegajo

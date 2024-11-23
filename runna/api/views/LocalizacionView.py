@@ -207,6 +207,8 @@ class TCPCViewSet(viewsets.ViewSet):
 class TLocalizacionViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = TLocalizacionFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

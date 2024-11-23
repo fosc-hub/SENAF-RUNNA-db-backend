@@ -66,6 +66,8 @@ class TUsuarioExternoViewSet(BaseViewSet):
     model = TUsuarioExterno
     serializer_class = TUsuarioExternoSerializer
     filterset_class = TUsuarioExternoFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']  # Excludes  DELETE
 
     @extend_schema(
         request=TUsuarioExternoSerializer,
@@ -103,6 +105,8 @@ class TDemandaViewSet(BaseViewSet):
     serializer_class = TDemandaSerializer
     filterset_class = TDemandaFilter
 
+    http_method_names = ['get', 'post', 'put', 'patch']
+
     @extend_schema(
         request=TDemandaSerializer,
         responses=TDemandaSerializer,
@@ -138,6 +142,8 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
     model = TPrecalificacionDemanda
     serializer_class = TPrecalificacionDemandaSerializer
     filterset_class = TPrecalificacionDemandaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TPrecalificacionDemandaSerializer,

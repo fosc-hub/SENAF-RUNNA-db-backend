@@ -16,6 +16,8 @@ class TLocalizacionPersonaViewSet(BaseViewSet):
     model = TLocalizacionPersona
     serializer_class = TLocalizacionPersonaSerializer
     filterset_class = TLocalizacionPersonaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TLocalizacionPersonaSerializer,
@@ -52,6 +54,8 @@ class TDemandaPersonaViewSet(BaseViewSet):
     model = TDemandaPersona
     serializer_class = TDemandaPersonaSerializer
     filterset_class = TDemandaPersonaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TDemandaPersonaSerializer,
@@ -88,6 +92,8 @@ class TDemandaAsignadoViewSet(BaseViewSet):
     model = TDemandaAsignado
     serializer_class = TDemandaAsignadoSerializer
     filterset_class = TDemandaAsignadoFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TDemandaAsignadoSerializer,
@@ -124,6 +130,8 @@ class TDemandaVinculadaViewSet(BaseViewSet):
     model = TDemandaVinculada
     serializer_class = TDemandaVinculadaSerializer
     filterset_class = TDemandaVinculadaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TDemandaVinculadaSerializer,
@@ -160,6 +168,8 @@ class TLegajoAsignadoViewSet(BaseViewSet):
     model = TLegajoAsignado
     serializer_class = TLegajoAsignadoSerializer
     filterset_class = TLegajoAsignadoFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TLegajoAsignadoSerializer,
@@ -218,6 +228,8 @@ class TVinculoPersonaPersonaViewSet(BaseViewSet):
     model = TVinculoPersonaPersona
     serializer_class = TVinculoPersonaPersonaSerializer
     filterset_class = TVinculoPersonaPersonaFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TVinculoPersonaPersonaSerializer,
@@ -254,6 +266,8 @@ class TDemandaMotivoIntervencionViewSet(BaseViewSet):
     model = TDemandaMotivoIntervencion
     serializer_class = TDemandaMotivoIntervencionSerializer
     filterset_class = TDemandaMotivoIntervencionFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TDemandaMotivoIntervencionSerializer,
@@ -290,6 +304,8 @@ class TPersonaCondicionesVulnerabilidadViewSet(BaseViewSet):
     model = TPersonaCondicionesVulnerabilidad
     serializer_class = TPersonaCondicionesVulnerabilidadSerializer
     filterset_class = TPersonaCondicionesVulnerabilidadFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TPersonaCondicionesVulnerabilidadSerializer,

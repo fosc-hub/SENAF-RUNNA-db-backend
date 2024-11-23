@@ -148,6 +148,8 @@ class TVulneracionViewSet(BaseViewSet):
     model = TVulneracion
     serializer_class = TVulneracionSerializer
     filterset_class = TVulneracionFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TVulneracionSerializer,

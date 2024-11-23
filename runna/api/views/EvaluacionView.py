@@ -61,6 +61,8 @@ class TActividadViewSet(BaseViewSet):
     model = TActividad
     serializer_class = TActividadSerializer
     filterset_class = TActividadFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TActividadSerializer,
@@ -171,6 +173,8 @@ class TEvaluacionesViewSet(BaseViewSet):
     model = TEvaluaciones
     serializer_class = TEvaluacionesSerializer
     filterset_class = TEvaluacionesFilter
+    
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TEvaluacionesSerializer,
