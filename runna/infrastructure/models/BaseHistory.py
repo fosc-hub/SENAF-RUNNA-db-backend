@@ -18,3 +18,7 @@ class BaseHistory(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+        
+    
+    def __str__(self):
+        return f"{self.action} - {self.timestamp} - {self.user} - {self.parent}"
