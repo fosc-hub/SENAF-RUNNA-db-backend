@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from infrastructure.models import TActividadTipo, TInstitucionActividad, TActividad, TInstitucionRespuesta, TRespuesta, TIndicadoresValoracion, TEvaluaciones, TDecision
+from infrastructure.models import TActividadTipo, TInstitucionActividad, TActividad, TInstitucionRespuesta, TRespuesta, TIndicadoresValoracion, TEvaluaciones, TDecision, TActividadHistory
 
 
 class TActividadTipoSerializer(serializers.ModelSerializer):
@@ -53,4 +53,9 @@ class TEvaluacionesSerializer(serializers.ModelSerializer):
 class TDecisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDecision
+        fields = '__all__'
+
+class TActividadHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TActividadHistory
         fields = '__all__'

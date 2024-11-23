@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-
+from .BaseHistory import BaseHistory
 
 """
 TActividadTipo
@@ -41,20 +41,36 @@ class TInstitucionActividad(models.Model):
         verbose_name_plural = _('Instituciones de Actividades')
 
 
-class TActividad(models.Model):
+class TActividadBase(models.Model):
     fecha_y_hora = models.DateTimeField(auto_now=True)
     descripcion = models.TextField(blank=False, null=False)
-
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     tipo = models.ForeignKey('TActividadTipo', on_delete=models.SET_NULL, null=True, blank=True)
     institucion = models.ForeignKey('TInstitucionActividad', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TActividad(TActividadBase):
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Actividad')
         verbose_name_plural = _('Actividades')
+
+
+class TActividadHistory(TActividadBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TActividad',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Actividad')
+        verbose_name_plural = _('Historial de Actividades')
 
 
 class TInstitucionRespuesta(models.Model):

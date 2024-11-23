@@ -3,12 +3,13 @@ from api.views import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet
 from api.views import (
     TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet,
     TUsuarioExternoViewSet,
-    TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
+    TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet,
+    TDemandaHistoryViewSet, TPrecalificacionDemandaHistoryViewSet
 )
-from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
+from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet, TPersonaHistoryViewSet, TNNyAEducacionHistoryViewSet, TNNyASaludHistoryViewSet
 from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet, TVulneracionHistoryViewSet
-from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet, TLocalizacionPersonaHistoryViewSet
-from api.views import TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet, TInstitucionRespuestaViewSet, TRespuestaViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
+from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet, TLocalizacionPersonaHistoryViewSet, TDemandaPersonaHistoryViewSet, TDemandaAsignadoHistoryViewSet, TDemandaVinculadaHistoryViewSet
+from api.views import TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet, TInstitucionRespuestaViewSet, TRespuestaViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet, TActividadHistoryViewSet
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -25,6 +26,8 @@ router.register(r'usuario-externo', TUsuarioExternoViewSet, basename='usuario-ex
 router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
 router.register(r'score-demanda', TScoreDemandaViewSet, basename='score-demanda')
+router.register(r'demanda-history', TDemandaHistoryViewSet, basename='demanda-history')
+router.register(r'precalificacion-demanda-history', TPrecalificacionDemandaHistoryViewSet, basename='precalificacion-demanda-history')
 
 router.register(r'persona', TPersonaViewSet, basename='persona')
 router.register(r'institucion-educativa', TInstitucionEducativaViewSet, basename='institucion-educativa')
@@ -33,6 +36,9 @@ router.register(r'institucion-sanitaria', TInstitucionSanitariaViewSet, basename
 router.register(r'nnya-salud', TNNyASaludViewSet, basename='nnya-salud')
 router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
 router.register(r'legajo', TLegajoViewSet, basename='legajo')
+router.register(r'persona-history', TPersonaHistoryViewSet, basename='persona-history')
+router.register(r'nnya-educacion-history', TNNyAEducacionHistoryViewSet, basename='nnya-educacion-history')
+router.register(r'nnya-salud-history', TNNyASaludHistoryViewSet, basename='nnya-salud-history')
 
 router.register(r'categoria-motivo', TCategoriaMotivoViewSet, basename='categoria-motivo')
 router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='categoria-submotivo')
@@ -53,6 +59,9 @@ router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basen
 router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSet, basename='demanda-motivo-intervencion')
 router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
 router.register(r'localizacion-persona-history', TLocalizacionPersonaHistoryViewSet, basename='localizacion-persona-history')
+router.register(r'demanda-persona-history', TDemandaPersonaHistoryViewSet, basename='demanda-persona-history')
+router.register(r'demanda-asignado-history', TDemandaAsignadoHistoryViewSet, basename='demanda-asignado-history')
+router.register(r'demanda-vinculada-history', TDemandaVinculadaHistoryViewSet, basename='demanda-vinculada-history')
 
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
@@ -62,5 +71,6 @@ router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')
 router.register(r'decision', TDecisionViewSet, basename='decision')
+router.register(r'actividad-history', TActividadHistoryViewSet, basename='actividad-history')
 
 urlpatterns = router.urls
