@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
+from .BaseHistory import BaseHistory
 
 """
 TLocalizacionPersona
@@ -14,19 +15,45 @@ TVinculoPersonaPersona
 TDemandaMotivoIntervencion
 TPersonaCondicionesVulnerabilidad
 """
-
-class TLocalizacionPersona(models.Model):
+class TLocalizacionPersonaBase(models.Model):
+    deleted = models.BooleanField(default=False)
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.CASCADE)
     principal = models.BooleanField(null=False, default=False)
-    
-    history = HistoricalRecords()
-    
+
+    class Meta:
+        abstract = True
+
+
+class TLocalizacionPersona(TLocalizacionPersonaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         unique_together = ('localizacion', 'persona')
         app_label = 'infrastructure'
         verbose_name = _('Localizacion de Persona')
         verbose_name_plural = _('Localizaciones de Personas')
+
+
+class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TLocalizacionPersona',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Localizacion de Persona')
+        verbose_name_plural = _('Historial de Localizaciones de Personas')
 
 
 class TDemandaPersona(models.Model):

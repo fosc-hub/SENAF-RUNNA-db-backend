@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad
+from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory
 
 class TLocalizacionPersonaFilter(filters.FilterSet):
     class Meta:
@@ -53,3 +53,14 @@ class TDemandaMotivoIntervencionFilter(filters.FilterSet):
     class Meta:
         model = TDemandaMotivoIntervencion
         fields = '__all__'
+
+
+
+class TLocalizacionPersonaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TLocalizacionPersonaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }

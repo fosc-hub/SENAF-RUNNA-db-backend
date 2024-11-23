@@ -7,7 +7,7 @@ from api.views import (
 )
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
 from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet, TVulneracionHistoryViewSet
-from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet
+from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet, TLocalizacionPersonaHistoryViewSet
 from api.views import TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet, TInstitucionRespuestaViewSet, TRespuestaViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
 
 router = DefaultRouter()
@@ -52,6 +52,7 @@ router.register(r'vinculo-persona', TVinculoPersonaViewSet, basename='vinculo-pe
 router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basename='vinculo-persona-persona')
 router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSet, basename='demanda-motivo-intervencion')
 router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
+router.register(r'localizacion-persona-history', TLocalizacionPersonaHistoryViewSet, basename='localizacion-persona-history')
 
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')

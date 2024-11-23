@@ -3,13 +3,13 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad
+    TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory
 )
 from api.serializers import (
-    TLocalizacionPersonaSerializer, TDemandaPersonaSerializer, TDemandaAsignadoSerializer, TDemandaVinculadaSerializer, TLegajoAsignadoSerializer, TVinculoPersonaSerializer, TVinculoPersonaPersonaSerializer, TDemandaMotivoIntervencionSerializer, TPersonaCondicionesVulnerabilidadSerializer
+    TLocalizacionPersonaSerializer, TDemandaPersonaSerializer, TDemandaAsignadoSerializer, TDemandaVinculadaSerializer, TLegajoAsignadoSerializer, TVinculoPersonaSerializer, TVinculoPersonaPersonaSerializer, TDemandaMotivoIntervencionSerializer, TPersonaCondicionesVulnerabilidadSerializer, TLocalizacionPersonaHistorySerializer
 )
 from infrastructure.filters import (
-    TLocalizacionPersonaFilter, TDemandaPersonaFilter, TDemandaAsignadoFilter, TDemandaVinculadaFilter, TLegajoAsignadoFilter, TVinculoPersonaFilter, TVinculoPersonaPersonaFilter, TDemandaMotivoIntervencionFilter, TPersonaCondicionesVulnerabilidadFilter
+    TLocalizacionPersonaFilter, TDemandaPersonaFilter, TDemandaAsignadoFilter, TDemandaVinculadaFilter, TLegajoAsignadoFilter, TVinculoPersonaFilter, TVinculoPersonaPersonaFilter, TDemandaMotivoIntervencionFilter, TPersonaCondicionesVulnerabilidadFilter, TLocalizacionPersonaHistoryFilter
 )
 
 class TLocalizacionPersonaViewSet(BaseViewSet):
@@ -17,7 +17,7 @@ class TLocalizacionPersonaViewSet(BaseViewSet):
     serializer_class = TLocalizacionPersonaSerializer
     filterset_class = TLocalizacionPersonaFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TLocalizacionPersonaSerializer,
@@ -48,6 +48,13 @@ class TLocalizacionPersonaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TLocalizacionPersona entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TDemandaPersonaViewSet(BaseViewSet):
@@ -333,6 +340,27 @@ class TPersonaCondicionesVulnerabilidadViewSet(BaseViewSet):
     @extend_schema(
         responses=TPersonaCondicionesVulnerabilidadSerializer,
         description="Retrieve a single TPersonaCondicionesVulnerabilidad entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+class TLocalizacionPersonaHistoryViewSet(BaseViewSet):
+    model = TLocalizacionPersonaHistory
+    serializer_class = TLocalizacionPersonaHistorySerializer
+    filterset_class = TLocalizacionPersonaHistoryFilter
+    
+    http_method_names = ['get']
+
+    @extend_schema(
+        responses=TLocalizacionPersonaHistorySerializer(many=True),
+        description="Retrieve a list of TLocalizacionPersonaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TLocalizacionPersonaHistorySerializer,
+        description="Retrieve a single TLocalizacionPersonaHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

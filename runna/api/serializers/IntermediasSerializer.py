@@ -1,11 +1,17 @@
 from rest_framework import serializers
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad
+from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory
 
 
 class TLocalizacionPersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TLocalizacionPersona
         fields = '__all__'
+
+    def create(self, validated_data):
+        if 'deleted' in validated_data:
+            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
+        return super().create(validated_data)
+
 
 class TDemandaPersonaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,3 +68,8 @@ class TPersonaCondicionesVulnerabilidadSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"condicion_vulnerabilidad": "This field cannot be updated."})
         return super().update(instance, validated_data)
 
+
+class TLocalizacionPersonaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TLocalizacionPersonaHistory
+        fields = '__all__'

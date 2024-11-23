@@ -1,3 +1,4 @@
 from .BaseLogs import logs
 from .vulneracion_signal import log_vulneracion_save, log_vulneracion_delete
 from .localizacion_signal import log_localizacion_save, log_localizacion_delete
+from .intermedias_signal import log_localizacionPersona_save, log_localizacionPersona_delete

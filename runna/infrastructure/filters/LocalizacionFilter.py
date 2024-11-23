@@ -60,7 +60,7 @@ class TLocalizacionFilter(filters.FilterSet):
 
     class Meta:
         model = TLocalizacion
-        fields = ['calle', 'localidad', 'barrio', 'cpc']
+        fields = ['calle', 'localidad', 'barrio', 'cpc', 'deleted']
 
 
 class TLocalizacionHistoryFilter(filters.FilterSet):
