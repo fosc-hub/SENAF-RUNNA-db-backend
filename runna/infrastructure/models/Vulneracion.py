@@ -97,6 +97,7 @@ class TMotivoIntervencion(models.Model):
 class TVulneracionBase(models.Model):
     principal_demanda = models.BooleanField(default=False)
     transcurre_actualidad = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
     sumatoria_de_pesos = models.IntegerField(default=0)
 
     demanda = models.ForeignKey('TDemanda', on_delete=models.SET_NULL, null=True, blank=True)
@@ -124,6 +125,15 @@ class TVulneracionBase(models.Model):
         abstract = True  # This model is abstract and won't create a table.
 
 class TVulneracion(TVulneracionBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
 
     class Meta:
         app_label = 'infrastructure'
