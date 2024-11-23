@@ -1,0 +1,1 @@
+from .vulneracion_signal import log_vulneracion_save, log_vulneracion_delete
