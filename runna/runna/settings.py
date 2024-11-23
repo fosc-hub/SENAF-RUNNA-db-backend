@@ -80,6 +80,8 @@ MIDDLEWARE = [
 
     # corsheaders middleware    
     "corsheaders.middleware.CorsMiddleware",
+
+    'runna.middleware.ThreadLocalMiddleware'
 ]
 
 ROOT_URLCONF = 'runna.urls'
