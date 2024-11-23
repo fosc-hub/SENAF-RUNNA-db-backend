@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-
+from .BaseHistory import BaseHistory
 
 """
 TCategoriaMotivo
@@ -140,29 +140,10 @@ class TVulneracion(TVulneracionBase):
         verbose_name = _('Vulneracion')
         verbose_name_plural = _('Vulneraciones')
 
-class HistoryBase(models.Model):
-    ACTION_CHOICES = [
-        ('CREATE', 'Create'),
-        ('UPDATE', 'Update'),
-        ('DELETE', 'Delete'),
-    ]
 
-    action = models.CharField(max_length=10, choices=ACTION_CHOICES)
-    user = models.ForeignKey(
-        'customAuth.CustomUser',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        abstract = True  # This model is abstract and won't create a table.
-
-
-class TVulneracionHistory(TVulneracionBase, HistoryBase):
-    vulneracion_parent = models.ForeignKey(
-        TVulneracion,
+class TVulneracionHistory(TVulneracionBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TVulneracion',
         on_delete=models.CASCADE,
         related_name='history'
     )
@@ -173,4 +154,4 @@ class TVulneracionHistory(TVulneracionBase, HistoryBase):
         verbose_name_plural = _('Historial de Vulneraciones')
 
     def __str__(self):
-        return f"{self.action} - {self.timestamp} - {self.user} - {self.vulneracion_parent}"
+        return f"{self.action} - {self.timestamp} - {self.user} - {self.parent}"
