@@ -82,7 +82,7 @@ class TVulneracionHistoryFilter(filters.FilterSet):
     class Meta:
         model = TVulneracionHistory
         fields = {
-            'vulneracion_parent': ['exact'],
+            'parent': ['exact'],
             'action': ['exact'],
             'user': ['exact'],
         }
