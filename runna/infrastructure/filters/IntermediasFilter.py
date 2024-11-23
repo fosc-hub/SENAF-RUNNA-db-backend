@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory
+from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory, TDemandaPersonaHistory, TDemandaAsignadoHistory, TDemandaVinculadaHistory
 
 class TLocalizacionPersonaFilter(filters.FilterSet):
     class Meta:
@@ -62,5 +62,34 @@ class TLocalizacionPersonaHistoryFilter(filters.FilterSet):
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
-            'user': ['exact'],
+            'by_user': ['exact'],
+        }
+
+class TDemandaPersonaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TDemandaPersonaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TDemandaAsignadoHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TDemandaAsignadoHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TDemandaVinculadaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TDemandaVinculadaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
         }

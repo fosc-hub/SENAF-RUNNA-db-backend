@@ -8,7 +8,7 @@ class BaseHistory(models.Model):
     ]
 
     action = models.CharField(max_length=10, choices=ACTION_CHOICES)
-    user = models.ForeignKey(
+    by_user = models.ForeignKey(
         'customAuth.CustomUser',
         on_delete=models.SET_NULL,
         null=True,

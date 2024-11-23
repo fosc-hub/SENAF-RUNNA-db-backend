@@ -87,7 +87,7 @@ class TPersonaHistoryFilter(filters.FilterSet):
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
-            'user': ['exact'],
+            'by_user': ['exact'],
         }
 
 
@@ -97,7 +97,7 @@ class TNNyAEducacionHistoryFilter(filters.FilterSet):
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
-            'user': ['exact'],
+            'by_user': ['exact'],
         }
 
 
@@ -107,5 +107,5 @@ class TNNyASaludHistoryFilter(filters.FilterSet):
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
-            'user': ['exact'],
+            'by_user': ['exact'],
         }

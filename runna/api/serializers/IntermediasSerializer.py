@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory
+from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory, TDemandaPersonaHistory, TDemandaAsignadoHistory, TDemandaVinculadaHistory
 
 
 class TLocalizacionPersonaSerializer(serializers.ModelSerializer):
@@ -73,3 +73,28 @@ class TLocalizacionPersonaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TLocalizacionPersonaHistory
         fields = '__all__'
+
+class TDemandaPersonaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaPersonaHistory
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        if 'deleted' in validated_data:
+            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
+        return super().create(validated_data)
+
+class TDemandaAsignadoHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaAsignadoHistory
+        fields = '__all__'
+
+class TDemandaVinculadaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaVinculadaHistory
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        if 'deleted' in validated_data:
+            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
+        return super().create(validated_data)

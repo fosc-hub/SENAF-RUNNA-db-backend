@@ -84,5 +84,5 @@ class TVulneracionHistoryFilter(filters.FilterSet):
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
-            'user': ['exact'],
+            'by_user': ['exact'],
         }

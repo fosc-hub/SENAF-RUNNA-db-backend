@@ -56,18 +56,31 @@ class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
         verbose_name_plural = _('Historial de Localizaciones de Personas')
 
 
-class TDemandaPersona(models.Model):
+class TDemandaPersonaBase(models.Model):
+    deleted = models.BooleanField(default=False)
     conviviente = models.BooleanField(null=False, blank=False)
     supuesto_autordv = models.BooleanField(null=False, blank=False)
     supuesto_autordv_principal = models.BooleanField(null=False, blank=False)
-    nnya = models.BooleanField(null=False, blank=False)
     nnya_principal = models.BooleanField(null=False, blank=False)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
-
-    history = HistoricalRecords()
     
+    class Meta:
+        abstract = True
+
+
+class TDemandaPersona(TDemandaPersonaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         unique_together = ('demanda', 'persona')
         app_label = 'infrastructure'
@@ -75,16 +88,42 @@ class TDemandaPersona(models.Model):
         verbose_name_plural = _('Personas asociadas a Demandas')
 
 
-class TDemandaAsignado(models.Model):
+class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TDemandaPersona',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Persona asociada a Demanda')
+        verbose_name_plural = _('Historial de Personas asociadas a Demandas')
+
+
+class TDemandaAsignadoBase(models.Model):
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
     comentarios = models.TextField(null=True, blank=True)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE,  related_name='%(class)s_user')
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True
+
+
+class TDemandaAsignado(TDemandaAsignadoBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.esta_activo = False
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         unique_together = ('demanda', 'user')
         app_label = 'infrastructure'
@@ -92,18 +131,57 @@ class TDemandaAsignado(models.Model):
         verbose_name_plural = _('Asignaciones de Demandas')
 
 
-class TDemandaVinculada(models.Model):
-    demanda_1 = models.ForeignKey('TDemanda', related_name="demanda_1", on_delete=models.CASCADE)
-    demanda_2 = models.ForeignKey('TDemanda', related_name="demanda_2", on_delete=models.CASCADE)
+class TDemandaAsignadoHistory(TDemandaAsignadoBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TDemandaAsignado',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
 
-    history = HistoricalRecords()
-        
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Asignacion de Demanda')
+        verbose_name_plural = _('Historial de Asignaciones de Demandas')
+
+
+class TDemandaVinculadaBase(models.Model):
+    deleted = models.BooleanField(default=False)
+    demanda_1 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_1", on_delete=models.CASCADE)
+    demanda_2 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_2", on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
+class TDemandaVinculada(TDemandaVinculadaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         unique_together = ('demanda_1', 'demanda_2')
         app_label = 'infrastructure'
         verbose_name = _('Vinculacion de Demandas')
-        verbose_name_plural = _('Vinulaciones de Demandas')
+        verbose_name_plural = _('Vinculaciones de Demandas')
 
+
+class TDemandaVinculadaHistory(TDemandaVinculadaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TDemandaVinculada',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Vinculacion de Demandas')
+        verbose_name_plural = _('Historial de Vinculaciones de Demandas')
 
 class TLegajoAsignado(models.Model):
     esta_activo = models.BooleanField(default=True)
