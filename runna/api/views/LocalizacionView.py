@@ -2,13 +2,18 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
+from .BaseView import BaseViewSet
+
+from infrastructure.models import (
+    TLocalizacion, TLocalizacionHistory
+)
 
 from core.use_cases import (
-    TProvinciaUseCase, TDepartamentoUseCase, TLocalidadUseCase, TBarrioUseCase, TCPCUseCase, TLocalizacionUseCase
+    TProvinciaUseCase, TDepartamentoUseCase, TLocalidadUseCase, TBarrioUseCase, TCPCUseCase
 )
 
 from api.serializers import (
-    TProvinciaSerializer, TDepartamentoSerializer, TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer
+    TProvinciaSerializer, TDepartamentoSerializer, TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer, TLocalizacionHistorySerializer
 )
 
 from infrastructure.repositories import (
@@ -16,7 +21,7 @@ from infrastructure.repositories import (
 )
 
 from infrastructure.filters import (
-    TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter
+    TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter, TLocalizacionHistoryFilter
 )
 
 
@@ -204,70 +209,68 @@ class TCPCViewSet(viewsets.ViewSet):
         filter_backend = DjangoFilterBackend()
         return filter_backend.filter_queryset(self.request, queryset, self)
 
-class TLocalizacionViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
+class TLocalizacionViewSet(BaseViewSet):
+    model = TLocalizacion
+    serializer_class = TLocalizacionSerializer
     filterset_class = TLocalizacionFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.tlocalizacion_use_case = TLocalizacionUseCase()
-        self.tlocalizacion_repo = TLocalizacionRepository()
-        
-    @extend_schema(
-        responses=TLocalizacionSerializer(many=True),
-        description="Retrieve a list of all TLocalizacion entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TLocalizacion."""
-        queryset = self.tlocalizacion_repo.get_all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TLocalizacionSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     
     @extend_schema(
         request=TLocalizacionSerializer,
         responses=TLocalizacionSerializer,
-        description="Retrieve a single TLocalizacion"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TLocalizacion."""
-        tlocalizacion = self.tlocalizacion_repo.get_localizacion(pk)
-        serializer = TLocalizacionSerializer(tlocalizacion)
-        return Response(serializer.data)
-    
-    @extend_schema(
-        request=TLocalizacionSerializer,
-        responses=TLocalizacionSerializer,
-        description="Create a new TLocalizacion"
+        description="Create a new TLocalizacion entry"
     )
     def create(self, request):
-        """Create a new TLocalizacion."""
-        serializer = TLocalizacionSerializer(data=request.data)
-        if serializer.is_valid():
-            tlocalizacion = self.tlocalizacion_use_case.create_localizacion(**serializer.validated_data)
-            new_localizacion =  self.tlocalizacion_repo.create(tlocalizacion)
+        return super().create(request)
 
-            return Response(TLocalizacionSerializer(new_localizacion).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
     @extend_schema(
         request=TLocalizacionSerializer,
         responses=TLocalizacionSerializer,
-        description="Partially update an existing TLocalizacion"
+        description="Partially update an existing TLocalizacion entry"
     )
     def partial_update(self, request, pk=None):
-        """Partially update an existing TLocalizacion."""
-        tlocalizacion = self.tlocalizacion_repo.get_localizacion(pk)
-        serializer = TLocalizacionSerializer(tlocalizacion, data=request.data, partial=True)
-        if serializer.is_valid():
-            updated_localizacion = self.tlocalizacion_use_case.update_localizacion(tlocalizacion, **serializer.validated_data)
-            final_localizacion = self.tlocalizacion_repo.update(updated_localizacion)
-            return Response(TLocalizacionSerializer(final_localizacion).data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return super().partial_update(request, pk=pk)
+
+    @extend_schema(
+        responses=TLocalizacionSerializer(many=True),
+        description="Retrieve a list of TLocalizacion entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TLocalizacionSerializer,
+        description="Retrieve a single TLocalizacion entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TLocalizacion entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
+
+class TLocalizacionHistoryViewSet(BaseViewSet):
+    model = TLocalizacionHistory
+    serializer_class = TLocalizacionHistorySerializer
+    filterset_class = TLocalizacionHistoryFilter
     
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
+    http_method_names = ['get']
+
+    @extend_schema(
+        responses=TLocalizacionHistorySerializer(many=True),
+        description="Retrieve a list of TLocalizacionHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TLocalizacionHistorySerializer,
+        description="Retrieve a single TLocalizacionHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+

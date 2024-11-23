@@ -1,7 +1,7 @@
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-
+from .BaseHistory import BaseHistory
 
 # The following models are used to represent the location of a user in the system.
 class TProvincia(models.Model):
@@ -60,7 +60,8 @@ class TCPC(models.Model):
         verbose_name = _('CPC')
         verbose_name_plural = _('CPCs')
 
-class TLocalizacion(models.Model):
+class TLocalizacionBase(models.Model):
+    deleted = models.BooleanField(default=False)
     calle = models.CharField(max_length=255, null=False, blank=False)
     tipo_calle_choices = [
         ('CALLE', 'Calle'),
@@ -80,9 +81,37 @@ class TLocalizacion(models.Model):
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE, null=False)
     cpc = models.ForeignKey('infrastructure.TCPC', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    class Meta:
+        abstract = True
+
+class TLocalizacion(TLocalizacionBase):
+
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
 
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Localizacion')
         verbose_name_plural = _('Localizaciones')
+
+class TLocalizacionHistory(TLocalizacionBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TLocalizacion',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Localizacion')
+        verbose_name_plural = _('Historial de Localizaciones')
+
+    def __str__(self):
+        return f"{self.action} - {self.timestamp} - {self.user} - {self.parent}"

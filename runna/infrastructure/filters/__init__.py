@@ -1,4 +1,4 @@
-from .LocalizacionFilter import TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter
+from .LocalizacionFilter import TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter, TLocalizacionHistoryFilter
 from .DemandaFilters import TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter, TUsuarioExternoFilter, TDemandaFilter, TPrecalificacionDemandaFilter, TScoreDemandaFilter
 from .PersonaFilter import TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter
 from .VulneracionFilter import TCategoriaMotivoFilter, TCategoriaSubmotivoFilter, TGravedadVulneracionFilter, TUrgenciaVulneracionFilter, TCondicionesVulnerabilidadFilter, TMotivoIntervencionFilter, TVulneracionFilter, TVulneracionHistoryFilter

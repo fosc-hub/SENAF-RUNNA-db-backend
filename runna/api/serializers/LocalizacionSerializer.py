@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
+    TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion, TLocalizacionHistory
 )
 
 class TProvinciaSerializer(serializers.ModelSerializer):
@@ -31,4 +31,15 @@ class TCPCSerializer(serializers.ModelSerializer):
 class TLocalizacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TLocalizacion
+        fields = '__all__'
+
+    def create(self, validated_data):
+        if 'deleted' in validated_data:
+            raise serializers.ValidationError({"delete": "This field cannot be created."})
+        return super().create(validated_data)
+    
+
+class TLocalizacionHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TLocalizacionHistory
         fields = '__all__'

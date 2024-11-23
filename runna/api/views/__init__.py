@@ -1,5 +1,5 @@
 from .BaseView import BaseViewSet
-from .LocalizacionView import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet, TLocalizacionViewSet
+from .LocalizacionView import TProvinciaViewSet, TDepartamentoViewSet, TLocalidadViewSet, TBarrioViewSet, TCPCViewSet, TLocalizacionViewSet, TLocalizacionHistoryViewSet
 from .DemandaView import  TInstitucionUsuarioExternoViewSet, TVinculoUsuarioExternoViewSet, TUsuarioExternoViewSet, TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 from .PersonaView import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
 from .VulneracionView import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet, TVulneracionHistoryViewSet

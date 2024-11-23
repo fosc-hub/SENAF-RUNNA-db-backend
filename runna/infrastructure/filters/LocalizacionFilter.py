@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
+from infrastructure.models import TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion, TLocalizacionHistory
 
 
 class TProvinciaFilter(filters.FilterSet):
@@ -61,3 +61,13 @@ class TLocalizacionFilter(filters.FilterSet):
     class Meta:
         model = TLocalizacion
         fields = ['calle', 'localidad', 'barrio', 'cpc']
+
+
+class TLocalizacionHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TLocalizacionHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }
