@@ -3,13 +3,13 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion
+    TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion, TVulneracionHistory
 )
 from api.serializers import (
-    TCategoriaMotivoSerializer, TCategoriaSubmotivoSerializer, TGravedadVulneracionSerializer, TUrgenciaVulneracionSerializer, TCondicionesVulnerabilidadSerializer, TMotivoIntervencionSerializer, TVulneracionSerializer
+    TCategoriaMotivoSerializer, TCategoriaSubmotivoSerializer, TGravedadVulneracionSerializer, TUrgenciaVulneracionSerializer, TCondicionesVulnerabilidadSerializer, TMotivoIntervencionSerializer, TVulneracionSerializer, TVulneracionHistorySerializer
 )
 from infrastructure.filters import (
-    TCategoriaMotivoFilter, TCategoriaSubmotivoFilter, TGravedadVulneracionFilter, TUrgenciaVulneracionFilter, TCondicionesVulnerabilidadFilter, TMotivoIntervencionFilter, TVulneracionFilter
+    TCategoriaMotivoFilter, TCategoriaSubmotivoFilter, TGravedadVulneracionFilter, TUrgenciaVulneracionFilter, TCondicionesVulnerabilidadFilter, TMotivoIntervencionFilter, TVulneracionFilter, TVulneracionHistoryFilter
 )
 
 class TCategoriaMotivoViewSet(BaseViewSet):
@@ -175,6 +175,34 @@ class TVulneracionViewSet(BaseViewSet):
     @extend_schema(
         responses=TVulneracionSerializer,
         description="Retrieve a single TVulneracion entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TVulneracion entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
+
+class TVulneracionHistoryViewSet(BaseViewSet):
+    model = TVulneracionHistory
+    serializer_class = TVulneracionHistorySerializer
+    filterset_class = TVulneracionHistoryFilter
+
+    http_method_names = ['get'] # Only allow GET requests
+
+    @extend_schema(
+        responses=TVulneracionHistorySerializer(many=True),
+        description="Retrieve a list of TVulneracionHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TVulneracionHistorySerializer,
+        description="Retrieve a single TVulneracionHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

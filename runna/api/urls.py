@@ -6,7 +6,7 @@ from api.views import (
     TDemandaViewSet, TPrecalificacionDemandaViewSet, TScoreDemandaViewSet
 )
 from api.views import TPersonaViewSet, TInstitucionEducativaViewSet, TNNyAEducacionViewSet, TInstitucionSanitariaViewSet, TNNyASaludViewSet, TNNyAScoreViewSet, TLegajoViewSet
-from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet
+from api.views import TCategoriaMotivoViewSet, TCategoriaSubmotivoViewSet, TGravedadVulneracionViewSet, TUrgenciaVulneracionViewSet, TCondicionesVulnerabilidadViewSet, TMotivoIntervencionViewSet, TVulneracionViewSet, TVulneracionHistoryViewSet
 from api.views import TLocalizacionPersonaViewSet, TDemandaPersonaViewSet, TDemandaAsignadoViewSet, TDemandaVinculadaViewSet, TLegajoAsignadoViewSet, TVinculoPersonaViewSet, TVinculoPersonaPersonaViewSet, TDemandaMotivoIntervencionViewSet, TPersonaCondicionesVulnerabilidadViewSet
 from api.views import TActividadTipoViewSet, TInstitucionActividadViewSet, TActividadViewSet, TInstitucionRespuestaViewSet, TRespuestaViewSet, TIndicadoresValoracionViewSet, TEvaluacionesViewSet, TDecisionViewSet
 
@@ -40,6 +40,7 @@ router.register(r'urgencia-vulneracion', TUrgenciaVulneracionViewSet, basename='
 router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
 router.register(r'motivo-intervencion', TMotivoIntervencionViewSet, basename='motivo-intervencion')
 router.register(r'vulneracion', TVulneracionViewSet, basename='vulneracion')
+router.register(r'vulneracion-history', TVulneracionHistoryViewSet, basename='vulneracion-history')
 
 router.register(r'localizacion-persona', TLocalizacionPersonaViewSet, basename='localizacion-persona')
 router.register(r'demanda-persona', TDemandaPersonaViewSet, basename='demanda-persona')

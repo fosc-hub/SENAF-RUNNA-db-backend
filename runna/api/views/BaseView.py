@@ -66,6 +66,20 @@ class BaseViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @extend_schema(
+        responses=None,  # To be overridden in subclasses
+        description="Delete an existing entry"
+    )
+    def destroy(self, request, pk=None):
+        """Delete an existing entry."""
+        try:
+            obj = self.model.objects.get(pk=pk)
+        except self.model.DoesNotExist:
+            raise NotFound(f"{self.model.__name__} with ID {pk} not found.")
+        
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def filter_queryset(self, queryset):
         """Applies filters to the queryset."""
