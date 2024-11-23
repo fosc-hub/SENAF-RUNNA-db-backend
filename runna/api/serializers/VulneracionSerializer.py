@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from infrastructure.models import TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion
+from infrastructure.models import TCategoriaMotivo, TCategoriaSubmotivo, TGravedadVulneracion, TUrgenciaVulneracion, TCondicionesVulnerabilidad, TMotivoIntervencion, TVulneracion, TVulneracionHistory
 
 
 class TCategoriaMotivoSerializer(serializers.ModelSerializer):
@@ -41,10 +41,15 @@ class TMotivoIntervencionSerializer(serializers.ModelSerializer):
 class TVulneracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TVulneracion
-        fields = '__all__'
-        
+        fields = [  "principal_demanda","transcurre_actualidad", "deleted","sumatoria_de_pesos","demanda","nnya","autor_dv","categoria_motivo","categoria_submotivo","gravedad_vulneracion","urgencia_vulneracion" ]
+
     def update(self, instance, validated_data):
         if 'nnya' in validated_data:
             raise serializers.ValidationError({"nnya": "This field cannot be updated."})
         return super().update(instance, validated_data)
 
+
+class TVulneracionHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TVulneracionHistory
+        fields = '__all__'
