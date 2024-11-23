@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import  TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TLocalizacion
+from infrastructure.models import  TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TLocalizacion, TDemandaHistory, TPrecalificacionDemandaHistory
  
 class TInstitucionUsuarioExternoFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
@@ -63,7 +63,7 @@ class TDemandaFilter(filters.FilterSet):
         fields = [
             'fecha_y_hora_ingreso', 'origen', 'nro_notificacion_102', 'nro_sac', 'nro_suac',
             'nro_historia_clinica', 'nro_oficio_web', 'descripcion', 'ultima_actualizacion',
-            'localizacion', 'usuario_externo'
+            'localizacion', 'usuario_externo', 'deleted'
         ]
 
 
@@ -80,7 +80,7 @@ class TPrecalificacionDemandaFilter(filters.FilterSet):
 
     class Meta:
         model = TPrecalificacionDemanda
-        fields = ['fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda']
+        fields = ['fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda', 'deleted']
 
 
 
@@ -99,4 +99,22 @@ class TScoreDemandaFilter(filters.FilterSet):
             'ultima_actualizacion', 'score', 'score_condiciones_vulnerabilidad',
             'score_vulneracion', 'score_motivo_vulneracion', 'demanda'
         ]
- 
+
+class TDemandaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TDemandaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }
+
+
+class TPrecalificacionDemandaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TPrecalificacionDemandaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }

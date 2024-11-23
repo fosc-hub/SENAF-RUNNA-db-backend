@@ -4,17 +4,20 @@ from .BaseView import BaseViewSet
 
 from infrastructure.models import (
     TInstitucionUsuarioExterno, TVinculoUsuarioExterno,
-    TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda
+    TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda,
+    TDemandaHistory, TPrecalificacionDemandaHistory
 )
 from api.serializers import (
     TInstitucionUsuarioExternoSerializer, TVinculoUsuarioExternoSerializer,
     TUsuarioExternoSerializer, TDemandaSerializer,
-    TPrecalificacionDemandaSerializer, TScoreDemandaSerializer
+    TPrecalificacionDemandaSerializer, TScoreDemandaSerializer,
+    TDemandaHistorySerializer, TPrecalificacionDemandaHistorySerializer
 )
 from infrastructure.filters import (
     TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter,
     TUsuarioExternoFilter, TDemandaFilter,
-    TPrecalificacionDemandaFilter, TScoreDemandaFilter
+    TPrecalificacionDemandaFilter, TScoreDemandaFilter,
+    TDemandaHistoryFilter, TPrecalificacionDemandaHistoryFilter
 )
 
 
@@ -105,7 +108,7 @@ class TDemandaViewSet(BaseViewSet):
     serializer_class = TDemandaSerializer
     filterset_class = TDemandaFilter
 
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TDemandaSerializer,
@@ -136,6 +139,13 @@ class TDemandaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TDemanda entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TPrecalificacionDemandaViewSet(BaseViewSet):
@@ -143,7 +153,7 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
     serializer_class = TPrecalificacionDemandaSerializer
     filterset_class = TPrecalificacionDemandaFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TPrecalificacionDemandaSerializer,
@@ -174,6 +184,13 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TPrecalificacionDemanda entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TScoreDemandaViewSet(BaseViewSet):
@@ -193,6 +210,50 @@ class TScoreDemandaViewSet(BaseViewSet):
     @extend_schema(
         responses=TScoreDemandaSerializer,
         description="Retrieve a single TScoreDemanda entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TDemandaHistoryViewSet(BaseViewSet):
+    model = TDemandaHistory
+    serializer_class = TDemandaHistorySerializer
+    filterset_class = TDemandaHistoryFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
+
+    @extend_schema(
+        responses=TDemandaHistorySerializer(many=True),
+        description="Retrieve a list of TDemandaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TDemandaHistorySerializer,
+        description="Retrieve a single TDemandaHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TPrecalificacionDemandaHistoryViewSet(BaseViewSet):
+    model = TPrecalificacionDemandaHistory
+    serializer_class = TPrecalificacionDemandaHistorySerializer
+    filterset_class = TPrecalificacionDemandaHistoryFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
+
+    @extend_schema(
+        responses=TPrecalificacionDemandaHistorySerializer(many=True),
+        description="Retrieve a list of TPrecalificacionDemandaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TPrecalificacionDemandaHistorySerializer,
+        description="Retrieve a single TPrecalificacionDemandaHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

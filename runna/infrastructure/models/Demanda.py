@@ -2,6 +2,8 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
+from .BaseHistory import BaseHistory
+
 """
 
 Renombrar '...UsuarioLinea' por '...UsuarioExterno'
@@ -59,7 +61,8 @@ class TUsuarioExterno(models.Model):
         verbose_name_plural = _('Usuarios Externos del Sistema (Linea 102, etc)')
 
 
-class TDemanda(models.Model):
+class TDemandaBase(models.Model):
+    deleted = models.BooleanField(default=False)
     fecha_y_hora_ingreso = models.DateTimeField(null=False, default=datetime.now())
     origen_choices = [
         ('WEB', 'Web'),
@@ -80,15 +83,42 @@ class TDemanda(models.Model):
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
     usuario_externo = models.ForeignKey('TUsuarioExterno', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TDemanda(TDemandaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Demanda')
         verbose_name_plural = _('Demandas')
 
 
-class TPrecalificacionDemanda(models.Model):
+class TDemandaHistory(TDemandaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TDemanda',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Demanda')
+        verbose_name_plural = _('Historial de Demandas')
+
+
+class TPrecalificacionDemandaBase(models.Model):
+    deleted = models.BooleanField(default=False)
     fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
     descripcion = models.TextField(null=False, blank=False)
     estado_demanda_choices = [
@@ -101,12 +131,38 @@ class TPrecalificacionDemanda(models.Model):
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TPrecalificacionDemanda(TPrecalificacionDemandaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Precalificacion de Demanda')
         verbose_name_plural = _('Precalificaciones de Demandas')
+
+
+class TPrecalificacionDemandaHistory(TPrecalificacionDemandaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TPrecalificacionDemanda',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Precalificacion de Demanda')
+        verbose_name_plural = _('Historial de Precalificaciones de Demandas')
 
 
 class TScoreDemanda(models.Model):
