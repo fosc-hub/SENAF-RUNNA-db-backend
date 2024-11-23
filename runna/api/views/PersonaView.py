@@ -3,13 +3,16 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo
+    TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo,
+    TPersonaHistory, TNNyAEducacionHistory, TNNyASaludHistory
 )
 from api.serializers import (
-    TPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer, TInstitucionSanitariaSerializer, TNNyASaludSerializer, TNNyAScoreSerializer, TLegajoSerializer
+    TPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer, TInstitucionSanitariaSerializer, TNNyASaludSerializer, TNNyAScoreSerializer, TLegajoSerializer,
+    TPersonaHistorySerializer, TNNyAEducacionHistorySerializer, TNNyASaludHistorySerializer
 )
 from infrastructure.filters import (
-    TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter
+    TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter,
+    TPersonaHistoryFilter, TNNyAEducacionHistoryFilter, TNNyASaludHistoryFilter
 )
 
 class TPersonaViewSet(BaseViewSet):
@@ -17,7 +20,7 @@ class TPersonaViewSet(BaseViewSet):
     serializer_class = TPersonaSerializer
     filterset_class = TPersonaFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TPersonaSerializer,
@@ -48,6 +51,13 @@ class TPersonaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TPersona entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TInstitucionEducativaViewSet(BaseViewSet):
@@ -77,7 +87,7 @@ class TNNyAEducacionViewSet(BaseViewSet):
     serializer_class = TNNyAEducacionSerializer
     filterset_class = TNNyAEducacionFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TNNyAEducacionSerializer,
@@ -108,6 +118,13 @@ class TNNyAEducacionViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TNNyAEducacion entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TInstitucionSanitariaViewSet(BaseViewSet):
@@ -137,7 +154,7 @@ class TNNyASaludViewSet(BaseViewSet):
     serializer_class = TNNyASaludSerializer
     filterset_class = TNNyASaludFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TNNyASaludSerializer,
@@ -168,6 +185,13 @@ class TNNyASaludViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TNNyASalud entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TNNyAScoreViewSet(BaseViewSet):
@@ -220,3 +244,70 @@ class TLegajoViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+
+
+class TPersonaHistoryViewSet(BaseViewSet):
+    model = TPersonaHistory
+    serializer_class = TPersonaHistorySerializer
+    filterset_class = TPersonaHistoryFilter
+    
+    http_method_names = ['get'] # Only allow GET requests
+
+    @extend_schema(
+        responses=TPersonaHistorySerializer(many=True),
+        description="Retrieve a list of TPersonaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TPersonaHistorySerializer,
+        description="Retrieve a single TPersonaHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TNNyAEducacionHistoryViewSet(BaseViewSet):
+    model = TNNyAEducacionHistory
+    serializer_class = TNNyAEducacionHistorySerializer
+    filterset_class = TNNyAEducacionHistoryFilter
+    
+    http_method_names = ['get'] # Only allow GET requests
+    
+    @extend_schema(
+        responses=TNNyAEducacionHistorySerializer(many=True),
+        description="Retrieve a list of TNNyAEducacionHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+    
+    @extend_schema(
+        responses=TNNyAEducacionHistorySerializer,
+        description="Retrieve a single TNNyAEducacionHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+    
+
+class TNNyASaludHistoryViewSet(BaseViewSet):
+    model = TNNyASaludHistory
+    serializer_class = TNNyASaludHistorySerializer
+    filterset_class = TNNyASaludHistoryFilter
+    
+    http_method_names = ['get'] # Only allow GET requests
+    
+    @extend_schema(
+        responses=TNNyASaludHistorySerializer(many=True),
+        description="Retrieve a list of TNNyASaludHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+    
+    @extend_schema(
+        responses=TNNyASaludHistorySerializer,
+        description="Retrieve a single TNNyASaludHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+

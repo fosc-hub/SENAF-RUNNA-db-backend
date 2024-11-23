@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLocalizacion, TLegajo
+from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLocalizacion, TLegajo, TPersonaHistory, TNNyAEducacionHistory, TNNyASaludHistory
 
 
 class TPersonaFilter(filters.FilterSet):
@@ -13,7 +13,7 @@ class TPersonaFilter(filters.FilterSet):
 
     class Meta:
         model = TPersona
-        fields = ['nombre', 'apellido', 'dni', 'situacion_dni', 'genero', 'adulto', 'nnya']
+        fields = ['nombre', 'apellido', 'dni', 'situacion_dni', 'genero', 'adulto', 'nnya', 'deleted']
 
 
 class TInstitucionEducativaFilter(filters.FilterSet):
@@ -37,7 +37,7 @@ class TNNyAEducacionFilter(filters.FilterSet):
 
     class Meta:
         model = TNNyAEducacion
-        fields = ['curso', 'nivel', 'turno', 'comentarios', 'institucion_educativa', 'nnya']
+        fields = ['curso', 'nivel', 'turno', 'comentarios', 'institucion_educativa', 'nnya', 'deleted']
 
 
 class TInstitucionSanitariaFilter(filters.FilterSet):
@@ -58,7 +58,7 @@ class TNNyASaludFilter(filters.FilterSet):
 
     class Meta:
         model = TNNyASalud
-        fields = ['observaciones', 'institucion_sanitaria', 'nnya']
+        fields = ['observaciones', 'institucion_sanitaria', 'nnya', 'deleted']
 
 
 class TNNyAScoreFilter(filters.FilterSet):
@@ -80,3 +80,32 @@ class TLegajoFilter(filters.FilterSet):
     class Meta:
         model = TLegajo
         fields = ['info_legajo', 'nnya']
+
+class TPersonaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TPersonaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }
+
+
+class TNNyAEducacionHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TNNyAEducacionHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }
+
+
+class TNNyASaludHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TNNyASaludHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'user': ['exact'],
+        }
