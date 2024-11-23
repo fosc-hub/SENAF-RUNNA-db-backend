@@ -94,25 +94,73 @@ class TMotivoIntervencion(models.Model):
         verbose_name = _('Condicion de Vulnerabilidad')
         verbose_name_plural = _('Condiciones de Vulnerabilidad')
 
-
-class TVulneracion(models.Model):
+class TVulneracionBase(models.Model):
     principal_demanda = models.BooleanField(default=False)
     transcurre_actualidad = models.BooleanField(default=False)
     sumatoria_de_pesos = models.IntegerField(default=0)
 
     demanda = models.ForeignKey('TDemanda', on_delete=models.SET_NULL, null=True, blank=True)
-    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False, related_name='vulneracion_nnya')
-    autor_dv = models.ForeignKey('TPersona', on_delete=models.SET_NULL, null=True, blank=True, related_name='vulneracion_autordv')
+    nnya = models.ForeignKey(
+        'TPersona',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        related_name='%(class)s_nnya'
+    )
+    autor_dv = models.ForeignKey(
+        'TPersona',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='%(class)s_autordv'
+    )
 
     categoria_motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE, null=False)
     categoria_submotivo = models.ForeignKey('TCategoriaSubmotivo', on_delete=models.CASCADE, null=False)
     gravedad_vulneracion = models.ForeignKey('TGravedadVulneracion', on_delete=models.CASCADE, null=False)
     urgencia_vulneracion = models.ForeignKey('TUrgenciaVulneracion', on_delete=models.CASCADE, null=False)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+class TVulneracion(TVulneracionBase):
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Vulneracion')
         verbose_name_plural = _('Vulneraciones')
 
+class HistoryBase(models.Model):
+    ACTION_CHOICES = [
+        ('CREATE', 'Create'),
+        ('UPDATE', 'Update'),
+        ('DELETE', 'Delete'),
+    ]
+
+    action = models.CharField(max_length=10, choices=ACTION_CHOICES)
+    user = models.ForeignKey(
+        'customAuth.CustomUser',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TVulneracionHistory(TVulneracionBase, HistoryBase):
+    vulneracion_parent = models.ForeignKey(
+        TVulneracion,
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Vulneracion')
+        verbose_name_plural = _('Historial de Vulneraciones')
+
+    def __str__(self):
+        return f"{self.action} - {self.timestamp} - {self.user} - {self.vulneracion_parent}"
