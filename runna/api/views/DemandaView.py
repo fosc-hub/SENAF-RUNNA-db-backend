@@ -153,7 +153,7 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
     serializer_class = TPrecalificacionDemandaSerializer
     filterset_class = TPrecalificacionDemandaFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+    http_method_names = ['get', 'post', 'put', 'patch']
 
     @extend_schema(
         request=TPrecalificacionDemandaSerializer,
@@ -184,13 +184,6 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
-    
-    @extend_schema(
-        responses=None,
-        description="Delete an existing TPrecalificacionDemanda entry"
-    )
-    def destroy(self, request, pk=None):
-        return super().destroy(request, pk=pk)
 
 
 class TScoreDemandaViewSet(BaseViewSet):

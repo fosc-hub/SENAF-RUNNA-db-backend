@@ -118,7 +118,6 @@ class TDemandaHistory(TDemandaBase, BaseHistory):
 
 
 class TPrecalificacionDemandaBase(models.Model):
-    deleted = models.BooleanField(default=False)
     fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
     descripcion = models.TextField(null=False, blank=False)
     estado_demanda_choices = [
@@ -136,15 +135,6 @@ class TPrecalificacionDemandaBase(models.Model):
 
 
 class TPrecalificacionDemanda(TPrecalificacionDemandaBase):
-
-    def delete(self, *args, **kwargs):
-        """Override delete to implement soft delete."""
-        self.deleted = True
-        self.save()
-
-    def hard_delete(self, *args, **kwargs):
-        """Permanently delete the object."""
-        super().delete(*args, **kwargs)
 
     class Meta:
         app_label = 'infrastructure'

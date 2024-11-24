@@ -80,7 +80,7 @@ class TPrecalificacionDemandaFilter(filters.FilterSet):
 
     class Meta:
         model = TPrecalificacionDemanda
-        fields = ['fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda', 'deleted']
+        fields = ['fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda']
 
 
 
