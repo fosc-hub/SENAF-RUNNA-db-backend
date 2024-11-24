@@ -7,11 +7,6 @@ class TLocalizacionPersonaSerializer(serializers.ModelSerializer):
         model = TLocalizacionPersona
         fields = '__all__'
 
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 
 class TDemandaPersonaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -79,11 +74,6 @@ class TDemandaPersonaHistorySerializer(serializers.ModelSerializer):
         model = TDemandaPersonaHistory
         fields = '__all__'
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 class TDemandaAsignadoHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaAsignadoHistory
@@ -94,7 +84,3 @@ class TDemandaVinculadaHistorySerializer(serializers.ModelSerializer):
         model = TDemandaVinculadaHistory
         fields = '__all__'
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)

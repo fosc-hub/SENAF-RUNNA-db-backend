@@ -6,11 +6,6 @@ class TPersonaSerializer(serializers.ModelSerializer):
         model = TPersona
         fields = '__all__'
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 class TInstitucionEducativaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TInstitucionEducativa
@@ -26,11 +21,6 @@ class TNNyAEducacionSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"nnya": "This field cannot be updated."})
         return super().update(instance, validated_data)
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 class TInstitucionSanitariaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TInstitucionSanitaria
@@ -46,11 +36,6 @@ class TNNyASaludSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"nnya": "This field cannot be updated."})
         return super().update(instance, validated_data)
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 
 class TNNyAScoreSerializer(serializers.ModelSerializer):
     class Meta:

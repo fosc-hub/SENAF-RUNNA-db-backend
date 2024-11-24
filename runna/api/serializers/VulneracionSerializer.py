@@ -48,11 +48,6 @@ class TVulneracionSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"nnya": "This field cannot be updated."})
         return super().update(instance, validated_data)
     
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field is not allowed on creation."})
-        return super().create(validated_data)
-
 
 class TVulneracionHistorySerializer(serializers.ModelSerializer):
     class Meta:
