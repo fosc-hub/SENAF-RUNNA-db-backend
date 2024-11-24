@@ -33,12 +33,6 @@ class TLocalizacionSerializer(serializers.ModelSerializer):
         model = TLocalizacion
         fields = '__all__'
 
-    def create(self, validated_data):
-        if 'deleted' in validated_data:
-            raise serializers.ValidationError({"delete": "This field cannot be created."})
-        return super().create(validated_data)
-    
-
 class TLocalizacionHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TLocalizacionHistory
