@@ -3,16 +3,46 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo,
-    TPersonaHistory, TNNyAEducacionHistory, TNNyASaludHistory
+    TPersona,
+    TInstitucionEducativa,
+    TNNyAEducacion,
+    TInstitucionSanitaria,
+    TNNyASalud,
+    TNNyAScore,
+    TLegajo,
+    TPersonaHistory,
+    TNNyAEducacionHistory,
+    TNNyASaludHistory,
+    TLegajoHistory,
+    TNNyAScoreHistory
 )
 from api.serializers import (
-    TPersonaSerializer, TInstitucionEducativaSerializer, TNNyAEducacionSerializer, TInstitucionSanitariaSerializer, TNNyASaludSerializer, TNNyAScoreSerializer, TLegajoSerializer,
-    TPersonaHistorySerializer, TNNyAEducacionHistorySerializer, TNNyASaludHistorySerializer
+    TPersonaSerializer,
+    TInstitucionEducativaSerializer,
+    TNNyAEducacionSerializer,
+    TInstitucionSanitariaSerializer,
+    TNNyASaludSerializer,
+    TNNyAScoreSerializer,
+    TLegajoSerializer,
+    TPersonaHistorySerializer,
+    TNNyAEducacionHistorySerializer,
+    TNNyASaludHistorySerializer,
+    TLegajoHistorySerializer,
+    TNNyAScoreHistorySerializer
 )
 from infrastructure.filters import (
-    TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter,
-    TPersonaHistoryFilter, TNNyAEducacionHistoryFilter, TNNyASaludHistoryFilter
+    TPersonaFilter, 
+    TInstitucionEducativaFilter, 
+    TNNyAEducacionFilter, 
+    TInstitucionSanitariaFilter, 
+    TNNyASaludFilter, 
+    TNNyAScoreFilter, 
+    TLegajoFilter, 
+    TPersonaHistoryFilter, 
+    TNNyAEducacionHistoryFilter, 
+    TNNyASaludHistoryFilter,
+    TLegajoHistoryFilter,
+    TNNyAScoreHistoryFilter
 )
 
 class TPersonaViewSet(BaseViewSet):
@@ -311,3 +341,46 @@ class TNNyASaludHistoryViewSet(BaseViewSet):
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
+
+class TLegajoHistoryViewSet(BaseViewSet):
+    model = TLegajoHistory
+    serializer_class = TLegajoHistorySerializer
+    filterset_class = TLegajoHistoryFilter
+    
+    http_method_names = ['get'] # Only allow GET requests
+    
+    @extend_schema(
+        responses=TLegajoHistorySerializer(many=True),
+        description="Retrieve a list of TLegajoHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+    
+    @extend_schema(
+        responses=TLegajoHistorySerializer,
+        description="Retrieve a single TLegajoHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TNNyAScoreHistoryViewSet(BaseViewSet):
+    model = TNNyAScoreHistory
+    serializer_class = TNNyAScoreHistorySerializer
+    filterset_class = TNNyAScoreHistoryFilter
+    
+    http_method_names = ['get'] # Only allow GET requests
+    
+    @extend_schema(
+        responses=TNNyAScoreHistorySerializer(many=True),
+        description="Retrieve a list of TNNyAScoreHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+    
+    @extend_schema(
+        responses=TNNyAScoreHistorySerializer,
+        description="Retrieve a single TNNyAScoreHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)

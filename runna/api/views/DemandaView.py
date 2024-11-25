@@ -3,21 +3,37 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, TVinculoUsuarioExterno,
-    TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda,
-    TDemandaHistory, TPrecalificacionDemandaHistory
+    TInstitucionUsuarioExterno, 
+    TVinculoUsuarioExterno, 
+    TUsuarioExterno, 
+    TDemanda, 
+    TPrecalificacionDemanda, 
+    TScoreDemanda, 
+    TDemandaHistory, 
+    TPrecalificacionDemandaHistory,
+    TScoreDemandaHistory
 )
 from api.serializers import (
-    TInstitucionUsuarioExternoSerializer, TVinculoUsuarioExternoSerializer,
-    TUsuarioExternoSerializer, TDemandaSerializer,
-    TPrecalificacionDemandaSerializer, TScoreDemandaSerializer,
-    TDemandaHistorySerializer, TPrecalificacionDemandaHistorySerializer
+    TInstitucionUsuarioExternoSerializer,
+    TVinculoUsuarioExternoSerializer,
+    TUsuarioExternoSerializer,
+    TDemandaSerializer,
+    TPrecalificacionDemandaSerializer,
+    TScoreDemandaSerializer,
+    TDemandaHistorySerializer,
+    TPrecalificacionDemandaHistorySerializer,
+    TScoreDemandaHistorySerializer
 )
 from infrastructure.filters import (
-    TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter,
-    TUsuarioExternoFilter, TDemandaFilter,
-    TPrecalificacionDemandaFilter, TScoreDemandaFilter,
-    TDemandaHistoryFilter, TPrecalificacionDemandaHistoryFilter
+    TInstitucionUsuarioExternoFilter, 
+    TVinculoUsuarioExternoFilter, 
+    TUsuarioExternoFilter, 
+    TDemandaFilter, 
+    TPrecalificacionDemandaFilter, 
+    TScoreDemandaFilter, 
+    TDemandaHistoryFilter, 
+    TPrecalificacionDemandaHistoryFilter,
+    TScoreDemandaHistoryFilter
 )
 
 
@@ -250,3 +266,26 @@ class TPrecalificacionDemandaHistoryViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+
+
+class TScoreDemandaHistoryViewSet(BaseViewSet):
+    model = TScoreDemandaHistory
+    serializer_class = TScoreDemandaHistorySerializer
+    filterset_class = TScoreDemandaHistoryFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
+
+    @extend_schema(
+        responses=TScoreDemandaHistorySerializer(many=True),
+        description="Retrieve a list of TScoreDemandaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TScoreDemandaHistorySerializer,
+        description="Retrieve a single TScoreDemandaHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+

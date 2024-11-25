@@ -3,16 +3,58 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory,
-    TDemandaPersonaHistory, TDemandaAsignadoHistory, TDemandaVinculadaHistory
+    TLocalizacionPersona, 
+    TDemandaPersona, 
+    TDemandaAsignado, 
+    TDemandaVinculada, 
+    TLegajoAsignado, 
+    TVinculoPersona, 
+    TVinculoPersonaPersona, 
+    TDemandaMotivoIntervencion, 
+    TPersonaCondicionesVulnerabilidad, 
+    TLocalizacionPersonaHistory, 
+    TDemandaPersonaHistory, 
+    TDemandaAsignadoHistory, 
+    TDemandaVinculadaHistory, 
+    TVinculoPersonaPersonaHistory,
+    TPersonaCondicionesVulnerabilidadHistory,
+    TDemandaMotivoIntervencionHistory
 )
 from api.serializers import (
-    TLocalizacionPersonaSerializer, TDemandaPersonaSerializer, TDemandaAsignadoSerializer, TDemandaVinculadaSerializer, TLegajoAsignadoSerializer, TVinculoPersonaSerializer, TVinculoPersonaPersonaSerializer, TDemandaMotivoIntervencionSerializer, TPersonaCondicionesVulnerabilidadSerializer, TLocalizacionPersonaHistorySerializer,
-    TDemandaPersonaHistorySerializer, TDemandaAsignadoHistorySerializer, TDemandaVinculadaHistorySerializer
+    TLocalizacionPersonaSerializer,
+    TDemandaPersonaSerializer,
+    TDemandaAsignadoSerializer,
+    TDemandaVinculadaSerializer,
+    TLegajoAsignadoSerializer,
+    TVinculoPersonaSerializer,
+    TVinculoPersonaPersonaSerializer,
+    TDemandaMotivoIntervencionSerializer,
+    TPersonaCondicionesVulnerabilidadSerializer,
+    TLocalizacionPersonaHistorySerializer,
+    TDemandaPersonaHistorySerializer,
+    TDemandaAsignadoHistorySerializer,
+    TDemandaVinculadaHistorySerializer,
+    TVinculoPersonaPersonaHistorySerializer,
+    TPersonaCondicionesVulnerabilidadHistorySerializer,
+    TDemandaMotivoIntervencionHistorySerializer
 )
 from infrastructure.filters import (
-    TLocalizacionPersonaFilter, TDemandaPersonaFilter, TDemandaAsignadoFilter, TDemandaVinculadaFilter, TLegajoAsignadoFilter, TVinculoPersonaFilter, TVinculoPersonaPersonaFilter, TDemandaMotivoIntervencionFilter, TPersonaCondicionesVulnerabilidadFilter, TLocalizacionPersonaHistoryFilter,
-    TDemandaPersonaHistoryFilter, TDemandaAsignadoHistoryFilter, TDemandaVinculadaHistoryFilter
+    TLocalizacionPersonaFilter, 
+    TDemandaPersonaFilter, 
+    TDemandaAsignadoFilter, 
+    TDemandaVinculadaFilter, 
+    TLegajoAsignadoFilter, 
+    TVinculoPersonaFilter, 
+    TVinculoPersonaPersonaFilter, 
+    TDemandaMotivoIntervencionFilter, 
+    TPersonaCondicionesVulnerabilidadFilter, 
+    TLocalizacionPersonaHistoryFilter, 
+    TDemandaPersonaHistoryFilter, 
+    TDemandaAsignadoHistoryFilter, 
+    TDemandaVinculadaHistoryFilter,
+    TVinculoPersonaPersonaHistoryFilter,
+    TPersonaCondicionesVulnerabilidadHistoryFilter,
+    TDemandaMotivoIntervencionHistoryFilter
 )
 
 class TLocalizacionPersonaViewSet(BaseViewSet):
@@ -260,7 +302,7 @@ class TVinculoPersonaPersonaViewSet(BaseViewSet):
     serializer_class = TVinculoPersonaPersonaSerializer
     filterset_class = TVinculoPersonaPersonaFilter
     
-    http_method_names = ['get', 'post', 'put', 'patch']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @extend_schema(
         request=TVinculoPersonaPersonaSerializer,
@@ -291,6 +333,13 @@ class TVinculoPersonaPersonaViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+    
+    @extend_schema(
+        responses=None,
+        description="Delete an existing TVinculoPersonaPersona entry"
+    )
+    def destroy(self, request, pk=None):
+        return super().destroy(request, pk=pk)
 
 
 class TDemandaMotivoIntervencionViewSet(BaseViewSet):
@@ -451,6 +500,72 @@ class TDemandaVinculadaHistoryViewSet(BaseViewSet):
     @extend_schema(
         responses=TDemandaVinculadaHistorySerializer,
         description="Retrieve a single TDemandaVinculadaHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TVinculoPersonaPersonaHistoryViewSet(BaseViewSet):
+    model = TVinculoPersonaPersonaHistory
+    serializer_class = TVinculoPersonaPersonaHistorySerializer
+    filterset_class = TVinculoPersonaPersonaHistoryFilter
+    
+    http_method_names = ['get']
+
+    @extend_schema(
+        responses=TVinculoPersonaPersonaHistorySerializer(many=True),
+        description="Retrieve a list of TVinculoPersonaPersonaHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TVinculoPersonaPersonaHistorySerializer,
+        description="Retrieve a single TVinculoPersonaPersonaHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TPersonaCondicionesVulnerabilidadHistoryViewSet(BaseViewSet):
+    model = TPersonaCondicionesVulnerabilidadHistory
+    serializer_class = TPersonaCondicionesVulnerabilidadHistorySerializer
+    filterset_class = TPersonaCondicionesVulnerabilidadHistoryFilter
+    
+    http_method_names = ['get']
+
+    @extend_schema(
+        responses=TPersonaCondicionesVulnerabilidadHistorySerializer(many=True),
+        description="Retrieve a list of TPersonaCondicionesVulnerabilidadHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TPersonaCondicionesVulnerabilidadHistorySerializer,
+        description="Retrieve a single TPersonaCondicionesVulnerabilidadHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+class TDemandaMotivoIntervencionHistoryViewSet(BaseViewSet):
+    model = TDemandaMotivoIntervencionHistory
+    serializer_class = TDemandaMotivoIntervencionHistorySerializer
+    filterset_class = TDemandaMotivoIntervencionHistoryFilter
+    
+    http_method_names = ['get']
+
+    @extend_schema(
+        responses=TDemandaMotivoIntervencionHistorySerializer(many=True),
+        description="Retrieve a list of TDemandaMotivoIntervencionHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TDemandaMotivoIntervencionHistorySerializer,
+        description="Retrieve a single TDemandaMotivoIntervencionHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

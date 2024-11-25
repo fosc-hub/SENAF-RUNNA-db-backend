@@ -3,18 +3,41 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TActividadTipo, TInstitucionActividad, TActividad, TInstitucionRespuesta, TRespuesta, TIndicadoresValoracion, TEvaluaciones, TDecision,
-    TActividadHistory
+    TActividadTipo, 
+    TInstitucionActividad, 
+    TActividad, 
+    TInstitucionRespuesta, 
+    TRespuesta, 
+    TIndicadoresValoracion, 
+    TEvaluaciones, 
+    TDecision, 
+    TActividadHistory, 
+    TEvaluacionesHistory
 )
 from api.serializers import (
-    TActividadTipoSerializer, TInstitucionActividadSerializer, TActividadSerializer, TInstitucionRespuestaSerializer, TRespuestaSerializer, TIndicadoresValoracionSerializer, TEvaluacionesSerializer, TDecisionSerializer,
-    TActividadHistorySerializer
+    TActividadTipoSerializer,
+    TInstitucionActividadSerializer,
+    TActividadSerializer,
+    TInstitucionRespuestaSerializer,
+    TRespuestaSerializer,
+    TIndicadoresValoracionSerializer,
+    TEvaluacionesSerializer,
+    TDecisionSerializer,
+    TActividadHistorySerializer,
+    TEvaluacionesHistorySerializer
 )
 from infrastructure.filters import (
-    TActividadTipoFilter, TInstitucionActividadFilter, TActividadFilter, TInstitucionRespuestaFilter, TRespuestaFilter, TIndicadoresValoracionFilter, TEvaluacionesFilter, TDecisionFilter,
-    TActividadHistoryFilter
+    TActividadTipoFilter, 
+    TInstitucionActividadFilter, 
+    TActividadFilter, 
+    TInstitucionRespuestaFilter, 
+    TRespuestaFilter, 
+    TIndicadoresValoracionFilter, 
+    TEvaluacionesFilter, 
+    TDecisionFilter, 
+    TActividadHistoryFilter,
+    TEvaluacionesHistoryFilter
 )
-
 
 class TActividadTipoViewSet(BaseViewSet):
     model = TActividadTipo
@@ -260,3 +283,28 @@ class TActividadHistoryViewSet(BaseViewSet):
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
+
+
+class TEvaluacionesHistoryViewSet(BaseViewSet):
+    model = TEvaluacionesHistory
+    serializer_class = TEvaluacionesHistorySerializer
+    filterset_class = TEvaluacionesHistoryFilter
+
+    http_method_names = ['get'] # Only allow GET requests
+
+    @extend_schema(
+        responses=TEvaluacionesHistorySerializer(many=True),
+        description="Retrieve a list of TEvaluacionesHistory entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TEvaluacionesHistorySerializer,
+        description="Retrieve a single TEvaluacionesHistory entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+
+
