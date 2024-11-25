@@ -5,6 +5,9 @@ from infrastructure.models import (
     TDemandaPersona, TDemandaPersonaHistory,
     TDemandaAsignado, TDemandaAsignadoHistory,
     TDemandaVinculada, TDemandaVinculadaHistory,
+    TVinculoPersonaPersona, TVinculoPersonaPersonaHistory,
+    TPersonaCondicionesVulnerabilidad, TPersonaCondicionesVulnerabilidadHistory,
+    TDemandaMotivoIntervencion, TDemandaMotivoIntervencionHistory
 )
 from .BaseLogs import logs
 
@@ -55,4 +58,40 @@ def log_localizacionPersona_save(sender, instance, created, **kwargs):
 def log_localizacionPersona_delete(sender, instance, **kwargs):
     action='DELETE'
     logs(TLocalizacionPersonaHistory, action, instance)
+
+
+@receiver(post_save, sender=TVinculoPersonaPersona)
+def log_vinculoPersonaPersona_save(sender, instance, created, **kwargs):
+    action = 'CREATE' if created else 'UPDATE'
+    logs(TVinculoPersonaPersonaHistory, action, instance)
+
+
+@receiver(post_delete, sender=TVinculoPersonaPersona)
+def log_vinculoPersonaPersona_delete(sender, instance, **kwargs):
+    action='DELETE'
+    logs(TVinculoPersonaPersonaHistory, action, instance)
+
+
+@receiver(post_save, sender=TPersonaCondicionesVulnerabilidad)
+def log_personaCondicionesVulnerabilidad_save(sender, instance, created, **kwargs):
+    action = 'CREATE' if created else 'UPDATE'
+    logs(TPersonaCondicionesVulnerabilidadHistory, action, instance)
+
+
+@receiver(post_delete, sender=TPersonaCondicionesVulnerabilidad)
+def log_personaCondicionesVulnerabilidad_delete(sender, instance, **kwargs):
+    action='DELETE'
+    logs(TPersonaCondicionesVulnerabilidadHistory, action, instance)
+
+
+@receiver(post_save, sender=TDemandaMotivoIntervencion)
+def log_demandaMotivoIntervencion_save(sender, instance, created, **kwargs):
+    action = 'CREATE' if created else 'UPDATE'
+    logs(TDemandaMotivoIntervencionHistory, action, instance)
+
+
+@receiver(post_delete, sender=TDemandaMotivoIntervencion)
+def log_demandaMotivoIntervencion_delete(sender, instance, **kwargs):
+    action='DELETE'
+    logs(TDemandaMotivoIntervencionHistory, action, instance)
 
