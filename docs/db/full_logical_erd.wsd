@@ -11,7 +11,8 @@ entity T_SCORE_DEMANDA {
     score : float, null=False
     score_condiciones_vulnerabilidad : float, null=False
     score_vulneracion : float, null=False
-    score_motivo_intervencion : float, null=False
+    score_motivos_intervencion : float, null=False
+    score_indicadores_valoracion : float, null=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : OneToOneField, on_delete=CASCADE, unique=True, null=False, blank=False
     --
@@ -354,7 +355,7 @@ entity T_DECISION {
              || T_SCORE_DEMANDA.score_vulneracion > 10
              || T_SCORE_DEMANDA.score_evaluacion > 10
              || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
-             || T_SCORE_DEMANDA.score_motivo_intervencion > 10
+             || T_SCORE_DEMANDA.score_motivos_intervencion > 10
             bool : true
         )
         CreationOfMPI_MPE(
@@ -363,7 +364,7 @@ entity T_DECISION {
              || T_SCORE_DEMANDA.score_vulneracion > 10
              || T_SCORE_DEMANDA.score_evaluacion > 10
              || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
-             || T_SCORE_DEMANDA.score_motivo_intervencion > 10
+             || T_SCORE_DEMANDA.score_motivos_intervencion > 10
             bool : true
         )
         RechazarCaso(
@@ -661,7 +662,7 @@ entity T_NNyA_SCORE {
     score : float, null=False
     score_condiciones_vulnerabilidad : float, null=False
     score_vulneracion : float, null=False
-    score_motivo_intervencion : float, null=False
+    score_motivos_intervencion : float, null=False
     --
     nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
     --

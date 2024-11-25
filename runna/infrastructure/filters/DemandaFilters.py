@@ -96,20 +96,9 @@ class TPrecalificacionDemandaFilter(filters.FilterSet):
 
 
 class TScoreDemandaFilter(filters.FilterSet):
-    ultima_actualizacion = filters.DateTimeFilter()  # Exact match for ultima_actualizacion
-    score = filters.NumberFilter()  # Exact match for score
-    score_condiciones_vulnerabilidad = filters.NumberFilter()  # Exact match for score_condiciones_vulnerabilidad
-    score_vulneracion = filters.NumberFilter()  # Exact match for score_vulneracion
-    score_motivo_vulneracion = filters.NumberFilter()  # Exact match for score_motivo_vulneracion
-
-    demanda = filters.ModelChoiceFilter(queryset=TDemanda.objects.all())  # Exact match for demanda
-
     class Meta:
         model = TScoreDemanda
-        fields = [
-            'ultima_actualizacion', 'score', 'score_condiciones_vulnerabilidad',
-            'score_vulneracion', 'score_motivo_vulneracion', 'demanda'
-        ]
+        fields = '__all__'
 
 class TDemandaHistoryFilter(filters.FilterSet):
     class Meta:

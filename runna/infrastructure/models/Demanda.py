@@ -159,7 +159,8 @@ class TScoreDemandaBase(models.Model):
     score = models.FloatField(null=False, blank=False)
     score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
     score_vulneracion = models.FloatField(null=False, blank=False)
-    score_motivo_intervencion = models.FloatField(null=False, blank=False)
+    score_motivos_intervencion = models.FloatField(null=False, blank=False)
+    score_indicadores_valoracion = models.FloatField(null=False, blank=False)
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 

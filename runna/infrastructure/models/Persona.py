@@ -206,7 +206,7 @@ class TNNyAScoreBase(models.Model):
     score = models.FloatField(null=False, blank=False)
     score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
     score_vulneracion = models.FloatField(null=False, blank=False)
-    score_motivo_intervencion = models.FloatField(null=False, blank=False)
+    score_motivos_intervencion = models.FloatField(null=False, blank=False)
     nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
