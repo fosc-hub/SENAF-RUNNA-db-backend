@@ -1,6 +1,74 @@
-from .LocalizacionFilter import TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter, TLocalizacionHistoryFilter
-from .DemandaFilters import TInstitucionUsuarioExternoFilter, TVinculoUsuarioExternoFilter, TUsuarioExternoFilter, TDemandaFilter, TPrecalificacionDemandaFilter, TScoreDemandaFilter, TDemandaHistoryFilter, TPrecalificacionDemandaHistoryFilter
-from .PersonaFilter import TPersonaFilter, TInstitucionEducativaFilter, TNNyAEducacionFilter, TInstitucionSanitariaFilter, TNNyASaludFilter, TNNyAScoreFilter, TLegajoFilter, TPersonaHistoryFilter, TNNyAEducacionHistoryFilter, TNNyASaludHistoryFilter
-from .VulneracionFilter import TCategoriaMotivoFilter, TCategoriaSubmotivoFilter, TGravedadVulneracionFilter, TUrgenciaVulneracionFilter, TCondicionesVulnerabilidadFilter, TMotivoIntervencionFilter, TVulneracionFilter, TVulneracionHistoryFilter
-from .IntermediasFilter import TLocalizacionPersonaFilter, TDemandaPersonaFilter, TDemandaAsignadoFilter, TDemandaVinculadaFilter, TLegajoAsignadoFilter, TVinculoPersonaFilter, TVinculoPersonaPersonaFilter, TDemandaMotivoIntervencionFilter, TPersonaCondicionesVulnerabilidadFilter, TLocalizacionPersonaHistoryFilter, TDemandaPersonaHistoryFilter, TDemandaAsignadoHistoryFilter, TDemandaVinculadaHistoryFilter
-from .EvaluacionFilter import TActividadTipoFilter, TInstitucionActividadFilter, TActividadFilter, TInstitucionRespuestaFilter, TRespuestaFilter, TIndicadoresValoracionFilter, TEvaluacionesFilter, TDecisionFilter, TActividadHistoryFilter
+from .LocalizacionFilter import (
+    TProvinciaFilter, 
+    TDepartamentoFilter, 
+    TLocalidadFilter, 
+    TBarrioFilter, 
+    TCPCFilter, 
+    TLocalizacionFilter, 
+    TLocalizacionHistoryFilter
+)
+from .DemandaFilters import (
+    TInstitucionUsuarioExternoFilter, 
+    TVinculoUsuarioExternoFilter, 
+    TUsuarioExternoFilter, 
+    TDemandaFilter, 
+    TPrecalificacionDemandaFilter, 
+    TScoreDemandaFilter, 
+    TDemandaHistoryFilter, 
+    TPrecalificacionDemandaHistoryFilter,
+    TScoreDemandaHistoryFilter
+)
+from .PersonaFilter import (
+    TPersonaFilter, 
+    TInstitucionEducativaFilter, 
+    TNNyAEducacionFilter, 
+    TInstitucionSanitariaFilter, 
+    TNNyASaludFilter, 
+    TNNyAScoreFilter, 
+    TLegajoFilter, 
+    TPersonaHistoryFilter, 
+    TNNyAEducacionHistoryFilter, 
+    TNNyASaludHistoryFilter,
+    TLegajoHistoryFilter,
+    TNNyAScoreHistoryFilter
+)
+from .VulneracionFilter import (
+    TCategoriaMotivoFilter, 
+    TCategoriaSubmotivoFilter, 
+    TGravedadVulneracionFilter, 
+    TUrgenciaVulneracionFilter, 
+    TCondicionesVulnerabilidadFilter, 
+    TMotivoIntervencionFilter, 
+    TVulneracionFilter, 
+    TVulneracionHistoryFilter
+)
+from .IntermediasFilter import (
+    TLocalizacionPersonaFilter, 
+    TDemandaPersonaFilter, 
+    TDemandaAsignadoFilter, 
+    TDemandaVinculadaFilter, 
+    TLegajoAsignadoFilter, 
+    TVinculoPersonaFilter, 
+    TVinculoPersonaPersonaFilter, 
+    TDemandaMotivoIntervencionFilter, 
+    TPersonaCondicionesVulnerabilidadFilter, 
+    TLocalizacionPersonaHistoryFilter, 
+    TDemandaPersonaHistoryFilter, 
+    TDemandaAsignadoHistoryFilter, 
+    TDemandaVinculadaHistoryFilter,
+    TVinculoPersonaPersonaHistoryFilter,
+    TPersonaCondicionesVulnerabilidadHistoryFilter,
+    TDemandaMotivoIntervencionHistoryFilter
+)
+from .EvaluacionFilter import (
+    TActividadTipoFilter, 
+    TInstitucionActividadFilter, 
+    TActividadFilter, 
+    TInstitucionRespuestaFilter, 
+    TRespuestaFilter, 
+    TIndicadoresValoracionFilter, 
+    TEvaluacionesFilter, 
+    TDecisionFilter, 
+    TActividadHistoryFilter,
+    TEvaluacionesHistoryFilter
+)

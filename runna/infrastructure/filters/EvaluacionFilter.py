@@ -1,5 +1,16 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TActividadTipo, TInstitucionActividad, TActividad, TInstitucionRespuesta, TRespuesta, TIndicadoresValoracion, TEvaluaciones, TDecision, TActividadHistory
+from infrastructure.models import (
+    TActividadTipo, 
+    TInstitucionActividad, 
+    TActividad, 
+    TInstitucionRespuesta, 
+    TRespuesta, 
+    TIndicadoresValoracion, 
+    TEvaluaciones, 
+    TDecision, 
+    TActividadHistory,
+    TEvaluacionesHistory
+)
 
 class TActividadTipoFilter(filters.FilterSet):
     class Meta:
@@ -86,3 +97,14 @@ class TActividadHistoryFilter(filters.FilterSet):
             'action': ['exact'],
             'by_user': ['exact'],
         }
+
+
+class TEvaluacionesHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TActividadHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+    

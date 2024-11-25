@@ -1,5 +1,16 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import  TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TLocalizacion, TDemandaHistory, TPrecalificacionDemandaHistory
+from infrastructure.models import (
+    TInstitucionUsuarioExterno, 
+    TVinculoUsuarioExterno, 
+    TUsuarioExterno, 
+    TDemanda, 
+    TPrecalificacionDemanda, 
+    TScoreDemanda, 
+    TLocalizacion, 
+    TDemandaHistory, 
+    TPrecalificacionDemandaHistory,
+    TScoreDemandaHistory
+)
  
 class TInstitucionUsuarioExternoFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
@@ -113,6 +124,15 @@ class TDemandaHistoryFilter(filters.FilterSet):
 class TPrecalificacionDemandaHistoryFilter(filters.FilterSet):
     class Meta:
         model = TPrecalificacionDemandaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+class TScoreDemandaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TScoreDemandaHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],

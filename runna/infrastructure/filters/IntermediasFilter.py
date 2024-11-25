@@ -1,5 +1,22 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory, TDemandaPersonaHistory, TDemandaAsignadoHistory, TDemandaVinculadaHistory
+from infrastructure.models import (
+    TLocalizacionPersona, 
+    TDemandaPersona, 
+    TDemandaAsignado, 
+    TDemandaVinculada, 
+    TLegajoAsignado, 
+    TVinculoPersona, 
+    TVinculoPersonaPersona, 
+    TDemandaMotivoIntervencion, 
+    TPersonaCondicionesVulnerabilidad, 
+    TLocalizacionPersonaHistory, 
+    TDemandaPersonaHistory, 
+    TDemandaAsignadoHistory, 
+    TDemandaVinculadaHistory,
+    TVinculoPersonaPersonaHistory,
+    TPersonaCondicionesVulnerabilidadHistory,
+    TDemandaMotivoIntervencionHistory
+)
 
 class TLocalizacionPersonaFilter(filters.FilterSet):
     class Meta:
@@ -88,6 +105,36 @@ class TDemandaAsignadoHistoryFilter(filters.FilterSet):
 class TDemandaVinculadaHistoryFilter(filters.FilterSet):
     class Meta:
         model = TDemandaVinculadaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TVinculoPersonaPersonaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TVinculoPersonaPersonaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TPersonaCondicionesVulnerabilidadHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TPersonaCondicionesVulnerabilidadHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TDemandaMotivoIntervencionHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TDemandaMotivoIntervencionHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],

@@ -1,5 +1,19 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLocalizacion, TLegajo, TPersonaHistory, TNNyAEducacionHistory, TNNyASaludHistory
+from infrastructure.models import (
+    TPersona, 
+    TInstitucionEducativa, 
+    TNNyAEducacion, 
+    TInstitucionSanitaria, 
+    TNNyASalud, 
+    TNNyAScore, 
+    TLocalizacion, 
+    TLegajo, 
+    TPersonaHistory, 
+    TNNyAEducacionHistory, 
+    TNNyASaludHistory,
+    TLegajoHistory,
+    TNNyAScoreHistory
+)
 
 
 class TPersonaFilter(filters.FilterSet):
@@ -104,6 +118,26 @@ class TNNyAEducacionHistoryFilter(filters.FilterSet):
 class TNNyASaludHistoryFilter(filters.FilterSet):
     class Meta:
         model = TNNyASaludHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TLegajoHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TLegajoHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TNNyAScoreHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TNNyAScoreHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],
