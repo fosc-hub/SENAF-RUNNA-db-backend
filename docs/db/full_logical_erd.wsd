@@ -218,7 +218,6 @@ entity T_DEMANDA_PERSONA {
     conviviente : bool, null=False, blank=False
     supuesto_autordv : bool, null=False, blank=False
     supuesto_autordv_principal : bool, null=False, blank=False
-    nnya : bool, null=False, blank=False
     nnya_principal : bool, null=False, blank=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
