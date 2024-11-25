@@ -1,5 +1,18 @@
 from rest_framework import serializers
-from infrastructure.models import TPersona, TInstitucionEducativa, TNNyAEducacion, TInstitucionSanitaria, TNNyASalud, TNNyAScore, TLegajo, TPersonaHistory, TNNyAEducacionHistory, TNNyASaludHistory
+from infrastructure.models import (
+    TPersona, 
+    TInstitucionEducativa, 
+    TNNyAEducacion, 
+    TInstitucionSanitaria, 
+    TNNyASalud, 
+    TNNyAScore, 
+    TLegajo, 
+    TPersonaHistory, 
+    TNNyAEducacionHistory, 
+    TNNyASaludHistory,
+    TLegajoHistory,
+    TNNyAScoreHistory
+)
 
 class TPersonaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,3 +80,12 @@ class TNNyASaludHistorySerializer(serializers.ModelSerializer):
         model = TNNyASaludHistory
         fields = '__all__'
 
+class TLegajoHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TLegajoHistory
+        fields = '__all__'
+
+class TNNyAScoreHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TNNyAScoreHistory
+        fields = '__all__'

@@ -1,6 +1,14 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, TVinculoUsuarioExterno, TUsuarioExterno, TDemanda, TPrecalificacionDemanda, TScoreDemanda, TDemandaHistory, TPrecalificacionDemandaHistory
+    TInstitucionUsuarioExterno, 
+    TVinculoUsuarioExterno, 
+    TUsuarioExterno, 
+    TDemanda, 
+    TPrecalificacionDemanda, 
+    TScoreDemanda, 
+    TDemandaHistory, 
+    TPrecalificacionDemandaHistory,
+    TScoreDemandaHistory
 )
 
 
@@ -55,4 +63,10 @@ class TDemandaHistorySerializer(serializers.ModelSerializer):
 class TPrecalificacionDemandaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TPrecalificacionDemandaHistory
+        fields = '__all__'
+
+
+class TScoreDemandaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TScoreDemandaHistory
         fields = '__all__'

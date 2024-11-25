@@ -1,6 +1,22 @@
 from rest_framework import serializers
-from infrastructure.models import TLocalizacionPersona, TDemandaPersona, TDemandaAsignado, TDemandaVinculada, TLegajoAsignado, TVinculoPersona, TVinculoPersonaPersona, TDemandaMotivoIntervencion, TPersonaCondicionesVulnerabilidad, TLocalizacionPersonaHistory, TDemandaPersonaHistory, TDemandaAsignadoHistory, TDemandaVinculadaHistory
-
+from infrastructure.models import (
+    TLocalizacionPersona, 
+    TDemandaPersona, 
+    TDemandaAsignado, 
+    TDemandaVinculada, 
+    TLegajoAsignado, 
+    TVinculoPersona, 
+    TVinculoPersonaPersona, 
+    TDemandaMotivoIntervencion, 
+    TPersonaCondicionesVulnerabilidad, 
+    TLocalizacionPersonaHistory, 
+    TDemandaPersonaHistory, 
+    TDemandaAsignadoHistory, 
+    TDemandaVinculadaHistory, 
+    TVinculoPersonaPersonaHistory,
+    TPersonaCondicionesVulnerabilidadHistory,
+    TDemandaMotivoIntervencionHistory
+)
 
 class TLocalizacionPersonaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -83,4 +99,18 @@ class TDemandaVinculadaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaVinculadaHistory
         fields = '__all__'
-    
+
+class TVinculoPersonaPersonaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TVinculoPersonaPersonaHistory
+        fields = '__all__'
+
+class TPersonaCondicionesVulnerabilidadHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TPersonaCondicionesVulnerabilidadHistory
+        fields = '__all__'
+
+class TDemandaMotivoIntervencionHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaMotivoIntervencionHistory
+        fields = '__all__'
