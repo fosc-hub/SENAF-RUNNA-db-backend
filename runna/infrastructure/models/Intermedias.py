@@ -183,6 +183,7 @@ class TDemandaVinculadaHistory(TDemandaVinculadaBase, BaseHistory):
         verbose_name = _('Historial de Vinculacion de Demandas')
         verbose_name_plural = _('Historial de Vinculaciones de Demandas')
 
+
 class TLegajoAsignado(models.Model):
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
@@ -211,17 +212,31 @@ class TVinculoPersona(models.Model):
         verbose_name_plural = _('Vinculos de Personas')
 
 
-class TVinculoPersonaPersona(models.Model):
+class TVinculoPersonaPersonaBase(models.Model):
+    deleted = models.BooleanField(default=False)
     conviven = models.BooleanField(null=False, blank=False)
     autordv = models.BooleanField(null=False, blank=False)
     garantiza_proteccion = models.BooleanField(null=False, blank=False)
 
-    persona_1 = models.ForeignKey('TPersona', related_name='persona_1', on_delete=models.CASCADE)
-    persona_2 = models.ForeignKey('TPersona', related_name='persona_2', on_delete=models.CASCADE)
+    persona_1 = models.ForeignKey('TPersona', related_name='%(class)s_persona_1', on_delete=models.CASCADE)
+    persona_2 = models.ForeignKey('TPersona', related_name='%(class)s_persona_2', on_delete=models.CASCADE)
     vinculo = models.ForeignKey('TVinculoPersona', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()    
-    
+    class Meta:
+        abstract = True
+
+
+class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
+
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
     class Meta:
         unique_together = ('persona_1', 'persona_2')
         app_label = 'infrastructure'
@@ -229,15 +244,32 @@ class TVinculoPersonaPersona(models.Model):
         verbose_name_plural = _('Vinculos entre Personas')
 
 
-class TPersonaCondicionesVulnerabilidad(models.Model):
+class TVinculoPersonaPersonaHistory(TVinculoPersonaPersonaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TVinculoPersonaPersona',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Vinculo entre Personas')
+        verbose_name_plural = _('Historial de Vinculos entre Personas')
+
+
+class TPersonaCondicionesVulnerabilidadBase(models.Model):
     si_no = models.BooleanField(null=False, blank=False)
-    
+
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
     condicion_vulnerabilidad = models.ForeignKey('TCondicionesVulnerabilidad', on_delete=models.CASCADE)
     demanda = models.ForeignKey('TDemanda', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True
+
+
+class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
+
     class Meta:
         unique_together = ('persona', 'condicion_vulnerabilidad')
         app_label = 'infrastructure'
@@ -245,16 +277,45 @@ class TPersonaCondicionesVulnerabilidad(models.Model):
         verbose_name_plural = _('Condiciones de Vulnerabilidad de Personas')
 
 
-class TDemandaMotivoIntervencion(models.Model):
+class TPersonaCondicionesVulnerabilidadHistory(TPersonaCondicionesVulnerabilidadBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TPersonaCondicionesVulnerabilidad',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Condicion de Vulnerabilidad de Persona')
+        verbose_name_plural = _('Historial de Condiciones de Vulnerabilidad de Personas')
+
+class TDemandaMotivoIntervencionBase(models.Model):
     si_no = models.BooleanField(null=False, blank=False)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     motivo_intervencion = models.ForeignKey('TMotivoIntervencion', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True
+
+
+class TDemandaMotivoIntervencion(TDemandaMotivoIntervencionBase):
+
     class Meta:
         unique_together = ('demanda', 'motivo_intervencion')
         app_label = 'infrastructure'
         verbose_name = _('Motivo de Intervencion de Demanda')
         verbose_name_plural = _('Motivos de Intervencion de Demandas')
+
+
+class TDemandaMotivoIntervencionHistory(TDemandaMotivoIntervencionBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TDemandaMotivoIntervencion',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Motivo de Intervencion de Demanda')
+        verbose_name_plural = _('Historial de Motivos de Intervencion de Demandas')

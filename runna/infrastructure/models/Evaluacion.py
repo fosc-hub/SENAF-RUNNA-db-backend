@@ -117,18 +117,35 @@ class TIndicadoresValoracion(models.Model):
         verbose_name_plural = _('Indicadores de Valoracion')
 
 
-class TEvaluaciones(models.Model):
+class TEvaluacionesBase(models.Model):
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     indicador = models.ForeignKey('TIndicadoresValoracion', on_delete=models.CASCADE)
     si_no = models.BooleanField(null=False, blank=False)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TEvaluaciones(TEvaluacionesBase):
+
     class Meta:
         unique_together = ('demanda', 'indicador')
         app_label = 'infrastructure'
         verbose_name = _('Evaluacion')
         verbose_name_plural = _('Evaluaciones')
+
+
+class TEvaluacionesHistory(TEvaluacionesBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TEvaluaciones',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Evaluacion')
+        verbose_name_plural = _('Historial de Evaluaciones')
 
 
 class TDecision(models.Model):

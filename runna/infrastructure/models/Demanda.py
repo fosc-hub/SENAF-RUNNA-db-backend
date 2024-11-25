@@ -154,8 +154,7 @@ class TPrecalificacionDemandaHistory(TPrecalificacionDemandaBase, BaseHistory):
         verbose_name = _('Historial de Precalificacion de Demanda')
         verbose_name_plural = _('Historial de Precalificaciones de Demandas')
 
-
-class TScoreDemanda(models.Model):
+class TScoreDemandaBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
     score = models.FloatField(null=False, blank=False)
     score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
@@ -164,10 +163,26 @@ class TScoreDemanda(models.Model):
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TScoreDemanda(TScoreDemandaBase):
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Score de Demanda')
         verbose_name_plural = _('Scores de Demandas')
-    
+
+
+class TScoreDemandaHistory(TScoreDemandaBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TScoreDemanda',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Score de Demanda')
+        verbose_name_plural = _('Historial de Scores de Demandas')

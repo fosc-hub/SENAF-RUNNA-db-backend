@@ -201,30 +201,63 @@ class TNNyASaludHistory(TNNyASaludBase, BaseHistory):
         verbose_name_plural = _('Historial de Salud de los NNyAs')
 
 
-class TNNyAScore(models.Model):
+class TNNyAScoreBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
-
     score = models.FloatField(null=False, blank=False)
     score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
     score_vulneracion = models.FloatField(null=False, blank=False)
     score_motivo_intervencion = models.FloatField(null=False, blank=False)
-
     nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
 
-    history = HistoricalRecords()
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TNNyAScore(TNNyAScoreBase):
 
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Score del NNyA')
         verbose_name_plural = _('Scores de los NNyAs')
 
-class TLegajo(models.Model):
+
+class TNNyAScoreHistory(TNNyAScoreBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TNNyAScore',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Score del NNyA')
+        verbose_name_plural = _('Historial de Scores de los NNyAs')
+
+
+class TLegajoBase(models.Model):
     info_legajo = models.TextField()
     nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
 
-    history = HistoricalRecords()
-    
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+
+class TLegajo(TLegajoBase):
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Legajo')
         verbose_name_plural = _('Legajos')
+
+
+class TLegajoHistory(TLegajoBase, BaseHistory):
+    parent = models.ForeignKey(
+        'infrastructure.TLegajo',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Legajo')
+        verbose_name_plural = _('Historial de Legajos')
