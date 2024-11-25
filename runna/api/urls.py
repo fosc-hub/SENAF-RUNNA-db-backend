@@ -14,10 +14,10 @@ from api.views import (
     TUsuarioExternoViewSet, 
     TDemandaViewSet, 
     TPrecalificacionDemandaViewSet, 
-    TScoreDemandaViewSet, 
+    TDemandaScoreViewSet, 
     TDemandaHistoryViewSet, 
     TPrecalificacionDemandaHistoryViewSet,
-    TScoreDemandaHistoryViewSet
+    TDemandaScoreHistoryViewSet
 )
 from api.views import (
     TPersonaViewSet, 
@@ -88,10 +88,10 @@ router.register(r'vinculo-usuario-externo', TVinculoUsuarioExternoViewSet, basen
 router.register(r'usuario-externo', TUsuarioExternoViewSet, basename='usuario-externo')
 router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
-router.register(r'score-demanda', TScoreDemandaViewSet, basename='score-demanda')
+router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score')
 router.register(r'demanda-history', TDemandaHistoryViewSet, basename='demanda-history')
 router.register(r'precalificacion-demanda-history', TPrecalificacionDemandaHistoryViewSet, basename='precalificacion-demanda-history')
-router.register(r'score-demanda-history', TScoreDemandaHistoryViewSet, basename='score-demanda-history')
+router.register(r'demanda-score-history', TDemandaScoreHistoryViewSet, basename='demanda-score-history')
 
 router.register(r'persona', TPersonaViewSet, basename='persona')
 router.register(r'institucion-educativa', TInstitucionEducativaViewSet, basename='institucion-educativa')

@@ -14,10 +14,10 @@ from .Demanda import  (
     TUsuarioExterno, 
     TDemanda, 
     TPrecalificacionDemanda, 
-    TScoreDemanda, 
+    TDemandaScore, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
-    TScoreDemandaHistory
+    TDemandaScoreHistory
 )
 from .Persona import (
     TPersona,

@@ -13,10 +13,10 @@ from .DemandaSerializer import (
     TUsuarioExternoSerializer,
     TDemandaSerializer,
     TPrecalificacionDemandaSerializer,
-    TScoreDemandaSerializer,
+    TDemandaScoreSerializer,
     TDemandaHistorySerializer,
     TPrecalificacionDemandaHistorySerializer,
-    TScoreDemandaHistorySerializer
+    TDemandaScoreHistorySerializer
 )
 from .PersonaSerializer import (
     TPersonaSerializer,

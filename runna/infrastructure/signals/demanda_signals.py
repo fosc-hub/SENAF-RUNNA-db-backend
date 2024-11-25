@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from infrastructure.models import (
     TDemanda, TDemandaHistory, 
     TPrecalificacionDemanda, TPrecalificacionDemandaHistory,
-    TScoreDemanda, TScoreDemandaHistory
+    TDemandaScore, TDemandaScoreHistory
 )
 from .BaseLogs import logs
 
@@ -31,13 +31,13 @@ def log_preCalificacionDemanda_delete(sender, instance, **kwargs):
     logs(TPrecalificacionDemandaHistory, action, instance)
     
 
-@receiver(post_save, sender=TScoreDemanda)
+@receiver(post_save, sender=TDemandaScore)
 def log_scoreDemanda_save(sender, instance, created, **kwargs):
     action = 'CREATE' if created else 'UPDATE'
-    logs(TScoreDemandaHistory, action, instance)
+    logs(TDemandaScoreHistory, action, instance)
 
 
-@receiver(post_delete, sender=TScoreDemanda)
+@receiver(post_delete, sender=TDemandaScore)
 def log_scoreDemanda_delete(sender, instance, **kwargs):
     action='DELETE'
-    logs(TScoreDemandaHistory, action, instance)
+    logs(TDemandaScoreHistory, action, instance)

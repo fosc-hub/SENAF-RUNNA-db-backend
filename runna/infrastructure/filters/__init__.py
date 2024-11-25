@@ -13,10 +13,10 @@ from .DemandaFilters import (
     TUsuarioExternoFilter, 
     TDemandaFilter, 
     TPrecalificacionDemandaFilter, 
-    TScoreDemandaFilter, 
+    TDemandaScoreFilter, 
     TDemandaHistoryFilter, 
     TPrecalificacionDemandaHistoryFilter,
-    TScoreDemandaHistoryFilter
+    TDemandaScoreHistoryFilter
 )
 from .PersonaFilter import (
     TPersonaFilter, 

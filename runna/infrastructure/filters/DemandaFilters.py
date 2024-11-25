@@ -5,11 +5,11 @@ from infrastructure.models import (
     TUsuarioExterno, 
     TDemanda, 
     TPrecalificacionDemanda, 
-    TScoreDemanda, 
+    TDemandaScore, 
     TLocalizacion, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
-    TScoreDemandaHistory
+    TDemandaScoreHistory
 )
  
 class TInstitucionUsuarioExternoFilter(filters.FilterSet):
@@ -95,9 +95,9 @@ class TPrecalificacionDemandaFilter(filters.FilterSet):
 
 
 
-class TScoreDemandaFilter(filters.FilterSet):
+class TDemandaScoreFilter(filters.FilterSet):
     class Meta:
-        model = TScoreDemanda
+        model = TDemandaScore
         fields = '__all__'
 
 class TDemandaHistoryFilter(filters.FilterSet):
@@ -119,9 +119,9 @@ class TPrecalificacionDemandaHistoryFilter(filters.FilterSet):
             'by_user': ['exact'],
         }
 
-class TScoreDemandaHistoryFilter(filters.FilterSet):
+class TDemandaScoreHistoryFilter(filters.FilterSet):
     class Meta:
-        model = TScoreDemandaHistory
+        model = TDemandaScoreHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],

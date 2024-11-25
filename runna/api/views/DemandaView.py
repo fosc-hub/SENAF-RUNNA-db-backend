@@ -8,10 +8,10 @@ from infrastructure.models import (
     TUsuarioExterno, 
     TDemanda, 
     TPrecalificacionDemanda, 
-    TScoreDemanda, 
+    TDemandaScore, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
-    TScoreDemandaHistory
+    TDemandaScoreHistory
 )
 from api.serializers import (
     TInstitucionUsuarioExternoSerializer,
@@ -19,10 +19,10 @@ from api.serializers import (
     TUsuarioExternoSerializer,
     TDemandaSerializer,
     TPrecalificacionDemandaSerializer,
-    TScoreDemandaSerializer,
+    TDemandaScoreSerializer,
     TDemandaHistorySerializer,
     TPrecalificacionDemandaHistorySerializer,
-    TScoreDemandaHistorySerializer
+    TDemandaScoreHistorySerializer
 )
 from infrastructure.filters import (
     TInstitucionUsuarioExternoFilter, 
@@ -30,10 +30,10 @@ from infrastructure.filters import (
     TUsuarioExternoFilter, 
     TDemandaFilter, 
     TPrecalificacionDemandaFilter, 
-    TScoreDemandaFilter, 
+    TDemandaScoreFilter, 
     TDemandaHistoryFilter, 
     TPrecalificacionDemandaHistoryFilter,
-    TScoreDemandaHistoryFilter
+    TDemandaScoreHistoryFilter
 )
 
 
@@ -202,23 +202,23 @@ class TPrecalificacionDemandaViewSet(BaseViewSet):
         return super().retrieve(request, pk=pk)
 
 
-class TScoreDemandaViewSet(BaseViewSet):
-    model = TScoreDemanda
-    serializer_class = TScoreDemandaSerializer
-    filterset_class = TScoreDemandaFilter
+class TDemandaScoreViewSet(BaseViewSet):
+    model = TDemandaScore
+    serializer_class = TDemandaScoreSerializer
+    filterset_class = TDemandaScoreFilter
     
     http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
-        responses=TScoreDemandaSerializer(many=True),
-        description="Retrieve a list of TScoreDemanda entries with optional filtering."
+        responses=TDemandaScoreSerializer(many=True),
+        description="Retrieve a list of TDemandaScore entries with optional filtering."
     )
     def list(self, request):
         return super().list(request)
 
     @extend_schema(
-        responses=TScoreDemandaSerializer,
-        description="Retrieve a single TScoreDemanda entry."
+        responses=TDemandaScoreSerializer,
+        description="Retrieve a single TDemandaScore entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
@@ -268,23 +268,23 @@ class TPrecalificacionDemandaHistoryViewSet(BaseViewSet):
         return super().retrieve(request, pk=pk)
 
 
-class TScoreDemandaHistoryViewSet(BaseViewSet):
-    model = TScoreDemandaHistory
-    serializer_class = TScoreDemandaHistorySerializer
-    filterset_class = TScoreDemandaHistoryFilter
+class TDemandaScoreHistoryViewSet(BaseViewSet):
+    model = TDemandaScoreHistory
+    serializer_class = TDemandaScoreHistorySerializer
+    filterset_class = TDemandaScoreHistoryFilter
     
     http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
-        responses=TScoreDemandaHistorySerializer(many=True),
-        description="Retrieve a list of TScoreDemandaHistory entries with optional filtering."
+        responses=TDemandaScoreHistorySerializer(many=True),
+        description="Retrieve a list of TDemandaScoreHistory entries with optional filtering."
     )
     def list(self, request):
         return super().list(request)
 
     @extend_schema(
-        responses=TScoreDemandaHistorySerializer,
-        description="Retrieve a single TScoreDemandaHistory entry."
+        responses=TDemandaScoreHistorySerializer,
+        description="Retrieve a single TDemandaScoreHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

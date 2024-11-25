@@ -5,10 +5,10 @@ from infrastructure.models import (
     TUsuarioExterno, 
     TDemanda, 
     TPrecalificacionDemanda, 
-    TScoreDemanda, 
+    TDemandaScore, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
-    TScoreDemandaHistory
+    TDemandaScoreHistory
 )
 
 
@@ -48,9 +48,9 @@ class TPrecalificacionDemandaSerializer(serializers.ModelSerializer):
     
 
 
-class TScoreDemandaSerializer(serializers.ModelSerializer):
+class TDemandaScoreSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TScoreDemanda
+        model = TDemandaScore
         fields = '__all__'
 
 
@@ -66,7 +66,7 @@ class TPrecalificacionDemandaHistorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TScoreDemandaHistorySerializer(serializers.ModelSerializer):
+class TDemandaScoreHistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = TScoreDemandaHistory
+        model = TDemandaScoreHistory
         fields = '__all__'

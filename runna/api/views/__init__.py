@@ -14,10 +14,10 @@ from .DemandaView import (
     TUsuarioExternoViewSet, 
     TDemandaViewSet, 
     TPrecalificacionDemandaViewSet, 
-    TScoreDemandaViewSet, 
+    TDemandaScoreViewSet, 
     TDemandaHistoryViewSet, 
     TPrecalificacionDemandaHistoryViewSet,
-    TScoreDemandaHistoryViewSet
+    TDemandaScoreHistoryViewSet
 )
 from .PersonaView import (
     TPersonaViewSet, 
