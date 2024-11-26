@@ -134,6 +134,7 @@ class TNNyAEducacion(TNNyAEducacionBase):
 
 
 class TNNyAEducacionHistory(TNNyAEducacionBase, BaseHistory):
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TNNyAEducacion',
         on_delete=models.CASCADE,
@@ -189,6 +190,7 @@ class TNNyASalud(TNNyASaludBase):
 
 
 class TNNyASaludHistory(TNNyASaludBase, BaseHistory):
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TNNyASalud',
         on_delete=models.CASCADE,
@@ -222,6 +224,7 @@ class TNNyAScore(TNNyAScoreBase):
 
 
 class TNNyAScoreHistory(TNNyAScoreBase, BaseHistory):
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TNNyAScore',
         on_delete=models.CASCADE,
@@ -251,6 +254,7 @@ class TLegajo(TLegajoBase):
 
 
 class TLegajoHistory(TLegajoBase, BaseHistory):
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TLegajo',
         on_delete=models.CASCADE,

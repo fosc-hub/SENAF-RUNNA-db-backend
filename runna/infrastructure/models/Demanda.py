@@ -143,6 +143,7 @@ class TPrecalificacionDemanda(TPrecalificacionDemandaBase):
 
 
 class TPrecalificacionDemandaHistory(TPrecalificacionDemandaBase, BaseHistory):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TPrecalificacionDemanda',
         on_delete=models.CASCADE,
@@ -177,6 +178,7 @@ class TDemandaScore(TDemandaScoreBase):
 
 
 class TDemandaScoreHistory(TDemandaScoreBase, BaseHistory):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, unique=False, null=False, blank=False)
     parent = models.ForeignKey(
         'infrastructure.TDemandaScore',
         on_delete=models.CASCADE,
