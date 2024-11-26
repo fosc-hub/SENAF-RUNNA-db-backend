@@ -21,4 +21,4 @@ class BaseHistory(models.Model):
         
     
     def __str__(self):
-        return f"{self.action} - {self.timestamp} - {self.user} - {self.parent}"
+        return f"{self.action} - {self.timestamp} - {self.by_user} - {self.parent}"

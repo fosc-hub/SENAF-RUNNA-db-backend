@@ -114,4 +114,4 @@ class TLocalizacionHistory(TLocalizacionBase, BaseHistory):
         verbose_name_plural = _('Historial de Localizaciones')
 
     def __str__(self):
-        return f"{self.action} - {self.timestamp} - {self.user} - {self.parent}"
+        return f"{self.action} - {self.timestamp} - {self.by_user} - {self.parent}"
