@@ -123,3 +123,79 @@ def vulneracion_update_sumatoria_and_score(sender, instance, created, **kwargs):
         instance.sumatoria_de_pesos = new_sumatoria_de_pesos
         instance.save(update_fields=['sumatoria_de_pesos'])
 
+
+@receiver(pre_save, sender=TPersonaCondicionesVulnerabilidad)
+def personaCondicionVulnerabilidad_track_old_values(sender, instance, **kwargs):
+    """
+    On creation or update of a TVulneracion object:
+    1. Check if the 'persona.adulto' field is true, so condicion_vulnerabilidad.adulto' field must be true
+    Elif the 'persona.nnya' field is true, so condicion_vulnerabilidad.nnya' field must be true.
+    Else, raise a validation error.
+    """
+    if instance.persona.adulto:
+        if not instance.condicion_vulnerabilidad.adulto:
+            raise ValidationError("El campo 'adulto' debe ser verdadero si la persona es adulta.")
+    elif instance.persona.nnya:
+        if not instance.condicion_vulnerabilidad.nnya:
+            raise ValidationError("El campo 'nnya' debe ser verdadero si la persona es un NNyA.")
+    else:
+        raise ValidationError("La persona debe ser adulta o un NNyA.")
+    
+    if instance.pk:  # Only for updates, not creates
+        old_instance = TPersonaCondicionesVulnerabilidad.objects.get(pk=instance.pk)
+        instance._old_persona = old_instance.persona
+        instance._old_condicion_vulnerabilidad = old_instance.condicion_vulnerabilidad
+        instance._old_demanda = old_instance.demanda
+        instance._old_si_no = old_instance.si_no
+
+    else:
+        # For new instances, no old values
+        instance._old_persona = None
+        instance._old_condicion_vulnerabilidad = None
+        instance._old_demanda = None
+        instance._old_si_no = None
+
+@receiver(post_save, sender=TPersonaCondicionesVulnerabilidad)
+def personaCondicionVulnerabilidad_update_sumatoria_and_score(sender, instance, created, **kwargs):
+    """
+    On creation or update of a TVulneracion object:
+    1. Check if the 'persona.adulto' field is true, so all the TVinculoPersonaPersona related
+    to the persona must be filtered by the 'TVinculoPersonaPersona.persona_1' andor 'TVinculoPersonaPersona.persona_2' fields.
+    2. For those filtered_objects in which 'persona.nnya' is true, sum the 'conidicion_vulnerabilidad.peso' value .
+    to its related TNNyAScore object
+    """
+    if instance._old_si_no == instance.si_no:
+        return
+
+    condicion_vulnerabilidad_peso = instance.condicion_vulnerabilidad.peso if instance.si_no else instance.condicion_vulnerabilidad.peso*(-1)
+    if instance.persona.adulto:
+        # Filter TVinculoPersonaPersona related to the persona
+        related_vinculos = TVinculoPersonaPersona.objects.filter(
+            persona_1=instance.persona
+        ) | TVinculoPersonaPersona.objects.filter(
+            persona_2=instance.persona
+        )
+
+        for vinculo in related_vinculos:
+            if vinculo.persona_1.nnya:
+                nnya_score, created = TNNyAScore.objects.get_or_create(nnya=vinculo.persona_1)
+                nnya_score.score += condicion_vulnerabilidad_peso
+                nnya_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
+                nnya_score.save()
+            if vinculo.persona_2.nnya:
+                nnya_score, created = TNNyAScore.objects.get_or_create(nnya=vinculo.persona_2)
+                nnya_score.score += condicion_vulnerabilidad_peso
+                nnya_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
+                nnya_score.save()
+    if instance.persona.nnya:
+        nnya_score, created = TNNyAScore.objects.get_or_create(nnya=instance.persona)
+        nnya_score.score += condicion_vulnerabilidad_peso
+        nnya_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
+        nnya_score.save()
+        
+    if instance.demanda:
+        demanda_score, created = TDemandaScore.objects.get_or_create(demanda=instance.demanda)
+        demanda_score.score += condicion_vulnerabilidad_peso
+        demanda_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
+        demanda_score.save()
+
