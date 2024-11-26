@@ -237,4 +237,36 @@ def demandaMotivoIntervencion_update_sumatoria_and_score(sender, instance, creat
     demanda_score.save()
 
 
+@receiver(pre_save, sender=TEvaluaciones)
+def evaluaciones_track_old_values(sender, instance, **kwargs):
+    """
+    """
+    
+    if instance.pk:  # Only for updates, not creates
+        old_instance = TEvaluaciones.objects.get(pk=instance.pk)
+        instance._old_indicador = old_instance.indicador
+        instance._old_demanda = old_instance.demanda
+        instance._old_si_no = old_instance.si_no
+
+    else:
+        # For new instances, no old values
+        instance._old_indicador = None
+        instance._old_demanda = None
+        instance._old_si_no = None
+
+@receiver(post_save, sender=TEvaluaciones)
+def evaluaciones_update_sumatoria_and_score(sender, instance, created, **kwargs):
+    """
+    """
+    if instance._old_si_no == instance.si_no:
+        return
+    elif instance._old_si_no is None:
+        indicador_peso =  ( instance.indicador.peso if instance.si_no else instance.indicador.peso*(-1) )
+    elif instance._old_si_no != instance.si_no:
+        indicador_peso =  ( instance.indicador.peso if instance.si_no else instance.indicador.peso*(-1) ) * 2
+
+    demanda_score, created = TDemandaScore.objects.get_or_create(demanda=instance.demanda)
+    demanda_score.score += indicador_peso
+    demanda_score.score_indicadores_valoracion += indicador_peso
+    demanda_score.save()
  
