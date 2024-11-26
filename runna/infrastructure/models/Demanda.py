@@ -157,11 +157,11 @@ class TPrecalificacionDemandaHistory(TPrecalificacionDemandaBase, BaseHistory):
 
 class TDemandaScoreBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
-    score = models.FloatField(null=False, blank=False)
-    score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
-    score_vulneracion = models.FloatField(null=False, blank=False)
-    score_motivos_intervencion = models.FloatField(null=False, blank=False)
-    score_indicadores_valoracion = models.FloatField(null=False, blank=False)
+    score = models.FloatField(default=0)
+    score_condiciones_vulnerabilidad = models.FloatField(default=0)
+    score_vulneracion = models.FloatField(default=0)
+    score_motivos_intervencion = models.FloatField(default=0)
+    score_indicadores_valoracion = models.FloatField(default=0)
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 

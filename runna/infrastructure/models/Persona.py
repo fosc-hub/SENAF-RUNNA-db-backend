@@ -205,10 +205,10 @@ class TNNyASaludHistory(TNNyASaludBase, BaseHistory):
 
 class TNNyAScoreBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
-    score = models.FloatField(null=False, blank=False)
-    score_condiciones_vulnerabilidad = models.FloatField(null=False, blank=False)
-    score_vulneracion = models.FloatField(null=False, blank=False)
-    score_motivos_intervencion = models.FloatField(null=False, blank=False)
+    score = models.FloatField(default=0)
+    score_condiciones_vulnerabilidad = models.FloatField(default=0)
+    score_vulneracion = models.FloatField(default=0)
+    score_motivos_intervencion = models.FloatField(default=0)
     nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
