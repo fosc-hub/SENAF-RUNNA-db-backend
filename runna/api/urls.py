@@ -73,6 +73,8 @@ from api.views import (
     TActividadHistoryViewSet,
     TEvaluacionesHistoryViewSet
 )
+from api.views import SuggestDecisionView
+from django.urls import path, include
 
 router = DefaultRouter()
 router.register(r'provincia', TProvinciaViewSet, basename='provincia')
@@ -143,4 +145,7 @@ router.register(r'decision', TDecisionViewSet, basename='decision')
 router.register(r'actividad-history', TActividadHistoryViewSet, basename='actividad-history')
 router.register(r'evaluaciones-history', TEvaluacionesHistoryViewSet, basename='evaluaciones-history')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),  # Include all router URLs
+    path('suggest-decision/<int:nnya_id>/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
+]

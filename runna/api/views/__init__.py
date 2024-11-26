@@ -73,3 +73,6 @@ from .EvaluacionView import (
     TActividadHistoryViewSet,
     TEvaluacionesHistoryViewSet
 )
+from .SuggestDecision import (
+    SuggestDecisionView
+)
