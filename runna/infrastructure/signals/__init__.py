@@ -30,3 +30,13 @@ from .evaluacion_signals import (
     log_actividad_save, log_actividad_delete,
     log_evaluaciones_save, log_evaluaciones_delete
 )
+from .score_signals import (
+    vulneracion_track_old_peso_values,
+    vulneracion_update_sumatoria_and_score,
+    personaCondicionVulnerabilidad_track_old_values,
+    personaCondicionVulnerabilidad_update_sumatoria_and_score,
+    demandaMotivoIntervencion_track_old_values,
+    demandaMotivoIntervencion_update_sumatoria_and_score,
+    evaluaciones_track_old_values,
+    evaluaciones_update_sumatoria_and_score
+)
