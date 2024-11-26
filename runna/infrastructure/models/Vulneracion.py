@@ -91,8 +91,8 @@ class TMotivoIntervencion(models.Model):
     
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Condicion de Vulnerabilidad')
-        verbose_name_plural = _('Condiciones de Vulnerabilidad')
+        verbose_name = _('Motivo de Intervencion')
+        verbose_name_plural = _('Motivos de Intervencion')
 
 class TVulneracionBase(models.Model):
     principal_demanda = models.BooleanField(default=False)
