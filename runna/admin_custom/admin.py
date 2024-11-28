@@ -193,6 +193,63 @@ class TDemandaScoreAdmin(NoDeleteAdmin):
     list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'ultima_actualizacion', 'demanda')
     search_fields = ('demanda__nro_notificacion_102',)
 
+
+# ===== Persona related models ===== #
+
+@admin.register(TPersona)
+class TPersonaAdmin(NoDeleteAdmin):
+    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'boton_antipanico', 'observaciones', 'adulto', 'nnya')
+    list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'dni', 'genero', 'adulto', 'nnya', 'deleted')
+    list_filter = ('genero', 'adulto', 'nnya', 'deleted')
+    search_fields = ('nombre', 'apellido', 'dni')
+
+
+@admin.register(TInstitucionEducativa)
+class TInstitucionEducativaAdmin(ModelAdmin):
+    fields = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_filter = ('localizacion',)
+    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
+
+
+@admin.register(TNNyAEducacion)
+class TNNyAEducacionAdmin(NoDeleteAdmin):
+    fields = ('curso', 'nivel', 'turno', 'comentarios', 'institucion_educativa', 'nnya')
+    list_display = ('curso', 'nivel', 'turno', 'institucion_educativa', 'nnya', 'deleted')
+    list_filter = ('nivel', 'turno', 'institucion_educativa', 'deleted')
+    search_fields = ('curso', 'institucion_educativa__nombre', 'nnya__nombre')
+
+
+@admin.register(TInstitucionSanitaria)
+class TInstitucionSanitariaAdmin(ModelAdmin):
+    fields = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_filter = ('localizacion',)
+    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
+
+
+@admin.register(TNNyASalud)
+class TNNyASaludAdmin(NoDeleteAdmin):
+    fields = ('observaciones', 'institucion_sanitaria', 'nnya')
+    list_display = ('institucion_sanitaria', 'nnya', 'deleted')
+    list_filter = ('institucion_sanitaria', 'deleted')
+    search_fields = ('institucion_sanitaria__nombre', 'nnya__nombre')
+
+
+@admin.register(TNNyAScore)
+class TNNyAScoreAdmin(NoDeleteAdmin):
+    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'nnya')
+    list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'nnya')
+    search_fields = ('nnya__nombre',)
+
+
+@admin.register(TLegajo)
+class TLegajoAdmin(NoDeleteAdmin):
+    fields = ('info_legajo', 'nnya')
+    list_display = ('info_legajo', 'nnya')
+    search_fields = ('nnya__nombre',)
+
+
 # @admin.register(Demanda)
 # class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
 #     """Admin for managing demands."""
