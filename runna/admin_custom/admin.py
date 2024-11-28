@@ -250,6 +250,64 @@ class TLegajoAdmin(NoDeleteAdmin):
     search_fields = ('nnya__nombre',)
 
 
+# ===== Vulneracion related models ===== #
+
+@admin.register(TCategoriaMotivo)
+class TCategoriaMotivoAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso')
+    list_display = ('nombre', 'descripcion', 'peso')
+    list_filter = ('peso',)
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TCategoriaSubmotivo)
+class TCategoriaSubmotivoAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso', 'motivo')
+    list_display = ('nombre', 'descripcion', 'peso', 'motivo')
+    list_filter = ('peso', 'motivo')
+    search_fields = ('nombre', 'descripcion', 'motivo__nombre')
+
+
+@admin.register(TGravedadVulneracion)
+class TGravedadVulneracionAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso')
+    list_display = ('nombre', 'descripcion', 'peso')
+    list_filter = ('peso',)
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TUrgenciaVulneracion)
+class TUrgenciaVulneracionAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso')
+    list_display = ('nombre', 'descripcion', 'peso')
+    list_filter = ('peso',)
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TCondicionesVulnerabilidad)
+class TCondicionesVulnerabilidadAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso', 'nnya', 'adulto')
+    list_display = ('nombre', 'descripcion', 'peso', 'nnya', 'adulto')
+    list_filter = ('peso', 'nnya', 'adulto')
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TMotivoIntervencion)
+class TMotivoIntervencionAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso')
+    list_display = ('nombre', 'descripcion', 'peso')
+    list_filter = ('peso',)
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TVulneracion)
+class TVulneracionAdmin(NoDeleteAdmin):
+    fields = ('principal_demanda', 'transcurre_actualidad', 'sumatoria_de_pesos', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
+    list_display = ('principal_demanda', 'transcurre_actualidad', 'sumatoria_de_pesos', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
+    list_filter = ('principal_demanda', 'transcurre_actualidad', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
+    search_fields = ('demanda__nro_notificacion_102', 'nnya__nombre', 'autor_dv__nombre', 'categoria_motivo__nombre', 'categoria_submotivo__nombre', 'gravedad_vulneracion__nombre', 'urgencia_vulneracion__nombre')
+
+
 # @admin.register(Demanda)
 # class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
 #     """Admin for managing demands."""
