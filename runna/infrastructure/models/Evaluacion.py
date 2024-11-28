@@ -18,7 +18,7 @@ TDecision
 class TActividadTipo(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -33,7 +33,7 @@ class TInstitucionActividad(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -80,7 +80,7 @@ class TInstitucionRespuesta(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -96,7 +96,7 @@ class TRespuesta(models.Model):
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     institucion = models.ForeignKey('TInstitucionRespuesta', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -109,7 +109,7 @@ class TIndicadoresValoracion(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(default=0)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -159,7 +159,7 @@ class TDecision(models.Model):
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, null=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'

@@ -15,4 +15,4 @@ class CustomUser(AbstractUser):
     
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
