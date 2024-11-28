@@ -383,6 +383,72 @@ class TDemandaMotivoIntervencionAdmin(NoDeleteAdmin):
     search_fields = ('demanda__nro_notificacion_102', 'motivo_intervencion__nombre')
 
 
+
+# ===== Actividad related models ===== #
+
+@admin.register(TActividadTipo)
+class TActividadTipoAdmin(ModelAdmin):
+    fields = ('nombre',)
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+
+@admin.register(TInstitucionActividad)
+class TInstitucionActividadAdmin(ModelAdmin):
+    fields = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_filter = ('localizacion',)
+    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
+
+
+@admin.register(TActividad)
+class TActividadAdmin(NoDeleteAdmin):
+    fields = ('descripcion', 'demanda', 'tipo', 'institucion')
+    list_display = ('fecha_y_hora', 'descripcion', 'demanda', 'tipo', 'institucion')
+    list_filter = ('fecha_y_hora', 'tipo', 'institucion')
+    search_fields = ('descripcion', 'demanda__nro_notificacion_102', 'tipo__nombre', 'institucion__nombre')
+
+
+@admin.register(TInstitucionRespuesta)
+class TInstitucionRespuestaAdmin(ModelAdmin):
+    fields = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_filter = ('localizacion',)
+    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
+
+
+@admin.register(TRespuesta)
+class TRespuestaAdmin(NoDeleteAdmin):
+    fields = ('mail', 'mensaje', 'demanda', 'institucion')
+    list_display = ('fecha_y_hora', 'mail', 'mensaje', 'demanda', 'institucion')
+    list_filter = ('fecha_y_hora', 'institucion')
+    search_fields = ('mail', 'mensaje', 'demanda__nro_notificacion_102', 'institucion__nombre')
+
+
+@admin.register(TIndicadoresValoracion)
+class TIndicadoresValoracionAdmin(ModelAdmin):
+    fields = ('nombre', 'descripcion', 'peso')
+    list_display = ('nombre', 'descripcion', 'peso')
+    list_filter = ('peso',)
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TEvaluaciones)
+class TEvaluacionesAdmin(NoDeleteAdmin):
+    fields = ('demanda', 'indicador', 'si_no')
+    list_display = ('demanda', 'indicador', 'si_no')
+    list_filter = ('si_no', 'indicador')
+    search_fields = ('demanda__nro_notificacion_102', 'indicador__nombre')
+
+
+@admin.register(TDecision)
+class TDecisionAdmin(NoDeleteAdmin):
+    fields = ('justificacion', 'decision', 'demanda')
+    list_display = ('fecha_y_hora', 'justificacion', 'decision', 'demanda')
+    list_filter = ('decision', 'fecha_y_hora')
+    search_fields = ('justificacion', 'demanda__nro_notificacion_102')
+
+
 # @admin.register(Demanda)
 # class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
 #     """Admin for managing demands."""
