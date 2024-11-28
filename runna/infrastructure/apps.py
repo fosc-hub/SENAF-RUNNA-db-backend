@@ -5,5 +5,5 @@ class InfrastructureConfig(AppConfig):
     name = 'infrastructure'
     verbose_name = 'Sistema'
 
-    def ready(self):
-        import infrastructure.signals
+    # def ready(self):
+    #     import infrastructure.signals
