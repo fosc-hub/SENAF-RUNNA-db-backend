@@ -66,6 +66,8 @@ INSTALLED_APPS = [
 
     'drf_spectacular',
     'drf_spectacular_sidecar',  # For Swagger UI assets
+    
+    'admin_reorder',
 
 ]
 
@@ -81,7 +83,72 @@ MIDDLEWARE = [
     # corsheaders middleware    
     "corsheaders.middleware.CorsMiddleware",
 
-    'runna.middleware.ThreadLocalMiddleware'
+    'runna.middleware.ThreadLocalMiddleware',
+
+    'admin_reorder.middleware.ModelAdminReorder',
+]
+
+ADMIN_REORDER = [
+    {
+        'app': 'customAuth',
+        'models': [
+            'customAuth.CustomUser',
+        ]
+    },
+    {
+        'app': 'infrastructure',
+        'models': [
+            "infrastructure.TProvincia",
+            "infrastructure.TDepartamento",
+            "infrastructure.TLocalidad",
+            "infrastructure.TBarrio",
+            "infrastructure.TCPC",
+            "infrastructure.TLocalizacion",
+
+            "infrastructure.TInstitucionUsuarioExterno",
+            "infrastructure.TVinculoUsuarioExterno",
+            "infrastructure.TUsuarioExterno",
+            "infrastructure.TDemanda",
+            "infrastructure.TPrecalificacionDemanda",
+            "infrastructure.TDemandaScore",
+
+            "infrastructure.TPersona",
+            "infrastructure.TInstitucionEducativa",
+            "infrastructure.TNNyAEducacion",
+            "infrastructure.TInstitucionSanitaria",
+            "infrastructure.TNNyASalud",
+            "infrastructure.TNNyAScore",
+            "infrastructure.TLegajo",
+
+            "infrastructure.TCategoriaMotivo",
+            "infrastructure.TCategoriaSubmotivo",
+            "infrastructure.TGravedadVulneracion",
+            "infrastructure.TUrgenciaVulneracion",
+            "infrastructure.TVulneracion",
+
+            "infrastructure.TCondicionesVulnerabilidad",
+            "infrastructure.TMotivoIntervencion",
+
+            "infrastructure.TLocalizacionPersona",
+            "infrastructure.TDemandaPersona",
+            "infrastructure.TDemandaAsignado",
+            "infrastructure.TDemandaVinculada",
+            "infrastructure.TLegajoAsignado",
+            "infrastructure.TVinculoPersona",
+            "infrastructure.TVinculoPersonaPersona",
+            "infrastructure.TDemandaMotivoIntervencion",
+            "infrastructure.TPersonaCondicionesVulnerabilidad",
+
+            "infrastructure.TActividadTipo",
+            "infrastructure.TInstitucionActividad",
+            "infrastructure.TActividad",
+            "infrastructure.TInstitucionRespuesta",
+            "infrastructure.TRespuesta",
+            "infrastructure.TIndicadoresValoracion",
+            "infrastructure.TEvaluaciones",
+            "infrastructure.TDecision"
+        ]
+    },
 ]
 
 ROOT_URLCONF = 'runna.urls'
