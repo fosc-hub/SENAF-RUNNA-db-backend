@@ -1,14 +1,18 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
-from simple_history.admin import SimpleHistoryAdmin
+# from simple_history.admin import SimpleHistoryAdmin
+# from unfold.contrib.auth.admin import UserAdmin
 from django.contrib.auth.admin import UserAdmin
 
 from django.apps import apps
 
 from customAuth.models import CustomUser
 
+
+# ===== Custom User Admin ===== #
+
 @admin.register(CustomUser)
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(ModelAdmin, UserAdmin):
     """Admin for managing users with roles and permissions."""
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
@@ -38,7 +42,7 @@ for model in models:
         pass  # Skip already registered models
 """
 
-# ===== Custom User Management ===== #
+# ===== models ===== #
 
 from infrastructure.models import (
     TProvincia, 
@@ -96,47 +100,89 @@ from infrastructure.models import (
     TDecision,
 )
 
+# ===== Localizacion related models ===== #
+
 @admin.register(TProvincia)
-class TProvinciaAdmin(SimpleHistoryAdmin):
+class TProvinciaAdmin(ModelAdmin):
     list_display = ('nombre',)
     search_fields = ('nombre',)
 
 
 @admin.register(TDepartamento)
-class TDepartamentoAdmin(SimpleHistoryAdmin):
+class TDepartamentoAdmin(ModelAdmin):
     list_display = ('nombre', 'provincia')
     list_filter = ('provincia',)
     search_fields = ('nombre', 'provincia__nombre')
 
 
 @admin.register(TLocalidad)
-class TLocalidadAdmin(SimpleHistoryAdmin):
+class TLocalidadAdmin(ModelAdmin):
     list_display = ('nombre', 'departamento')
     list_filter = ('departamento',)
     search_fields = ('nombre', 'departamento__nombre')
 
 
 @admin.register(TBarrio)
-class TBarrioAdmin(SimpleHistoryAdmin):
+class TBarrioAdmin(ModelAdmin):
     list_display = ('nombre', 'localidad')
     list_filter = ('localidad',)
     search_fields = ('nombre', 'localidad__nombre')
 
 
 @admin.register(TCPC)
-class TCPCAdmin(SimpleHistoryAdmin):
+class TCPCAdmin(ModelAdmin):
     list_display = ('nombre', 'localidad')
     list_filter = ('localidad',)
     search_fields = ('nombre', 'localidad__nombre')
 
 
 @admin.register(TLocalizacion)
-class TLocalizacionAdmin(SimpleHistoryAdmin):
+class TLocalizacionAdmin(ModelAdmin):
     list_display = ('calle', 'tipo_calle', 'barrio', 'localidad', 'cpc', 'deleted')
     list_filter = ('tipo_calle', 'barrio', 'localidad', 'cpc', 'deleted')
     search_fields = ('calle', 'barrio__nombre', 'localidad__nombre', 'cpc__nombre')
 
 
+# ===== Demanda related models ===== #
+
+@admin.register(TInstitucionUsuarioExterno)
+class TInstitucionUsuarioExternoAdmin(ModelAdmin):
+    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
+    list_filter = ('localizacion',)
+    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
+
+
+@admin.register(TVinculoUsuarioExterno)
+class TVinculoUsuarioExternoAdmin(ModelAdmin):
+    list_display = ('nombre', 'descripcion')
+    search_fields = ('nombre', 'descripcion')
+
+
+@admin.register(TUsuarioExterno)
+class TUsuarioExternoAdmin(ModelAdmin):
+    list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion')
+    list_filter = ('genero', 'vinculo', 'institucion')
+    search_fields = ('nombre', 'apellido', 'mail', 'telefono', 'vinculo__nombre', 'institucion__nombre')
+
+
+@admin.register(TDemanda)
+class TDemandaAdmin(ModelAdmin):
+    list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo', 'deleted')
+    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo', 'deleted')
+    search_fields = ('descripcion', 'nro_notificacion_102', 'usuario_externo__nombre', 'localizacion__nombre')
+
+
+@admin.register(TPrecalificacionDemanda)
+class TPrecalificacionDemandaAdmin(ModelAdmin):
+    list_display = ('fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda')
+    list_filter = ('estado_demanda', 'fecha_y_hora')
+    search_fields = ('descripcion', 'demanda__nro_notificacion_102')
+
+
+@admin.register(TDemandaScore)
+class TDemandaScoreAdmin(ModelAdmin):
+    list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'ultima_actualizacion', 'demanda')
+    search_fields = ('demanda__nro_notificacion_102',)
 
 # @admin.register(Demanda)
 # class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):

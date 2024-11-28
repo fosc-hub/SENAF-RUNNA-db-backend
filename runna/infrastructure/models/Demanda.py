@@ -23,6 +23,9 @@ class TInstitucionUsuarioExterno(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Institucion de Usuario Externo')
         verbose_name_plural = _('Instituciones de Usuarios Externos')
+    
+    def __str__(self):
+        return self.nombre
 
 
 class TVinculoUsuarioExterno(models.Model):
@@ -35,6 +38,9 @@ class TVinculoUsuarioExterno(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Vinculo del Usuario Externo')
         verbose_name_plural = _('Vinculos de los Usuarios Externos')
+        
+    def __str__(self):
+        return f"{self.nombre} - {self.descripcion}"
 
 
 class TUsuarioExterno(models.Model):
@@ -59,6 +65,9 @@ class TUsuarioExterno(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Usuario Externo del Sistema (Linea 102, etc)')
         verbose_name_plural = _('Usuarios Externos del Sistema (Linea 102, etc)')
+        
+    def __str__(self):
+        return f"{self.nombre} {self.apellido} - {self.mail}"
 
 
 class TDemandaBase(models.Model):
@@ -102,6 +111,9 @@ class TDemanda(TDemandaBase):
         app_label = 'infrastructure'
         verbose_name = _('Demanda')
         verbose_name_plural = _('Demandas')
+        
+    def __str__(self):
+        return f"{self.origen} - {self.descripcion} - {self.fecha_y_hora_ingreso}"
 
 
 class TDemandaHistory(TDemandaBase, BaseHistory):
@@ -132,6 +144,9 @@ class TPrecalificacionDemandaBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+        
+    def __str__(self):
+        return f"{self.fecha_y_hora} - {self.descripcion} - {self.estado_demanda}"
 
 
 class TPrecalificacionDemanda(TPrecalificacionDemandaBase):
@@ -167,6 +182,9 @@ class TDemandaScoreBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+        
+    def __str__(self):
+        return f"{self.score} - {self.demanda}"
 
 
 class TDemandaScore(TDemandaScoreBase):
