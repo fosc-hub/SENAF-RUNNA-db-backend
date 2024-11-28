@@ -21,9 +21,7 @@ class CustomUserAdmin(ModelAdmin, UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
     )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
-    )
+    add_fieldsets = UserAdmin.add_fieldsets
 
     list_display = ('username', 'email', 'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_active', 'groups')
