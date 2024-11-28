@@ -171,9 +171,9 @@ class TUsuarioExternoAdmin(NoDeleteAdmin):
 
 @admin.register(TDemanda)
 class TDemandaAdmin(NoDeleteAdmin):
-    fields = ( "fecha_y_hora_ingreso", "origen", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "localizacion", "usuario_externo")
-    list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo', 'deleted')
-    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo', 'deleted')
+    fields = ( "fecha_y_hora_ingreso", "origen", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "localizacion", "usuario_externo", "constatacion", "evaluacion", "decision", "archivado", "completado")
+    list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo')
+    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo')
     search_fields = ('descripcion', 'nro_notificacion_102', 'usuario_externo__nombre', 'localizacion__nombre')
 
 

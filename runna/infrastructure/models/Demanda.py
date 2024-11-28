@@ -71,7 +71,6 @@ class TUsuarioExterno(models.Model):
 
 
 class TDemandaBase(models.Model):
-    deleted = models.BooleanField(default=False)
     fecha_y_hora_ingreso = models.DateTimeField(null=False, default=datetime.now())
     origen_choices = [
         ('WEB', 'Web'),
@@ -88,6 +87,11 @@ class TDemandaBase(models.Model):
     nro_oficio_web = models.IntegerField(null=True, blank=True)
     descripcion = models.TextField(null=True, blank=True)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
+    constatacion = models.BooleanField(default=True)
+    evaluacion = models.BooleanField(default=False)
+    decision = models.BooleanField(default=False)
+    archivado = models.BooleanField(default=False)
+    completado = models.BooleanField(default=False)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
     usuario_externo = models.ForeignKey('TUsuarioExterno', on_delete=models.SET_NULL, null=True, blank=True)
@@ -100,7 +104,7 @@ class TDemanda(TDemandaBase):
 
     def delete(self, *args, **kwargs):
         """Override delete to implement soft delete."""
-        self.deleted = True
+        self.archivado = True
         self.save()
 
     def hard_delete(self, *args, **kwargs):

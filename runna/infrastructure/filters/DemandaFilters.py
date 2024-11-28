@@ -49,33 +49,10 @@ class TUsuarioExternoFilter(filters.FilterSet):
         fields = ['nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion']
 
 class TDemandaFilter(filters.FilterSet):
-    fecha_y_hora_ingreso = filters.DateTimeFilter()  # Exact match for fecha_y_hora_ingreso
-    origen = filters.ChoiceFilter(choices=[
-        ('WEB', 'Web'),
-        ('TELEFONO', 'Telefono'),
-        ('MAIL', 'Mail'),
-        ('PERSONAL', 'Personal'),
-        ('OTRO', 'Otro')
-    ])  # Exact match for origen
-    nro_notificacion_102 = filters.NumberFilter()  # Exact match for nro_notificacion_102
-    nro_sac = filters.NumberFilter()  # Exact match for nro_sac
-    nro_suac = filters.NumberFilter()  # Exact match for nro_suac
-    nro_historia_clinica = filters.NumberFilter()  # Exact match for nro_historia_clinica
-    nro_oficio_web = filters.NumberFilter()  # Exact match for nro_oficio_web
-    descripcion = filters.CharFilter(lookup_expr='icontains')  # Partial match for descripcion
-    ultima_actualizacion = filters.DateTimeFilter()  # Exact match for ultima_actualizacion
-
-    localizacion = filters.ModelChoiceFilter(queryset=TLocalizacion.objects.all())  # Exact match for localizacion
-
-    usuario_externo = filters.ModelChoiceFilter(queryset=TUsuarioExterno.objects.all())  # Exact match for usuario_externo
-
+    
     class Meta:
         model = TDemanda
-        fields = [
-            'fecha_y_hora_ingreso', 'origen', 'nro_notificacion_102', 'nro_sac', 'nro_suac',
-            'nro_historia_clinica', 'nro_oficio_web', 'descripcion', 'ultima_actualizacion',
-            'localizacion', 'usuario_externo', 'deleted'
-        ]
+        fields = '__all__'
 
 
 class TPrecalificacionDemandaFilter(filters.FilterSet):
