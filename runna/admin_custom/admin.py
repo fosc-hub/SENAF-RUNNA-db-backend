@@ -308,6 +308,81 @@ class TVulneracionAdmin(NoDeleteAdmin):
     search_fields = ('demanda__nro_notificacion_102', 'nnya__nombre', 'autor_dv__nombre', 'categoria_motivo__nombre', 'categoria_submotivo__nombre', 'gravedad_vulneracion__nombre', 'urgencia_vulneracion__nombre')
 
 
+
+# ===== Intermedias related models ===== #
+
+
+@admin.register(TLocalizacionPersona)
+class TLocalizacionPersonaAdmin(NoDeleteAdmin):
+    fields = ('persona', 'localizacion', 'principal')
+    list_display = ('persona', 'localizacion', 'principal', 'deleted')
+    list_filter = ('principal', 'deleted')
+    search_fields = ('persona__nombre', 'localizacion__nombre')
+
+
+@admin.register(TDemandaPersona)
+class TDemandaPersonaAdmin(NoDeleteAdmin):
+    fields = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'demanda', 'persona')
+    list_display = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'demanda', 'persona', 'deleted')
+    list_filter = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'deleted')
+    search_fields = ('demanda__nro_notificacion_102', 'persona__nombre')
+
+
+@admin.register(TDemandaAsignado)
+class TDemandaAsignadoAdmin(NoDeleteAdmin):
+    fields = ('esta_activo', 'recibido', 'comentarios', 'demanda', 'user')
+    list_display = ('esta_activo', 'recibido', 'demanda', 'user')
+    list_filter = ('esta_activo', 'recibido')
+    search_fields = ('demanda__nro_notificacion_102', 'user__username')
+
+
+@admin.register(TDemandaVinculada)
+class TDemandaVinculadaAdmin(NoDeleteAdmin):
+    fields = ('demanda_1', 'demanda_2')
+    list_display = ('demanda_1', 'demanda_2', 'deleted')
+    list_filter = ('deleted',)
+    search_fields = ('demanda_1__nro_notificacion_102', 'demanda_2__nro_notificacion_102')
+
+
+@admin.register(TLegajoAsignado)
+class TLegajoAsignadoAdmin(NoDeleteAdmin):
+    fields = ('esta_activo', 'recibido', 'comentarios', 'legajo', 'user')
+    list_display = ('esta_activo', 'recibido', 'legajo', 'user')
+    list_filter = ('esta_activo', 'recibido')
+    search_fields = ('legajo__info_legajo', 'user__username')
+
+
+@admin.register(TVinculoPersona)
+class TVinculoPersonaAdmin(ModelAdmin):
+    fields = ('nombre',)
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+
+@admin.register(TVinculoPersonaPersona)
+class TVinculoPersonaPersonaAdmin(NoDeleteAdmin):
+    fields = ('conviven', 'autordv', 'garantiza_proteccion', 'persona_1', 'persona_2', 'vinculo')
+    list_display = ('conviven', 'autordv', 'garantiza_proteccion', 'persona_1', 'persona_2', 'vinculo', 'deleted')
+    list_filter = ('conviven', 'autordv', 'garantiza_proteccion', 'deleted')
+    search_fields = ('persona_1__nombre', 'persona_2__nombre', 'vinculo__nombre')
+
+
+@admin.register(TPersonaCondicionesVulnerabilidad)
+class TPersonaCondicionesVulnerabilidadAdmin(NoDeleteAdmin):
+    fields = ('si_no', 'persona', 'condicion_vulnerabilidad', 'demanda')
+    list_display = ('si_no', 'persona', 'condicion_vulnerabilidad', 'demanda')
+    list_filter = ('si_no', 'condicion_vulnerabilidad')
+    search_fields = ('persona__nombre', 'condicion_vulnerabilidad__nombre', 'demanda__nro_notificacion_102')
+
+
+@admin.register(TDemandaMotivoIntervencion)
+class TDemandaMotivoIntervencionAdmin(NoDeleteAdmin):
+    fields = ('si_no', 'demanda', 'motivo_intervencion')
+    list_display = ('si_no', 'demanda', 'motivo_intervencion')
+    list_filter = ('si_no', 'motivo_intervencion')
+    search_fields = ('demanda__nro_notificacion_102', 'motivo_intervencion__nombre')
+
+
 # @admin.register(Demanda)
 # class DemandaAdmin(SimpleHistoryAdmin, ModelAdmin):
 #     """Admin for managing demands."""
