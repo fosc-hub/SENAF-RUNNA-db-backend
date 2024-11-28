@@ -14,6 +14,8 @@ class TProvincia(models.Model):
         verbose_name = _('Provincia')
         verbose_name_plural = _('Provincias')
 
+    def __str__(self):
+        return self.nombre
 class TDepartamento(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
@@ -26,6 +28,8 @@ class TDepartamento(models.Model):
         verbose_name = _('Departamento')
         verbose_name_plural = _('Departamentos')
 
+    def __str__(self):
+        return self.nombre
 class TLocalidad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
@@ -38,6 +42,8 @@ class TLocalidad(models.Model):
         verbose_name = _('Localidad')
         verbose_name_plural = _('Localidades')
 
+    def __str__(self):
+        return self.nombre
 class TBarrio(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
@@ -49,6 +55,8 @@ class TBarrio(models.Model):
         verbose_name = _('Barrio')
         verbose_name_plural = _('Barrios')
 
+    def __str__(self):
+        return self.nombre
 class TCPC(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
@@ -59,6 +67,9 @@ class TCPC(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('CPC')
         verbose_name_plural = _('CPCs')
+        
+    def __str__(self):
+        return self.nombre
 
 class TLocalizacionBase(models.Model):
     deleted = models.BooleanField(default=False)
