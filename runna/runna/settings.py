@@ -224,6 +224,11 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS =  [
+    "http://127.0.0.1:3000",  # Your Next.js frontend
+    "http://localhost:3000",  # Your Next.js frontend
+]
+
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be sent
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # Your Next.js frontend
