@@ -8,14 +8,13 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
-from django.core.wsgi import get_wsgi_application
 import sys
-print("Python path:", sys.path)
-print("DJANGO_SETTINGS_MODULE:", os.environ.get('DJANGO_SETTINGS_MODULE'))
-sys.path.append('/var/task/runna')
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'runna.runna.settings')
+# Add the project root to the Python path
+sys.path.append('/var/task/runna')  # Adjust this if your deployment root is different
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'runna.settings')
+
+from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
-
 app = application
