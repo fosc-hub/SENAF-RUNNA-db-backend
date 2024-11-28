@@ -9,6 +9,10 @@ from django.apps import apps
 from customAuth.models import CustomUser
 
 
+class NoDeleteAdmin(ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 # ===== Custom User Admin ===== #
 
 @admin.register(CustomUser)
@@ -137,9 +141,10 @@ class TCPCAdmin(ModelAdmin):
 
 
 @admin.register(TLocalizacion)
-class TLocalizacionAdmin(ModelAdmin):
-    list_display = ('calle', 'tipo_calle', 'barrio', 'localidad', 'cpc', 'deleted')
-    list_filter = ('tipo_calle', 'barrio', 'localidad', 'cpc', 'deleted')
+class TLocalizacionAdmin(NoDeleteAdmin):
+    fields = ('calle', 'tipo_calle', 'casa_nro', 'piso_depto', 'lote', 'mza', 'referencia_geo', 'barrio', 'cpc', 'localidad')
+    list_display = ('calle', 'tipo_calle', 'barrio', 'localidad', 'cpc')
+    list_filter = ('tipo_calle', 'barrio', 'localidad', 'cpc')
     search_fields = ('calle', 'barrio__nombre', 'localidad__nombre', 'cpc__nombre')
 
 
@@ -159,28 +164,32 @@ class TVinculoUsuarioExternoAdmin(ModelAdmin):
 
 
 @admin.register(TUsuarioExterno)
-class TUsuarioExternoAdmin(ModelAdmin):
+class TUsuarioExternoAdmin(NoDeleteAdmin):
+    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion')
     list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion')
     list_filter = ('genero', 'vinculo', 'institucion')
     search_fields = ('nombre', 'apellido', 'mail', 'telefono', 'vinculo__nombre', 'institucion__nombre')
 
 
 @admin.register(TDemanda)
-class TDemandaAdmin(ModelAdmin):
+class TDemandaAdmin(NoDeleteAdmin):
+    fields = ( "fecha_y_hora_ingreso", "origen", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "localizacion", "usuario_externo")
     list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo', 'deleted')
     list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo', 'deleted')
     search_fields = ('descripcion', 'nro_notificacion_102', 'usuario_externo__nombre', 'localizacion__nombre')
 
 
 @admin.register(TPrecalificacionDemanda)
-class TPrecalificacionDemandaAdmin(ModelAdmin):
+class TPrecalificacionDemandaAdmin(NoDeleteAdmin):
+    fields = ('fecha_y_hora', 'descripcion', 'estado_demanda', 'demanda')
     list_display = ('fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda')
     list_filter = ('estado_demanda', 'fecha_y_hora')
     search_fields = ('descripcion', 'demanda__nro_notificacion_102')
 
 
 @admin.register(TDemandaScore)
-class TDemandaScoreAdmin(ModelAdmin):
+class TDemandaScoreAdmin(NoDeleteAdmin):
+    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'demanda')
     list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'ultima_actualizacion', 'demanda')
     search_fields = ('demanda__nro_notificacion_102',)
 
