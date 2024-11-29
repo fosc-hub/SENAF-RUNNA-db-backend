@@ -18,6 +18,22 @@ entity T_SCORE_DEMANDA {
     --
 }
 
+entity T_ORIGEN_DEMANDA {
+    + PRIMARY_KEY(id)
+    --
+    nombre : string, null=False, blank=False
+    --
+}
+
+entity T_SUB_ORIGEN_DEMANDA {
+    + PRIMARY_KEY(id)
+    --
+    nombre : string, null=False, blank=False
+    --
+    origen: FOREIGN_KEY(T_ORIGEN_DEMANDA) : on_delete=CASCADE, null=False
+    --
+}
+
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
@@ -36,9 +52,17 @@ entity T_DEMANDA {
     nro_oficio_web : int, nullable
     descripcion : text, nullable
     ultima_actualizacion : datetime, null=False, autogenerate
+    constatacion : default=True
+    evaluacion : default=False
+    decision : default=False
+    archivado : default=False
+    completado : default=False
     --
     localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=PROTECT, null=False
-    usuario_externo: FOREIGN_KEY(T_USUARIO_EXTERNO) : on_delete=SET_NULL, null=True, blank=True
+    informante: FOREIGN_KEY(T_INFORMANTE) : on_delete=SET_NULL, null=True, blank=True
+    institucion: FOREIGN_KEY(T_INSITUCION_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
+    origen: FOREIGN_KEY(T_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
+    sub_origen: FOREIGN_KEY(T_SUB_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
     --
 }
 
@@ -247,7 +271,7 @@ entity T_VINCULO_PERSONA_PERSONA {
     --
 }
 
-entity T_USUARIO_EXTERNO {
+entity T_INFORMANTE {
     + PRIMARY_KEY(id)
     --
     nombre : string, null=False
@@ -261,12 +285,9 @@ entity T_USUARIO_EXTERNO {
     telefono : int, null=False, blank=False
     mail : mail, null=False, blank=False, unique=True
     --
-    vinculo: FOREIGN_KEY(T_VINCULO_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
-    institucion: FOREIGN_KEY(T_INSTITUCION_USUARIO_EXTERNO) : on_delete=CASCADE, null=False
-    --
 }
 
-entity T_INSTITUCION_USUARIO_EXTERNO {
+entity T_INSTITUCION_DEMANDA {
     + PRIMARY_KEY(id)
     --
     nombre : string, null=False, blank=False
@@ -347,6 +368,7 @@ entity T_DECISION {
     ) : null=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    nnya: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
     TriggerOnInsert(
         CreationOfLegajo(
@@ -596,13 +618,6 @@ entity T_PROVINCIA {
     --
 }
 
-entity T_VINCULO_USUARIO_EXTERNO {
-    + PRIMARY_KEY(id)
-    --
-    nombre : null=False, blank=False
-    descripcion : text, null=True, blank=True
-    --
-}
 
 entity T_INSTITUCION_ACTIVIDAD {
     + PRIMARY_KEY(id)
@@ -690,7 +705,7 @@ T_LOCALIZACION "1" -- "*" T_INSTITUCION_ACTIVIDAD
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_RESPUESTA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
-T_LOCALIZACION "1" -- "*" T_INSTITUCION_USUARIO_EXTERNO
+T_LOCALIZACION "1" -- "*" T_INSTITUCION_DEMANDA
 
 T_LOCALIZACION "1" -- "*" T_LOCALIZACION_PERSONA
 T_PERSONA "1" -- "*" T_LOCALIZACION_PERSONA
@@ -713,10 +728,8 @@ T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
 T_VINCULO_PERSONA_PERSONA "*" -- "1" T_PERSONA
 T_VINCULO_PERSONA "1" -- "*" T_VINCULO_PERSONA_PERSONA
 
-T_DEMANDA "*" -- "1" T_USUARIO_EXTERNO
-T_USUARIO_EXTERNO "*" -- "1" T_VINCULO_USUARIO_EXTERNO
+T_DEMANDA "*" -- "1" T_INFORMANTE
 
-T_USUARIO_EXTERNO "*" -- "1" T_INSTITUCION_USUARIO_EXTERNO
 
 T_DEMANDA "1" -- "*" T_VULNERACION
 T_CATEGORIA_MOTIVO "1" -- "*" T_CATEGORIA_SUBMOTIVO
@@ -739,6 +752,7 @@ T_RESPUESTA "*" -- "1" T_INSTITUCION_RESPUESTA
 T_DEMANDA_VINCULADA "*" -- "1" T_DEMANDA
 T_DEMANDA_VINCULADA "*" -- "1" T_DEMANDA
 
+T_DECISION "*" -- "1" T_PERSONA
 T_DECISION "*" -- "1" T_DEMANDA
 T_DEMANDA "1" -- "*" T_EVALUACIONES
 T_EVALUACIONES "*" -- "1" T_INDICADORES_VALORACION
