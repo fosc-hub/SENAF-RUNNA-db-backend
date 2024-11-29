@@ -3,9 +3,10 @@ from drf_spectacular.utils import extend_schema
 from .BaseView import BaseViewSet
 
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, 
-    TVinculoUsuarioExterno, 
-    TUsuarioExterno, 
+    TInstitucionDemanda, 
+    TOrigenDemanda,
+    TSubOrigenDemanda, 
+    TInformante, 
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 
@@ -14,9 +15,10 @@ from infrastructure.models import (
     TDemandaScoreHistory
 )
 from api.serializers import (
-    TInstitucionUsuarioExternoSerializer,
-    TVinculoUsuarioExternoSerializer,
-    TUsuarioExternoSerializer,
+    TInstitucionDemandaSerializer,
+    TOrigenDemandaSerializer,
+    TSubOrigenDemandaSerializer,
+    TInformanteSerializer,
     TDemandaSerializer,
     TPrecalificacionDemandaSerializer,
     TDemandaScoreSerializer,
@@ -25,9 +27,10 @@ from api.serializers import (
     TDemandaScoreHistorySerializer
 )
 from infrastructure.filters import (
-    TInstitucionUsuarioExternoFilter, 
-    TVinculoUsuarioExternoFilter, 
-    TUsuarioExternoFilter, 
+    TInstitucionDemandaFilter, 
+    TOrigenDemandaFilter,
+    TSubOrigenDemandaFilter,
+    TInformanteFilter, 
     TDemandaFilter, 
     TPrecalificacionDemandaFilter, 
     TDemandaScoreFilter, 
@@ -37,83 +40,105 @@ from infrastructure.filters import (
 )
 
 
-class TInstitucionUsuarioExternoViewSet(BaseViewSet):
-    model = TInstitucionUsuarioExterno
-    serializer_class = TInstitucionUsuarioExternoSerializer
-    filterset_class = TInstitucionUsuarioExternoFilter
+class TInstitucionDemandaViewSet(BaseViewSet):
+    model = TInstitucionDemanda
+    serializer_class = TInstitucionDemandaSerializer
+    filterset_class = TInstitucionDemandaFilter
     
     http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
-        responses=TInstitucionUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of TInstitucionUsuarioExterno entries with optional filtering."
+        responses=TInstitucionDemandaSerializer(many=True),
+        description="Retrieve a list of TInstitucionDemanda entries with optional filtering."
     )
     def list(self, request):
         return super().list(request)
 
     @extend_schema(
-        responses=TInstitucionUsuarioExternoSerializer,
-        description="Retrieve a single TInstitucionUsuarioExterno entry."
+        responses=TInstitucionDemandaSerializer,
+        description="Retrieve a single TInstitucionDemanda entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
 
-class TVinculoUsuarioExternoViewSet(BaseViewSet):
-    model = TVinculoUsuarioExterno
-    serializer_class = TVinculoUsuarioExternoSerializer
-    filterset_class = TVinculoUsuarioExternoFilter
+class TOrigenDemandaViewSet(BaseViewSet):
+    model = TOrigenDemanda
+    serializer_class = TOrigenDemandaSerializer
+    filterset_class = TOrigenDemandaFilter
     
     http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
 
     @extend_schema(
-        responses=TVinculoUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of TVinculoUsuarioExterno entries with optional filtering."
+        responses=TOrigenDemandaSerializer(many=True),
+        description="Retrieve a list of TOrigenDemanda entries with optional filtering."
     )
     def list(self, request):
         return super().list(request)
 
     @extend_schema(
-        responses=TVinculoUsuarioExternoSerializer,
-        description="Retrieve a single TVinculoUsuarioExterno entry."
+        responses=TOrigenDemandaSerializer,
+        description="Retrieve a single TOrigenDemanda entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
+
+class TSubOrigenDemandaViewSet(BaseViewSet):
+    model = TSubOrigenDemanda
+    serializer_class = TSubOrigenDemandaSerializer
+    filterset_class = TSubOrigenDemandaFilter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
+
+    @extend_schema(
+        responses=TSubOrigenDemandaSerializer(many=True),
+        description="Retrieve a list of TSubOrigenDemanda entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TSubOrigenDemandaSerializer,
+        description="Retrieve a single TSubOrigenDemanda entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
 
-class TUsuarioExternoViewSet(BaseViewSet):
-    model = TUsuarioExterno
-    serializer_class = TUsuarioExternoSerializer
-    filterset_class = TUsuarioExternoFilter
+
+class TInformanteViewSet(BaseViewSet):
+    model = TInformante
+    serializer_class = TInformanteSerializer
+    filterset_class = TInformanteFilter
     
     http_method_names = ['get', 'post', 'put', 'patch']  # Excludes  DELETE
 
     @extend_schema(
-        request=TUsuarioExternoSerializer,
-        responses=TUsuarioExternoSerializer,
-        description="Create a new TUsuarioExterno entry"
+        request=TInformanteSerializer,
+        responses=TInformanteSerializer,
+        description="Create a new TInformante entry"
     )
     def create(self, request):
         return super().create(request)
 
     @extend_schema(
-        request=TUsuarioExternoSerializer,
-        responses=TUsuarioExternoSerializer,
-        description="Partially update an existing TUsuarioExterno entry"
+        request=TInformanteSerializer,
+        responses=TInformanteSerializer,
+        description="Partially update an existing TInformante entry"
     )
     def partial_update(self, request, pk=None):
         return super().partial_update(request, pk=pk)
 
     @extend_schema(
-        responses=TUsuarioExternoSerializer(many=True),
-        description="Retrieve a list of TUsuarioExterno entries with optional filtering."
+        responses=TInformanteSerializer(many=True),
+        description="Retrieve a list of TInformante entries with optional filtering."
     )
     def list(self, request):
         return super().list(request)
 
     @extend_schema(
-        responses=TUsuarioExternoSerializer,
-        description="Retrieve a single TUsuarioExterno entry."
+        responses=TInformanteSerializer,
+        description="Retrieve a single TInformante entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

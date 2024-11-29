@@ -55,9 +55,10 @@ from infrastructure.models import (
     TLocalizacion,
 )
 from infrastructure.models import  (
-    TInstitucionUsuarioExterno, 
-    TVinculoUsuarioExterno, 
-    TUsuarioExterno, 
+    TInstitucionDemanda, 
+    TOrigenDemanda,
+    TSubOrigenDemanda, 
+    TInformante, 
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore,
@@ -148,25 +149,30 @@ class TLocalizacionAdmin(NoDeleteAdmin):
 
 # ===== Demanda related models ===== #
 
-@admin.register(TInstitucionUsuarioExterno)
-class TInstitucionUsuarioExternoAdmin(ModelAdmin):
+@admin.register(TInstitucionDemanda)
+class TInstitucionDemandaAdmin(ModelAdmin):
     list_display = ('nombre', 'mail', 'telefono', 'localizacion')
     list_filter = ('localizacion',)
     search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
 
 
-@admin.register(TVinculoUsuarioExterno)
-class TVinculoUsuarioExternoAdmin(ModelAdmin):
-    list_display = ('nombre', 'descripcion')
-    search_fields = ('nombre', 'descripcion')
+@admin.register(TOrigenDemanda)
+class TOrigenDemandaAdmin(ModelAdmin):
+    list_display = ('nombre', )
+    search_fields = ('nombre', )
 
 
-@admin.register(TUsuarioExterno)
-class TUsuarioExternoAdmin(NoDeleteAdmin):
-    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion')
-    list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion')
-    list_filter = ('genero', 'vinculo', 'institucion')
-    search_fields = ('nombre', 'apellido', 'mail', 'telefono', 'vinculo__nombre', 'institucion__nombre')
+@admin.register(TSubOrigenDemanda)
+class TSubOrigenDemandaAdmin(ModelAdmin):
+    list_display = ('nombre', 'origen')
+    search_fields = ('nombre', 'origen__nombre')
+
+
+@admin.register(TInformante)
+class TInformanteAdmin(NoDeleteAdmin):
+    fields = ('nombre', 'apellido', 'telefono', 'mail')
+    list_display = ('nombre', 'apellido', 'telefono', 'mail')
+    search_fields = ('nombre', 'apellido', 'mail', 'telefono')
 
 
 @admin.register(TDemanda)
@@ -196,7 +202,7 @@ class TDemandaScoreAdmin(NoDeleteAdmin):
 
 @admin.register(TPersona)
 class TPersonaAdmin(NoDeleteAdmin):
-    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'boton_antipanico', 'observaciones', 'adulto', 'nnya')
+    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'boton_antipanico', 'observaciones', 'adulto', 'nnya', 'cautelar')
     list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'dni', 'genero', 'adulto', 'nnya', 'deleted')
     list_filter = ('genero', 'adulto', 'nnya', 'deleted')
     search_fields = ('nombre', 'apellido', 'dni')

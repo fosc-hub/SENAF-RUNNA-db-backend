@@ -46,7 +46,7 @@ class Localizacion:
         self.referencia_geo = referencia_geo
 
 class Demanda:
-    def __init__(self, id: int, deleted: bool, fecha_y_hora_ingreso: datetime, origen: str, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None, ultima_actualizacion: datetime = None, localizacion: 'Localizacion' = None, usuario_externo: 'TUsuarioExterno' = None):
+    def __init__(self, id: int, deleted: bool, fecha_y_hora_ingreso: datetime, origen: str, nro_notificacion_102: int = None, nro_sac: int = None, nro_suac: int = None, nro_historia_clinica: int = None, nro_oficio_web: int = None, descripcion: str = None, ultima_actualizacion: datetime = None, localizacion: 'Localizacion' = None, usuario_externo: 'TInformante' = None):
         self.id = id
         self.deleted = deleted
         self.fecha_y_hora_ingreso = fecha_y_hora_ingreso

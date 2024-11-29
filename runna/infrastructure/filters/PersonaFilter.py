@@ -17,17 +17,10 @@ from infrastructure.models import (
 
 
 class TPersonaFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')
-    apellido = filters.CharFilter(lookup_expr='icontains')
-    dni = filters.NumberFilter()
-    situacion_dni = filters.ChoiceFilter(choices=TPersona.situacion_dni_choices)
-    genero = filters.ChoiceFilter(choices=TPersona.genero_choices)
-    adulto = filters.BooleanFilter()
-    nnya = filters.BooleanFilter()
 
     class Meta:
         model = TPersona
-        fields = ['nombre', 'apellido', 'dni', 'situacion_dni', 'genero', 'adulto', 'nnya', 'deleted']
+        fields = '__all__'
 
 
 class TInstitucionEducativaFilter(filters.FilterSet):

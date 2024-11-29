@@ -8,9 +8,10 @@ from .LocalizacionFilter import (
     TLocalizacionHistoryFilter
 )
 from .DemandaFilters import (
-    TInstitucionUsuarioExternoFilter, 
-    TVinculoUsuarioExternoFilter, 
-    TUsuarioExternoFilter, 
+    TInstitucionDemandaFilter,
+    TOrigenDemandaFilter,
+    TSubOrigenDemandaFilter,
+    TInformanteFilter, 
     TDemandaFilter, 
     TPrecalificacionDemandaFilter, 
     TDemandaScoreFilter, 

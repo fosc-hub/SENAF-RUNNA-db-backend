@@ -105,9 +105,10 @@ ADMIN_REORDER = [
             "infrastructure.TCPC",
             "infrastructure.TLocalizacion",
 
-            "infrastructure.TInstitucionUsuarioExterno",
-            "infrastructure.TVinculoUsuarioExterno",
-            "infrastructure.TUsuarioExterno",
+            "infrastructure.TOrigenDemanda",
+            "infrastructure.TSubOrigenDemanda",
+            "infrastructure.TInstitucionDemanda",
+            "infrastructure.TInformante",
             "infrastructure.TDemanda",
             "infrastructure.TPrecalificacionDemanda",
             "infrastructure.TDemandaScore",

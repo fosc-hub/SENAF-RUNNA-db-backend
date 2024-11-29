@@ -1,8 +1,9 @@
 from django_filters import rest_framework as filters
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, 
-    TVinculoUsuarioExterno, 
-    TUsuarioExterno, 
+    TInstitucionDemanda, 
+    TOrigenDemanda,
+    TSubOrigenDemanda, 
+    TInformante, 
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 
@@ -12,42 +13,29 @@ from infrastructure.models import (
     TDemandaScoreHistory
 )
  
-class TInstitucionUsuarioExternoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
-    mail = filters.CharFilter(lookup_expr='icontains')  # Partial match for mail
-    telefono = filters.NumberFilter()  # Exact match for telefono
-    localizacion = filters.ModelChoiceFilter(queryset=TLocalizacion.objects.all())  # Exact match for localizacion
+class TInstitucionDemandaFilter(filters.FilterSet):
 
     class Meta:
-        model = TInstitucionUsuarioExterno
-        fields = ['nombre', 'mail', 'telefono', 'localizacion']
+        model = TInstitucionDemanda
+        fields = '__all__'
 
-class TVinculoUsuarioExternoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
+class TOrigenDemandaFilter(filters.FilterSet):
+    
     class Meta:
-        model = TVinculoUsuarioExterno
-        fields = ['nombre']
+        model = TOrigenDemanda
+        fields = '__all__'
 
-class TUsuarioExternoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')  # Partial match for nombre
-    apellido = filters.CharFilter(lookup_expr='icontains')  # Partial match for apellido
-    fecha_nacimiento = filters.DateFilter()  # Exact match for fecha_nacimiento
-    genero = filters.ChoiceFilter(choices=[
-        ('MASCULINO', 'Masculino'),
-        ('FEMENINO', 'Femenino'),
-        ('OTRO', 'Otro')
-    ])  # Exact match for genero
-    telefono = filters.NumberFilter()  # Exact match for telefono
-    mail = filters.CharFilter(lookup_expr='icontains')  # Partial match for mail
+class TSubOrigenDemandaFilter(filters.FilterSet):
+    
+    class Meta:
+        model = TSubOrigenDemanda
+        fields = '__all__'
 
-    vinculo = filters.ModelChoiceFilter(queryset=TVinculoUsuarioExterno.objects.all())  # Exact match for vinculo
-
-    institucion = filters.ModelChoiceFilter(queryset=TInstitucionUsuarioExterno.objects.all())  # Exact match for institucion
+class TInformanteFilter(filters.FilterSet):
 
     class Meta:
-        model = TUsuarioExterno
-        fields = ['nombre', 'apellido', 'fecha_nacimiento', 'genero', 'telefono', 'mail', 'vinculo', 'institucion']
-
+        model = TInformante
+        fields = '__all__'
 class TDemandaFilter(filters.FilterSet):
     
     class Meta:

@@ -10,76 +10,64 @@ Renombrar '...UsuarioLinea' por '...UsuarioExterno'
 
 """
 
-class TInstitucionUsuarioExterno(models.Model):
+class TInstitucionDemanda(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     mail = models.EmailField(null=True, blank=True)
     telefono = models.IntegerField(null=True, blank=True)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    
-    
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Institucion de Usuario Externo')
-        verbose_name_plural = _('Instituciones de Usuarios Externos')
+        verbose_name = _('Institucion de las Demandas')
+        verbose_name_plural = _('Instituciones de las Demandas')
     
     def __str__(self):
         return self.nombre
 
 
-class TVinculoUsuarioExterno(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
-
-    
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Vinculo del Usuario Externo')
-        verbose_name_plural = _('Vinculos de los Usuarios Externos')
-        
-    def __str__(self):
-        return f"{self.nombre} - {self.descripcion}"
-
-
-class TUsuarioExterno(models.Model):
+class TInformante(models.Model):
     nombre = models.CharField(max_length=255, null=False)
     apellido = models.CharField(max_length=255, null=False)
-    fecha_nacimiento = models.DateField(null=True, blank=True)
-    genero_choices = [
-        ('MASCULINO', 'Masculino'),
-        ('FEMENINO', 'Femenino'),
-        ('OTRO', 'Otro')
-    ]
-    genero = models.CharField(max_length=10, choices=genero_choices, null=False, blank=False)
     telefono = models.IntegerField(null=False, blank=False)
-    mail = models.EmailField(null=False, blank=False, unique=True)
-
-    vinculo = models.ForeignKey('TVinculoUsuarioExterno', on_delete=models.CASCADE, null=False)
-    institucion = models.ForeignKey('TInstitucionUsuarioExterno', on_delete=models.CASCADE, null=False)
-
-    
+    mail = models.EmailField(null=False, blank=False, unique=True)    
     
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Usuario Externo del Sistema (Linea 102, etc)')
-        verbose_name_plural = _('Usuarios Externos del Sistema (Linea 102, etc)')
+        verbose_name = _('Informante de la Demanda')
+        verbose_name_plural = _('Informantes de las Demandas')
         
     def __str__(self):
         return f"{self.nombre} {self.apellido} - {self.mail}"
 
 
+class TOrigenDemanda(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Origen de Demanda')
+        verbose_name_plural = _('Origenes de Demandas')
+        
+    def __str__(self):
+        return f"{self.nombre}"
+
+
+class TSubOrigenDemanda(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    origen = models.ForeignKey('TOrigenDemanda', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Sub-Origen de Demanda')
+        verbose_name_plural = _('Sub-Origenes de Demandas')
+        
+    def __str__(self):
+        return f"{self.nombre} - {self.origen}"
+
+
 class TDemandaBase(models.Model):
     fecha_y_hora_ingreso = models.DateTimeField(null=False, default=datetime.now())
-    origen_choices = [
-        ('WEB', 'Web'),
-        ('TELEFONO', 'Telefono'),
-        ('MAIL', 'Mail'),
-        ('PERSONAL', 'Personal'),
-        ('OTRO', 'Otro')
-    ]
-    origen = models.CharField(max_length=10, choices=origen_choices, null=False)
     nro_notificacion_102 = models.IntegerField(null=True, blank=True)
     nro_sac = models.IntegerField(null=True, blank=True)
     nro_suac = models.IntegerField(null=True, blank=True)
@@ -94,7 +82,10 @@ class TDemandaBase(models.Model):
     completado = models.BooleanField(default=False)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
-    usuario_externo = models.ForeignKey('TUsuarioExterno', on_delete=models.SET_NULL, null=True, blank=True)
+    usuario_externo = models.ForeignKey('TInformante', on_delete=models.SET_NULL, null=True, blank=True)
+    origen = models.ForeignKey('TOrigenDemanda', on_delete=models.PROTECT, null=False)
+    sub_origen = models.ForeignKey('TSubOrigenDemanda', on_delete=models.PROTECT, null=False)
+    institucion = models.ForeignKey('TInstitucionDemanda', on_delete=models.CASCADE, null=False)
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.

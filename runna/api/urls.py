@@ -9,9 +9,10 @@ from api.views import (
     TLocalizacionHistoryViewSet
 )
 from api.views import (
-    TInstitucionUsuarioExternoViewSet, 
-    TVinculoUsuarioExternoViewSet, 
-    TUsuarioExternoViewSet, 
+    TInstitucionDemandaViewSet, 
+    TOrigenDemandaViewSet,
+    TSubOrigenDemandaViewSet, 
+    TInformanteViewSet, 
     TDemandaViewSet, 
     TPrecalificacionDemandaViewSet, 
     TDemandaScoreViewSet, 
@@ -85,9 +86,10 @@ router.register(r'cpc', TCPCViewSet, basename='cpc')
 router.register(r'localizacion', TLocalizacionViewSet, basename='localizacion')
 router.register(r'localizacion-history', TLocalizacionHistoryViewSet, basename='localizacion-history')
 
-router.register(r'institucion-usuario-externo', TInstitucionUsuarioExternoViewSet, basename='institucion-usuario-externo')
-router.register(r'vinculo-usuario-externo', TVinculoUsuarioExternoViewSet, basename='vinculo-usuario-externo')
-router.register(r'usuario-externo', TUsuarioExternoViewSet, basename='usuario-externo')
+router.register(r'institucion-demanda', TInstitucionDemandaViewSet, basename='institucion-demanda')
+router.register(r'informante', TInformanteViewSet, basename='informante')
+router.register(r'origen-demanda', TOrigenDemandaViewSet, basename='origen-demanda')
+router.register(r'sub-origen-demanda', TSubOrigenDemandaViewSet, basename='sub-origen-demanda')
 router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
 router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score')

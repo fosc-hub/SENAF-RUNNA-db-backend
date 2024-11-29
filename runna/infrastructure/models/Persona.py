@@ -37,6 +37,7 @@ class TPersonaBase(models.Model):
     ]
     genero = models.CharField(max_length=10, choices=genero_choices, null=False, blank=False)
     boton_antipanico = models.BooleanField(default=False)
+    cautelar = models.BooleanField(default=False)
     observaciones = models.TextField(null=True, blank=True)
     adulto = models.BooleanField(null=False, blank=False)
     nnya = models.BooleanField(null=False, blank=False)

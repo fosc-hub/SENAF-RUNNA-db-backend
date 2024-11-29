@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TInstitucionUsuarioExterno, 
-    TVinculoUsuarioExterno, 
-    TUsuarioExterno, 
+    TInstitucionDemanda, 
+    TOrigenDemanda,
+    TSubOrigenDemanda, 
+    TInformante, 
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 
@@ -12,21 +13,25 @@ from infrastructure.models import (
 )
 
 
-class TInstitucionUsuarioExternoSerializer(serializers.ModelSerializer):
+class TInstitucionDemandaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TInstitucionUsuarioExterno
+        model = TInstitucionDemanda
         fields = '__all__'
 
         
-class TVinculoUsuarioExternoSerializer(serializers.ModelSerializer):
+class TOrigenDemandaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TVinculoUsuarioExterno
+        model = TOrigenDemanda
         fields = '__all__'
 
-
-class TUsuarioExternoSerializer(serializers.ModelSerializer):
+class TSubOrigenDemandaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TUsuarioExterno
+        model = TSubOrigenDemanda
+        fields = '__all__'
+
+class TInformanteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TInformante
         fields = '__all__'
 
 

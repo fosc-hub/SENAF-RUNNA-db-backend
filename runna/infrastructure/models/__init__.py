@@ -9,9 +9,10 @@ from .Localizacion import (
     TLocalizacionHistory
 )
 from .Demanda import  (
-    TInstitucionUsuarioExterno, 
-    TVinculoUsuarioExterno, 
-    TUsuarioExterno, 
+    TInstitucionDemanda, 
+    TOrigenDemanda,
+    TSubOrigenDemanda, 
+    TInformante, 
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 

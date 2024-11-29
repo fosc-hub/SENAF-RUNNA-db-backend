@@ -8,9 +8,10 @@ from .LocalizacionSerializer import (
     TLocalizacionHistorySerializer,
 )
 from .DemandaSerializer import (
-    TInstitucionUsuarioExternoSerializer,
-    TVinculoUsuarioExternoSerializer,
-    TUsuarioExternoSerializer,
+    TInstitucionDemandaSerializer,
+    TOrigenDemandaSerializer,
+    TSubOrigenDemandaSerializer,
+    TInformanteSerializer,
     TDemandaSerializer,
     TPrecalificacionDemandaSerializer,
     TDemandaScoreSerializer,

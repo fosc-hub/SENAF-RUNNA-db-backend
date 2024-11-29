@@ -9,9 +9,10 @@ from .LocalizacionView import (
     TLocalizacionHistoryViewSet
 )
 from .DemandaView import (
-    TInstitucionUsuarioExternoViewSet, 
-    TVinculoUsuarioExternoViewSet, 
-    TUsuarioExternoViewSet, 
+    TInstitucionDemandaViewSet, 
+    TOrigenDemandaViewSet,
+    TSubOrigenDemandaViewSet, 
+    TInformanteViewSet, 
     TDemandaViewSet, 
     TPrecalificacionDemandaViewSet, 
     TDemandaScoreViewSet, 
