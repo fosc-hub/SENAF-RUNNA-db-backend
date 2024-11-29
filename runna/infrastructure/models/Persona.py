@@ -81,7 +81,7 @@ class TInstitucionEducativa(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -153,7 +153,7 @@ class TInstitucionSanitaria(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'

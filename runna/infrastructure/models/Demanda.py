@@ -17,7 +17,7 @@ class TInstitucionUsuarioExterno(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -32,7 +32,7 @@ class TVinculoUsuarioExterno(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -59,7 +59,7 @@ class TUsuarioExterno(models.Model):
     vinculo = models.ForeignKey('TVinculoUsuarioExterno', on_delete=models.CASCADE, null=False)
     institucion = models.ForeignKey('TInstitucionUsuarioExterno', on_delete=models.CASCADE, null=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'

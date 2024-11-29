@@ -192,7 +192,7 @@ class TLegajoAsignado(models.Model):
     legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
     user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         unique_together = ('legajo', 'user')
@@ -204,7 +204,7 @@ class TLegajoAsignado(models.Model):
 class TVinculoPersona(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'

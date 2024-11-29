@@ -7,7 +7,7 @@ from .BaseHistory import BaseHistory
 class TProvincia(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -21,7 +21,7 @@ class TDepartamento(models.Model):
 
     provincia = models.ForeignKey('infrastructure.TProvincia', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+
 
     class Meta:
         app_label = 'infrastructure'
@@ -35,7 +35,7 @@ class TLocalidad(models.Model):
 
     departamento = models.ForeignKey('infrastructure.TDepartamento', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+    
 
     class Meta:
         app_label = 'infrastructure'
@@ -48,7 +48,7 @@ class TBarrio(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+    
 
     class Meta:
         app_label = 'infrastructure'
@@ -61,7 +61,7 @@ class TCPC(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+    
 
     class Meta:
         app_label = 'infrastructure'

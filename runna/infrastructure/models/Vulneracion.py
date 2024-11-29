@@ -19,7 +19,7 @@ class TCategoriaMotivo(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -33,7 +33,7 @@ class TCategoriaSubmotivo(models.Model):
 
     motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -46,7 +46,7 @@ class TGravedadVulneracion(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -59,7 +59,7 @@ class TUrgenciaVulneracion(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -74,7 +74,7 @@ class TCondicionesVulnerabilidad(models.Model):
     nnya = models.BooleanField(null=False, blank=False)
     adulto = models.BooleanField(null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
@@ -87,7 +87,7 @@ class TMotivoIntervencion(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
-    history = HistoricalRecords()
+    
     
     class Meta:
         app_label = 'infrastructure'
