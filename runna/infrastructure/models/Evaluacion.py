@@ -158,8 +158,7 @@ class TDecision(models.Model):
     decision = models.CharField(max_length=20, choices=decision_choices, null=False)
 
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, null=False)
-
-    
+    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False)
     
     class Meta:
         app_label = 'infrastructure'

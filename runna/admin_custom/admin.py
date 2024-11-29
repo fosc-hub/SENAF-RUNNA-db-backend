@@ -447,10 +447,10 @@ class TEvaluacionesAdmin(NoDeleteAdmin):
 
 @admin.register(TDecision)
 class TDecisionAdmin(NoDeleteAdmin):
-    fields = ('justificacion', 'decision', 'demanda')
-    list_display = ('fecha_y_hora', 'justificacion', 'decision', 'demanda')
+    fields = ('justificacion', 'decision', 'demanda', 'nnya')
+    list_display = ('fecha_y_hora', 'justificacion', 'decision', 'demanda', 'nnya')
     list_filter = ('decision', 'fecha_y_hora')
-    search_fields = ('justificacion', 'demanda__nro_notificacion_102')
+    search_fields = ('justificacion', 'demanda__nro_notificacion_102', 'nnya')
 
 
 # @admin.register(Demanda)
