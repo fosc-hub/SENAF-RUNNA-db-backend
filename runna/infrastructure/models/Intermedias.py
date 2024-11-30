@@ -41,6 +41,11 @@ class TLocalizacionPersona(TLocalizacionPersonaBase):
         app_label = 'infrastructure'
         verbose_name = _('Localizacion de Persona')
         verbose_name_plural = _('Localizaciones de Personas')
+    
+    def save(self, *args, **kwargs):
+        if self.principal:
+            TLocalizacionPersona.objects.filter(persona=self.persona, principal=True).update(principal=False)
+        super().save(*args, **kwargs)
 
 
 class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
