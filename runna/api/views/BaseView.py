@@ -1,6 +1,7 @@
 from rest_framework import status, viewsets
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError as DRFValidationError
+from django.core.exceptions import ValidationError as DjangoValidationError
 from drf_spectacular.utils import extend_schema
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -44,10 +45,17 @@ class BaseViewSet(viewsets.ViewSet):
     def create(self, request):
         """Create a new entry."""
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            instance = serializer.save()
+            return Response(self.serializer_class(instance).data, status=status.HTTP_201_CREATED)
+        except DRFValidationError as e:
+            # Handles serializer validation errors
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+        except DjangoValidationError as e:
+            # Handles model-level validation errors
+            return Response({"ValidationError": e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
     @extend_schema(
         request=None,  # To be overridden in subclasses
@@ -62,11 +70,16 @@ class BaseViewSet(viewsets.ViewSet):
             raise NotFound(f"{self.model.__name__} with ID {pk} not found.")
         
         serializer = self.serializer_class(obj, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+        try:
+            serializer.is_valid(raise_exception=True)
+            instance = serializer.save()
+            return Response(self.serializer_class(instance).data)
+        except DRFValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+        except DjangoValidationError as e:
+            return Response({"ValidationError": e.messages}, status=status.HTTP_400_BAD_REQUEST)
+
     @extend_schema(
         responses=None,  # To be overridden in subclasses
         description="Delete an existing entry"

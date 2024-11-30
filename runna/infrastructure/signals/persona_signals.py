@@ -9,6 +9,12 @@ from infrastructure.models import (
 )
 from .BaseLogs import logs
 
+@receiver(post_save, sender=TPersona)
+def nnya_create_score(sender, instance, created, **kwargs):
+    if created:
+        if instance.nnya:
+            TNNyAScore.objects.create(nnya=instance)
+
 
 @receiver(post_save, sender=TPersona)
 def log_persona_save(sender, instance, created, **kwargs):

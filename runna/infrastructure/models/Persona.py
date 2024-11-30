@@ -3,6 +3,8 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
+from django.core.exceptions import ValidationError
+
 
 """
 TPersona
@@ -45,6 +47,21 @@ class TPersonaBase(models.Model):
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
 
+    def save(self, *args, **kwargs):
+        if not self.nnya and not self.adulto:
+            raise ValidationError(f"({self.nombre} {self.apellido})  Debe ser adulto o NNyA")
+        if self.nnya and self.adulto:
+            raise ValidationError(f"({self.nombre} {self.apellido}) No puede ser adulto y NNyA a la vez")
+        if self.situacion_dni == 'VALIDO' and self.dni is None:
+            raise ValidationError(f"({self.nombre} {self.apellido}) El DNI no puede ser nulo si la situacion es valido")
+        if self.situacion_dni != 'VALIDO' and self.dni is not None:
+            raise ValidationError(f"({self.nombre} {self.apellido}) El DNI debe ser nulo si la situacion no es valido")
+        if self.boton_antipanico and self.nnya:
+            raise ValidationError(f"({self.nombre} {self.apellido}) No puede tener boton antipanico si es NNyA")
+        if self.cautelar and self.nnya:
+            raise ValidationError(f"({self.nombre} {self.apellido}) No puede tener medida cautelar si es NNyA")
+        super().save(*args, **kwargs)
+
 
 class TPersona(TPersonaBase):
 
@@ -82,8 +99,6 @@ class TInstitucionEducativa(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    
-    
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Institucion Educativa')
