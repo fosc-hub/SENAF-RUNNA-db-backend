@@ -3,6 +3,8 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
+from django.core.exceptions import ValidationError
+from .Persona import TLegajo
 
 """
 TActividadTipo
@@ -153,16 +155,40 @@ class TDecision(models.Model):
     justificacion = models.TextField(null=False, blank=False)
     decision_choices = [
         ('APERTURA DE LEGAJO', 'Apertura de Legajo'),
-        ('RECHAZAR CASO', 'Rechazar Caso')
+        ('RECHAZAR CASO', 'Rechazar Caso'),
+        ('MPI_MPE', 'MPI_MPE')
     ]
     decision = models.CharField(max_length=20, choices=decision_choices, null=False)
 
-    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, null=False)
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False)
     nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False)
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Decision')
         verbose_name_plural = _('Decisiones')
+        
+    def save(self, *args, **kwargs):
+        if self.nnya.nnya==False:
+            raise ValidationError("La persona debe ser un NNyA")
 
+        if self.decision == 'APERTURA DE LEGAJO':
+            if TLegajo.objects.filter(nnya=self.nnya).exists():
+                raise ValidationError("Ya existe un legajo para este NNyA")
+            else:
+                TLegajo.objects.create(nnya=self.nnya)
+                self.demanda.completado = True
+                self.demanda.save()
+                
+        if self.decision == 'MPI_MPE':
+            if TLegajo.objects.filter(nnya=self.nnya).exists():
+                self.demanda.completado = True
+                self.demanda.save()
+            else:
+                raise ValidationError("No se puede crear una MPI_MPE sin un legajo")
 
+        if self.decision == 'RECHAZAR CASO':
+            self.demanda.archivado = True
+            self.demanda.save()
+
+        super().save(*args, **kwargs)
