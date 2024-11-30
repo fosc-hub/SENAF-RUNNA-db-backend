@@ -4,7 +4,7 @@
 !define FOREIGN_KEY(x) <color:green>x</color>
 !define COMPOSITE_KEY(x, y) <color:LightSalmon>x, y</color>
 
-entity T_SCORE_DEMANDA {
+entity T_DEMANDA_SCORE {
     + PRIMARY_KEY(id)
     --
     ultima_actualizacion : datetime, null=False, autogenerate
@@ -48,13 +48,6 @@ entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
     fecha_y_hora_ingreso : datetime, null=False, default=datetime.now()
-    origen : (
-        WEB,
-        TELEFONO,
-        MAIL,
-        PERSONAL,
-        OTRO
-    ) : null=False
     nro_notificacion_102 : int, nullable
     nro_sac : int, nullable
     nro_suac : int, nullable
@@ -62,8 +55,9 @@ entity T_DEMANDA {
     nro_oficio_web : int, nullable
     descripcion : text, nullable
     ultima_actualizacion : datetime, null=False, autogenerate
+
     asignado : default=False
-    constatacion : default=True
+    constatacion : default=False
     evaluacion : default=False
     archivado : default=False
     completado : default=False
@@ -73,6 +67,21 @@ entity T_DEMANDA {
     institucion: FOREIGN_KEY(T_INSITUCION_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
     origen: FOREIGN_KEY(T_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
     sub_origen: FOREIGN_KEY(T_SUB_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
+    --
+    * onCreate( {
+        ** Create ( T_DEMANDA_SCORE with demanda=self )
+        ** Set ( asignado=False, constatacion=False, evaluacion=False, archivado=False, completado=False )
+    } )
+    * onUpdate( {
+        ** if constatacion:
+            Set ( constatacion=True )
+        ** if evaluacion:
+            Set ( evaluacion=True )
+        ** if archivado:
+            Set ( archivado=True )
+        ** if completado:
+            Set ( completado=True )
+    } )
     --
 }
 
@@ -84,6 +93,18 @@ entity T_LOCALIZACION_PERSONA {
     localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=CASCADE, null=False
     persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
+    * onCreate( {
+        ** if principal:
+            UNIQUE(localizacion, persona, principal=True)
+            --> filter(principal=True).update(principal=False)
+            --> Create new(localizacion, persona, principal=True)
+    } )
+    * onUpdate( {
+        ** if principal:
+            UNIQUE(localizacion, persona, principal=True)
+            --> filter(principal=True).update(principal=False)
+            --> Update (localizacion, persona, principal=True)
+    } )
 }
 
 entity T_DEMANDA_ASIGNADO {
@@ -96,9 +117,10 @@ entity T_DEMANDA_ASIGNADO {
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     user: FOREIGN_KEY(T_USER) : on_delete=CASCADE, null=False
     --
-    AsignarUser(
-        user.esta_activo
-        )
+    * onCreate( {
+        ** set ( esta_activo=True, recibido=False, demanda.asignado=True )
+        ** enviar_mail( user.mail, "Asignacion de demanda", "Se le ha asignado una demanda" )
+    } )
 }
 
 entity T_PRECALIFICACION_DEMANDA {
@@ -156,9 +178,16 @@ entity T_CONDICIONES_VULNERABILIDAD {
 
     nnya : bool, null=False, blank=False
     adulto : bool, null=False, blank=False
-
     --
     --
+    * onCreate( {
+        ** if nnya==False and adulto=False:
+            raise ValidationError("Debe ser adulto o NNyA") 
+    } )
+    * onUpdate( {
+        ** if nnya==False and adulto=False:
+            raise ValidationError("Debe ser adulto o NNyA") 
+    } )
 }
 
 entity T_PERSONA_CONDICIONES_VULNERABILIDAD {
@@ -170,6 +199,20 @@ entity T_PERSONA_CONDICIONES_VULNERABILIDAD {
     condicion_vulnerabilidad: FOREIGN_KEY(T_CONDICIONES_VULNERABILIDAD) : on_delete=CASCADE, null=False
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
     --
+    * onCreate( {
+        ** if condicion_vulnerabilidad.nnya==True and persona.nnya==False:
+            raise ValidationError("La persona debe ser un NNyA") 
+        ** if condicion_vulnerabilidad.adulto==True and persona.adulto==False:
+            raise ValidationError("La persona debe ser un adulto")
+        ** sumar_restar_peso( persona, demanda, condicion_vulnerabilidad.peso )
+    } )
+    * onUpdate( {
+        ** if condicion_vulnerabilidad.nnya==True and persona.nnya==False:
+            raise ValidationError("La persona debe ser un NNyA") 
+        ** if condicion_vulnerabilidad.adulto==True and persona.adulto==False:
+            raise ValidationError("La persona debe ser un adulto")
+        ** sumar_restar_peso( persona, demanda, condicion_vulnerabilidad.peso )
+    } )
 }
 
 entity T_MOTIVO_INTERVENCION {
@@ -189,6 +232,12 @@ entity T_DEMANDA_MOTIVO_INTERVENCION {
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     motivo_intervencion: FOREIGN_KEY(T_MOTIVO_INTERVENCION) : on_delete=CASCADE, null=False
     --
+    * onCreate( {
+        ** sumar_restar_peso( persona, demanda, motivo_intervencion.peso )
+    } )
+    * onUpdate( {
+        ** sumar_restar_peso( persona, demanda, motivo_intervencion.peso )
+    } )
 }
 
 entity T_NNyA_EDUCACION {
@@ -238,13 +287,43 @@ entity T_PERSONA {
         OTRO
     ) : null=False, blank=False
 
+    cautelar : bool, default=False
     boton_antipanico : bool, default=False
     observaciones : text, null=True, blank=True
     adulto : bool, null=False, blank=False
     nnya : bool, null=False, blank=False
-
     --
     --
+    * onCreate( {
+        ** if nnya==True:
+            Create ( T_NNyA_SCORE with nnya=self )
+        ** if nnya==False and adulto==False:
+            raise ValidationError("Debe ser adulto o NNyA")
+        ** if nnya==True and adulto==True:
+            raise ValidationError("No puede ser adulto y NNyA a la vez")
+        ** if situacion_dni==VALIDO and dni==None:
+            raise ValidationError("El DNI no puede ser nulo si la situacion es valido")
+        ** if situacion_dni!=VALIDO and dni!=None:
+            raise ValidationError("El DNI debe ser nulo si la situacion no es valido")
+        ** if boton_antipanico=True and nnya==True:
+            raise ValidationError("No puede tener boton antipanico si es NNyA")
+        ** if cautelar=True and nnya==True:
+            raise ValidationError("No puede tener cautelar si es NNyA")
+    } )
+    ** onUpdate( {
+        ** if nnya==False and adulto==False:
+            raise ValidationError("Debe ser adulto o NNyA")
+        ** if nnya==True and adulto==True:
+            raise ValidationError("No puede ser adulto y NNyA a la vez")
+        ** if situacion_dni==VALIDO and dni==None:
+            raise ValidationError("El DNI no puede ser nulo si la situacion es valido")
+        ** if situacion_dni!=VALIDO and dni!=None:
+            raise ValidationError("El DNI debe ser nulo si la situacion no es valido")
+        ** if boton_antipanico=True and nnya==True:
+            raise ValidationError("No puede tener boton antipanico si es NNyA")
+        ** if cautelar=True and nnya==True:
+            raise ValidationError("No puede tener cautelar si es NNyA")
+    } )
 }
 
 entity T_DEMANDA_PERSONA {
@@ -258,6 +337,28 @@ entity T_DEMANDA_PERSONA {
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
+    * onCreate( {
+        UNIQUE(demanda, persona)
+        ** if supuesto_autordv_principal==True:
+            UNIQUE(demanda, persona, supuesto_autordv_principal=True)
+        ** if nnya_principal==True:
+            UNIQUE(demanda, persona, nnya_principal=True)
+        ** if nnya_principal==True and persona.nnya==False:
+            raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA")
+        ** if supuesto_autordv_principal==True and persona.nnya==True:
+            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
+    } )
+    * onUpdate( {
+        UNIQUE(demanda, persona)
+        ** if supuesto_autordv_principal==True:
+            UNIQUE(demanda, persona, supuesto_autordv_principal=True)
+        ** if nnya_principal==True:
+            UNIQUE(demanda, persona, nnya_principal=True)
+        ** if nnya_principal==True and persona.nnya==False:
+            raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA")
+        ** if supuesto_autordv_principal==True and persona.nnya==True:
+            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
+    } )
 }
 
 entity T_VINCULO_PERSONA {
@@ -279,6 +380,22 @@ entity T_VINCULO_PERSONA_PERSONA {
     persona_2: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, related_name=persona_2
     vinculo: FOREIGN_KEY(T_VINCULO_PERSONA) : on_delete=SET_NULL, null=True, blank=True
     --
+    * onCreate( {
+        UNIQUE(persona_1, persona_2)
+        UNIQUE(persona_2, persona_1)
+        ** if garantiza_proteccion==True and autordv==True:
+            raise ValidationError("No puede garantizar proteccion y ser supuesto autor a la vez")
+        ** if garantiza_proteccion==True and (persona_1.nnya==True and persona_2.nnya==True):
+            raise ValidationError("Un nnya no puede garantizar proteccion a otro nnya")
+    } )
+    * onUpdate( {
+        UNIQUE(persona_1, persona_2)
+        UNIQUE(persona_2, persona_1)
+        ** if garantiza_proteccion==True and autordv==True:
+            raise ValidationError("No puede garantizar proteccion y ser supuesto autor a la vez")
+        ** if garantiza_proteccion==True and (persona_1.nnya==True and persona_2.nnya==True):
+            raise ValidationError("Un nnya no puede garantizar proteccion a otro nnya")
+    } )
 }
 
 entity T_INFORMANTE {
@@ -286,12 +403,6 @@ entity T_INFORMANTE {
     --
     nombre : string, null=False
     apellido : string, null=False
-    fecha_nacimiento : date, null=True, blank=True
-    genero : (
-        MASCULINO,
-        FEMENINO,
-        OTRO
-    ) : null=False, blank=False
     telefono : int, null=False, blank=False
     mail : mail, null=False, blank=False, unique=True
     --
@@ -323,17 +434,32 @@ entity T_VULNERACION {
     gravedad_vulneracion: FOREIGN_KEY(T_GRAVEDAD_VULNERACION) : on_delete=CASCADE, null=False
     urgencia_vulneracion: FOREIGN_KEY(T_URGENCIA_VULNERACION) : on_delete=CASCADE, null=False
     --
-    TriggerOnInsert(
-        unique(T_DEMANDA, principal=true),
-        T_SCORE_DEMANDA.score_vulneracion += sumatoria_de_pesos
-        T_SCORE_DEMANDA.score += sumatoria_de_pesos
-    )
+    * onCreate( {
+        ** if principal_demanda==True:
+            UNIQUE(demanda, nnya, principal_demanda=True)
+        ** sumar_restar_peso( demanda, nnya, categoria_motivo.peso )
+        ** sumar_restar_peso( demanda, nnya, categoria_submotivo.peso )
+        ** sumar_restar_peso( demanda, nnya, gravedad_vulneracion.peso )
+        ** sumar_restar_peso( demanda, nnya, urgencia_vulneracion.peso )
+        ** if nnya==autor_dv:
+            raise ValidationError("El NNyA no puede ser el supuesto autor de la vulneracion")
+    } )
+    * onUpdate( {
+        ** if principal_demanda==True:
+            UNIQUE(demanda, nnya, principal_demanda=True)
+        ** sumar_restar_peso( demanda, nnya, categoria_motivo.peso )
+        ** sumar_restar_peso( demanda, nnya, categoria_submotivo.peso )
+        ** sumar_restar_peso( demanda, nnya, gravedad_vulneracion.peso )
+        ** sumar_restar_peso( demanda, nnya, urgencia_vulneracion.peso )
+        ** if nnya==autor_dv:
+            raise ValidationError("El NNyA no puede ser el supuesto autor de la vulneracion")
+    } )
 }
 
 entity T_ACTIVIDAD {
     + PRIMARY_KEY(id)
     --
-    fecha_y_hora : datetime, null=False, autogenerate
+    fecha_y_hora : datetime, null=False
     descripcion : text, null=False, blank=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
@@ -352,10 +478,9 @@ entity T_RESPUESTA {
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     institucion: FOREIGN_KEY(T_INSTITUCION_RESPUESTA) : on_delete=SET_NULL, null=True, blank=True
     --
-    ServicioDeMailSMTP(
-        mail,
-        mensaje
-        )
+    * onCreate( {
+        ** enviar_mail( mail, "Respuesta a demanda", mensaje )
+    } )
 }
 
 entity T_DEMANDA_VINCULADA {
@@ -365,6 +490,10 @@ entity T_DEMANDA_VINCULADA {
     demanda_1: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     demanda_2: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     --
+    * onCreate( {
+        ** UNIQUE(demanda_1, demanda_2)
+        ** UNIQUE(demanda_2, demanda_1)
+    } )
 }
 
 entity T_DECISION {
@@ -374,36 +503,32 @@ entity T_DECISION {
     justificacion : text, null=False, blank=False
     decision : (
         APERTURA_DE_LEGAJO,
+       ! MPI_MPE, (si ya tiene legajo)
         RECHAZAR_CASO
     ) : null=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     nnya: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
-    TriggerOnInsert(
-        CreationOfLegajo(
-            dropdown : "Apertura de legajo"
-             || T_SCORE_DEMANDA.score > 10
-             || T_SCORE_DEMANDA.score_vulneracion > 10
-             || T_SCORE_DEMANDA.score_evaluacion > 10
-             || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
-             || T_SCORE_DEMANDA.score_motivos_intervencion > 10
-            bool : true
-        )
-        CreationOfMPI_MPE(
-            dropdown : "Apertura de legajo" 
-             || T_SCORE_DEMANDA.score > 10
-             || T_SCORE_DEMANDA.score_vulneracion > 10
-             || T_SCORE_DEMANDA.score_evaluacion > 10
-             || T_SCORE_DEMANDA.score_condiciones_vulnerabilidad > 10
-             || T_SCORE_DEMANDA.score_motivos_intervencion > 10
-            bool : true
-        )
-        RechazarCaso(
-            dropdown : "Rechazar el caso"
-            bool : true
-        )
-    )
+    * onCreate( {
+        ** if decision==APERTURA_DE_LEGAJO:
+            CrearLegajo( nnya )
+            set ( demanda.completado=True )
+        ** if decision==MPI_MPE and nnya.legajo==None:
+            raise ValidationError("El NNyA no tiene legajo")
+        ** if decision==MPI_MPE and nnya.legajo!=None:
+            set ( demanda.completado=True )
+        ** if decision==RECHAZAR_CASO:
+            set ( demanda.archivado=True )
+        ** if demanda.archivado==True:
+            raise ValidationError("No se puede modificar una decision")
+        ** if nnya.persona.nnya == False:
+            raise ValidationError("La persona debe ser un NNyA")
+        
+    } )
+    * onUpdate( {
+        raise ValidationError("No se puede modificar una decision")
+    } )
 }
 
 entity T_INDICADORES_VALORACION {
@@ -423,10 +548,14 @@ entity T_EVALUACIONES {
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     indicador: FOREIGN_KEY(T_INDICADORES_VALORACION) : on_delete=CASCADE, null=False
     --
-    TriggerOnInsert(
-        T_SCORE_DEMANDA.score += T_INDICADORES_VALORACION.peso
-        T_SCORE_DEMANDA.score_evaluacion += T_INDICADORES_VALORACION.peso
-        )
+    * onCreate( {
+        UNIQUE(demanda, indicador)
+        ** sumar_restar_peso( demanda, demanda.nnya, indicador.peso )
+    } )
+    * onUpdate( {
+        UNIQUE(demanda, indicador)
+        ** sumar_restar_peso( demanda, demanda.nnya, indicador.peso )
+    } )
 }
 
 entity T_LEGAJO {
@@ -731,7 +860,7 @@ T_PERSONA_CONDICIONES_VULNERABILIDAD "*" -- "1" T_CONDICIONES_VULNERABILIDAD
 T_DEMANDA "1" -- "*" T_DEMANDA_MOTIVO_INTERVENCION
 T_DEMANDA_MOTIVO_INTERVENCION "*" -- "1" T_MOTIVO_INTERVENCION
 
-T_SCORE_DEMANDA "1" -- "1" T_DEMANDA
+T_DEMANDA_SCORE "1" -- "1" T_DEMANDA
 T_NNyA_SCORE "1" -- "1" T_PERSONA
 
 T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
