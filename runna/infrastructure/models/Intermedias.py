@@ -92,6 +92,20 @@ class TDemandaPersona(TDemandaPersonaBase):
         app_label = 'infrastructure'
         verbose_name = _('Persona asociada a Demanda')
         verbose_name_plural = _('Personas asociadas a Demandas')
+        
+    def save(self, *args, **kwargs):
+        if self.supuesto_autordv_principal:
+            if TDemandaPersona.objects.filter(demanda=self.demanda, supuesto_autordv_principal=True).exclude(pk=self.pk).exists():
+                raise ValidationError("Ya existe un supuesto autor principal para esta demanda.")
+        if self.supuesto_autordv or self.supuesto_autordv_principal:
+            if self.persona.nnya:
+                raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto.")
+        if self.nnya_principal:
+            if TDemandaPersona.objects.filter(demanda=self.demanda, nnya_principal=True).exclude(pk=self.pk).exists():
+                raise ValidationError("Ya existe un NNyA principal para esta demanda.")
+            if not self.persona.nnya:
+                raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA.")
+        super().save(*args, **kwargs)
 
 
 class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):
