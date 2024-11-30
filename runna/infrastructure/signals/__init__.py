@@ -29,6 +29,7 @@ from .intermedias_signal import (
     log_demandaMotivoIntervencion_save, log_demandaMotivoIntervencion_delete
 )
 from .evaluacion_signals import (
+    send_respuesta_mail,
     log_actividad_save, log_actividad_delete,
     log_evaluaciones_save, log_evaluaciones_delete
 )
