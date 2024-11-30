@@ -1,6 +1,16 @@
 from drf_spectacular.utils import extend_schema
+from requests import Response
+from rest_framework import status
+import logging
+logger = logging.getLogger(__name__)
 
 from .BaseView import BaseViewSet
+from django.db.models.signals import post_save
+from django.dispatch import receiver, Signal
+from services.email_service import EmailService
+from infrastructure.models import TDemandaAsignado
+from infrastructure.signals import send_mail_to_user_asignado
+from django.http import JsonResponse
 
 from infrastructure.models import (
     TLocalizacionPersona, 
@@ -160,7 +170,38 @@ class TDemandaAsignadoViewSet(BaseViewSet):
         description="Create a new TDemandaAsignado entry"
     )
     def create(self, request):
-        return super().create(request)
+        # Create the object using the serializer
+        serializer = TDemandaAsignadoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+
+        # Capture signal response
+        responses = post_save.send(
+            sender=TDemandaAsignado,
+            instance=instance,
+            created=True,
+            raw=False,
+            using=None,
+        )
+        logger.info(f"Creation of TDemandAsignado instance: {instance}")
+        logger.info(f"Signal responses: {responses}")
+        # Collect the first valid response from signal receivers
+        signal_response = None
+        for receiver, response in responses:
+            print(f'Receiver: {receiver}')
+            print(f'Response: {response}')
+            if response and 'email_status' in response and 'email_details' in response:
+                signal_response = response
+                logger.info(f"signal_response set to: {response}")
+                break
+
+        # Prepare the API response
+        response_data = {
+            "message": "TDemandaAsignado instance created successfully",
+            **serializer.data,  # Pass the serialized data
+            "email_response": signal_response,  # Pass the captured signal response
+        }
+        return JsonResponse(response_data, status=status.HTTP_201_CREATED)
 
     @extend_schema(
         request=TDemandaAsignadoSerializer,

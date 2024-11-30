@@ -8,6 +8,7 @@ from infrastructure.models import (
 from .BaseLogs import logs
 from django.db import IntegrityError
 
+
 @receiver(post_save, sender=TDemanda)
 def demanda_create_score(sender, instance, created, **kwargs):
     if created:
