@@ -42,7 +42,7 @@ class TInstitucionActividad(models.Model):
 
 
 class TActividadBase(models.Model):
-    fecha_y_hora = models.DateTimeField(auto_now=True)
+    fecha_y_hora = models.DateTimeField()
     descripcion = models.TextField(blank=False, null=False)
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     tipo = models.ForeignKey('TActividadTipo', on_delete=models.SET_NULL, null=True, blank=True)
