@@ -263,6 +263,13 @@ class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
         verbose_name = _('Vinculo entre Personas')
         verbose_name_plural = _('Vinculos entre Personas')
 
+    def save(self, *args, **kwargs):
+        if self.garantiza_proteccion and self.autordv:
+            raise ValidationError("No puede garantizar proteccion y ser supuesto autor a la vez")
+        if self.garantiza_proteccion and (self.persona_1.nnya and self.persona_2.nnya):
+            raise ValidationError("Un nnya no puede garantizar proteccion a otro nnya")
+        super().save(*args, **kwargs)
+
 
 class TVinculoPersonaPersonaHistory(TVinculoPersonaPersonaBase, BaseHistory):
     parent = models.ForeignKey(
