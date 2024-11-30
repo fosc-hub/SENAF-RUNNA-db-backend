@@ -77,13 +77,13 @@ class TDemandaBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)
 
     asignado = models.BooleanField(default=False)
-    constatacion = models.BooleanField(default=True)
+    constatacion = models.BooleanField(default=False)
     evaluacion = models.BooleanField(default=False)
     archivado = models.BooleanField(default=False)
     completado = models.BooleanField(default=False)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
-    usuario_externo = models.ForeignKey('TInformante', on_delete=models.SET_NULL, null=True, blank=True)
+    informante = models.ForeignKey('TInformante', on_delete=models.SET_NULL, null=True, blank=True)
     origen = models.ForeignKey('TOrigenDemanda', on_delete=models.PROTECT, null=False)
     sub_origen = models.ForeignKey('TSubOrigenDemanda', on_delete=models.PROTECT, null=False)
     institucion = models.ForeignKey('TInstitucionDemanda', on_delete=models.CASCADE, null=False)

@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save, post_delete, pre_delete
+from django.db.models.signals import pre_save, post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from infrastructure.models import (
     TDemanda, TDemandaHistory, 
@@ -6,6 +6,17 @@ from infrastructure.models import (
     TDemandaScore, TDemandaScoreHistory
 )
 from .BaseLogs import logs
+from django.db import IntegrityError
+
+@receiver(post_save, sender=TDemanda)
+def demanda_create_score(sender, instance, created, **kwargs):
+    if created:
+        try:
+            TDemandaScore.objects.create(demanda=instance)
+        except IntegrityError:
+            # Handle the exception (e.g., log the error, notify someone, etc.)
+            pass
+
 
 @receiver(post_save, sender=TDemanda)
 def log_demanda_save(sender, instance, created, **kwargs):

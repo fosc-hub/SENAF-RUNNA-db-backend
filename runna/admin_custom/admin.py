@@ -178,10 +178,10 @@ class TInformanteAdmin(NoDeleteAdmin):
 
 @admin.register(TDemanda)
 class TDemandaAdmin(NoDeleteAdmin):
-    fields = ( "fecha_y_hora_ingreso", "origen", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "localizacion", "usuario_externo", "constatacion", "evaluacion", "decision", "archivado", "completado")
-    list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo')
-    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo')
-    search_fields = ('descripcion', 'nro_notificacion_102', 'usuario_externo__nombre', 'localizacion__nombre')
+    fields = ( "fecha_y_hora_ingreso", "origen", "sub_origen", "institucion", "localizacion", "informante", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "asignado", "constatacion", "evaluacion", "archivado", "completado")
+    list_display = ('id', 'nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', "origen", "sub_origen")
+    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'informante', "origen", "sub_origen")
+    search_fields = ('descripcion', 'nro_notificacion_102', 'informante__nombre', 'localizacion__nombre')
 
 
 @admin.register(TInforme101)
