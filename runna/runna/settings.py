@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from decouple import config
+
+RESEND_API_KEY = config("RESEND_API_KEY")
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,10 +54,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # custom apps
+    'services',
+    'customAuth',
     'infrastructure',
     'api',
     'admin_custom',
-    'customAuth',
     
     # restframework dependencies
     'rest_framework',
@@ -271,3 +276,22 @@ SPECTACULAR_SETTINGS = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',  # or 'ERROR' for only errors
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['file', 'console'],  # Logs to both console and file
+        'level': 'INFO',
+    },
+}
