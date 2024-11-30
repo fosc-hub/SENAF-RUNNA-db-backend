@@ -3,6 +3,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
+from django.core.exceptions import ValidationError
 
 """
 TLocalizacionPersona
@@ -280,6 +281,14 @@ class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
         app_label = 'infrastructure'
         verbose_name = _('Condicion de Vulnerabilidad de Persona')
         verbose_name_plural = _('Condiciones de Vulnerabilidad de Personas')
+
+        
+    def save(self, *args, **kwargs):
+        if self.condicion_vulnerabilidad.nnya and not self.persona.nnya:
+            raise ValidationError("La persona debe ser un NNyA para esta Condicion de Vulnerabilidad")
+        if self.condicion_vulnerabilidad.adulto and not self.persona.adulto:
+            raise ValidationError("La persona debe ser un adulto para esta Condicion de Vulnerabilidad")
+        super().save(*args, **kwargs)
 
 
 class TPersonaCondicionesVulnerabilidadHistory(TPersonaCondicionesVulnerabilidadBase, BaseHistory):
