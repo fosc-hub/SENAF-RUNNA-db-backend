@@ -14,10 +14,11 @@ from .DemandaFilters import (
     TInformanteFilter, 
     TDemandaFilter, 
     TPrecalificacionDemandaFilter, 
-    TDemandaScoreFilter, 
+    TDemandaScoreFilter,
     TDemandaHistoryFilter, 
+    TInforme101Filter,
     TPrecalificacionDemandaHistoryFilter,
-    TDemandaScoreHistoryFilter
+    TDemandaScoreHistoryFilter,
 )
 from .PersonaFilter import (
     TPersonaFilter, 

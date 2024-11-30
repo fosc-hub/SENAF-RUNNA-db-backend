@@ -8,6 +8,7 @@ from infrastructure.models import (
     TPrecalificacionDemanda, 
     TDemandaScore, 
     TDemandaHistory, 
+    TInforme101,
     TPrecalificacionDemandaHistory,
     TDemandaScoreHistory
 )
@@ -39,7 +40,11 @@ class TDemandaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemanda
         fields = '__all__'
-    
+
+class TInforme101Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = TInforme101
+        fields = '__all__'
 
 class TPrecalificacionDemandaSerializer(serializers.ModelSerializer):
     class Meta:

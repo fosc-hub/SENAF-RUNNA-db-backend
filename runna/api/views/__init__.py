@@ -17,6 +17,7 @@ from .DemandaView import (
     TPrecalificacionDemandaViewSet, 
     TDemandaScoreViewSet, 
     TDemandaHistoryViewSet, 
+    TInforme101ViewSet,
     TPrecalificacionDemandaHistoryViewSet,
     TDemandaScoreHistoryViewSet
 )

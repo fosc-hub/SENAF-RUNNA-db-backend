@@ -34,6 +34,16 @@ entity T_SUB_ORIGEN_DEMANDA {
     --
 }
 
+entity T_INFORME_101 {
+    + PRIMARY_KEY(id)
+    --
+    fecha_y_hora : datetime, null=False, default=datetime.now()
+    fields : json, null=False, blank=False
+    --
+    demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    --
+}
+
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
@@ -52,9 +62,9 @@ entity T_DEMANDA {
     nro_oficio_web : int, nullable
     descripcion : text, nullable
     ultima_actualizacion : datetime, null=False, autogenerate
+    asignado : default=False
     constatacion : default=True
     evaluacion : default=False
-    decision : default=False
     archivado : default=False
     completado : default=False
     --
@@ -693,6 +703,8 @@ entity T_ACTIVIDAD_TIPO {
 T_DEMANDA_ASIGNADO "*" -- "1" T_USER
 T_DEMANDA "1" -- "*" T_DEMANDA_ASIGNADO
 T_DEMANDA "1" -- "1" T_PRECALIFICACION_DEMANDA
+
+T_DEMANDA "1" -- "1" T_INFORME_101
 
 T_DEMANDA "*" -- "1" T_LOCALIZACION
 T_LOCALIZACION "*" -- "1" T_BARRIO

@@ -10,7 +10,8 @@ from infrastructure.models import (
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 
-    TDemandaHistory, 
+    TDemandaHistory,
+    TInforme101,
     TPrecalificacionDemandaHistory,
     TDemandaScoreHistory
 )
@@ -23,6 +24,7 @@ from api.serializers import (
     TPrecalificacionDemandaSerializer,
     TDemandaScoreSerializer,
     TDemandaHistorySerializer,
+    TInforme101Serializer,
     TPrecalificacionDemandaHistorySerializer,
     TDemandaScoreHistorySerializer
 )
@@ -35,6 +37,7 @@ from infrastructure.filters import (
     TPrecalificacionDemandaFilter, 
     TDemandaScoreFilter, 
     TDemandaHistoryFilter, 
+    TInforme101Filter,
     TPrecalificacionDemandaHistoryFilter,
     TDemandaScoreHistoryFilter
 )
@@ -188,6 +191,27 @@ class TDemandaViewSet(BaseViewSet):
     def destroy(self, request, pk=None):
         return super().destroy(request, pk=pk)
 
+
+class TInforme101ViewSet(BaseViewSet):
+    model = TInforme101
+    serializer_class = TInforme101Serializer
+    filterset_class = TInforme101Filter
+    
+    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
+
+    @extend_schema(
+        responses=TInforme101Serializer(many=True),
+        description="Retrieve a list of TInforme101 entries with optional filtering."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TInforme101Serializer,
+        description="Retrieve a single TInforme101 entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 class TPrecalificacionDemandaViewSet(BaseViewSet):
     model = TPrecalificacionDemanda

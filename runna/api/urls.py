@@ -17,6 +17,7 @@ from api.views import (
     TPrecalificacionDemandaViewSet, 
     TDemandaScoreViewSet, 
     TDemandaHistoryViewSet, 
+    TInforme101ViewSet,
     TPrecalificacionDemandaHistoryViewSet,
     TDemandaScoreHistoryViewSet
 )
@@ -94,6 +95,7 @@ router.register(r'demanda', TDemandaViewSet, basename='demanda')
 router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
 router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score')
 router.register(r'demanda-history', TDemandaHistoryViewSet, basename='demanda-history')
+router.register(r'informe101', TInforme101ViewSet, basename='informe101')
 router.register(r'precalificacion-demanda-history', TPrecalificacionDemandaHistoryViewSet, basename='precalificacion-demanda-history')
 router.register(r'demanda-score-history', TDemandaScoreHistoryViewSet, basename='demanda-score-history')
 

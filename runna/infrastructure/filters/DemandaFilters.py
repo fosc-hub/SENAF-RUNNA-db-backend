@@ -7,7 +7,7 @@ from infrastructure.models import (
     TDemanda, 
     TPrecalificacionDemanda, 
     TDemandaScore, 
-    TLocalizacion, 
+    TInforme101, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
     TDemandaScoreHistory
@@ -41,6 +41,12 @@ class TDemandaFilter(filters.FilterSet):
     class Meta:
         model = TDemanda
         fields = '__all__'
+
+class TInforme101Filter(filters.FilterSet):
+    
+    class Meta:
+        model = TInforme101
+        fields = ['demanda']
 
 
 class TPrecalificacionDemandaFilter(filters.FilterSet):

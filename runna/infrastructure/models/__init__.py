@@ -17,6 +17,7 @@ from .Demanda import  (
     TPrecalificacionDemanda, 
     TDemandaScore, 
     TDemandaHistory, 
+    TInforme101,
     TPrecalificacionDemandaHistory,
     TDemandaScoreHistory
 )

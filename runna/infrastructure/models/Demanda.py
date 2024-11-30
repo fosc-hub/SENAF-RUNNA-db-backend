@@ -75,9 +75,10 @@ class TDemandaBase(models.Model):
     nro_oficio_web = models.IntegerField(null=True, blank=True)
     descripcion = models.TextField(null=True, blank=True)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
+
+    asignado = models.BooleanField(default=False)
     constatacion = models.BooleanField(default=True)
     evaluacion = models.BooleanField(default=False)
-    decision = models.BooleanField(default=False)
     archivado = models.BooleanField(default=False)
     completado = models.BooleanField(default=False)
 
@@ -122,6 +123,19 @@ class TDemandaHistory(TDemandaBase, BaseHistory):
         app_label = 'infrastructure'
         verbose_name = _('Historial de Demanda')
         verbose_name_plural = _('Historial de Demandas')
+
+class TInforme101(models.Model):
+    fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
+    fields = models.JSONField(null=False, blank=False)
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Informe 101')
+        verbose_name_plural = _('Informes 101')
+        
+    def __str__(self):
+        return f"{self.fecha_y_hora} - {self.demanda}"
 
 
 class TPrecalificacionDemandaBase(models.Model):

@@ -16,6 +16,7 @@ from .DemandaSerializer import (
     TPrecalificacionDemandaSerializer,
     TDemandaScoreSerializer,
     TDemandaHistorySerializer,
+    TInforme101Serializer,
     TPrecalificacionDemandaHistorySerializer,
     TDemandaScoreHistorySerializer
 )

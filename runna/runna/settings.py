@@ -110,6 +110,7 @@ ADMIN_REORDER = [
             "infrastructure.TInstitucionDemanda",
             "infrastructure.TInformante",
             "infrastructure.TDemanda",
+            "infrastructure.TInforme101",
             "infrastructure.TPrecalificacionDemanda",
             "infrastructure.TDemandaScore",
 

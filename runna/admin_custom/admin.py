@@ -59,7 +59,8 @@ from infrastructure.models import  (
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 
-    TDemanda, 
+    TDemanda,
+    TInforme101,
     TPrecalificacionDemanda, 
     TDemandaScore,
 )
@@ -181,6 +182,14 @@ class TDemandaAdmin(NoDeleteAdmin):
     list_display = ('nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', 'localizacion', 'usuario_externo')
     list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'usuario_externo')
     search_fields = ('descripcion', 'nro_notificacion_102', 'usuario_externo__nombre', 'localizacion__nombre')
+
+
+@admin.register(TInforme101)
+class TInforme101Admin(NoDeleteAdmin):
+    fields = ('fecha_y_hora', 'fields', 'demanda')
+    list_display = ('fecha_y_hora', 'demanda')
+    list_filter = ('demanda',)
+    search_fields = ('demanda',)
 
 
 @admin.register(TPrecalificacionDemanda)
