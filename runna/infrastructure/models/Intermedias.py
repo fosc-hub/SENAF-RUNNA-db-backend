@@ -145,7 +145,7 @@ class TDemandaAsignado(TDemandaAsignadoBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        # unique_together = ('demanda', 'user')
+        unique_together = ('demanda', 'user')
         app_label = 'infrastructure'
         verbose_name = _('Asignacion de Demanda')
         verbose_name_plural = _('Asignaciones de Demandas')
