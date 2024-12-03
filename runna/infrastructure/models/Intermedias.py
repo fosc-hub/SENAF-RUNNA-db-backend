@@ -37,7 +37,7 @@ class TLocalizacionPersona(TLocalizacionPersonaBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        unique_together = ('localizacion', 'persona')
+        # unique_together = ('localizacion', 'persona')
         app_label = 'infrastructure'
         verbose_name = _('Localizacion de Persona')
         verbose_name_plural = _('Localizaciones de Personas')
@@ -82,7 +82,7 @@ class TDemandaPersona(TDemandaPersonaBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        unique_together = ('demanda', 'persona')
+        # unique_together = ('demanda', 'persona')
         app_label = 'infrastructure'
         verbose_name = _('Persona asociada a Demanda')
         verbose_name_plural = _('Personas asociadas a Demandas')
@@ -165,7 +165,7 @@ class TDemandaVinculada(TDemandaVinculadaBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        unique_together = ('demanda_1', 'demanda_2')
+        # unique_together = ('demanda_1', 'demanda_2')
         app_label = 'infrastructure'
         verbose_name = _('Vinculacion de Demandas')
         verbose_name_plural = _('Vinculaciones de Demandas')
@@ -195,7 +195,7 @@ class TLegajoAsignado(models.Model):
     
     
     class Meta:
-        unique_together = ('legajo', 'user')
+        # unique_together = ('legajo', 'user')
         app_label = 'infrastructure'
         verbose_name = _('Asignacion de Legajo')
         verbose_name_plural = _('Asignaciones de Legajos')
@@ -238,7 +238,7 @@ class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        unique_together = ('persona_1', 'persona_2')
+        # unique_together = ('persona_1', 'persona_2')
         app_label = 'infrastructure'
         verbose_name = _('Vinculo entre Personas')
         verbose_name_plural = _('Vinculos entre Personas')
@@ -271,7 +271,7 @@ class TPersonaCondicionesVulnerabilidadBase(models.Model):
 class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
 
     class Meta:
-        unique_together = ('persona', 'condicion_vulnerabilidad')
+        # unique_together = ('persona', 'condicion_vulnerabilidad')
         app_label = 'infrastructure'
         verbose_name = _('Condicion de Vulnerabilidad de Persona')
         verbose_name_plural = _('Condiciones de Vulnerabilidad de Personas')
@@ -302,7 +302,7 @@ class TDemandaMotivoIntervencionBase(models.Model):
 class TDemandaMotivoIntervencion(TDemandaMotivoIntervencionBase):
 
     class Meta:
-        unique_together = ('demanda', 'motivo_intervencion')
+        # unique_together = ('demanda', 'motivo_intervencion')
         app_label = 'infrastructure'
         verbose_name = _('Motivo de Intervencion de Demanda')
         verbose_name_plural = _('Motivos de Intervencion de Demandas')

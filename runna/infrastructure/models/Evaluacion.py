@@ -129,7 +129,7 @@ class TEvaluacionesBase(models.Model):
 class TEvaluaciones(TEvaluacionesBase):
 
     class Meta:
-        unique_together = ('demanda', 'indicador')
+        # unique_together = ('demanda', 'indicador')
         app_label = 'infrastructure'
         verbose_name = _('Evaluacion')
         verbose_name_plural = _('Evaluaciones')
