@@ -5,8 +5,9 @@ from drf_spectacular.utils import extend_schema
 from core.use_cases import TDecisionUseCase
 from infrastructure.models import TNNyAScore, TDemandaScore
 from api.serializers import TPersonaSerializer
-
+from rest_framework.permissions import IsAuthenticated, AllowAny
 class SuggestDecisionView(APIView):
+    permission_classes = [AllowAny]
     """
     API endpoint to suggest a decision for a given NNyA.
     """
