@@ -41,15 +41,15 @@ def send_mail_to_user_asignado(sender, instance, created, **kwargs):
     if created:
 
         to = [instance.user.email]
-        subject = f"New Assignment for Demanda ID {instance.demanda.id}"
+        subject = f"Nueva asignación para la Demanda ID {instance.demanda.id}"
         html_content = f"""
-            <strong>Dear {instance.user.username},</strong><br>
-            You have been assigned to a new Demanda.<br>
+            <strong>Estimado {instance.user.username},</strong><br>
+            Has sido asignado para una nueva demanda.<br>
             <strong>Details:</strong><br>
             Demanda ID: {instance.demanda.id}<br>
-            Comments: {instance.comentarios}<br>
-            Regards,<br>
-            The Team
+            Comentarios: {instance.comentarios}<br>
+            Saludos,<br>
+            El equipo
         """
 
         # Send email and return the response

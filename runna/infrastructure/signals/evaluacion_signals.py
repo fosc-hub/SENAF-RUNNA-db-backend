@@ -18,15 +18,15 @@ def send_respuesta_mail(sender, instance, created, **kwargs):
     if created:
 
         to = [instance.mail]
-        subject = f"New Answer for Demanda ID {instance.demanda.id}"
+        subject = f"Nueva respuesta para la Demanda ID {instance.demanda.id}"
         html_content = f"""
-            <strong>Dear {instance.institucion},</strong><br>
-            You have been assigned to a new Demanda.<br>
-            <strong>Details:</strong><br>
+            <strong>Estimada {instance.institucion.nombre},</strong><br>
+            Se ha enviado respuesta de una nueva demanda.<br>
+            <strong>Detalles:</strong><br>
             Demanda ID: {instance.demanda.id}<br>
-            Comments: {instance.mensaje}<br>
-            Regards,<br>
-            The Team
+            Mensaje: {instance.mensaje}<br>
+            Saludos,<br>
+            El equipo
         """
 
         # Send email and return the response

@@ -29,21 +29,16 @@ class EmailService:
             "subject": subject,
             "html": html_content,
         }
+        
+        print("resend.api_key: ", resend.api_key)
 
         try:
-            # email_response = resend.Emails.send(params)
-            email_response = f'resend api key: {resend.api_key}'
-            logger.info(f"Email sent successfully: {email_response}")
-            print(f"Email sent successfully: {email_response}")
-            # return {
-            #     "email_status": email_response.get("status"),
-            #     "email_details": email_response.get("response"),
-            #     "error": email_response.get("message", None)
-            # }
+            email_response = resend.Emails.send(params)
+            # print("email_response: ", email_response)
             return {
-                "email_status": "status",
-                "email_details": "response",
-                "error": "message"
+                "email_status": "201",
+                "email_details": "email enviado exitosamente",
+                "error": None
             }
         except Exception as e:
             # Log the error if logging is set up, or handle gracefully
