@@ -153,7 +153,8 @@ class TDecision(models.Model):
     justificacion = models.TextField(null=False, blank=False)
     decision_choices = [
         ('APERTURA DE LEGAJO', 'Apertura de Legajo'),
-        ('RECHAZAR CASO', 'Rechazar Caso')
+        ('RECHAZAR CASO', 'Rechazar Caso'),
+        ('MPI_MPE', 'MPI_MPE')
     ]
     decision = models.CharField(max_length=20, choices=decision_choices, null=False)
 
