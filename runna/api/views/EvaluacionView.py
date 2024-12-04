@@ -1,4 +1,11 @@
 from drf_spectacular.utils import extend_schema
+import logging
+logger = logging.getLogger(__name__)
+
+from django.http import JsonResponse
+from rest_framework import status
+from django.db.models.signals import post_save
+
 
 from .BaseView import BaseViewSet
 
@@ -156,7 +163,39 @@ class TRespuestaViewSet(BaseViewSet):
         description="Create a new TRespuesta entry"
     )
     def create(self, request):
-        return super().create(request)
+        # Create the object using the serializer
+        serializer = TRespuestaSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        instance = serializer.save()
+
+        # Capture signal response
+        responses = post_save.send(
+            sender=TRespuesta,
+            instance=instance,
+            created=True,
+            raw=False,
+            using=None,
+        )
+        logger.info(f"Creation of TRespuesta instance: {instance}")
+        logger.info(f"Signal responses: {responses}")
+        # Collect the first valid response from signal receivers
+        signal_response = None
+        for receiver, response in responses:
+            print(f'Receiver: {receiver}')
+            print(f'Response: {response}')
+            if response and 'email_status' in response and 'email_details' in response:
+                signal_response = response
+                logger.info(f"signal_response set to: {response}")
+                break
+
+        # Prepare the API response
+        response_data = {
+            "message": "TRespuesta instance created successfully",
+            **serializer.data,  # Pass the serialized data
+            "email_response": signal_response,  # Pass the captured signal response
+        }
+        return JsonResponse(response_data, status=status.HTTP_201_CREATED)
+
 
     @extend_schema(
         responses=TRespuestaSerializer(many=True),

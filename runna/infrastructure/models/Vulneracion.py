@@ -3,6 +3,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
+from django.core.exceptions import ValidationError
 
 """
 TCategoriaMotivo
@@ -139,6 +140,15 @@ class TVulneracion(TVulneracionBase):
         app_label = 'infrastructure'
         verbose_name = _('Vulneracion')
         verbose_name_plural = _('Vulneraciones')
+        
+    def save(self, *args, **kwargs):
+        if self.principal_demanda:
+            if TVulneracion.objects.filter(demanda=self.demanda, principal_demanda=True).exclude(id=self.id).exists():
+                raise ValidationError(f"(vulneracion - {self.categoria_motivo} {self.categoria_submotivo}) Ya existe una vulneracion principal para esta Demanda.")
+        if self.nnya == self.autor_dv:
+            raise ValidationError("El NNyA no puede ser el supuesto autor de la vulneración.")
+        
+        super().save(*args, **kwargs)
 
 
 class TVulneracionHistory(TVulneracionBase, BaseHistory):

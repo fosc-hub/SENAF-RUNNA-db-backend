@@ -3,6 +3,7 @@ from .localizacion_signal import (
     log_localizacion_save, log_localizacion_delete
 )
 from .demanda_signals import (
+    demanda_create_score,
     log_demanda_save, log_demanda_delete, 
     log_preCalificacionDemanda_save, log_preCalificacionDemanda_delete,
     log_scoreDemanda_save, log_scoreDemanda_delete,
@@ -20,6 +21,7 @@ from .vulneracion_signal import (
 from .intermedias_signal import (
     log_localizacionPersona_save, log_localizacionPersona_delete, 
     log_demandaPersona_save, log_demandaPersona_delete, 
+    set_demanda_asignado, send_mail_to_user_asignado,
     log_demandaAsignado_save, log_demandaAsignado_delete, 
     log_demandaVinculada_save, log_demandaVinculada_delete,
     log_vinculoPersonaPersona_save, log_vinculoPersonaPersona_delete,
@@ -27,6 +29,7 @@ from .intermedias_signal import (
     log_demandaMotivoIntervencion_save, log_demandaMotivoIntervencion_delete
 )
 from .evaluacion_signals import (
+    send_respuesta_mail,
     log_actividad_save, log_actividad_delete,
     log_evaluaciones_save, log_evaluaciones_delete
 )

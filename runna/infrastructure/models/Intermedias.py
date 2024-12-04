@@ -3,6 +3,7 @@ from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
+from django.core.exceptions import ValidationError
 
 """
 TLocalizacionPersona
@@ -41,6 +42,11 @@ class TLocalizacionPersona(TLocalizacionPersonaBase):
         app_label = 'infrastructure'
         verbose_name = _('Localizacion de Persona')
         verbose_name_plural = _('Localizaciones de Personas')
+    
+    def save(self, *args, **kwargs):
+        if self.principal:
+            TLocalizacionPersona.objects.filter(persona=self.persona, principal=True).update(principal=False)
+        super().save(*args, **kwargs)
 
 
 class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
@@ -86,6 +92,20 @@ class TDemandaPersona(TDemandaPersonaBase):
         app_label = 'infrastructure'
         verbose_name = _('Persona asociada a Demanda')
         verbose_name_plural = _('Personas asociadas a Demandas')
+        
+    def save(self, *args, **kwargs):
+        if self.supuesto_autordv_principal:
+            if TDemandaPersona.objects.filter(demanda=self.demanda, supuesto_autordv_principal=True).exclude(pk=self.pk).exists():
+                raise ValidationError("Ya existe un supuesto autor principal para esta demanda.")
+        if self.supuesto_autordv or self.supuesto_autordv_principal:
+            if self.persona.nnya:
+                raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto.")
+        if self.nnya_principal:
+            if TDemandaPersona.objects.filter(demanda=self.demanda, nnya_principal=True).exclude(pk=self.pk).exists():
+                raise ValidationError("Ya existe un NNyA principal para esta demanda.")
+            if not self.persona.nnya:
+                raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA.")
+        super().save(*args, **kwargs)
 
 
 class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):
@@ -125,7 +145,7 @@ class TDemandaAsignado(TDemandaAsignadoBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        # unique_together = ('demanda', 'user')
+        unique_together = ('demanda', 'user')
         app_label = 'infrastructure'
         verbose_name = _('Asignacion de Demanda')
         verbose_name_plural = _('Asignaciones de Demandas')
@@ -243,6 +263,13 @@ class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
         verbose_name = _('Vinculo entre Personas')
         verbose_name_plural = _('Vinculos entre Personas')
 
+    def save(self, *args, **kwargs):
+        if self.garantiza_proteccion and self.autordv:
+            raise ValidationError("No puede garantizar proteccion y ser supuesto autor a la vez")
+        if self.garantiza_proteccion and (self.persona_1.nnya and self.persona_2.nnya):
+            raise ValidationError("Un nnya no puede garantizar proteccion a otro nnya")
+        super().save(*args, **kwargs)
+
 
 class TVinculoPersonaPersonaHistory(TVinculoPersonaPersonaBase, BaseHistory):
     parent = models.ForeignKey(
@@ -275,6 +302,14 @@ class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
         app_label = 'infrastructure'
         verbose_name = _('Condicion de Vulnerabilidad de Persona')
         verbose_name_plural = _('Condiciones de Vulnerabilidad de Personas')
+
+        
+    def save(self, *args, **kwargs):
+        if self.condicion_vulnerabilidad.nnya and not self.persona.nnya:
+            raise ValidationError("La persona debe ser un NNyA para esta Condicion de Vulnerabilidad")
+        if self.condicion_vulnerabilidad.adulto and not self.persona.adulto:
+            raise ValidationError("La persona debe ser un adulto para esta Condicion de Vulnerabilidad")
+        super().save(*args, **kwargs)
 
 
 class TPersonaCondicionesVulnerabilidadHistory(TPersonaCondicionesVulnerabilidadBase, BaseHistory):

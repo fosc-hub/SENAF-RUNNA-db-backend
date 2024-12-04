@@ -10,6 +10,7 @@ from infrastructure.models import (
     TDemandaMotivoIntervencion, TDemandaMotivoIntervencionHistory
 )
 from .BaseLogs import logs
+from services.email_service import EmailService
 
 
 @receiver(post_save, sender=TDemandaPersona)
@@ -22,6 +23,39 @@ def log_demandaPersona_save(sender, instance, created, **kwargs):
 def log_demandaPersona_delete(sender, instance, **kwargs):
     action='DELETE'
     logs(TDemandaPersonaHistory, action, instance)
+
+
+@receiver(post_save, sender=TDemandaAsignado)
+def set_demanda_asignado(sender, instance, created, **kwargs):
+    if created:
+        instance.demanda.asignado = True
+        instance.demanda.save()
+
+
+@receiver(post_save, sender=TDemandaAsignado)
+def send_mail_to_user_asignado(sender, instance, created, **kwargs):
+    """
+    Signal triggered after a TDemandaAsignado instance is created.
+    Sends an email notification to the assigned user.
+    """
+    if created:
+
+        to = [instance.user.email]
+        subject = f"Nueva asignación para la Demanda ID {instance.demanda.id}"
+        html_content = f"""
+            <strong>Estimado {instance.user.username},</strong><br>
+            Has sido asignado para una nueva demanda.<br>
+            <strong>Details:</strong><br>
+            Demanda ID: {instance.demanda.id}<br>
+            Comentarios: {instance.comentarios}<br>
+            Saludos,<br>
+            El equipo
+        """
+
+        # Send email and return the response
+        email_response = EmailService.send_email(to, subject, html_content)
+
+        return email_response 
 
 
 @receiver(post_save, sender=TDemandaAsignado)

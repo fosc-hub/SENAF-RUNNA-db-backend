@@ -132,15 +132,7 @@ def personaCondicionVulnerabilidad_track_old_values(sender, instance, **kwargs):
     Elif the 'persona.nnya' field is true, so condicion_vulnerabilidad.nnya' field must be true.
     Else, raise a validation error.
     """
-    if instance.persona.adulto:
-        if not instance.condicion_vulnerabilidad.adulto:
-            raise ValidationError("El campo 'adulto' debe ser verdadero si la persona es adulta.")
-    elif instance.persona.nnya:
-        if not instance.condicion_vulnerabilidad.nnya:
-            raise ValidationError("El campo 'nnya' debe ser verdadero si la persona es un NNyA.")
-    else:
-        raise ValidationError("La persona debe ser adulta o un NNyA.")
-    
+
     if instance.pk:  # Only for updates, not creates
         old_instance = TPersonaCondicionesVulnerabilidad.objects.get(pk=instance.pk)
         instance._old_persona = old_instance.persona
