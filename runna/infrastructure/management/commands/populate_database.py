@@ -3,6 +3,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.apps import apps
 from faker import Faker
+from django.db import models
 
 fake = Faker()
 
@@ -29,6 +30,8 @@ class Command(BaseCommand):
                         continue
                     if field.choices:
                         obj_data[field.name] = random.choice([choice[0] for choice in field.choices])
+                    elif isinstance(field, models.EmailField):
+                        obj_data[field.name] = 'facundoolivam@gmail.com' #fake.email()
                     elif field.get_internal_type() == 'CharField':
                         obj_data[field.name] = fake.word()
                     elif field.get_internal_type() == 'TextField':
@@ -43,8 +46,6 @@ class Command(BaseCommand):
                         obj_data[field.name] = fake.date()
                     elif field.get_internal_type() == 'TimeField':
                         obj_data[field.name] = fake.date_time()
-                    elif field.get_internal_type() == 'EmailField':
-                        obj_data[field.name] = fake.email()
                     elif field.get_internal_type() == 'ForeignKey':
                         related_model = field.related_model
                         related_obj = related_model.objects.order_by('?').first()
@@ -59,9 +60,9 @@ class Command(BaseCommand):
                         related_obj = related_model.objects.order_by('?').first()
                         if related_obj:
                             obj_data[field.name] = related_obj
-                        else:
-                            related_obj = related_model.objects.create(**self.get_fake_data(related_model))
-                            obj_data[field.name] = related_obj
+                        # else:
+                        #     related_obj = related_model.objects.create(**self.get_fake_data(related_model))
+                        #     obj_data[field.name] = related_obj
 
                 try:
                     model.objects.create(**obj_data)
