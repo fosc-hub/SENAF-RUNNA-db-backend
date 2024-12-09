@@ -57,6 +57,5 @@ class TDecisionUseCase:
                     "score": getattr(nnya, 'score', None),
                     "score_condiciones_vulnerabilidad": getattr(nnya, 'score_condiciones_vulnerabilidad', None),
                     "score_vulneracion": getattr(nnya, 'score_vulneracion', None),
-                    "score_motivos_intervencion": getattr(nnya, 'score_motivos_intervencion', None)
                 }
             }

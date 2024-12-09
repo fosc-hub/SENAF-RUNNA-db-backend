@@ -251,8 +251,8 @@ class TNNyASaludAdmin(NoDeleteAdmin):
 
 @admin.register(TNNyAScore)
 class TNNyAScoreAdmin(NoDeleteAdmin):
-    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'nnya')
-    list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'nnya')
+    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'nnya')
+    list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'nnya')
     search_fields = ('nnya__nombre',)
 
 

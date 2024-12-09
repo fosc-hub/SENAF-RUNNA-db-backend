@@ -72,12 +72,11 @@ class TNNyAScoreFilter(filters.FilterSet):
     score = filters.RangeFilter()
     score_condiciones_vulnerabilidad = filters.RangeFilter()
     score_vulneracion = filters.RangeFilter()
-    score_motivos_intervencion = filters.RangeFilter()
     nnya = filters.ModelChoiceFilter(queryset=TPersona.objects.all())
 
     class Meta:
         model = TNNyAScore
-        fields = ['score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'nnya']
+        fields = ['score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'nnya']
 
 
 class TLegajoFilter(filters.FilterSet):

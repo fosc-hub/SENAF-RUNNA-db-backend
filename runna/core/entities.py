@@ -78,13 +78,12 @@ class Persona:
         self.nnya = nnya        
 
 class NNyAScore:
-    def __init__(self, id: int, ultima_actualizacion: datetime, score: float, score_condiciones_vulnerabilidad: float, score_vulneracion: float, score_motivos_intervencion: float, nnya: Persona):
+    def __init__(self, id: int, ultima_actualizacion: datetime, score: float, score_condiciones_vulnerabilidad: float, score_vulneracion: float, nnya: Persona):
         self.id = id
         self.ultima_actualizacion = ultima_actualizacion
         self.score = score
         self.score_condiciones_vulnerabilidad = score_condiciones_vulnerabilidad
         self.score_vulneracion = score_vulneracion
-        self.score_motivos_intervencion = score_motivos_intervencion
         self.nnya = nnya
 
 class DemandaScore:

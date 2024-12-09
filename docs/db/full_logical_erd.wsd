@@ -816,7 +816,6 @@ entity T_NNyA_SCORE {
     score : float, null=False
     score_condiciones_vulnerabilidad : float, null=False
     score_vulneracion : float, null=False
-    score_motivos_intervencion : float, null=False
     --
     nnya: FOREIGN_KEY(T_PERSONA) : OneToOneField, on_delete=CASCADE, null=False, blank=False
     --
