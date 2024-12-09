@@ -29,6 +29,7 @@ def log_demandaPersona_delete(sender, instance, **kwargs):
 def set_demanda_asignado(sender, instance, created, **kwargs):
     if created:
         instance.demanda.asignado = True
+        instance.demanda.constatacion = True
         instance.demanda.save()
 
 
