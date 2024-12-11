@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -295,3 +294,7 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
