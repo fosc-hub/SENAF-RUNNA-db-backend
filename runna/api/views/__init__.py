@@ -19,6 +19,8 @@ from .DemandaView import (
     TDemandaHistoryViewSet, 
     TInforme101ViewSet,
     TPrecalificacionDemandaHistoryViewSet,
+    TCalificacionDemandaViewSet,
+    TCalificacionDemandaHistoryViewSet,
     TDemandaScoreHistoryViewSet
 )
 from .PersonaView import (
