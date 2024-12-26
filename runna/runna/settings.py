@@ -97,6 +97,7 @@ ADMIN_REORDER = [
     {
         'app': 'customAuth',
         'models': [
+            "customAuth.TEquipo",
             'customAuth.CustomUser',
         ]
     },
@@ -117,6 +118,7 @@ ADMIN_REORDER = [
             "infrastructure.TDemanda",
             "infrastructure.TInforme101",
             "infrastructure.TPrecalificacionDemanda",
+            "infrastructure.TCalificacionDemanda",
             "infrastructure.TDemandaScore",
 
             "infrastructure.TPersona",
@@ -149,7 +151,6 @@ ADMIN_REORDER = [
             "infrastructure.TActividadTipo",
             "infrastructure.TInstitucionActividad",
             "infrastructure.TActividad",
-            "infrastructure.TInstitucionRespuesta",
             "infrastructure.TRespuesta",
             "infrastructure.TIndicadoresValoracion",
             "infrastructure.TEvaluaciones",

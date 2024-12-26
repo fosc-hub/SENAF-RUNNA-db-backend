@@ -2,8 +2,7 @@ from django_filters import rest_framework as filters
 from infrastructure.models import (
     TActividadTipo, 
     TInstitucionActividad, 
-    TActividad, 
-    TInstitucionRespuesta, 
+    TActividad,
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 
@@ -38,16 +37,6 @@ class TActividadFilter(filters.FilterSet):
             'demanda': ['exact'],
             'tipo': ['exact'],
             'institucion': ['exact'],
-        }
-
-class TInstitucionRespuestaFilter(filters.FilterSet):
-    class Meta:
-        model = TInstitucionRespuesta
-        fields = {
-            'nombre': ['exact', 'icontains'],
-            'mail': ['exact', 'icontains'],
-            'telefono': ['exact', 'gte', 'lte'],
-            'localizacion': ['exact'],
         }
 
 class TRespuestaFilter(filters.FilterSet):
@@ -101,7 +90,7 @@ class TActividadHistoryFilter(filters.FilterSet):
 
 class TEvaluacionesHistoryFilter(filters.FilterSet):
     class Meta:
-        model = TActividadHistory
+        model = TEvaluacionesHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],

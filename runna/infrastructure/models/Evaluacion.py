@@ -10,7 +10,6 @@ from .Persona import TLegajo
 TActividadTipo
 TInstitucionActividad
 TActividad
-TInstitucionRespuesta
 TRespuesta
 TIndicadoresValoracion
 TEvaluaciones
@@ -75,30 +74,13 @@ class TActividadHistory(TActividadBase, BaseHistory):
         verbose_name_plural = _('Historial de Actividades')
 
 
-class TInstitucionRespuesta(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    mail = models.EmailField(null=True, blank=True)
-    telefono = models.IntegerField(null=True, blank=True)
-
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
-
-    
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Institucion de Respuesta')
-        verbose_name_plural = _('Instituciones de Respuestas')
-
-
 class TRespuesta(models.Model):
     fecha_y_hora = models.DateTimeField(auto_now=True)
     mail = models.EmailField(null=False, blank=False)
     mensaje = models.TextField(null=False, blank=False)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    institucion = models.ForeignKey('TInstitucionRespuesta', on_delete=models.SET_NULL, null=True, blank=True)
-
-    
+    institucion = models.CharField(max_length=255, null=False, blank=False)
     
     class Meta:
         app_label = 'infrastructure'

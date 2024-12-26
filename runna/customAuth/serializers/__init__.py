@@ -1,1 +1,1 @@
-from .CustomUserSerializer import CustomUserSerializer
+from .CustomUserSerializer import CustomUserSerializer, TEquipoSerializer

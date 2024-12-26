@@ -7,6 +7,7 @@
         "infrastructure.TCPC",
         "infrastructure.TLocalizacion",
 
+        "customAuth.TEquipo",
         "customAuth.CustomUser",
 
         "infrastructure.TOrigenDemanda",
@@ -16,6 +17,7 @@
         "infrastructure.TDemanda",
         "infrastructure.TInforme101",
         "infrastructure.TPrecalificacionDemanda",
+        "infrastructure.TCalificacionDemanda",
         "infrastructure.TDemandaScore",
 
         "infrastructure.TPersona",
@@ -48,7 +50,6 @@
         "infrastructure.TActividadTipo",
         "infrastructure.TInstitucionActividad",
         "infrastructure.TActividad",
-        "infrastructure.TInstitucionRespuesta",
         "infrastructure.TRespuesta",
         "infrastructure.TIndicadoresValoracion",
         "infrastructure.TEvaluaciones",

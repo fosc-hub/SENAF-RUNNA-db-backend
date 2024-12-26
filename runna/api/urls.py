@@ -66,8 +66,7 @@ from api.views import (
 from api.views import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
-    TActividadViewSet, 
-    TInstitucionRespuestaViewSet, 
+    TActividadViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
@@ -141,7 +140,6 @@ router.register(r'demanda-motivo-intervencion-history', TDemandaMotivoIntervenci
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
 router.register(r'actividad', TActividadViewSet, basename='actividad')
-router.register(r'institucion-respuesta', TInstitucionRespuestaViewSet, basename='institucion-respuesta')
 router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')

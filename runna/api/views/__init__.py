@@ -66,8 +66,7 @@ from .IntermediasView import (
 from .EvaluacionView import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
-    TActividadViewSet, 
-    TInstitucionRespuestaViewSet, 
+    TActividadViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 

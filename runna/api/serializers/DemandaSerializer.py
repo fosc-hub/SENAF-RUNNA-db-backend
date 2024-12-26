@@ -10,6 +10,8 @@ from infrastructure.models import (
     TDemandaHistory, 
     TInforme101,
     TPrecalificacionDemandaHistory,
+    TCalificacionDemanda,
+    TCalificacionDemandaHistory,
     TDemandaScoreHistory
 )
 
@@ -67,6 +69,18 @@ class TDemandaScoreSerializer(serializers.ModelSerializer):
 class TDemandaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaHistory
+        fields = '__all__'
+
+
+class TCalificacionDemandaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TCalificacionDemanda
+        fields = '__all__'
+
+
+class TCalificacionDemandaHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TCalificacionDemandaHistory
         fields = '__all__'
 
 

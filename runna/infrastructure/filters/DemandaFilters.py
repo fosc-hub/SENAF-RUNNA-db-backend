@@ -10,6 +10,8 @@ from infrastructure.models import (
     TInforme101, 
     TDemandaHistory, 
     TPrecalificacionDemandaHistory,
+    TCalificacionDemanda,
+    TCalificacionDemandaHistory,
     TDemandaScoreHistory
 )
  
@@ -50,20 +52,10 @@ class TInforme101Filter(filters.FilterSet):
 
 
 class TPrecalificacionDemandaFilter(filters.FilterSet):
-    fecha_y_hora = filters.DateTimeFilter()  # Exact match for fecha_y_hora
-    descripcion = filters.CharFilter(lookup_expr='icontains')  # Partial match for descripcion
-    estado_demanda = filters.ChoiceFilter(choices=[
-        ('URGENTE', 'Urgente'),
-        ('NO_URGENTE', 'No Urgente'),
-        ('COMPLETAR', 'Completar')
-    ])  # Exact match for estado_demanda
-    ultima_actualizacion = filters.DateTimeFilter()  # Exact match for ultima_actualizacion
-    demanda = filters.ModelChoiceFilter(queryset=TDemanda.objects.all())  # Exact match for demanda
 
     class Meta:
         model = TPrecalificacionDemanda
-        fields = ['fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda']
-
+        fields = '__all__'
 
 
 class TDemandaScoreFilter(filters.FilterSet):
@@ -74,6 +66,21 @@ class TDemandaScoreFilter(filters.FilterSet):
 class TDemandaHistoryFilter(filters.FilterSet):
     class Meta:
         model = TDemandaHistory
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
+
+
+class TCalificacionDemandaFilter(filters.FilterSet):
+    class Meta:
+        model = TCalificacionDemanda
+        fields = '__all__'
+
+class TCalificacionDemandaHistoryFilter(filters.FilterSet):
+    class Meta:
+        model = TCalificacionDemandaHistory
         fields = {
             'parent': ['exact'],
             'action': ['exact'],

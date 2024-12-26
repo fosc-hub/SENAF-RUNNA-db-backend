@@ -65,7 +65,20 @@ class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
 class TDemandaPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
     conviviente = models.BooleanField(null=False, blank=False)
-    supuesto_autordv = models.BooleanField(null=False, blank=False)
+    
+    supuesto_autordv_choices = [
+        ('NO_CORRESPONDE', 'No corresponde'),
+        ('CORRESPONDE', 'Corresponde'),
+        ('SE_DESCONOCE', 'Se desconoce')
+    ]
+    supuesto_autordv = models.CharField(
+        max_length=20,
+        choices=supuesto_autordv_choices,
+        default="Corresponde",
+        null=False,
+        blank=False
+    )
+        
     supuesto_autordv_principal = models.BooleanField(null=False, blank=False)
     nnya_principal = models.BooleanField(null=False, blank=False)
     
@@ -97,7 +110,7 @@ class TDemandaPersona(TDemandaPersonaBase):
         if self.supuesto_autordv_principal:
             if TDemandaPersona.objects.filter(demanda=self.demanda, supuesto_autordv_principal=True).exclude(pk=self.pk).exists():
                 raise ValidationError("Ya existe un supuesto autor principal para esta demanda.")
-        if self.supuesto_autordv or self.supuesto_autordv_principal:
+        if self.supuesto_autordv=="CORRESPONDE" or self.supuesto_autordv_principal:
             if self.persona.nnya:
                 raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto.")
         if self.nnya_principal:
