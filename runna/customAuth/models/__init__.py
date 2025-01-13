@@ -1,1 +1,1 @@
-from .CustomUser import CustomUser
+from .CustomUser import CustomUser, TEquipo

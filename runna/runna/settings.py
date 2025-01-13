@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 from decouple import config
 
 RESEND_API_KEY = config("RESEND_API_KEY")
@@ -27,10 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y=k)d^2rlms)+dg!5a3aiygxsorf##qk6=p0&%d33$$2@(2!0%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -78,6 +77,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,6 +97,7 @@ ADMIN_REORDER = [
     {
         'app': 'customAuth',
         'models': [
+            "customAuth.TEquipo",
             'customAuth.CustomUser',
         ]
     },
@@ -117,6 +118,7 @@ ADMIN_REORDER = [
             "infrastructure.TDemanda",
             "infrastructure.TInforme101",
             "infrastructure.TPrecalificacionDemanda",
+            "infrastructure.TCalificacionDemanda",
             "infrastructure.TDemandaScore",
 
             "infrastructure.TPersona",
@@ -149,7 +151,6 @@ ADMIN_REORDER = [
             "infrastructure.TActividadTipo",
             "infrastructure.TInstitucionActividad",
             "infrastructure.TActividad",
-            "infrastructure.TInstitucionRespuesta",
             "infrastructure.TRespuesta",
             "infrastructure.TIndicadoresValoracion",
             "infrastructure.TEvaluaciones",
@@ -226,12 +227,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS =  [
+    "https://web-production-c6370.up.railway.app",
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
 ]
@@ -295,3 +300,6 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+
+

@@ -19,6 +19,8 @@ from .DemandaView import (
     TDemandaHistoryViewSet, 
     TInforme101ViewSet,
     TPrecalificacionDemandaHistoryViewSet,
+    TCalificacionDemandaViewSet,
+    TCalificacionDemandaHistoryViewSet,
     TDemandaScoreHistoryViewSet
 )
 from .PersonaView import (
@@ -66,8 +68,7 @@ from .IntermediasView import (
 from .EvaluacionView import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
-    TActividadViewSet, 
-    TInstitucionRespuestaViewSet, 
+    TActividadViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 

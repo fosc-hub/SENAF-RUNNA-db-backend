@@ -35,11 +35,9 @@ class TPersonaBase(models.Model):
     genero_choices = [
         ('MASCULINO', 'Masculino'),
         ('FEMENINO', 'Femenino'),
-        ('OTRO', 'Otro')
+        ('NO_BINARIO', 'No Binario')
     ]
     genero = models.CharField(max_length=10, choices=genero_choices, null=False, blank=False)
-    boton_antipanico = models.BooleanField(default=False)
-    cautelar = models.BooleanField(default=False)
     observaciones = models.TextField(null=True, blank=True)
     adulto = models.BooleanField(null=False, blank=False)
     nnya = models.BooleanField(null=False, blank=False)
@@ -56,10 +54,6 @@ class TPersonaBase(models.Model):
             raise ValidationError(f"({self.nombre} {self.apellido}) El DNI no puede ser nulo si la situacion es valido")
         if self.situacion_dni != 'VALIDO' and self.dni is not None:
             raise ValidationError(f"({self.nombre} {self.apellido}) El DNI debe ser nulo si la situacion no es valido")
-        if self.boton_antipanico and self.nnya:
-            raise ValidationError(f"({self.nombre} {self.apellido}) No puede tener boton antipanico si es NNyA")
-        if self.cautelar and self.nnya:
-            raise ValidationError(f"({self.nombre} {self.apellido}) No puede tener medida cautelar si es NNyA")
         super().save(*args, **kwargs)
 
 

@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Load the ordered model list from JSON
         try:
-            with open('./infrastructure/management/fixtures/sorted_models.json', 'r') as f:
+            with open('./runna/infrastructure/management/fixtures/sorted_models.json', 'r') as f:
                 model_order = json.load(f)['models']
         except FileNotFoundError:
             self.stderr.write(self.style.ERROR('sorted_models.json not found!'))

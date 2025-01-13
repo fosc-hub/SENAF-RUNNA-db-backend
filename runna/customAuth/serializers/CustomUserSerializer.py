@@ -7,8 +7,13 @@ class ProductSerializer(serializers.Serializer):
 '''
 
 from rest_framework import serializers
-from customAuth.models import CustomUser
+from customAuth.models import CustomUser, TEquipo
 from django.contrib.auth.models import Group, Permission
+
+class TEquipoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TEquipo
+        fields = '__all__'
 
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:

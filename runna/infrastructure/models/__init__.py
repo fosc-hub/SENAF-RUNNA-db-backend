@@ -19,6 +19,8 @@ from .Demanda import  (
     TDemandaHistory, 
     TInforme101,
     TPrecalificacionDemandaHistory,
+    TCalificacionDemanda,
+    TCalificacionDemandaHistory,
     TDemandaScoreHistory
 )
 from .Persona import (
@@ -66,8 +68,7 @@ from .Intermedias import (
 from .Evaluacion import (
     TActividadTipo, 
     TInstitucionActividad, 
-    TActividad, 
-    TInstitucionRespuesta, 
+    TActividad,
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 

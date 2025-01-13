@@ -13,5 +13,5 @@ class CustomUserFilter(filters.FilterSet):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'is_staff', 'is_active', 'groups']
+        fields = ['username', 'email', 'is_staff', 'is_active', 'groups', 'localidad', 'equipo']
         

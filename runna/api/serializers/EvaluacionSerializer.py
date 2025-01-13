@@ -2,8 +2,7 @@ from rest_framework import serializers
 from infrastructure.models import (
     TActividadTipo, 
     TInstitucionActividad, 
-    TActividad, 
-    TInstitucionRespuesta, 
+    TActividad,
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 
@@ -31,11 +30,6 @@ class TActividadSerializer(serializers.ModelSerializer):
         if 'demanda' in validated_data:
             raise serializers.ValidationError({"demanda": "This field cannot be updated."})
         return super().update(instance, validated_data)
-
-class TInstitucionRespuestaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TInstitucionRespuesta
-        fields = '__all__'
 
 class TRespuestaSerializer(serializers.ModelSerializer):
     class Meta:

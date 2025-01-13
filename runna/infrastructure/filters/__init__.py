@@ -18,6 +18,8 @@ from .DemandaFilters import (
     TDemandaHistoryFilter, 
     TInforme101Filter,
     TPrecalificacionDemandaHistoryFilter,
+    TCalificacionDemandaFilter,
+    TCalificacionDemandaHistoryFilter,
     TDemandaScoreHistoryFilter,
 )
 from .PersonaFilter import (
@@ -65,8 +67,7 @@ from .IntermediasFilter import (
 from .EvaluacionFilter import (
     TActividadTipoFilter, 
     TInstitucionActividadFilter, 
-    TActividadFilter, 
-    TInstitucionRespuestaFilter, 
+    TActividadFilter,
     TRespuestaFilter, 
     TIndicadoresValoracionFilter, 
     TEvaluacionesFilter, 

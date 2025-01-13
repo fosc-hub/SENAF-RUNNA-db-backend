@@ -1,9 +1,10 @@
-from customAuth.views import CustomUserViewSet, CurrentUserView, CustomLoginView, CustomLogoutView
+from customAuth.views import EquipoViewSet ,CustomUserViewSet, CurrentUserView, CustomLoginView, CustomLogoutView
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
+router.register(r'equipo', EquipoViewSet, basename='equipo')
 router.register(r'users', CustomUserViewSet, basename='user')
 
 urlpatterns = router.urls + [

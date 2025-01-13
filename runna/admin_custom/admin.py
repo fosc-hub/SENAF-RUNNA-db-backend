@@ -97,7 +97,6 @@ from infrastructure.models import (
     TActividadTipo, 
     TInstitucionActividad, 
     TActividad, 
-    TInstitucionRespuesta, 
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 
@@ -178,9 +177,9 @@ class TInformanteAdmin(NoDeleteAdmin):
 
 @admin.register(TDemanda)
 class TDemandaAdmin(NoDeleteAdmin):
-    fields = ( "fecha_y_hora_ingreso", "origen", "sub_origen", "institucion", "localizacion", "informante", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "asignado", "constatacion", "evaluacion", "archivado", "completado")
-    list_display = ('id', 'nro_notificacion_102', 'descripcion', 'fecha_y_hora_ingreso', 'ultima_actualizacion', "origen", "sub_origen")
-    list_filter = ('fecha_y_hora_ingreso', 'localizacion', 'informante', "origen", "sub_origen")
+    fields = ( "fecha_creacion", "origen", "sub_origen", "institucion", "localizacion", "informante", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "asignado", "constatacion", "evaluacion", "archivado", "completado")
+    list_display = ('id', 'nro_notificacion_102', 'descripcion', 'fecha_creacion', 'ultima_actualizacion', "origen", "sub_origen")
+    list_filter = ('fecha_creacion', 'localizacion', 'informante', "origen", "sub_origen")
     search_fields = ('descripcion', 'nro_notificacion_102', 'informante__nombre', 'localizacion__nombre')
 
 
@@ -194,9 +193,9 @@ class TInforme101Admin(NoDeleteAdmin):
 
 @admin.register(TPrecalificacionDemanda)
 class TPrecalificacionDemandaAdmin(NoDeleteAdmin):
-    fields = ('fecha_y_hora', 'descripcion', 'estado_demanda', 'demanda')
-    list_display = ('fecha_y_hora', 'descripcion', 'estado_demanda', 'ultima_actualizacion', 'demanda')
-    list_filter = ('estado_demanda', 'fecha_y_hora')
+    fields = ('fecha_y_hora', 'descripcion', 'demanda')
+    list_display = ('fecha_y_hora', 'descripcion', 'ultima_actualizacion', 'demanda')
+    list_filter = ('fecha_y_hora',)
     search_fields = ('descripcion', 'demanda__nro_notificacion_102')
 
 
@@ -211,7 +210,7 @@ class TDemandaScoreAdmin(NoDeleteAdmin):
 
 @admin.register(TPersona)
 class TPersonaAdmin(NoDeleteAdmin):
-    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'boton_antipanico', 'observaciones', 'adulto', 'nnya', 'cautelar')
+    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'observaciones', 'adulto', 'nnya')
     list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'dni', 'genero', 'adulto', 'nnya', 'deleted')
     list_filter = ('genero', 'adulto', 'nnya', 'deleted')
     search_fields = ('nombre', 'apellido', 'dni')
@@ -422,20 +421,12 @@ class TActividadAdmin(NoDeleteAdmin):
     search_fields = ('descripcion', 'demanda__nro_notificacion_102', 'tipo__nombre', 'institucion__nombre')
 
 
-@admin.register(TInstitucionRespuesta)
-class TInstitucionRespuestaAdmin(ModelAdmin):
-    fields = ('nombre', 'mail', 'telefono', 'localizacion')
-    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
-    list_filter = ('localizacion',)
-    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
-
-
 @admin.register(TRespuesta)
 class TRespuestaAdmin(NoDeleteAdmin):
     fields = ('mail', 'mensaje', 'demanda', 'institucion')
     list_display = ('fecha_y_hora', 'mail', 'mensaje', 'demanda', 'institucion')
     list_filter = ('fecha_y_hora', 'institucion')
-    search_fields = ('mail', 'mensaje', 'demanda__nro_notificacion_102', 'institucion__nombre')
+    search_fields = ('mail', 'mensaje', 'demanda__nro_notificacion_102')
 
 
 @admin.register(TIndicadoresValoracion)

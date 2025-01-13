@@ -19,6 +19,8 @@ from api.views import (
     TDemandaHistoryViewSet, 
     TInforme101ViewSet,
     TPrecalificacionDemandaHistoryViewSet,
+    TCalificacionDemandaViewSet,
+    TCalificacionDemandaHistoryViewSet,
     TDemandaScoreHistoryViewSet
 )
 from api.views import (
@@ -66,8 +68,7 @@ from api.views import (
 from api.views import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
-    TActividadViewSet, 
-    TInstitucionRespuestaViewSet, 
+    TActividadViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
@@ -97,6 +98,8 @@ router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score'
 router.register(r'demanda-history', TDemandaHistoryViewSet, basename='demanda-history')
 router.register(r'informe101', TInforme101ViewSet, basename='informe101')
 router.register(r'precalificacion-demanda-history', TPrecalificacionDemandaHistoryViewSet, basename='precalificacion-demanda-history')
+router.register(r'calificacion-demanda', TCalificacionDemandaViewSet, basename='calificacion-demanda')
+router.register(r'calificacion-demanda-history', TCalificacionDemandaHistoryViewSet, basename='calificacion-demanda-history')
 router.register(r'demanda-score-history', TDemandaScoreHistoryViewSet, basename='demanda-score-history')
 
 router.register(r'persona', TPersonaViewSet, basename='persona')
@@ -141,7 +144,6 @@ router.register(r'demanda-motivo-intervencion-history', TDemandaMotivoIntervenci
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
 router.register(r'actividad', TActividadViewSet, basename='actividad')
-router.register(r'institucion-respuesta', TInstitucionRespuestaViewSet, basename='institucion-respuesta')
 router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')

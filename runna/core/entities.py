@@ -62,7 +62,7 @@ class Demanda:
         self.usuario_externo = usuario_externo
 
 class Persona:
-    def __init__(self, id: int, deleted: bool, nombre: str, apellido: str, fecha_nacimiento: datetime = None, edad_aproximada: int = None, dni: int = None, situacion_dni: str = None, genero: str = None, boton_antipanico: bool = False, observaciones: str = None, adulto: bool = False, nnya: bool = False):
+    def __init__(self, id: int, deleted: bool, nombre: str, apellido: str, fecha_nacimiento: datetime = None, edad_aproximada: int = None, dni: int = None, situacion_dni: str = None, genero: str = None, observaciones: str = None, adulto: bool = False, nnya: bool = False):
         self.id = id
         self.deleted = deleted
         self.nombre = nombre
@@ -72,7 +72,6 @@ class Persona:
         self.dni = dni
         self.situacion_dni = situacion_dni
         self.genero = genero
-        self.boton_antipanico = boton_antipanico
         self.observaciones = observaciones
         self.adulto = adulto
         self.nnya = nnya        

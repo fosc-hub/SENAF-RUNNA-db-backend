@@ -12,8 +12,7 @@ from .BaseView import BaseViewSet
 from infrastructure.models import (
     TActividadTipo, 
     TInstitucionActividad, 
-    TActividad, 
-    TInstitucionRespuesta, 
+    TActividad,
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 
@@ -25,7 +24,6 @@ from api.serializers import (
     TActividadTipoSerializer,
     TInstitucionActividadSerializer,
     TActividadSerializer,
-    TInstitucionRespuestaSerializer,
     TRespuestaSerializer,
     TIndicadoresValoracionSerializer,
     TEvaluacionesSerializer,
@@ -37,7 +35,6 @@ from infrastructure.filters import (
     TActividadTipoFilter, 
     TInstitucionActividadFilter, 
     TActividadFilter, 
-    TInstitucionRespuestaFilter, 
     TRespuestaFilter, 
     TIndicadoresValoracionFilter, 
     TEvaluacionesFilter, 
@@ -123,28 +120,6 @@ class TActividadViewSet(BaseViewSet):
     @extend_schema(
         responses=TActividadSerializer,
         description="Retrieve a single TActividad entry."
-    )
-    def retrieve(self, request, pk=None):
-        return super().retrieve(request, pk=pk)
-
-
-class TInstitucionRespuestaViewSet(BaseViewSet):
-    model = TInstitucionRespuesta
-    serializer_class = TInstitucionRespuestaSerializer
-    filterset_class = TInstitucionRespuestaFilter
-
-    http_method_names = ['get'] # Only allow GET requests
-
-    @extend_schema(
-        responses=TInstitucionRespuestaSerializer(many=True),
-        description="Retrieve a list of TInstitucionRespuesta entries with optional filtering."
-    )
-    def list(self, request):
-        return super().list(request)
-
-    @extend_schema(
-        responses=TInstitucionRespuestaSerializer,
-        description="Retrieve a single TInstitucionRespuesta entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

@@ -18,6 +18,8 @@ from .DemandaSerializer import (
     TDemandaHistorySerializer,
     TInforme101Serializer,
     TPrecalificacionDemandaHistorySerializer,
+    TCalificacionDemandaSerializer,
+    TCalificacionDemandaHistorySerializer,
     TDemandaScoreHistorySerializer
 )
 from .PersonaSerializer import (
@@ -66,7 +68,6 @@ from .EvaluacionSerializer import (
     TActividadTipoSerializer,
     TInstitucionActividadSerializer,
     TActividadSerializer,
-    TInstitucionRespuestaSerializer,
     TRespuestaSerializer,
     TIndicadoresValoracionSerializer,
     TEvaluacionesSerializer,

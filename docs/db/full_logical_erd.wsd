@@ -47,40 +47,49 @@ entity T_INFORME_101 {
 entity T_DEMANDA {
     + PRIMARY_KEY(id)
     --
-    fecha_y_hora_ingreso : datetime, null=False, default=datetime.now()
-    nro_notificacion_102 : int, nullable
-    nro_sac : int, nullable
-    nro_suac : int, nullable
-    nro_historia_clinica : int, nullable
-    nro_oficio_web : int, nullable
-    descripcion : text, nullable
+    fecha_creacion : date, null=False, default=date.now()
+    fecha_oficio_documento : date, null=False
+    fecha_ingreso_senaf: date, null=False
+    nro_notificacion_102 : int, null=True, blank=True
+    nro_sac : int, null=True, blank=True
+    nro_suac : int, null=True, blank=True
+    nro_historia_clinica : int, null=True, blank=True
+    nro_oficio_web : int, null=True, blank=True
+    autos_caratulados: string, null=True, blank=True
+    descripcion : text, null=True, blank=True
     ultima_actualizacion : datetime, null=False, autogenerate
+    institucion : string, null=True, blank=True 
+    ambito_vulneracion : (
+        FAMILIAR,
+        INSTITUCIONAL,
+        ENTRE PARES,
+        OTRO
+    ) : null=False, blank=False
 
-    asignado : default=False
-    constatacion : default=False
-    evaluacion : default=False
-    archivado : default=False
-    completado : default=False
+    estado_demanda : (
+        SIN ASIGNAR,
+        ASIGNADA,
+        EVALUACION,
+        ARCHIVADA,
+        COMPLETADA
+    ) : null=False, blank=False, default=SIN ASIGNAR
+
     --
     localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=PROTECT, null=False
     informante: FOREIGN_KEY(T_INFORMANTE) : on_delete=SET_NULL, null=True, blank=True
-    institucion: FOREIGN_KEY(T_INSITUCION_DEMANDA) : on_delete=SET_NULL, null=True, blank=True
     origen: FOREIGN_KEY(T_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
-    sub_origen: FOREIGN_KEY(T_SUB_ORIGEN_DEMANDA) : on_delete=PROTECT, null=False
+    sub_origen: FOREIGN_KEY(T_SUB_ORIGEN_DEMANDA) : on_delete=PROTECT, null= origen.nombre==juzgado ? False : True
+    motivo_ingreso: FOREIGN_KEY(T_CATEGORIA_MOTIVO) : on_delete=SET_NULL, null=True, blank=True
+    submotivo_ingreso: FOREIGN_KEY(T_SUBCATEGORIA_MOTIVO) : on_delete=SET_NULL, null=True, blank=True
     --
     * onCreate( {
         ** Create ( T_DEMANDA_SCORE with demanda=self )
-        ** Set ( asignado=False, constatacion=False, evaluacion=False, archivado=False, completado=False )
     } )
     * onUpdate( {
-        ** if constatacion:
-            Set ( constatacion=True )
-        ** if evaluacion:
-            Set ( evaluacion=True )
-        ** if archivado:
-            Set ( archivado=True )
-        ** if completado:
-            Set ( completado=True )
+        ** if estado_demanda==EVALUACION:
+            Validar(
+
+            )
     } )
     --
 }
@@ -128,7 +137,7 @@ entity T_PRECALIFICACION_DEMANDA {
     --
     fecha_y_hora : datetime, null=False, default=datetime.now()
     descripcion : text, null=False, blank=False
-    estado_demanda : (
+    estado_precalificacion : (
         URGENTE,
         NO_URGENTE,
         COMPLETAR
@@ -138,10 +147,39 @@ entity T_PRECALIFICACION_DEMANDA {
     demanda: FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True One-to-One)
 }
 
+entity T_CALIFICACION_DEMANDA {
+    + PRIMARY_KEY(id)
+    --
+    fecha_y_hora : datetime, null=False, default=datetime.now()
+    justificacion : text, null=False, blank=False
+    estado_calificacion : (
+        NO PERTINENTE (SIPPDD),
+        NO PERTINENTE (OTRAS PROVINCIAS),
+        NO PERTINENTE (OFICIOS INCOMPLETOS),
+        NO PERTINENTE (LEY 9944),
+        PASA A LEGAJO
+    ) : null=False, blank=False
+    ultima_actualizacion : datetime, null=False, autogenerate
+    --
+    demanda: FOREIGN_KEY(T_DEMANDA on_delete=cascade null=False blank=False unique=True One-to-One)
+    --
+    ** onCreate( {
+        ** if estado_calificacion==PASA A LEGAJO:
+            CrearLegajo( demanda.nnya )
+            set ( demanda.completado=True )
+        ** if estado_calificacion!=PASA A LEGAJO:
+            set ( demanda.archivado=True )
+    } )
+
+    ** onUpdate( {
+        ** raise ValidationError("No se puede modificar una calificacion")
+    } )
+}
+
 entity T_LOCALIZACION {
     + PRIMARY_KEY(id)
     --
-    calle : string, null=False, blank=False
+    calle : string, null=True, blank=True
     tipo_calle : (
         CALLE,
         AVENIDA,
@@ -149,11 +187,11 @@ entity T_LOCALIZACION {
         RUTA,
         BOULEVARD,
         OTRO
-    ) : null=False, blank=False
-    piso_depto : int, nullable
-    lote : int, nullable
-    mza : int, nullable
-    casa_nro : int, nullable
+    ) : null=True, blank=True
+    piso_depto : int, null=True, blank=True
+    lote : int, null=True, blank=True
+    mza : int, null=True, blank=True
+    casa_nro : int, null=True, blank=True
     referencia_geo : text, null=False, blank=False
     --
     barrio : FOREIGN_KEY(T_BARRIO) : on_delete=SET_NULL, null=True, blank=True
@@ -219,7 +257,7 @@ entity T_MOTIVO_INTERVENCION {
     + PRIMARY_KEY(id)
     --
     nombre : string, null=False
-    descripcion : text, nullable
+    descripcion : text, null=True, blank=True
     peso : int, null=False
     --
 }
@@ -268,6 +306,7 @@ entity T_PERSONA {
     + PRIMARY_KEY(id)
     --
     nombre : string, null=False, blank=False
+    nombre_autopercibido : string, null=True, blank=True
     apellido : string, null=False, blank=False
     fecha_nacimiento : date, null=True, blank=True
     edad_aproximada : int, null=True, blank=True
@@ -284,11 +323,9 @@ entity T_PERSONA {
     genero : (
         MASCULINO,
         FEMENINO,
-        OTRO
+        NO BINARIO
     ) : null=False, blank=False
 
-    cautelar : bool, default=False
-    boton_antipanico : bool, default=False
     observaciones : text, null=True, blank=True
     adulto : bool, null=False, blank=False
     nnya : bool, null=False, blank=False
@@ -330,7 +367,11 @@ entity T_DEMANDA_PERSONA {
     + COMPOSITE_KEY(T_DEMANDA, T_PERSONA)
     --
     conviviente : bool, null=False, blank=False
-    supuesto_autordv : bool, null=False, blank=False
+    supuesto_autordv : (
+        NO CORRESPONDE,
+        CORRESPONDE,
+        SE DESCONOCE,
+    ) : null=False, blank=False, default=NO CORRESPONDE
     supuesto_autordv_principal : bool, null=False, blank=False
     nnya_principal : bool, null=False, blank=False
     --
@@ -339,24 +380,28 @@ entity T_DEMANDA_PERSONA {
     --
     * onCreate( {
         UNIQUE(demanda, persona)
-        ** if supuesto_autordv_principal==True:
-            UNIQUE(demanda, persona, supuesto_autordv_principal=True)
+        ** if supuesto_autordv_principal==CORRESPONDE:
+            UNIQUE(demanda, persona, supuesto_autordv_principal=CORRESPONDE)
         ** if nnya_principal==True:
             UNIQUE(demanda, persona, nnya_principal=True)
         ** if nnya_principal==True and persona.nnya==False:
             raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA")
-        ** if supuesto_autordv_principal==True and persona.nnya==True:
+        ** if supuesto_autordv==CORRESPONDE and persona.nnya==True:
+            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
+        ** if supuesto_autordv_principal==CORRESPONDE and persona.nnya==True:
             raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
     } )
     * onUpdate( {
         UNIQUE(demanda, persona)
-        ** if supuesto_autordv_principal==True:
-            UNIQUE(demanda, persona, supuesto_autordv_principal=True)
+        ** if supuesto_autordv_principal==CORRESPONDE:
+            UNIQUE(demanda, persona, supuesto_autordv_principal=CORRESPONDE)
         ** if nnya_principal==True:
             UNIQUE(demanda, persona, nnya_principal=True)
         ** if nnya_principal==True and persona.nnya==False:
             raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA")
-        ** if supuesto_autordv_principal==True and persona.nnya==True:
+        ** if supuesto_autordv==CORRESPONDE and persona.nnya==True:
+            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
+        ** if supuesto_autordv_principal==CORRESPONDE and persona.nnya==True:
             raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
     } )
 }
@@ -474,9 +519,9 @@ entity T_RESPUESTA {
     fecha_y_hora : datetime, null=False, autogenerate
     mail : mail, null=False, blank=False
     mensaje : text, null=False, blank=False
+    institucion : string, null=False, blank=False
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
-    institucion: FOREIGN_KEY(T_INSTITUCION_RESPUESTA) : on_delete=SET_NULL, null=True, blank=True
     --
     * onCreate( {
         ** enviar_mail( mail, "Respuesta a demanda", mensaje )
@@ -582,6 +627,13 @@ entity T_LEGAJO_ASIGNADO {
         )
 }
 
+entity T_EQUIPO {
+    + PRIMARY_KEY(id)
+    --
+    nombre : string, null=False, blank=False
+    --
+}
+
 class AbstractBaseUser {
     + password : Charfield
     + last_login : blank=True, null=True
@@ -645,9 +697,15 @@ class AbstractUser {
 
 class CustomUser {
     + fecha_nacimiento : null=True, blank=True
-    + genero : MASCULINO, FEMENINO, OTRO
+    + genero : (
+        MASCULINO,
+        FEMENINO,
+        NO BINARIO
+    )
     + telefono : null=True, blank=True
+
     --
+    + equipo : FOREIGN_KEY(T_EQUIPO) : on_delete=SET_NULL, null=True, blank=True
     + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
     --
 }
@@ -655,6 +713,7 @@ class CustomUser {
 AbstractBaseUser <|-- AbstractUser
 PermissionsMixin <|-- AbstractUser
 AbstractUser <|-- CustomUser
+
 
 entity T_USER {
     + PRIMARY_KEY(id)
@@ -669,9 +728,14 @@ entity T_USER {
     + date_joined : default=timezone.now
     + is_superuser : default=False
     + fecha_nacimiento : null=True, blank
-    + genero : MASCULINO, FEMENINO, OTRO
+    + genero : (
+        MASCULINO,
+        FEMENINO,
+        NO BINARIO
+    )
     + telefono : null=True, blank
     --
+    + equipo : FOREIGN_KEY(T_EQUIPO) : on_delete=SET_NULL, null=True, blank=True
     + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
     --
 }
@@ -769,16 +833,6 @@ entity T_INSTITUCION_ACTIVIDAD {
     --
 }
 
-entity T_INSTITUCION_RESPUESTA {
-    + PRIMARY_KEY(id)
-    --
-    nombre : string, null=False, blank=False
-    mail : mail, null=True, blank=True
-    telefono : int, null=True, blank=True
-    --
-    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
-}
-
 entity T_INSTITUCION_EDUCATIVA {
     + PRIMARY_KEY(id)
     --
@@ -842,7 +896,6 @@ T_LOCALIDAD "*" -- "1" T_PROVINCIA
 T_LOCALIDAD "*" -- "1" T_DEPARTAMENTO
 
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_ACTIVIDAD
-T_LOCALIZACION "1" -- "*" T_INSTITUCION_RESPUESTA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_DEMANDA
@@ -887,7 +940,6 @@ T_ACTIVIDAD "*" -- "1" T_ACTIVIDAD_TIPO
 T_ACTIVIDAD "*" -- "1" T_INSTITUCION_ACTIVIDAD
 
 T_RESPUESTA "*" -- "1" T_DEMANDA
-T_RESPUESTA "*" -- "1" T_INSTITUCION_RESPUESTA
 
 T_DEMANDA_VINCULADA "*" -- "1" T_DEMANDA
 T_DEMANDA_VINCULADA "*" -- "1" T_DEMANDA
