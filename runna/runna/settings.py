@@ -236,6 +236,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CSRF_TRUSTED_ORIGINS =  [
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
     "https://web-production-c6370.up.railway.app",
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
@@ -243,10 +244,12 @@ CSRF_TRUSTED_ORIGINS =  [
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be sent
 CORS_ALLOWED_ORIGINS = [
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
 ]
 CORS_ORIGIN_WHITELIST = [
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
 ]
