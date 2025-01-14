@@ -239,19 +239,19 @@ CSRF_TRUSTED_ORIGINS =  [
     "https://web-production-c6370.up.railway.app",
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
-    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be sent
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
-    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app",
 ]
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "https://senaf-runna-nextjs-frontend-130125.vercel.app/",
+    "https://senaf-runna-nextjs-frontend-130125.vercel.app",
 ]
 CSRF_COOKIE_HTTPONLY = False  # Optional, allow JS to read CSRF
 SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin cookies
