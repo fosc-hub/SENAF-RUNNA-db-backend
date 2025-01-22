@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
+from datetime import timedelta
 
 RESEND_API_KEY = config("RESEND_API_KEY")
 
@@ -243,30 +244,36 @@ CSRF_TRUSTED_ORIGINS =  [
     "https://senaf-runna-nextjs-frontend-130125-29912tyxv-fo-sc.vercel.app",
 ]
 
-CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be sent
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # Your Next.js frontend
     "http://localhost:3000",  # Your Next.js frontend
     "https://senaf-runna-nextjs-frontend-130125.vercel.app",
     "https://senaf-runna-nextjs-frontend-130125-29912tyxv-fo-sc.vercel.app",
 ]
+
 CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:3000",
     "http://localhost:3000",
     "https://senaf-runna-nextjs-frontend-130125.vercel.app",
     "https://senaf-runna-nextjs-frontend-130125-29912tyxv-fo-sc.vercel.app",
 ]
-CSRF_COOKIE_HTTPONLY = False  # Optional, allow JS to read CSRF
-SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin cookies
-SESSION_COOKIE_SECURE = True  # Cookies will only be sent over HTTPS
-CSRF_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SECURE = True
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_SERIALIZER": "customAuth.serializers.MyTokenObtainPairSerializer",
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWS_CREDENTIALS = True
+
 # settings.py
 AUTH_USER_MODEL = 'customAuth.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -276,6 +283,7 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
 }
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'RUNNA API',
