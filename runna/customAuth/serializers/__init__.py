@@ -1,1 +1,2 @@
 from .CustomUserSerializer import CustomUserSerializer, TEquipoSerializer
+from .MyTokenObtainPairSerializer import MyTokenObtainPairSerializer
