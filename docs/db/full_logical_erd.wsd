@@ -453,17 +453,6 @@ entity T_INFORMANTE {
     --
 }
 
-entity T_INSTITUCION_DEMANDA {
-    + PRIMARY_KEY(id)
-    --
-    nombre : string, null=False, blank=False
-    mail : mail, null=True, blank=True
-    telefono : int, null=True, blank=True
-    --
-    localizacion : FOREIGN_KEY(T_LOCALIZACION) : on_delete=SET_NULL, null=True, blank=True
-}
-
-
 entity T_VULNERACION {
     + PRIMARY_KEY(id)
     --
@@ -898,7 +887,6 @@ T_LOCALIDAD "*" -- "1" T_DEPARTAMENTO
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_ACTIVIDAD
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_EDUCATIVA
 T_LOCALIZACION "1" -- "*" T_INSTITUCION_SANITARIA
-T_LOCALIZACION "1" -- "*" T_INSTITUCION_DEMANDA
 
 T_LOCALIZACION "1" -- "*" T_LOCALIZACION_PERSONA
 T_PERSONA "1" -- "*" T_LOCALIZACION_PERSONA

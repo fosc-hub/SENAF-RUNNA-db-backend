@@ -2,8 +2,7 @@ from drf_spectacular.utils import extend_schema
 
 from .BaseView import BaseViewSet
 
-from infrastructure.models import (
-    TInstitucionDemanda, 
+from infrastructure.models import ( 
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 
@@ -18,7 +17,6 @@ from infrastructure.models import (
     TDemandaScoreHistory
 )
 from api.serializers import (
-    TInstitucionDemandaSerializer,
     TOrigenDemandaSerializer,
     TSubOrigenDemandaSerializer,
     TInformanteSerializer,
@@ -47,29 +45,6 @@ from infrastructure.filters import (
     TCalificacionDemandaHistoryFilter,
     TDemandaScoreHistoryFilter
 )
-
-
-class TInstitucionDemandaViewSet(BaseViewSet):
-    model = TInstitucionDemanda
-    serializer_class = TInstitucionDemandaSerializer
-    filterset_class = TInstitucionDemandaFilter
-    
-    http_method_names = ['get']  # Excludes POST, PUT, PATCH, DELETE
-
-    @extend_schema(
-        responses=TInstitucionDemandaSerializer(many=True),
-        description="Retrieve a list of TInstitucionDemanda entries with optional filtering."
-    )
-    def list(self, request):
-        return super().list(request)
-
-    @extend_schema(
-        responses=TInstitucionDemandaSerializer,
-        description="Retrieve a single TInstitucionDemanda entry."
-    )
-    def retrieve(self, request, pk=None):
-        return super().retrieve(request, pk=pk)
-
 
 class TOrigenDemandaViewSet(BaseViewSet):
     model = TOrigenDemanda

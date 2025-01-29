@@ -114,7 +114,6 @@ ADMIN_REORDER = [
 
             "infrastructure.TOrigenDemanda",
             "infrastructure.TSubOrigenDemanda",
-            "infrastructure.TInstitucionDemanda",
             "infrastructure.TInformante",
             "infrastructure.TDemanda",
             "infrastructure.TInforme101",
