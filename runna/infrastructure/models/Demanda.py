@@ -125,7 +125,7 @@ class TDemanda(TDemandaBase):
         verbose_name_plural = _('Demandas')
         
     def __str__(self):
-        return f"{self.id} {self.origen} - {self.descripcion} - {self.fecha_y_hora_ingreso}"
+        return f"{self.id} {self.origen} - {self.descripcion} - {self.fecha_creacion}"
 
 
 class TDemandaHistory(TDemandaBase, BaseHistory):
