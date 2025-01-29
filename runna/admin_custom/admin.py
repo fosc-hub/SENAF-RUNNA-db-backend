@@ -14,14 +14,33 @@ class NoDeleteAdmin(ModelAdmin):
         return False
 
 # ===== Custom User Admin ===== #
-
 @admin.register(CustomUser)
 class CustomUserAdmin(ModelAdmin, UserAdmin):
     """Admin for managing users with roles and permissions."""
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad', 'equipo')}),
     )
-    add_fieldsets = UserAdmin.add_fieldsets
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'username',
+                'password1',
+                'password2',
+                'first_name',
+                'last_name',
+                'email',
+                'fecha_nacimiento',
+                'genero',
+                'telefono',
+                'localidad',
+                'equipo',
+                'is_active',
+                'is_staff',
+                'groups',
+            ),
+        }),
+    )
 
     list_display = ('username', 'email', 'is_staff', 'is_active')
     list_filter = ('is_staff', 'is_active', 'groups')
