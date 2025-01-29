@@ -31,7 +31,6 @@ from api.serializers import (
     TDemandaScoreHistorySerializer
 )
 from infrastructure.filters import (
-    TInstitucionDemandaFilter, 
     TOrigenDemandaFilter,
     TSubOrigenDemandaFilter,
     TInformanteFilter, 
