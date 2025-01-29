@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from infrastructure.models import (
-    TInstitucionDemanda, 
+from infrastructure.models import ( 
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 
@@ -14,13 +13,6 @@ from infrastructure.models import (
     TCalificacionDemandaHistory,
     TDemandaScoreHistory
 )
-
-
-class TInstitucionDemandaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TInstitucionDemanda
-        fields = '__all__'
-
         
 class TOrigenDemandaSerializer(serializers.ModelSerializer):
     class Meta:

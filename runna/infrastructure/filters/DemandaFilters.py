@@ -1,6 +1,5 @@
 from django_filters import rest_framework as filters
 from infrastructure.models import (
-    TInstitucionDemanda, 
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 
@@ -14,12 +13,6 @@ from infrastructure.models import (
     TCalificacionDemandaHistory,
     TDemandaScoreHistory
 )
- 
-class TInstitucionDemandaFilter(filters.FilterSet):
-
-    class Meta:
-        model = TInstitucionDemanda
-        fields = '__all__'
 
 class TOrigenDemandaFilter(filters.FilterSet):
     

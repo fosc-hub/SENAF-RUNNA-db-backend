@@ -10,22 +10,6 @@ Renombrar '...UsuarioLinea' por '...UsuarioExterno'
 
 """
 
-class TInstitucionDemanda(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    mail = models.EmailField(null=True, blank=True)
-    telefono = models.IntegerField(null=True, blank=True)
-
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Institucion de las Demandas')
-        verbose_name_plural = _('Instituciones de las Demandas')
-    
-    def __str__(self):
-        return self.nombre
-
-
 class TInformante(models.Model):
     nombre = models.CharField(max_length=255, null=False)
     apellido = models.CharField(max_length=255, null=False)

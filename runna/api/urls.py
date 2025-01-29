@@ -9,7 +9,6 @@ from api.views import (
     TLocalizacionHistoryViewSet
 )
 from api.views import (
-    TInstitucionDemandaViewSet, 
     TOrigenDemandaViewSet,
     TSubOrigenDemandaViewSet, 
     TInformanteViewSet, 
@@ -88,7 +87,6 @@ router.register(r'cpc', TCPCViewSet, basename='cpc')
 router.register(r'localizacion', TLocalizacionViewSet, basename='localizacion')
 router.register(r'localizacion-history', TLocalizacionHistoryViewSet, basename='localizacion-history')
 
-router.register(r'institucion-demanda', TInstitucionDemandaViewSet, basename='institucion-demanda')
 router.register(r'informante', TInformanteViewSet, basename='informante')
 router.register(r'origen-demanda', TOrigenDemandaViewSet, basename='origen-demanda')
 router.register(r'sub-origen-demanda', TSubOrigenDemandaViewSet, basename='sub-origen-demanda')

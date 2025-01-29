@@ -9,7 +9,6 @@ from .Localizacion import (
     TLocalizacionHistory
 )
 from .Demanda import  (
-    TInstitucionDemanda, 
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 

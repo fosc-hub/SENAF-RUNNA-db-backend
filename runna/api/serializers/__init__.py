@@ -8,7 +8,6 @@ from .LocalizacionSerializer import (
     TLocalizacionHistorySerializer,
 )
 from .DemandaSerializer import (
-    TInstitucionDemandaSerializer,
     TOrigenDemandaSerializer,
     TSubOrigenDemandaSerializer,
     TInformanteSerializer,

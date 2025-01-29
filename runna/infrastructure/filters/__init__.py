@@ -8,7 +8,6 @@ from .LocalizacionFilter import (
     TLocalizacionHistoryFilter
 )
 from .DemandaFilters import (
-    TInstitucionDemandaFilter,
     TOrigenDemandaFilter,
     TSubOrigenDemandaFilter,
     TInformanteFilter, 

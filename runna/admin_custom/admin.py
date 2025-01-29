@@ -55,7 +55,6 @@ from infrastructure.models import (
     TLocalizacion,
 )
 from infrastructure.models import  (
-    TInstitucionDemanda, 
     TOrigenDemanda,
     TSubOrigenDemanda, 
     TInformante, 
@@ -148,13 +147,6 @@ class TLocalizacionAdmin(NoDeleteAdmin):
 
 
 # ===== Demanda related models ===== #
-
-@admin.register(TInstitucionDemanda)
-class TInstitucionDemandaAdmin(ModelAdmin):
-    list_display = ('nombre', 'mail', 'telefono', 'localizacion')
-    list_filter = ('localizacion',)
-    search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
-
 
 @admin.register(TOrigenDemanda)
 class TOrigenDemandaAdmin(ModelAdmin):

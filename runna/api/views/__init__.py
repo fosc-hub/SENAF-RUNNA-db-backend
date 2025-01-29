@@ -8,8 +8,7 @@ from .LocalizacionView import (
     TLocalizacionViewSet, 
     TLocalizacionHistoryViewSet
 )
-from .DemandaView import (
-    TInstitucionDemandaViewSet, 
+from .DemandaView import ( 
     TOrigenDemandaViewSet,
     TSubOrigenDemandaViewSet, 
     TInformanteViewSet, 
