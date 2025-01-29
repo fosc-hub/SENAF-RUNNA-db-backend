@@ -19,13 +19,15 @@ class TCategoriaMotivo(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
-
-    
-    
+ 
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Categoria de Motivo')
         verbose_name_plural = _('Categorias de Motivo')
+    
+    def __str__(self):
+        return super().__str__()
+        
 
 class TCategoriaSubmotivo(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
@@ -33,13 +35,14 @@ class TCategoriaSubmotivo(models.Model):
     peso = models.IntegerField(null=False, blank=False)
 
     motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Categoria de Sub-Motivo')
         verbose_name_plural = _('Categorias de Sub-Motivo')
+
+    def __str__(self):
+        return super().__str__()
 
 
 class TGravedadVulneracion(models.Model):
@@ -47,25 +50,27 @@ class TGravedadVulneracion(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
-    
-    
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Gravedad de Vulneracion')
         verbose_name_plural = _('Gravedades de Vulneracion')
+
+    def __str__(self):
+        return super().__str__()
 
 
 class TUrgenciaVulneracion(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Urgencia de Vulneracion')
         verbose_name_plural = _('Urgencias de Vulneracion')
+    
+    def __str__(self):
+        return super().__str__()
 
 
 class TCondicionesVulnerabilidad(models.Model):
@@ -74,26 +79,29 @@ class TCondicionesVulnerabilidad(models.Model):
     peso = models.IntegerField(null=False, blank=False)
     nnya = models.BooleanField(null=False, blank=False)
     adulto = models.BooleanField(null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Condicion de Vulnerabilidad')
         verbose_name_plural = _('Condiciones de Vulnerabilidad')
+    
+    def __str__(self):
+        return super().__str__()
 
 
 class TMotivoIntervencion(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Motivo de Intervencion')
         verbose_name_plural = _('Motivos de Intervencion')
+    
+    def __str__(self):
+        return super().__str__()
+
 
 class TVulneracionBase(models.Model):
     principal_demanda = models.BooleanField(default=False)
@@ -124,6 +132,9 @@ class TVulneracionBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+    
+    def __str__(self):
+        return f"{self.categoria_motivo} {self.categoria_submotivo} - {self.nnya} - {self.autor_dv}"
 
 class TVulneracion(TVulneracionBase):
 

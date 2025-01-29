@@ -25,6 +25,9 @@ class TLocalizacionPersonaBase(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"{self.persona} {self.localizacion} - {self.principal}"    
+
 
 class TLocalizacionPersona(TLocalizacionPersonaBase):
 
@@ -88,6 +91,9 @@ class TDemandaPersonaBase(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"{self.demanda} {self.persona} - {self.supuesto_autordv} - {self.supuesto_autordv_principal} - {self.nnya_principal}"
+
 
 class TDemandaPersona(TDemandaPersonaBase):
 
@@ -144,6 +150,9 @@ class TDemandaAsignadoBase(models.Model):
 
     class Meta:
         abstract = True
+    
+    def __str__(self):
+        return f"{self.demanda} {self.user} - {self.esta_activo}"
 
 
 class TDemandaAsignado(TDemandaAsignadoBase):
@@ -185,6 +194,8 @@ class TDemandaVinculadaBase(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"{self.demanda_1} {self.demanda_2}"
 
 class TDemandaVinculada(TDemandaVinculadaBase):
 
@@ -225,25 +236,26 @@ class TLegajoAsignado(models.Model):
     legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
     user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
 
-    
-    
     class Meta:
         # unique_together = ('legajo', 'user')
         app_label = 'infrastructure'
         verbose_name = _('Asignacion de Legajo')
         verbose_name_plural = _('Asignaciones de Legajos')
 
+    def __str__(self):
+        return f"{self.legajo} {self.user} - {self.esta_activo}"
+
 
 class TVinculoPersona(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Vinculo de Personas')
         verbose_name_plural = _('Vinculos de Personas')
 
+    def __str__(self):
+        return f"{self.nombre}"
 
 class TVinculoPersonaPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
@@ -257,6 +269,9 @@ class TVinculoPersonaPersonaBase(models.Model):
 
     class Meta:
         abstract = True
+    
+    def __str__(self):
+        return f"{self.persona_1} {self.persona_2} - {self.vinculo} - {self.conviven} - {self.autordv} - {self.garantiza_proteccion}"
 
 
 class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
@@ -306,6 +321,9 @@ class TPersonaCondicionesVulnerabilidadBase(models.Model):
 
     class Meta:
         abstract = True
+    
+    def __str__(self):
+        return f"{self.persona} {self.condicion_vulnerabilidad} - {self.si_no} - {self.demanda}"
 
 
 class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
@@ -345,6 +363,9 @@ class TDemandaMotivoIntervencionBase(models.Model):
 
     class Meta:
         abstract = True
+    
+    def __str__(self):
+        return f"{self.demanda} {self.motivo_intervencion} - {self.si_no}"
 
 
 class TDemandaMotivoIntervencion(TDemandaMotivoIntervencionBase):
