@@ -1,0 +1,288 @@
+{
+    "TOrigenDemanda":[
+        {
+            "id": 1,
+            "nombre": "Fiscalía"
+        },
+        {
+            "id": 2,
+            "nombre": "Policía"
+        },
+        {
+            "id": 3,
+            "nombre": "Juzgado"
+        },
+        {
+            "id": 4,
+            "nombre": "Otro"
+        }
+    ],
+    "TSubOrigenDemanda":[
+        {
+            "id": 1,
+            "nombre": "SubFiscalía",
+            "origen": 1
+        },
+        {
+            "id": 2,
+            "nombre": "SubPolicía",
+            "origen": 2
+        },
+        {
+            "id": 3,
+            "nombre": "SubJuzgado",
+            "origen": 3
+        },
+        {
+            "id": 4,
+            "nombre": "SubOtro",
+            "origen": 4
+        }
+    ],
+    "TInstitucionEducativa":[
+        {
+            "id": 1,
+            "nombre": "Instituto A",
+            "mail": "contacto@institutoa.com",
+            "telefono": 123456789,
+            "localizacion": 1
+        },
+        {
+            "id": 2,
+            "nombre": "Colegio B",
+            "mail": "info@colegiob.com",
+            "telefono": 987654321,
+            "localizacion": 2
+        },
+        {
+            "id": 3,
+            "nombre": "Escuela C",
+            "mail": "contacto@escuelac.com",
+            "telefono": 456123789,
+            "localizacion": 3
+        }
+    ],
+    "TInstitucionSanitaria":[
+        {
+            "id": 1,
+            "nombre": "Hospital X",
+            "mail": "contacto@hospitalx.com",
+            "telefono": 321654987,
+            "localizacion": 1
+        },
+        {
+            "id": 2,
+            "nombre": "Clínica Y",
+            "mail": "info@clinicay.com",
+            "telefono": 654987321,
+            "localizacion": 2
+        },
+        {
+            "id": 3,
+            "nombre": "Centro de Salud Z",
+            "mail": "contacto@centrodesaludz.com",
+            "telefono": 789321654,
+            "localizacion": 3
+        }
+    ],
+    "TCategoriaMotivo":[ /* Motivos de vulneracion */
+        {
+            "id": 1,
+            "nombre": "Motivo A",
+            "descripcion": "Descripción del motivo A",
+            "peso": 10
+        },
+        {
+            "id": 2,
+            "nombre": "Motivo B",
+            "descripcion": "Descripción del motivo B",
+            "peso": 20
+        },
+        {
+            "id": 3,
+            "nombre": "Motivo C",
+            "descripcion": "Descripción del motivo C",
+            "peso": 30
+        }
+    ],
+    "TCategoriaSubmotivo":[
+        {
+            "id": 1,
+            "nombre": "Submotivo A",
+            "descripcion": "Descripción del submotivo A",
+            "peso": 5,
+            "motivo": 1
+        },
+        {
+            "id": 2,
+            "nombre": "Submotivo B",
+            "descripcion": "Descripción del submotivo B",
+            "peso": 15,
+            "motivo": 2
+        },
+        {
+            "id": 3,
+            "nombre": "Submotivo C",
+            "descripcion": "Descripción del submotivo C",
+            "peso": 25,
+            "motivo": 3
+        }
+    ],
+    "TGravedadVulneracion":[
+        {
+            "id": 1,
+            "nombre": "Alta",
+            "descripcion": "Gravedad alta",
+            "peso": 100
+        },
+        {
+            "id": 2,
+            "nombre": "Media",
+            "descripcion": "Gravedad media",
+            "peso": 50
+        },
+        {
+            "id": 3,
+            "nombre": "Baja",
+            "descripcion": "Gravedad baja",
+            "peso": 10
+        }
+    ],
+    "TUrgenciaVulneracion":[
+        {
+            "id": 1,
+            "nombre": "Urgente",
+            "descripcion": "Requiere atención inmediata",
+            "peso": 100
+        },
+        {
+            "id": 2,
+            "nombre": "Moderada",
+            "descripcion": "Requiere atención en corto plazo",
+            "peso": 50
+        },
+        {
+            "id": 3,
+            "nombre": "Leve",
+            "descripcion": "Puede esperar",
+            "peso": 10
+        }
+    ],
+    "TCondicionesVulnerabilidad":[
+        {
+            "id": 1,
+            "nombre": "Condición A",
+            "descripcion": "Descripción de la condición A",
+            "peso": 10,
+            "nnya": true,
+            "adulto": false
+        },
+        {
+            "id": 2,
+            "nombre": "Condición B",
+            "descripcion": "Descripción de la condición B",
+            "peso": 20,
+            "nnya": false,
+            "adulto": true
+        },
+        {
+            "id": 3,
+            "nombre": "Condición C",
+            "descripcion": "Descripción de la condición C",
+            "peso": 30,
+            "nnya": true,
+            "adulto": true
+        }
+    ],
+    "TMotivoIntervencion":[
+        {
+            "id": 1,
+            "nombre": "Intervención A",
+            "descripcion": "Descripción de la intervención A",
+            "peso": 10
+        },
+        {
+            "id": 2,
+            "nombre": "Intervención B",
+            "descripcion": "Descripción de la intervención B",
+            "peso": 20
+        },
+        {
+            "id": 3,
+            "nombre": "Intervención C",
+            "descripcion": "Descripción de la intervención C",
+            "peso": 30
+        }
+    ],
+    "TVinculoPersona":[
+        {
+            "id": 1,
+            "nombre": "Padre"
+        },
+        {
+            "id": 2,
+            "nombre": "Madre"
+        },
+        {
+            "id": 3,
+            "nombre": "Hermano"
+        }
+    ],
+    "TActividadTipo":[
+        {
+            "id": 1,
+            "nombre": "Tipo A"
+        },
+        {
+            "id": 2,
+            "nombre": "Tipo B"
+        },
+        {
+            "id": 3,
+            "nombre": "Tipo C"
+        }
+    ],
+    "TInstitucionActividad":[
+        {
+            "id": 1,
+            "nombre": "Actividad 1",
+            "mail": "actividad1@institucion.com",
+            "telefono": 123456789,
+            "localizacion": 1
+        },
+        {
+            "id": 2,
+            "nombre": "Actividad 2",
+            "mail": "actividad2@institucion.com",
+            "telefono": 987654321,
+            "localizacion": 2
+        },
+        {
+            "id": 3,
+            "nombre": "Actividad 3",
+            "mail": "actividad3@institucion.com",
+            "telefono": 456123789,
+            "localizacion": 3
+        }
+    ],
+    "TIndicadoresValoracion":[
+        {
+            "id": 1,
+            "nombre": "Indicador A",
+            "descripcion": "Descripción del indicador A",
+            "peso": 10
+        },
+        {
+            "id": 2,
+            "nombre": "Indicador B",
+            "descripcion": "Descripción del indicador B",
+            "peso": 20
+        },
+        {
+            "id": 3,
+            "nombre": "Indicador C",
+            "descripcion": "Descripción del indicador C",
+            "peso": 30
+        }
+    ]
+}
