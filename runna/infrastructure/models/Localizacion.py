@@ -6,8 +6,6 @@ from .BaseHistory import BaseHistory
 # The following models are used to represent the location of a user in the system.
 class TProvincia(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
@@ -16,12 +14,12 @@ class TProvincia(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
 class TDepartamento(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
     provincia = models.ForeignKey('infrastructure.TProvincia', on_delete=models.CASCADE)
-
-
 
     class Meta:
         app_label = 'infrastructure'
@@ -29,26 +27,25 @@ class TDepartamento(models.Model):
         verbose_name_plural = _('Departamentos')
 
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} - {self.provincia}"
+
+
 class TLocalidad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
     departamento = models.ForeignKey('infrastructure.TDepartamento', on_delete=models.CASCADE)
 
-    
-
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Localidad')
         verbose_name_plural = _('Localidades')
-
+    
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} - {self.departamento}"
+
 class TBarrio(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
-
-    
 
     class Meta:
         app_label = 'infrastructure'
@@ -56,12 +53,12 @@ class TBarrio(models.Model):
         verbose_name_plural = _('Barrios')
 
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} - {self.localidad}"
+
+
 class TCPC(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE)
-
-    
 
     class Meta:
         app_label = 'infrastructure'
@@ -69,7 +66,8 @@ class TCPC(models.Model):
         verbose_name_plural = _('CPCs')
         
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} - {self.localidad}"
+
 
 class TLocalizacionBase(models.Model):
     deleted = models.BooleanField(default=False)
@@ -94,6 +92,9 @@ class TLocalizacionBase(models.Model):
 
     class Meta:
         abstract = True
+    
+    def __str__(self):
+        return f"{self.calle} - {self.tipo_calle} - {self.piso_depto} - {self.lote} - {self.mza} - {self.casa_nro} - {self.referencia_geo} - {self.barrio} - {self.localidad} - {self.cpc}"
 
 class TLocalizacion(TLocalizacionBase):
 

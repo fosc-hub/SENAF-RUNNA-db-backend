@@ -56,6 +56,8 @@ class TPersonaBase(models.Model):
             raise ValidationError(f"({self.nombre} {self.apellido}) El DNI debe ser nulo si la situacion no es valido")
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f"{self.nombre} - {self.apellido} - {self.fecha_nacimiento} - {self.edad_aproximada} - {self.dni} - {self.situacion_dni} - {self.genero} - {self.observaciones} - {self.adulto} - {self.nnya}"
 
 class TPersona(TPersonaBase):
 
@@ -97,6 +99,9 @@ class TInstitucionEducativa(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Institucion Educativa')
         verbose_name_plural = _('Instituciones Educativas')
+        
+    def __str__(self):
+        return f"{self.nombre} - {self.mail} - {self.telefono}"
 
 
 class TNNyAEducacionBase(models.Model):
@@ -125,6 +130,8 @@ class TNNyAEducacionBase(models.Model):
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
 
+    def __str__(self):
+        return f"{self.curso} - {self.nivel} - {self.turno} - {self.comentarios}"
 
 class TNNyAEducacion(TNNyAEducacionBase):
 
@@ -162,8 +169,6 @@ class TInstitucionSanitaria(models.Model):
     telefono = models.IntegerField(null=True, blank=True)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
@@ -180,6 +185,9 @@ class TNNyASaludBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+        
+    def __str__(self):
+        return f"{self.observaciones} - {self.institucion_sanitaria} - {self.nnya}"
 
 
 class TNNyASalud(TNNyASaludBase):
@@ -223,6 +231,9 @@ class TNNyAScoreBase(models.Model):
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
 
+    def __str__(self):
+        return f"{self.ultima_actualizacion} - {self.score} - {self.score_condiciones_vulnerabilidad} - {self.score_vulneracion} - {self.nnya}"
+
 
 class TNNyAScore(TNNyAScoreBase):
 
@@ -252,6 +263,9 @@ class TLegajoBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+    
+    def __str__(self):
+        return f"{self.info_legajo} - {self.nnya}"
 
 
 class TLegajo(TLegajoBase):

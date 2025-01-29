@@ -18,14 +18,14 @@ TDecision
 
 class TActividadTipo(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Tipo de Actividad')
         verbose_name_plural = _('Tipos de Actividades')
 
+    def __str__(self):
+        return f"{self.nombre}"
 
 class TInstitucionActividad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -34,12 +34,13 @@ class TInstitucionActividad(models.Model):
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
-    
-    
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Institucion de Actividad')
         verbose_name_plural = _('Instituciones de Actividades')
+
+    def __str__(self):
+        return f"{self.nombre} - {self.mail}"
 
 
 class TActividadBase(models.Model):
@@ -51,6 +52,9 @@ class TActividadBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+
+    def __str__(self):
+        return f"{self.fecha_y_hora} - {self.descripcion} - {self.demanda} - {self.tipo} - {self.institucion}"
 
 
 class TActividad(TActividadBase):
@@ -86,20 +90,23 @@ class TRespuesta(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Respuesta')
         verbose_name_plural = _('Respuestas')
+    
+    def __str__(self):
+        return f"{self.fecha_y_hora} - {self.mail} - {self.mensaje} - {self.demanda} - {self.institucion}"
 
 
 class TIndicadoresValoracion(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(default=0)
-
-    
     
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Indicador de Valoracion')
         verbose_name_plural = _('Indicadores de Valoracion')
 
+    def __str__(self):
+        return f"{self.nombre} - {self.descripcion} - {self.peso}"
 
 class TEvaluacionesBase(models.Model):
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
@@ -108,6 +115,9 @@ class TEvaluacionesBase(models.Model):
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
+    
+    def __str__(self):
+        return f"{self.demanda} {self.indicador} - {self.si_no}"
 
 
 class TEvaluaciones(TEvaluacionesBase):
@@ -174,3 +184,6 @@ class TDecision(models.Model):
             self.demanda.save()
 
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.fecha_y_hora} - {self.justificacion} - {self.decision} - {self.demanda} - {self.nnya}"
