@@ -74,3 +74,6 @@ from .EvaluacionSerializer import (
     TActividadHistorySerializer,
     TEvaluacionesHistorySerializer
 )
+from .ComposedSerializer import (
+    ComposedDemandaSerializer
+)
