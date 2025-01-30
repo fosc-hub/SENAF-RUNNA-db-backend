@@ -1,3 +1,6 @@
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.response import Response
@@ -15,27 +18,13 @@ class MesaDeEntradaPagination(PageNumberPagination):
     max_page_size = 100  # Maximum limit
 
 
-class MesaDeEntradaView(APIView):
+class MesaDeEntradaListView(generics.ListAPIView):
+    queryset = TDemanda.objects.all()
+    serializer_class = MesaDeEntradaSerializer
     pagination_class = MesaDeEntradaPagination
 
-    def get(self, request, *args, **kwargs):
-        demanda_id = self.kwargs.get("pk")
+    # Enable filtering and ordering
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ['fecha_creacion', 'estado_demanda']  # Fields allowed for sorting
+    ordering = ['-fecha_creacion']  # Default sorting (descending)
 
-        if demanda_id:
-            # Fetch a single demanda by ID
-            try:
-                demanda = TDemanda.objects.get(pk=demanda_id)
-                serializer = MesaDeEntradaSerializer(demanda)
-                return Response(serializer.data)
-            except TDemanda.DoesNotExist:
-                return Response({"error": "Demanda not found"}, status=404)
-        else:
-            # Fetch all demand instances
-            demandas = TDemanda.objects.all()
-            
-            # Apply pagination
-            paginator = MesaDeEntradaPagination()
-            paginated_demandas = paginator.paginate_queryset(demandas, request)
-            serializer = MesaDeEntradaSerializer(paginated_demandas, many=True)
-            return paginator.get_paginated_response(serializer.data)
-    

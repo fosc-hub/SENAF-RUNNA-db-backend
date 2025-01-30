@@ -79,5 +79,5 @@ from .SuggestDecision import (
     SuggestDecisionView
 )
 from .ComposedView import (
-    MesaDeEntradaView
+    MesaDeEntradaListView
 )
