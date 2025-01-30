@@ -37,7 +37,9 @@ class CustomUserAdmin(ModelAdmin, UserAdmin):
                 'equipo',
                 'is_active',
                 'is_staff',
+                'is_superuser',
                 'groups',
+                'user_permissions',
             ),
         }),
     )
@@ -46,7 +48,6 @@ class CustomUserAdmin(ModelAdmin, UserAdmin):
     list_filter = ('is_staff', 'is_active', 'groups')
     search_fields = ('username', 'email')
     ordering = ('email',)
-
 
 """
 DESCOMENTAR ESTO 
