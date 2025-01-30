@@ -75,6 +75,9 @@ from api.views import (
     TActividadHistoryViewSet,
     TEvaluacionesHistoryViewSet
 )
+from api.views import (
+    MesaDeEntradaView
+)
 from api.views import SuggestDecisionView
 from django.urls import path, include
 
@@ -152,4 +155,6 @@ router.register(r'evaluaciones-history', TEvaluacionesHistoryViewSet, basename='
 urlpatterns = [
     path('', include(router.urls)),  # Include all router URLs
     path('suggest-decision/<int:nnya_id>/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
+    path('mesa-de-entrada/', MesaDeEntradaView.as_view(), name='mesa-de-entrada-all'),  # List all
+    path('mesa-de-entrada/<int:pk>/', MesaDeEntradaView.as_view(), name='mesa-de-entrada-single'),  # Retrieve single
 ]

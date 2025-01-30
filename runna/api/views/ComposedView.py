@@ -4,18 +4,24 @@ from infrastructure.models import (
     TDemanda,
 )
 from api.serializers import (
-    ComposedDemandaSerializer
+    MesaDeEntradaSerializer
 )
 
-class ComposedDemandaView(APIView):
+class MesaDeEntradaView(APIView):
     def get(self, request, *args, **kwargs):
         demanda_id = self.kwargs.get("pk")
-        principal = self.request.query_params.get("principal", None)
-        estado_demanda = self.request.query_params.get("estado_demanda", None)
-        
-        try:
-            demanda = TDemanda.objects.get(pk=demanda_id, principal=principal, estado_demanda=estado_demanda)
-            serializer = ComposedDemandaSerializer(demanda)
+
+        if demanda_id:
+            # Fetch a single demanda by ID
+            try:
+                demanda = TDemanda.objects.get(pk=demanda_id)
+                serializer = MesaDeEntradaSerializer(demanda)
+                return Response(serializer.data)
+            except TDemanda.DoesNotExist:
+                return Response({"error": "Demanda not found"}, status=404)
+        else:
+            # Fetch all demand instances
+            demandas = TDemanda.objects.all()
+            serializer = MesaDeEntradaSerializer(demandas, many=True)
             return Response(serializer.data)
-        except TDemanda.DoesNotExist:
-            return Response({"error": "Demanda not found"}, status=404)
+    

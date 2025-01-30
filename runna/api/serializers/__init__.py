@@ -75,5 +75,5 @@ from .EvaluacionSerializer import (
     TEvaluacionesHistorySerializer
 )
 from .ComposedSerializer import (
-    ComposedDemandaSerializer
+    MesaDeEntradaSerializer
 )
