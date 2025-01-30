@@ -78,3 +78,6 @@ from .EvaluacionView import (
 from .SuggestDecision import (
     SuggestDecisionView
 )
+from .ComposedView import (
+    MesaDeEntradaListView
+)
