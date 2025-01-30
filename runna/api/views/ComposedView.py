@@ -1,3 +1,5 @@
+from rest_framework.pagination import PageNumberPagination
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from infrastructure.models import (
@@ -7,7 +9,15 @@ from api.serializers import (
     MesaDeEntradaSerializer
 )
 
+class MesaDeEntradaPagination(PageNumberPagination):
+    page_size = 5  # Number of items per page
+    page_size_query_param = 'page_size'  # Allow clients to override the page size
+    max_page_size = 100  # Maximum limit
+
+
 class MesaDeEntradaView(APIView):
+    pagination_class = MesaDeEntradaPagination
+
     def get(self, request, *args, **kwargs):
         demanda_id = self.kwargs.get("pk")
 
@@ -22,6 +32,10 @@ class MesaDeEntradaView(APIView):
         else:
             # Fetch all demand instances
             demandas = TDemanda.objects.all()
-            serializer = MesaDeEntradaSerializer(demandas, many=True)
-            return Response(serializer.data)
+            
+            # Apply pagination
+            paginator = MesaDeEntradaPagination()
+            paginated_demandas = paginator.paginate_queryset(demandas, request)
+            serializer = MesaDeEntradaSerializer(paginated_demandas, many=True)
+            return paginator.get_paginated_response(serializer.data)
     
