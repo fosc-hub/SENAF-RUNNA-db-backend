@@ -5,7 +5,7 @@ from infrastructure.models import (
     TOrigenDemanda,
     TDemandaPersona,
     TPersona,
-    TPrecalificacionDemanda
+    TPrecalificacionDemanda,
 )
 from api.serializers import (
     TDemandaSerializer,
@@ -13,7 +13,19 @@ from api.serializers import (
     TOrigenDemandaSerializer,
     TDemandaPersonaSerializer,
     TPersonaSerializer,
-    TPrecalificacionDemandaSerializer
+    TPrecalificacionDemandaSerializer,
+    TSubOrigenDemandaSerializer,
+    TCategoriaMotivoSerializer,
+    TCategoriaSubmotivoSerializer,
+    TBarrioSerializer,
+    TLocalidadSerializer,
+    TCPCSerializer,
+    TVinculoPersonaSerializer,
+    TCondicionesVulnerabilidadSerializer,
+    TInstitucionEducativaSerializer,
+    TInstitucionSanitariaSerializer,
+    TUrgenciaVulneracionSerializer,
+    TGravedadVulneracionSerializer
 )
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
@@ -49,3 +61,37 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemanda
         fields = '__all__'
+
+
+class ChoiceFieldSerializer(serializers.Serializer):
+    """Serializer for enum choices"""
+    key = serializers.CharField()
+    value = serializers.CharField()
+
+class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
+    """Main serializer to group all dropdown data"""
+    estado_demanda_choices = ChoiceFieldSerializer(many=True)
+    ambito_vulneracion_choices = ChoiceFieldSerializer(many=True)
+    origenes = TOrigenDemandaSerializer(many=True)
+    sub_origenes = TSubOrigenDemandaSerializer(many=True)
+    motivos_ingreso = TCategoriaMotivoSerializer(many=True)
+    submotivos_ingreso = TCategoriaSubmotivoSerializer(many=True)
+    
+    tipo_calle_choices = ChoiceFieldSerializer(many=True)
+    barrios = TBarrioSerializer(many=True)
+    localidades = TLocalidadSerializer(many=True)
+    cpcs = TCPCSerializer(many=True)
+    
+    situacion_dni_choices = ChoiceFieldSerializer(many=True)
+    genero_choices = ChoiceFieldSerializer(many=True)
+    vinculos_choices = TVinculoPersonaSerializer(many=True)
+    condiciones_vulnerabilidad = TCondicionesVulnerabilidadSerializer(many=True)
+    
+    nivel_choices = ChoiceFieldSerializer(many=True)
+    turno_choices = ChoiceFieldSerializer(many=True)
+    instituciones_educativas = TInstitucionEducativaSerializer(many=True)
+    
+    instituciones_sanitarias = TInstitucionSanitariaSerializer(many=True)
+    
+    gravedades_vulneracion = TGravedadVulneracionSerializer(many=True)
+    urgencias_vulneracion = TUrgenciaVulneracionSerializer(many=True)

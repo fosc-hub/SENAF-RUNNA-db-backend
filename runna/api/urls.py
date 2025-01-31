@@ -76,7 +76,8 @@ from api.views import (
     TEvaluacionesHistoryViewSet
 )
 from api.views import (
-    MesaDeEntradaListView
+    MesaDeEntradaListView,
+    NuevoRegistroFormDropdownsView
 )
 from api.views import SuggestDecisionView
 from django.urls import path, include
@@ -157,4 +158,5 @@ urlpatterns = [
     path('suggest-decision/<int:nnya_id>/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
     path('mesa-de-entrada/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-all'),  # List all
     path('mesa-de-entrada/<int:pk>/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-single'),  # Retrieve single
+    path('nuevo-registro-form-dropdowns/', NuevoRegistroFormDropdownsView.as_view(), name='nuevo-registro-form-dropdowns'),  # Retrieve choices
 ]
