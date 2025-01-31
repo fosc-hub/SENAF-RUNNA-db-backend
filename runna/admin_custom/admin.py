@@ -182,14 +182,12 @@ class TSubOrigenDemandaAdmin(ModelAdmin):
 
 @admin.register(TInformante)
 class TInformanteAdmin(NoDeleteAdmin):
-    fields = ('nombre', 'apellido', 'telefono', 'mail')
     list_display = ('nombre', 'apellido', 'telefono', 'mail')
     search_fields = ('nombre', 'apellido', 'mail', 'telefono')
 
 
 @admin.register(TDemanda)
 class TDemandaAdmin(NoDeleteAdmin):
-    fields = ( "fecha_creacion", "origen", "sub_origen", "institucion", "localizacion", "informante", "nro_notificacion_102", "nro_sac", "nro_suac", "nro_historia_clinica", "nro_oficio_web", "descripcion", "asignado", "constatacion", "evaluacion", "archivado", "completado")
     list_display = ('id', 'nro_notificacion_102', 'descripcion', 'fecha_creacion', 'ultima_actualizacion', "origen", "sub_origen")
     list_filter = ('fecha_creacion', 'localizacion', 'informante', "origen", "sub_origen")
     search_fields = ('descripcion', 'nro_notificacion_102', 'informante__nombre', 'localizacion__nombre')
@@ -205,7 +203,6 @@ class TInforme101Admin(NoDeleteAdmin):
 
 @admin.register(TPrecalificacionDemanda)
 class TPrecalificacionDemandaAdmin(NoDeleteAdmin):
-    fields = ('fecha_y_hora', 'descripcion', 'demanda')
     list_display = ('fecha_y_hora', 'descripcion', 'ultima_actualizacion', 'demanda')
     list_filter = ('fecha_y_hora',)
     search_fields = ('descripcion', 'demanda__nro_notificacion_102')
@@ -213,7 +210,6 @@ class TPrecalificacionDemandaAdmin(NoDeleteAdmin):
 
 @admin.register(TDemandaScore)
 class TDemandaScoreAdmin(NoDeleteAdmin):
-    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'demanda')
     list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'score_motivos_intervencion', 'score_indicadores_valoracion', 'ultima_actualizacion', 'demanda')
     search_fields = ('demanda__nro_notificacion_102',)
 
@@ -222,7 +218,6 @@ class TDemandaScoreAdmin(NoDeleteAdmin):
 
 @admin.register(TPersona)
 class TPersonaAdmin(NoDeleteAdmin):
-    fields = ('nombre', 'apellido', 'fecha_nacimiento', 'edad_aproximada', 'dni', 'situacion_dni', 'genero', 'observaciones', 'adulto', 'nnya')
     list_display = ('nombre', 'apellido', 'fecha_nacimiento', 'dni', 'genero', 'adulto', 'nnya', 'deleted')
     list_filter = ('genero', 'adulto', 'nnya', 'deleted')
     search_fields = ('nombre', 'apellido', 'dni')
@@ -230,7 +225,6 @@ class TPersonaAdmin(NoDeleteAdmin):
 
 @admin.register(TInstitucionEducativa)
 class TInstitucionEducativaAdmin(ModelAdmin):
-    fields = ('nombre', 'mail', 'telefono', 'localizacion')
     list_display = ('nombre', 'mail', 'telefono', 'localizacion')
     list_filter = ('localizacion',)
     search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
@@ -238,7 +232,6 @@ class TInstitucionEducativaAdmin(ModelAdmin):
 
 @admin.register(TNNyAEducacion)
 class TNNyAEducacionAdmin(NoDeleteAdmin):
-    fields = ('curso', 'nivel', 'turno', 'comentarios', 'institucion_educativa', 'nnya')
     list_display = ('curso', 'nivel', 'turno', 'institucion_educativa', 'nnya', 'deleted')
     list_filter = ('nivel', 'turno', 'institucion_educativa', 'deleted')
     search_fields = ('curso', 'institucion_educativa__nombre', 'nnya__nombre')
@@ -246,7 +239,6 @@ class TNNyAEducacionAdmin(NoDeleteAdmin):
 
 @admin.register(TInstitucionSanitaria)
 class TInstitucionSanitariaAdmin(ModelAdmin):
-    fields = ('nombre', 'mail', 'telefono', 'localizacion')
     list_display = ('nombre', 'mail', 'telefono', 'localizacion')
     list_filter = ('localizacion',)
     search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
@@ -254,7 +246,6 @@ class TInstitucionSanitariaAdmin(ModelAdmin):
 
 @admin.register(TNNyASalud)
 class TNNyASaludAdmin(NoDeleteAdmin):
-    fields = ('observaciones', 'institucion_sanitaria', 'nnya')
     list_display = ('institucion_sanitaria', 'nnya', 'deleted')
     list_filter = ('institucion_sanitaria', 'deleted')
     search_fields = ('institucion_sanitaria__nombre', 'nnya__nombre')
@@ -262,14 +253,12 @@ class TNNyASaludAdmin(NoDeleteAdmin):
 
 @admin.register(TNNyAScore)
 class TNNyAScoreAdmin(NoDeleteAdmin):
-    fields = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'nnya')
     list_display = ('score', 'score_condiciones_vulnerabilidad', 'score_vulneracion', 'nnya')
     search_fields = ('nnya__nombre',)
 
 
 @admin.register(TLegajo)
 class TLegajoAdmin(NoDeleteAdmin):
-    fields = ('info_legajo', 'nnya')
     list_display = ('info_legajo', 'nnya')
     search_fields = ('nnya__nombre',)
 
@@ -278,7 +267,6 @@ class TLegajoAdmin(NoDeleteAdmin):
 
 @admin.register(TCategoriaMotivo)
 class TCategoriaMotivoAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso')
     list_display = ('nombre', 'descripcion', 'peso')
     list_filter = ('peso',)
     search_fields = ('nombre', 'descripcion')
@@ -286,7 +274,6 @@ class TCategoriaMotivoAdmin(ModelAdmin):
 
 @admin.register(TCategoriaSubmotivo)
 class TCategoriaSubmotivoAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso', 'motivo')
     list_display = ('nombre', 'descripcion', 'peso', 'motivo')
     list_filter = ('peso', 'motivo')
     search_fields = ('nombre', 'descripcion', 'motivo__nombre')
@@ -294,7 +281,6 @@ class TCategoriaSubmotivoAdmin(ModelAdmin):
 
 @admin.register(TGravedadVulneracion)
 class TGravedadVulneracionAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso')
     list_display = ('nombre', 'descripcion', 'peso')
     list_filter = ('peso',)
     search_fields = ('nombre', 'descripcion')
@@ -302,7 +288,6 @@ class TGravedadVulneracionAdmin(ModelAdmin):
 
 @admin.register(TUrgenciaVulneracion)
 class TUrgenciaVulneracionAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso')
     list_display = ('nombre', 'descripcion', 'peso')
     list_filter = ('peso',)
     search_fields = ('nombre', 'descripcion')
@@ -310,7 +295,6 @@ class TUrgenciaVulneracionAdmin(ModelAdmin):
 
 @admin.register(TCondicionesVulnerabilidad)
 class TCondicionesVulnerabilidadAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso', 'nnya', 'adulto')
     list_display = ('nombre', 'descripcion', 'peso', 'nnya', 'adulto')
     list_filter = ('peso', 'nnya', 'adulto')
     search_fields = ('nombre', 'descripcion')
@@ -318,7 +302,6 @@ class TCondicionesVulnerabilidadAdmin(ModelAdmin):
 
 @admin.register(TMotivoIntervencion)
 class TMotivoIntervencionAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso')
     list_display = ('nombre', 'descripcion', 'peso')
     list_filter = ('peso',)
     search_fields = ('nombre', 'descripcion')
@@ -326,7 +309,6 @@ class TMotivoIntervencionAdmin(ModelAdmin):
 
 @admin.register(TVulneracion)
 class TVulneracionAdmin(NoDeleteAdmin):
-    fields = ('principal_demanda', 'transcurre_actualidad', 'sumatoria_de_pesos', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
     list_display = ('principal_demanda', 'transcurre_actualidad', 'sumatoria_de_pesos', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
     list_filter = ('principal_demanda', 'transcurre_actualidad', 'demanda', 'nnya', 'autor_dv', 'categoria_motivo', 'categoria_submotivo', 'gravedad_vulneracion', 'urgencia_vulneracion')
     search_fields = ('demanda__nro_notificacion_102', 'nnya__nombre', 'autor_dv__nombre', 'categoria_motivo__nombre', 'categoria_submotivo__nombre', 'gravedad_vulneracion__nombre', 'urgencia_vulneracion__nombre')
@@ -338,7 +320,6 @@ class TVulneracionAdmin(NoDeleteAdmin):
 
 @admin.register(TLocalizacionPersona)
 class TLocalizacionPersonaAdmin(NoDeleteAdmin):
-    fields = ('persona', 'localizacion', 'principal')
     list_display = ('persona', 'localizacion', 'principal', 'deleted')
     list_filter = ('principal', 'deleted')
     search_fields = ('persona__nombre', 'localizacion__nombre')
@@ -346,7 +327,6 @@ class TLocalizacionPersonaAdmin(NoDeleteAdmin):
 
 @admin.register(TDemandaPersona)
 class TDemandaPersonaAdmin(NoDeleteAdmin):
-    fields = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'demanda', 'persona')
     list_display = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'demanda', 'persona', 'deleted')
     list_filter = ('conviviente', 'supuesto_autordv', 'supuesto_autordv_principal', 'nnya_principal', 'deleted')
     search_fields = ('demanda__nro_notificacion_102', 'persona__nombre')
@@ -354,7 +334,6 @@ class TDemandaPersonaAdmin(NoDeleteAdmin):
 
 @admin.register(TDemandaAsignado)
 class TDemandaAsignadoAdmin(NoDeleteAdmin):
-    fields = ('esta_activo', 'recibido', 'comentarios', 'demanda', 'user')
     list_display = ('esta_activo', 'recibido', 'demanda', 'user')
     list_filter = ('esta_activo', 'recibido')
     search_fields = ('demanda__nro_notificacion_102', 'user__username')
@@ -362,7 +341,6 @@ class TDemandaAsignadoAdmin(NoDeleteAdmin):
 
 @admin.register(TDemandaVinculada)
 class TDemandaVinculadaAdmin(NoDeleteAdmin):
-    fields = ('demanda_1', 'demanda_2')
     list_display = ('demanda_1', 'demanda_2', 'deleted')
     list_filter = ('deleted',)
     search_fields = ('demanda_1__nro_notificacion_102', 'demanda_2__nro_notificacion_102')
@@ -370,7 +348,6 @@ class TDemandaVinculadaAdmin(NoDeleteAdmin):
 
 @admin.register(TLegajoAsignado)
 class TLegajoAsignadoAdmin(NoDeleteAdmin):
-    fields = ('esta_activo', 'recibido', 'comentarios', 'legajo', 'user')
     list_display = ('esta_activo', 'recibido', 'legajo', 'user')
     list_filter = ('esta_activo', 'recibido')
     search_fields = ('legajo__info_legajo', 'user__username')
@@ -378,14 +355,12 @@ class TLegajoAsignadoAdmin(NoDeleteAdmin):
 
 @admin.register(TVinculoPersona)
 class TVinculoPersonaAdmin(ModelAdmin):
-    fields = ('nombre',)
     list_display = ('nombre',)
     search_fields = ('nombre',)
 
 
 @admin.register(TVinculoPersonaPersona)
 class TVinculoPersonaPersonaAdmin(NoDeleteAdmin):
-    fields = ('conviven', 'autordv', 'garantiza_proteccion', 'persona_1', 'persona_2', 'vinculo')
     list_display = ('conviven', 'autordv', 'garantiza_proteccion', 'persona_1', 'persona_2', 'vinculo', 'deleted')
     list_filter = ('conviven', 'autordv', 'garantiza_proteccion', 'deleted')
     search_fields = ('persona_1__nombre', 'persona_2__nombre', 'vinculo__nombre')
@@ -393,7 +368,6 @@ class TVinculoPersonaPersonaAdmin(NoDeleteAdmin):
 
 @admin.register(TPersonaCondicionesVulnerabilidad)
 class TPersonaCondicionesVulnerabilidadAdmin(NoDeleteAdmin):
-    fields = ('si_no', 'persona', 'condicion_vulnerabilidad', 'demanda')
     list_display = ('si_no', 'persona', 'condicion_vulnerabilidad', 'demanda')
     list_filter = ('si_no', 'condicion_vulnerabilidad')
     search_fields = ('persona__nombre', 'condicion_vulnerabilidad__nombre', 'demanda__nro_notificacion_102')
@@ -401,7 +375,6 @@ class TPersonaCondicionesVulnerabilidadAdmin(NoDeleteAdmin):
 
 @admin.register(TDemandaMotivoIntervencion)
 class TDemandaMotivoIntervencionAdmin(NoDeleteAdmin):
-    fields = ('si_no', 'demanda', 'motivo_intervencion')
     list_display = ('si_no', 'demanda', 'motivo_intervencion')
     list_filter = ('si_no', 'motivo_intervencion')
     search_fields = ('demanda__nro_notificacion_102', 'motivo_intervencion__nombre')
@@ -412,14 +385,12 @@ class TDemandaMotivoIntervencionAdmin(NoDeleteAdmin):
 
 @admin.register(TActividadTipo)
 class TActividadTipoAdmin(ModelAdmin):
-    fields = ('nombre',)
     list_display = ('nombre',)
     search_fields = ('nombre',)
 
 
 @admin.register(TInstitucionActividad)
 class TInstitucionActividadAdmin(ModelAdmin):
-    fields = ('nombre', 'mail', 'telefono', 'localizacion')
     list_display = ('nombre', 'mail', 'telefono', 'localizacion')
     list_filter = ('localizacion',)
     search_fields = ('nombre', 'mail', 'telefono', 'localizacion__nombre')
@@ -427,7 +398,6 @@ class TInstitucionActividadAdmin(ModelAdmin):
 
 @admin.register(TActividad)
 class TActividadAdmin(NoDeleteAdmin):
-    fields = ('descripcion', 'demanda', 'tipo', 'institucion')
     list_display = ('fecha_y_hora', 'descripcion', 'demanda', 'tipo', 'institucion')
     list_filter = ('fecha_y_hora', 'tipo', 'institucion')
     search_fields = ('descripcion', 'demanda__nro_notificacion_102', 'tipo__nombre', 'institucion__nombre')
@@ -435,7 +405,6 @@ class TActividadAdmin(NoDeleteAdmin):
 
 @admin.register(TRespuesta)
 class TRespuestaAdmin(NoDeleteAdmin):
-    fields = ('mail', 'mensaje', 'demanda', 'institucion')
     list_display = ('fecha_y_hora', 'mail', 'mensaje', 'demanda', 'institucion')
     list_filter = ('fecha_y_hora', 'institucion')
     search_fields = ('mail', 'mensaje', 'demanda__nro_notificacion_102')
@@ -443,7 +412,6 @@ class TRespuestaAdmin(NoDeleteAdmin):
 
 @admin.register(TIndicadoresValoracion)
 class TIndicadoresValoracionAdmin(ModelAdmin):
-    fields = ('nombre', 'descripcion', 'peso')
     list_display = ('nombre', 'descripcion', 'peso')
     list_filter = ('peso',)
     search_fields = ('nombre', 'descripcion')
@@ -451,7 +419,6 @@ class TIndicadoresValoracionAdmin(ModelAdmin):
 
 @admin.register(TEvaluaciones)
 class TEvaluacionesAdmin(NoDeleteAdmin):
-    fields = ('demanda', 'indicador', 'si_no')
     list_display = ('demanda', 'indicador', 'si_no')
     list_filter = ('si_no', 'indicador')
     search_fields = ('demanda__nro_notificacion_102', 'indicador__nombre')
@@ -459,7 +426,6 @@ class TEvaluacionesAdmin(NoDeleteAdmin):
 
 @admin.register(TDecision)
 class TDecisionAdmin(NoDeleteAdmin):
-    fields = ('justificacion', 'decision', 'demanda', 'nnya')
     list_display = ('fecha_y_hora', 'justificacion', 'decision', 'demanda', 'nnya')
     list_filter = ('decision', 'fecha_y_hora')
     search_fields = ('justificacion', 'demanda__nro_notificacion_102', 'nnya')
