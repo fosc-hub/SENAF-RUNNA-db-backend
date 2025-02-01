@@ -19,6 +19,7 @@ from infrastructure.models import (
     TCPC,
     TVinculoPersona,
     TCondicionesVulnerabilidad,
+    TDemandaPersona,
     TInstitucionEducativa,
     TInstitucionSanitaria,
     TGravedadVulneracion,
@@ -49,17 +50,6 @@ class MesaDeEntradaListView(generics.ListAPIView):
 
 class NuevoRegistroFormDropdownsView(APIView):
     def get(self, request):
-        # Prepare choice fields data
-        estado_demanda_choices = [{"key": key, "value": value} for key, value in TDemanda.estado_demanda_choices]
-        ambito_vulneracion_choices = [{"key": key, "value": value} for key, value in TDemanda.ambito_vulneracion_choices]
-        
-        tipo_calle_choices = [{"key": key, "value": value} for key, value in TLocalizacion.tipo_calle_choices]
-
-        situacion_dni_choices = [{"key": key, "value": value} for key, value in TPersona.situacion_dni_choices]
-        genero_choices = [{"key": key, "value": value} for key, value in TPersona.genero_choices]
-
-        nivel_choices = [{"key": key, "value": value} for key, value in TNNyAEducacion.nivel_choices]
-        turno_choices = [{"key": key, "value": value} for key, value in TNNyAEducacion.turno_choices]
 
         # Query related models
         origenes = TOrigenDemanda.objects.all()
@@ -69,7 +59,7 @@ class NuevoRegistroFormDropdownsView(APIView):
         barrios = TBarrio.objects.all()
         localidades = TLocalidad.objects.all()
         cpcs = TCPC.objects.all()
-        vinculos_choices = TVinculoPersona.objects.all()
+        vinculos = TVinculoPersona.objects.all()
         condiciones_vulnerabilidad = TCondicionesVulnerabilidad.objects.all()
         instituciones_educativas = TInstitucionEducativa.objects.all()
         instituciones_sanitarias = TInstitucionSanitaria.objects.all()
@@ -78,22 +68,15 @@ class NuevoRegistroFormDropdownsView(APIView):
 
         # Serialize data
         serialized_data = NuevoRegistroFormDropdownsSerializer({
-            "estado_demanda_choices": estado_demanda_choices,
-            "ambito_vulneracion_choices": ambito_vulneracion_choices,
             "origenes": origenes,
             "sub_origenes": sub_origenes,
             "motivos_ingreso": motivos_ingreso,
             "submotivos_ingreso": submotivos_ingreso,
-            "tipo_calle_choices": tipo_calle_choices,
             "barrios": barrios,
             "localidades": localidades,
             "cpcs": cpcs,
-            "situacion_dni_choices": situacion_dni_choices,
-            "genero_choices": genero_choices,
-            "vinculos_choices": vinculos_choices,
             "condiciones_vulnerabilidad": condiciones_vulnerabilidad,
-            "nivel_choices": nivel_choices,
-            "turno_choices": turno_choices,
+            "vinculos": vinculos,
             "instituciones_educativas": instituciones_educativas,
             "instituciones_sanitarias": instituciones_sanitarias,
             "gravedades_vulneracion": gravedades_vulneracion,
