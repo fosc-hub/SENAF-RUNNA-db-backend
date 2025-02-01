@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
@@ -51,7 +51,7 @@ class TSubOrigenDemanda(models.Model):
 
 
 class TDemandaBase(models.Model):
-    fecha_creacion = models.DateField(null=False, default=datetime.now())
+    fecha_creacion = models.DateField(null=False, default=date.today)
     fecha_oficio_documento = models.DateField(null=False, blank=False)
     fecha_ingreso_senaf = models.DateField(null=False, blank=False)
     nro_notificacion_102 = models.IntegerField(null=True, blank=True)
