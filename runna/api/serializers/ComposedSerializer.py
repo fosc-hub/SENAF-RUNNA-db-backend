@@ -8,6 +8,7 @@ from infrastructure.models import (
     TPrecalificacionDemanda,
     TLocalizacion,
     TNNyAEducacion,
+    TInformante
 )
 from api.serializers import (
     TDemandaSerializer,
@@ -27,7 +28,9 @@ from api.serializers import (
     TInstitucionEducativaSerializer,
     TInstitucionSanitariaSerializer,
     TUrgenciaVulneracionSerializer,
-    TGravedadVulneracionSerializer
+    TGravedadVulneracionSerializer,
+    TLocalizacionSerializer,
+    TInformanteSerializer
 )
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
@@ -130,4 +133,47 @@ class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
         return ChoiceFieldSerializer.from_model(TNNyAEducacion.turno_choices)
 
 
+class RegistroCasoFormSerializer(serializers.ModelSerializer):
+    localizacion = TLocalizacionSerializer()
+    informante = TInformanteSerializer(required=False, allow_null=True)
 
+    class Meta:
+        model = TDemanda
+        fields = '__all__'
+        extra_kwargs = {
+            'localizacion': {'write_only': True},
+            'informante': {'write_only': True},
+        }
+
+    def create(self, validated_data):
+        localizacion_data = validated_data.pop('localizacion')
+        informante = validated_data.pop('informante', None)
+        
+        localizacion = TLocalizacion.objects.create(**localizacion_data)
+        if informante is not None:
+            informante = TInformante.objects.create(**informante)
+        demanda = TDemanda.objects.create(localizacion=localizacion, informante=informante, **validated_data)
+        
+        return demanda
+
+    def update(self, instance, validated_data):
+        localizacion_data = validated_data.pop('localizacion', None)
+        informante = validated_data.pop('informante', None)
+
+        if localizacion_data:
+            for attr, value in localizacion_data.items():
+                setattr(instance.localizacion, attr, value)
+            instance.localizacion.save()
+
+        if informante is not None:
+            if instance.informante is not None:
+                instance.informante = informante
+            else:
+                informante = TInformante.objects.create(**informante)
+                instance.informante = informante
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance

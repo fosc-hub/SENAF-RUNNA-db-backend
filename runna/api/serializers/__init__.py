@@ -76,6 +76,6 @@ from .EvaluacionSerializer import (
 )
 from .ComposedSerializer import (
     MesaDeEntradaSerializer,
-    ChoiceFieldSerializer,
-    NuevoRegistroFormDropdownsSerializer
+    NuevoRegistroFormDropdownsSerializer,
+    RegistroCasoFormSerializer
 )

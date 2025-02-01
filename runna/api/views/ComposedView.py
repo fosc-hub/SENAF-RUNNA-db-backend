@@ -1,3 +1,4 @@
+from django.http import Http404
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -5,6 +6,11 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from django.db import transaction
+
+from .BaseView import BaseViewSet
+from drf_spectacular.utils import extend_schema
 from infrastructure.models import (
     TDemanda,
     TLocalizacion,
@@ -27,8 +33,8 @@ from infrastructure.models import (
 )
 from api.serializers import (
     MesaDeEntradaSerializer,
-    ChoiceFieldSerializer,
-    NuevoRegistroFormDropdownsSerializer
+    NuevoRegistroFormDropdownsSerializer,
+    RegistroCasoFormSerializer
 )
 
 class MesaDeEntradaPagination(PageNumberPagination):
@@ -85,3 +91,90 @@ class NuevoRegistroFormDropdownsView(APIView):
 
         return Response(serialized_data.data)
 
+
+class RegistroCasoFormView(BaseViewSet):
+    serializer_class = RegistroCasoFormSerializer
+    
+    http_method_names = ['post', 'patch']  # Excludes PUT, DELETE, HEAD, OPTIONS
+
+    @extend_schema(
+        request=RegistroCasoFormSerializer,
+        responses=RegistroCasoFormSerializer,
+        description="Create a new TDemanda entry"
+    )
+    def create(self, request):
+        serializer = RegistroCasoFormSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                with transaction.atomic():
+                    serializer.save()
+                return Response(serializer.data, status=201)
+            except Exception as e:
+                return Response({"error": str(e)}, status=400)
+        return Response(serializer.errors, status=400)
+
+    @extend_schema(
+        request=RegistroCasoFormSerializer,
+        responses=RegistroCasoFormSerializer,
+        description="Partially update an existing TDemanda entry"
+    )
+    def partial_update(self, request, pk=None):
+        try:
+            instance = self.get_object(pk)
+            serializer = RegistroCasoFormSerializer(instance, data=request.data, partial=True)
+            if serializer.is_valid():
+                with transaction.atomic():
+                    serializer.save()
+                return Response(serializer.data, status=200)
+            return Response(serializer.errors, status=400)
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
+    def get_object(self, pk):
+        try:
+            return TDemanda.objects.get(pk=pk)
+        except TDemanda.DoesNotExist:
+            raise Http404
+
+
+# class RegistroCasoFormView(generics.CreateAPIView, generics.UpdateAPIView):
+#     serializer_class = RegistroCasoFormSerializer
+
+    # def post(self, request):
+    #     serializer = RegistroCasoFormSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         try:
+    #             with transaction.atomic():
+    #                 serializer.save()
+    #             return Response(serializer.data, status=201)
+    #         except Exception as e:
+    #             return Response({"error": str(e)}, status=400)
+    #     return Response(serializer.errors, status=400)
+
+
+"""
+{
+  "localizacion": {
+    "calle": "string",
+    "tipo_calle": "CALLE",
+    "referencia_geo": "CALLE",
+    "barrio": 2,
+    "localidad": 1,
+    "cpc": 3
+  },
+  "fecha_oficio_documento": "2025-02-01",
+  "fecha_ingreso_senaf": "2025-02-01",
+  "nro_notificacion_102": 9223372036854776,
+  "nro_sac": 92233720368547760,
+  "nro_suac": 922337203685477,
+  "autos_caratulados": "string",
+  "descripcion": "string",
+  "estado_demanda": "SIN_ASIGNAR",
+  "institucion": "string",
+  "ambito_vulneracion": "FAMILIAR",
+  "origen": 3,
+  "sub_origen": 3,
+  "motivo_ingreso": 4,
+  "submotivo_ingreso": 2
+}
+"""

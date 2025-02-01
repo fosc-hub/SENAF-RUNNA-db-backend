@@ -80,5 +80,6 @@ from .SuggestDecision import (
 )
 from .ComposedView import (
     MesaDeEntradaListView,
-    NuevoRegistroFormDropdownsView
+    NuevoRegistroFormDropdownsView,
+    RegistroCasoFormView
 )
