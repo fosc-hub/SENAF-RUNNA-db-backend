@@ -102,6 +102,7 @@ class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
     nivel_choices = serializers.SerializerMethodField()
     turno_choices = serializers.SerializerMethodField()
 
+    informantes = TInformanteSerializer(many=True)
     origenes = TOrigenDemandaSerializer(many=True)
     sub_origenes = TSubOrigenDemandaSerializer(many=True)
     motivos_ingreso = TCategoriaMotivoSerializer(many=True)
