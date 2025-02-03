@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework_serializer_extensions.serializers import SerializerExtensionsMixin
+
 from infrastructure.models import (
     TDemanda,
     TDemandaScore,
@@ -8,7 +10,9 @@ from infrastructure.models import (
     TPrecalificacionDemanda,
     TLocalizacion,
     TNNyAEducacion,
-    TInformante
+    TInformante,
+    TVinculoPersonaPersona,
+    TCondicionesVulnerabilidad
 )
 from api.serializers import (
     TDemandaSerializer,
@@ -30,7 +34,8 @@ from api.serializers import (
     TUrgenciaVulneracionSerializer,
     TGravedadVulneracionSerializer,
     TLocalizacionSerializer,
-    TInformanteSerializer
+    TInformanteSerializer,
+    TVinculoPersonaPersonaSerializer
 )
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
@@ -133,9 +138,23 @@ class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
         return ChoiceFieldSerializer.from_model(TNNyAEducacion.turno_choices)
 
 
+class AdultoSerializer(serializers.Serializer):
+    persona = TPersonaSerializer()
+    demanda_persona = TDemandaPersonaSerializer(required=False, allow_null=True)
+    localizacion = TLocalizacionSerializer(required=False, allow_null=True)  # Can be same as Demanda, new, or null
+    use_demanda_localizacion = serializers.BooleanField(required=False, default=False)  # Flag to indicate reuse
+    vinculo_nnya_principal = TVinculoPersonaPersonaSerializer(required=False, allow_null=True)
+    condiciones_vulnerabilidad = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=TCondicionesVulnerabilidad.objects.all(),  # Ensure only valid IDs are accepted
+        required=False
+    )
+
+
 class RegistroCasoFormSerializer(serializers.ModelSerializer):
     localizacion = TLocalizacionSerializer()
     informante = TInformanteSerializer(required=False, allow_null=True)
+    adultos = AdultoSerializer(many=True, required=False)
 
     class Meta:
         model = TDemanda
