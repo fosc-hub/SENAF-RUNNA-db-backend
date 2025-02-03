@@ -75,5 +75,7 @@ from .EvaluacionSerializer import (
     TEvaluacionesHistorySerializer
 )
 from .ComposedSerializer import (
-    MesaDeEntradaSerializer
+    MesaDeEntradaSerializer,
+    NuevoRegistroFormDropdownsSerializer,
+    RegistroCasoFormSerializer
 )

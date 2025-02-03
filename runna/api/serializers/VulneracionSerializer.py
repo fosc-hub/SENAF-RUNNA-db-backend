@@ -42,6 +42,7 @@ class TVulneracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TVulneracion
         fields = [  "principal_demanda","transcurre_actualidad", "deleted","sumatoria_de_pesos","demanda","nnya","autor_dv","categoria_motivo","categoria_submotivo","gravedad_vulneracion","urgencia_vulneracion" ]
+        read_only_fields = ['sumatoria_de_pesos', 'nnya', 'deleted']
 
     def update(self, instance, validated_data):
         if 'nnya' in validated_data:
