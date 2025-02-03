@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework_serializer_extensions.serializers import SerializerExtensionsMixin
 
 from infrastructure.models import (
     TDemanda,
