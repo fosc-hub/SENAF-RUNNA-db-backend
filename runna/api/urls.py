@@ -76,7 +76,9 @@ from api.views import (
     TEvaluacionesHistoryViewSet
 )
 from api.views import (
-    MesaDeEntradaListView
+    MesaDeEntradaListView,
+    NuevoRegistroFormDropdownsView,
+    RegistroCasoFormView
 )
 from api.views import SuggestDecisionView
 from django.urls import path, include
@@ -152,9 +154,12 @@ router.register(r'decision', TDecisionViewSet, basename='decision')
 router.register(r'actividad-history', TActividadHistoryViewSet, basename='actividad-history')
 router.register(r'evaluaciones-history', TEvaluacionesHistoryViewSet, basename='evaluaciones-history')
 
+router.register(r'registro-caso-form', RegistroCasoFormView, basename='registro-caso-form')
+
 urlpatterns = [
     path('', include(router.urls)),  # Include all router URLs
     path('suggest-decision/<int:nnya_id>/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
     path('mesa-de-entrada/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-all'),  # List all
     path('mesa-de-entrada/<int:pk>/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-single'),  # Retrieve single
+    path('nuevo-registro-form-dropdowns/', NuevoRegistroFormDropdownsView.as_view(), name='nuevo-registro-form-dropdowns'),  # Retrieve choices
 ]
