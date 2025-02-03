@@ -27,6 +27,7 @@ class TInstitucionEducativaSerializer(serializers.ModelSerializer):
 class TNNyAEducacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TNNyAEducacion
+        read_only_fields = ['nnya']
         fields = '__all__'
     
     def update(self, instance, validated_data):
@@ -42,6 +43,7 @@ class TInstitucionSanitariaSerializer(serializers.ModelSerializer):
 class TNNyASaludSerializer(serializers.ModelSerializer):
     class Meta:
         model = TNNyASalud
+        read_only_fields = ['nnya']
         fields = '__all__'
         
     def update(self, instance, validated_data):

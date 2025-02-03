@@ -14,7 +14,10 @@ from infrastructure.models import (
     TVinculoPersonaPersona,
     TCondicionesVulnerabilidad,
     TLocalizacionPersona,
-    TPersonaCondicionesVulnerabilidad
+    TPersonaCondicionesVulnerabilidad,
+    TNNyAEducacion,
+    TNNyASalud,
+    TVulneracion
 )
 from api.serializers import (
     TDemandaSerializer,
@@ -37,7 +40,10 @@ from api.serializers import (
     TGravedadVulneracionSerializer,
     TLocalizacionSerializer,
     TInformanteSerializer,
-    TVinculoPersonaPersonaSerializer
+    TVinculoPersonaPersonaSerializer,
+    TNNyAEducacionSerializer,
+    TNNyASaludSerializer,
+    TVulneracionSerializer
 )
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
@@ -139,13 +145,10 @@ class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
     def get_turno_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TNNyAEducacion.turno_choices)
 
-class TDemandaPersonaAdultsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDemandaPersona
-        exclude = ['persona', 'demanda']
+
 class AdultoSerializer(serializers.Serializer):
     persona = TPersonaSerializer()
-    demanda_persona = TDemandaPersonaAdultsSerializer(required=False, allow_null=True)
+    demanda_persona = TDemandaPersonaSerializer(required=False, allow_null=True)
     localizacion = TLocalizacionSerializer(required=False, allow_null=True)  # Can be same as Demanda, new, or null
     use_demanda_localizacion = serializers.BooleanField(required=False, default=False)  # Flag to indicate reuse
     vinculo_nnya_principal = TVinculoPersonaPersonaSerializer(required=False, allow_null=True)
@@ -155,11 +158,33 @@ class AdultoSerializer(serializers.Serializer):
         required=False
     )
 
+class TVulneracionNuevoRegistroSerializer(serializers.ModelSerializer):
+    autordv_index = serializers.IntegerField(allow_null=False)
+    class Meta:
+        model = TVulneracion
+        fields = '__all__'
+        read_only_fields = ['sumatoria_de_pesos', 'nnya', 'deleted']
+
+class NNyAPrincipalSerializer(serializers.Serializer):
+    persona = TPersonaSerializer()
+    demanda_persona = TDemandaPersonaSerializer(required=False, allow_null=True)
+    localizacion = TLocalizacionSerializer(required=False, allow_null=True)  # Can be same as Demanda, new, or null
+    use_demanda_localizacion = serializers.BooleanField(required=False, default=False)  # Flag to indicate reuse
+    condiciones_vulnerabilidad = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=TCondicionesVulnerabilidad.objects.all(),  # Ensure only valid IDs are accepted
+        required=False
+    )
+    nnya_educacion = TNNyAEducacionSerializer(required=False, allow_null=True)
+    nnya_salud = TNNyASaludSerializer(required=False, allow_null=True)
+    vulneraciones = TVulneracionNuevoRegistroSerializer(many=True, required=False)
+
 
 class RegistroCasoFormSerializer(serializers.ModelSerializer):
     localizacion = TLocalizacionSerializer()
     informante = TInformanteSerializer(required=False, allow_null=True)
     adultos = AdultoSerializer(many=True, required=False)
+    nnya_principal = NNyAPrincipalSerializer(required=False, allow_null=True)
 
     class Meta:
         model = TDemanda
@@ -173,6 +198,7 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
         localizacion_data = validated_data.pop('localizacion')
         informante_data = validated_data.pop('informante', None)
         adultos_data = validated_data.pop('adultos', [])
+        nnya_principal_data = validated_data.pop('nnya_principal', None)
 
         # Handle Localizacion (always create one for Demanda)
         localizacion = TLocalizacion.objects.create(**localizacion_data)
@@ -184,39 +210,96 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
         # Create TDemanda instance
         demanda = TDemanda.objects.create(localizacion=localizacion, informante=informante, **validated_data)
 
+
+        nnya_principal_db = None
+        # Handle NNyA Principal Data
+        if nnya_principal_data:
+            persona_data = nnya_principal_data.pop('persona')
+            demanda_persona_data = nnya_principal_data.pop('demanda_persona', None)
+            localizacion_data = nnya_principal_data.pop('localizacion', None)
+            use_demanda_localizacion = nnya_principal_data.pop('use_demanda_localizacion', False)
+            condiciones_vulnerabilidad = nnya_principal_data.pop('condiciones_vulnerabilidad', [])
+            nnya_educacion_data = nnya_principal_data.pop('nnya_educacion', None)
+            nnya_salud_data = nnya_principal_data.pop('nnya_salud', None)
+
+            # Create or get Persona
+            nnya_principal_db, _ = TPersona.objects.get_or_create(**persona_data)
+
+            # Determine Localizacion for Persona
+            if use_demanda_localizacion:
+                # Assign same localizacion as Demanda
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=nnya_principal_db, localizacion=demanda.localizacion)
+            elif localizacion_data:
+                new_localizacion, _ = TLocalizacion.objects.get_or_create(**localizacion_data)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=nnya_principal_db, localizacion=new_localizacion)
+            else:
+                pass
+        
+            if demanda_persona_data:
+                TDemandaPersona.objects.create(persona=nnya_principal_db, demanda=demanda, **demanda_persona_data)
+            
+            for condicion in condiciones_vulnerabilidad:
+                TPersonaCondicionesVulnerabilidad.objects.create(persona=nnya_principal_db, condicion_vulnerabilidad=condicion, demanda=demanda, si_no=True)
+                
+            if nnya_educacion_data:
+                TNNyAEducacion.objects.create(nnya=nnya_principal_db, **nnya_educacion_data)
+            
+            if nnya_salud_data:
+                TNNyASalud.objects.create(nnya=nnya_principal_db, **nnya_salud_data)
+
+
         # Handle Adultos Data
+        adultos_db = {} # Store created personas as {adulto_index_request: persona_instance}
+        count = 0
         for adulto_data in adultos_data:
             persona_data = adulto_data.pop('persona')
             demanda_persona_data = adulto_data.pop('demanda_persona', None)
             localizacion_data = adulto_data.pop('localizacion', None)
             use_demanda_localizacion = adulto_data.pop('use_demanda_localizacion', False)
-            vinculo_data = adulto_data.pop('vinculo', None)
+            vinculo_nnya_principal_data = adulto_data.pop('vinculo_nnya_principal', None)
             condiciones_vulnerabilidad = adulto_data.pop('condiciones_vulnerabilidad', [])
 
             # Create or get Persona
-            persona, _ = TPersona.objects.get_or_create(**persona_data)
+            adulto_db, _ = TPersona.objects.get_or_create(**persona_data)
 
             # Determine Localizacion for Persona
             if use_demanda_localizacion:
                 # Assign same localizacion as Demanda
-                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona, localizacion=demanda.localizacion)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=adulto_db, localizacion=demanda.localizacion)
             elif localizacion_data:
                 new_localizacion, _ = TLocalizacion.objects.get_or_create(**localizacion_data)
-                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona, localizacion=new_localizacion)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=adulto_db, localizacion=new_localizacion)
             else:
                 pass  # No localizacion provided
 
             # Create DemandaPersona if provided
             if demanda_persona_data:
-                TDemandaPersona.objects.create(persona=persona, demanda=demanda, **demanda_persona_data)
+                TDemandaPersona.objects.create(persona=adulto_db, demanda=demanda, **demanda_persona_data)
 
             # Create Vinculo if provided
-            # if vinculo_data:
-            #     TVinculoPersonaPersona.objects.create(persona_1=persona, **vinculo_data)
+            print(vinculo_nnya_principal_data)
+            if vinculo_nnya_principal_data:
+                print('Creating vinculo')
+                TVinculoPersonaPersona.objects.create(persona_1=nnya_principal_db, persona_2=adulto_db, **vinculo_nnya_principal_data)
 
             # Assign Condiciones de Vulnerabilidad (only using existing IDs)
             for condicion in condiciones_vulnerabilidad:
-                TPersonaCondicionesVulnerabilidad.objects.create(persona=persona, condicion_vulnerabilidad=condicion, demanda=demanda, si_no=True)
+                TPersonaCondicionesVulnerabilidad.objects.create(persona=adulto_db, condicion_vulnerabilidad=condicion, demanda=demanda, si_no=True)
+            
+            adultos_db[count] = adulto_db
+            print(adultos_db)
+            count += 1
+        
+        # Handle NNyA Principal Vulneraciones
+        if nnya_principal_data:
+            vulneraciones_data = nnya_principal_data.pop('vulneraciones', [])
+            print(vulneraciones_data)
+            for vulneracion_data in vulneraciones_data:
+                autordv_index = vulneracion_data.pop('autordv_index', None)
+                print(f'Autordv Index: {autordv_index}')
+                print(f'Adultos DB: {adultos_db[autordv_index]}')
+                TVulneracion.objects.create(nnya=nnya_principal_db, autor_dv=adultos_db[autordv_index], demanda=demanda, **vulneracion_data)
+
 
         return demanda
 

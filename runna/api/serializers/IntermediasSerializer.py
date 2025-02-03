@@ -28,6 +28,7 @@ class TDemandaPersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaPersona
         fields = '__all__'
+        read_only_fields = ['demanda', 'persona']
 
 class TDemandaAsignadoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,6 +54,7 @@ class TVinculoPersonaPersonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TVinculoPersonaPersona
         fields = '__all__'
+        read_only_fields = ['persona_1', 'persona_2']
 
 class TDemandaMotivoIntervencionSerializer(serializers.ModelSerializer):
     class Meta:
