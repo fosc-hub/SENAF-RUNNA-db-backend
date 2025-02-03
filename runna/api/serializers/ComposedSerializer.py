@@ -12,7 +12,9 @@ from infrastructure.models import (
     TNNyAEducacion,
     TInformante,
     TVinculoPersonaPersona,
-    TCondicionesVulnerabilidad
+    TCondicionesVulnerabilidad,
+    TLocalizacionPersona,
+    TPersonaCondicionesVulnerabilidad
 )
 from api.serializers import (
     TDemandaSerializer,
@@ -137,10 +139,13 @@ class NuevoRegistroFormDropdownsSerializer(serializers.Serializer):
     def get_turno_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TNNyAEducacion.turno_choices)
 
-
+class TDemandaPersonaAdultsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaPersona
+        exclude = ['persona', 'demanda']
 class AdultoSerializer(serializers.Serializer):
     persona = TPersonaSerializer()
-    demanda_persona = TDemandaPersonaSerializer(required=False, allow_null=True)
+    demanda_persona = TDemandaPersonaAdultsSerializer(required=False, allow_null=True)
     localizacion = TLocalizacionSerializer(required=False, allow_null=True)  # Can be same as Demanda, new, or null
     use_demanda_localizacion = serializers.BooleanField(required=False, default=False)  # Flag to indicate reuse
     vinculo_nnya_principal = TVinculoPersonaPersonaSerializer(required=False, allow_null=True)
@@ -166,13 +171,53 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         localizacion_data = validated_data.pop('localizacion')
-        informante = validated_data.pop('informante', None)
-        
+        informante_data = validated_data.pop('informante', None)
+        adultos_data = validated_data.pop('adultos', [])
+
+        # Handle Localizacion (always create one for Demanda)
         localizacion = TLocalizacion.objects.create(**localizacion_data)
-        if informante is not None:
-            informante = TInformante.objects.create(**informante)
+
+        informante = None
+        if informante_data:
+            informante = TInformante.objects.create(**informante_data)
+
+        # Create TDemanda instance
         demanda = TDemanda.objects.create(localizacion=localizacion, informante=informante, **validated_data)
-        
+
+        # Handle Adultos Data
+        for adulto_data in adultos_data:
+            persona_data = adulto_data.pop('persona')
+            demanda_persona_data = adulto_data.pop('demanda_persona', None)
+            localizacion_data = adulto_data.pop('localizacion', None)
+            use_demanda_localizacion = adulto_data.pop('use_demanda_localizacion', False)
+            vinculo_data = adulto_data.pop('vinculo', None)
+            condiciones_vulnerabilidad = adulto_data.pop('condiciones_vulnerabilidad', [])
+
+            # Create or get Persona
+            persona, _ = TPersona.objects.get_or_create(**persona_data)
+
+            # Determine Localizacion for Persona
+            if use_demanda_localizacion:
+                # Assign same localizacion as Demanda
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona, localizacion=demanda.localizacion)
+            elif localizacion_data:
+                new_localizacion, _ = TLocalizacion.objects.get_or_create(**localizacion_data)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona, localizacion=new_localizacion)
+            else:
+                pass  # No localizacion provided
+
+            # Create DemandaPersona if provided
+            if demanda_persona_data:
+                TDemandaPersona.objects.create(persona=persona, demanda=demanda, **demanda_persona_data)
+
+            # Create Vinculo if provided
+            # if vinculo_data:
+            #     TVinculoPersonaPersona.objects.create(persona_1=persona, **vinculo_data)
+
+            # Assign Condiciones de Vulnerabilidad (only using existing IDs)
+            for condicion in condiciones_vulnerabilidad:
+                TPersonaCondicionesVulnerabilidad.objects.create(persona=persona, condicion_vulnerabilidad=condicion, demanda=demanda, si_no=True)
+
         return demanda
 
     def update(self, instance, validated_data):
