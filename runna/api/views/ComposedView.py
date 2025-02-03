@@ -17,6 +17,7 @@ from drf_spectacular.utils import extend_schema
 
 from infrastructure.models import (
     TDemanda,
+    TInformante,
     TLocalizacion,
     TPersona,
     TNNyAEducacion,
@@ -63,6 +64,7 @@ class NuevoRegistroFormDropdownsView(APIView):
     def get(self, request):
 
         # Query related models
+        informantes = TInformante.objects.all()
         origenes = TOrigenDemanda.objects.all()
         sub_origenes = TSubOrigenDemanda.objects.all()
         motivos_ingreso = TCategoriaMotivo.objects.all()
@@ -79,6 +81,7 @@ class NuevoRegistroFormDropdownsView(APIView):
 
         # Serialize data
         serialized_data = NuevoRegistroFormDropdownsSerializer({
+            "informantes": informantes,
             "origenes": origenes,
             "sub_origenes": sub_origenes,
             "motivos_ingreso": motivos_ingreso,
