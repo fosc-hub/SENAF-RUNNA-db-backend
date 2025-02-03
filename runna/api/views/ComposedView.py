@@ -7,10 +7,14 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+
 from django.db import transaction
 
 from .BaseView import BaseViewSet
 from drf_spectacular.utils import extend_schema
+
 from infrastructure.models import (
     TDemanda,
     TLocalizacion,
@@ -55,6 +59,7 @@ class MesaDeEntradaListView(generics.ListAPIView):
 
 
 class NuevoRegistroFormDropdownsView(APIView):
+    @method_decorator(cache_page(60*15), name='get')
     def get(self, request):
 
         # Query related models
@@ -136,45 +141,3 @@ class RegistroCasoFormView(BaseViewSet):
         except TDemanda.DoesNotExist:
             raise Http404
 
-
-# class RegistroCasoFormView(generics.CreateAPIView, generics.UpdateAPIView):
-#     serializer_class = RegistroCasoFormSerializer
-
-    # def post(self, request):
-    #     serializer = RegistroCasoFormSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         try:
-    #             with transaction.atomic():
-    #                 serializer.save()
-    #             return Response(serializer.data, status=201)
-    #         except Exception as e:
-    #             return Response({"error": str(e)}, status=400)
-    #     return Response(serializer.errors, status=400)
-
-
-"""
-{
-  "localizacion": {
-    "calle": "string",
-    "tipo_calle": "CALLE",
-    "referencia_geo": "CALLE",
-    "barrio": 2,
-    "localidad": 1,
-    "cpc": 3
-  },
-  "fecha_oficio_documento": "2025-02-01",
-  "fecha_ingreso_senaf": "2025-02-01",
-  "nro_notificacion_102": 9223372036854776,
-  "nro_sac": 92233720368547760,
-  "nro_suac": 922337203685477,
-  "autos_caratulados": "string",
-  "descripcion": "string",
-  "estado_demanda": "SIN_ASIGNAR",
-  "institucion": "string",
-  "ambito_vulneracion": "FAMILIAR",
-  "origen": 3,
-  "sub_origen": 3,
-  "motivo_ingreso": 4,
-  "submotivo_ingreso": 2
-}
-"""
