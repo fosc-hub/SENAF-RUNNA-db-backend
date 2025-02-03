@@ -179,12 +179,16 @@ class NNyAPrincipalSerializer(serializers.Serializer):
     nnya_salud = TNNyASaludSerializer(required=False, allow_null=True)
     vulneraciones = TVulneracionNuevoRegistroSerializer(many=True, required=False)
 
+class NNyASecundariosSerializer(NNyAPrincipalSerializer):
+    vinculo_nnya_principal = TVinculoPersonaPersonaSerializer(required=False, allow_null=True)
+
 
 class RegistroCasoFormSerializer(serializers.ModelSerializer):
     localizacion = TLocalizacionSerializer()
     informante = TInformanteSerializer(required=False, allow_null=True)
     adultos = AdultoSerializer(many=True, required=False)
     nnya_principal = NNyAPrincipalSerializer(required=False, allow_null=True)
+    nnyas_secundarios = NNyASecundariosSerializer(many=True, required=False)
 
     class Meta:
         model = TDemanda
@@ -199,6 +203,7 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
         informante_data = validated_data.pop('informante', None)
         adultos_data = validated_data.pop('adultos', [])
         nnya_principal_data = validated_data.pop('nnya_principal', None)
+        nnyas_secundarios_data = validated_data.pop('nnyas_secundarios', [])
 
         # Handle Localizacion (always create one for Demanda)
         localizacion = TLocalizacion.objects.create(**localizacion_data)
@@ -289,7 +294,8 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
             adultos_db[count] = adulto_db
             print(adultos_db)
             count += 1
-        
+
+ 
         # Handle NNyA Principal Vulneraciones
         if nnya_principal_data:
             vulneraciones_data = nnya_principal_data.pop('vulneraciones', [])
@@ -300,6 +306,47 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
                 print(f'Adultos DB: {adultos_db[autordv_index]}')
                 TVulneracion.objects.create(nnya=nnya_principal_db, autor_dv=adultos_db[autordv_index], demanda=demanda, **vulneracion_data)
 
+        # Handle NNyA Secundarios
+        for nnya_secundario_data in nnyas_secundarios_data:
+            persona_data = nnya_secundario_data.pop('persona')
+            demanda_persona_data = nnya_secundario_data.pop('demanda_persona', None)
+            localizacion_data = nnya_secundario_data.pop('localizacion', None)
+            use_demanda_localizacion = nnya_secundario_data.pop('use_demanda_localizacion', False)
+            vinculo_nnya_principal_data = nnya_secundario_data.pop('vinculo_nnya_principal', None)
+            condiciones_vulnerabilidad = nnya_secundario_data.pop('condiciones_vulnerabilidad', [])
+            nnya_educacion_data = nnya_secundario_data.pop('nnya_educacion', None)
+            nnya_salud_data = nnya_secundario_data.pop('nnya_salud', None)
+
+            # Create or get Persona
+            nnya_secundario_db, _ = TPersona.objects.get_or_create(**persona_data)
+
+            # Determine Localizacion for Persona
+            if use_demanda_localizacion:
+                # Assign same localizacion as Demanda
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=nnya_secundario_db, localizacion=demanda.localizacion)
+            elif localizacion_data:
+                new_localizacion, _ = TLocalizacion.objects.get_or_create(**localizacion_data)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=nnya_secundario_db, localizacion=new_localizacion)
+            else:
+                pass
+            
+            # Create DemandaPersona if provided
+            if demanda_persona_data:
+                TDemandaPersona.objects.create(persona=nnya_secundario_db, demanda=demanda, **demanda_persona_data)
+            
+            # Create Vinculo if provided
+            if vinculo_nnya_principal_data:
+                TVinculoPersonaPersona.objects.create(persona_1=nnya_principal_db, persona_2=nnya_secundario_db, **vinculo_nnya_principal_data)
+            
+            # Assign Condiciones de Vulnerabilidad (only using existing IDs)
+            for condicion in condiciones_vulnerabilidad:
+                TPersonaCondicionesVulnerabilidad.objects.create(persona=nnya_secundario_db, condicion_vulnerabilidad=condicion, demanda=demanda, si_no=True)
+            
+            if nnya_educacion_data:
+                TNNyAEducacion.objects.create(nnya=nnya_secundario_db, **nnya_educacion_data)
+            
+            if nnya_salud_data:
+                TNNyASalud.objects.create(nnya=nnya_secundario_db, **nnya_salud_data)
 
         return demanda
 
