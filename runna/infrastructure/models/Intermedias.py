@@ -319,9 +319,9 @@ class TPersonaCondicionesVulnerabilidad(TPersonaCondicionesVulnerabilidadBase):
         
     def save(self, *args, **kwargs):
         if self.condicion_vulnerabilidad.nnya and not self.persona.nnya:
-            raise ValidationError("La persona debe ser un NNyA para esta Condicion de Vulnerabilidad")
+            raise ValidationError(f"La persona debe ser un NNyA para esta Condicion de Vulnerabilidad {self.condicion_vulnerabilidad}")
         if self.condicion_vulnerabilidad.adulto and not self.persona.adulto:
-            raise ValidationError("La persona debe ser un adulto para esta Condicion de Vulnerabilidad")
+            raise ValidationError(f"La persona debe ser un adulto para esta Condicion de Vulnerabilidad {self.condicion_vulnerabilidad}")
         super().save(*args, **kwargs)
 
 
