@@ -67,8 +67,8 @@ class NuevoRegistroFormDropdownsView(APIView):
         informantes = TInformante.objects.all()
         origenes = TOrigenDemanda.objects.all()
         sub_origenes = TSubOrigenDemanda.objects.all()
-        motivos_ingreso = TCategoriaMotivo.objects.all()
-        submotivos_ingreso = TCategoriaSubmotivo.objects.all()
+        categoria_motivos = TCategoriaMotivo.objects.all()
+        categoria_submotivos = TCategoriaSubmotivo.objects.all()
         barrios = TBarrio.objects.all()
         localidades = TLocalidad.objects.all()
         cpcs = TCPC.objects.all()
@@ -84,8 +84,8 @@ class NuevoRegistroFormDropdownsView(APIView):
             "informantes": informantes,
             "origenes": origenes,
             "sub_origenes": sub_origenes,
-            "motivos_ingreso": motivos_ingreso,
-            "submotivos_ingreso": submotivos_ingreso,
+            "categoria_motivos": categoria_motivos,
+            "categoria_submotivos": categoria_submotivos,
             "barrios": barrios,
             "localidades": localidades,
             "cpcs": cpcs,
