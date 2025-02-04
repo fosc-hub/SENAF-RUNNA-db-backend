@@ -234,7 +234,8 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
                 'condiciones_vulnerabilidad': [cv.condicion_vulnerabilidad for cv in condiciones_vulnerabilidad],
                 'nnya_educacion': TNNyAEducacion.objects.filter(nnya=nnya.persona).first(),
                 'nnya_salud': TNNyASalud.objects.filter(nnya=nnya.persona).first(),
-                'vinculo_nnya_principal': TVinculoPersonaPersona.objects.filter(persona_1=nnya_principal_instance.persona, persona_2=nnya.persona).first()
+                'vinculo_nnya_principal': TVinculoPersonaPersona.objects.filter(persona_1=nnya_principal_instance.persona, persona_2=nnya.persona).first(),
+                'vulneraciones': TVulneracion.objects.filter(nnya=nnya.persona, demanda=instance)
             }).data)
         data['nnyas_secundarios'] = nnyas_secundarios_data
 
@@ -405,6 +406,10 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
             
             if nnya_salud_data:
                 TNNyASalud.objects.create(nnya=nnya_secundario_db, **nnya_salud_data)
+ 
+            for vulneracion_data in nnya_secundario_data.pop('vulneraciones', []):
+                autordv_index = vulneracion_data.pop('autordv_index', None)
+                TVulneracion.objects.create(nnya=nnya_secundario_db, autor_dv=adultos_db[autordv_index], demanda=demanda, **vulneracion_data)
 
         return demanda
 
