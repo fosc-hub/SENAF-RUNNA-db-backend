@@ -101,9 +101,10 @@ class NuevoRegistroFormDropdownsView(APIView):
 
 
 class RegistroCasoFormView(BaseViewSet):
+    model = TDemanda
     serializer_class = RegistroCasoFormSerializer
     
-    http_method_names = ['post', 'patch']  # Excludes PUT, DELETE, HEAD, OPTIONS
+    http_method_names = ['post', 'patch', 'get']  # Excludes PUT, DELETE, HEAD, OPTIONS
 
     @extend_schema(
         request=RegistroCasoFormSerializer,
@@ -137,6 +138,13 @@ class RegistroCasoFormView(BaseViewSet):
             return Response(serializer.errors, status=400)
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+
+    @extend_schema(
+        responses=RegistroCasoFormSerializer,
+        description="Demanda Detalle info."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
     def get_object(self, pk):
         try:

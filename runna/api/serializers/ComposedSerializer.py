@@ -157,9 +157,9 @@ class AdultoSerializer(serializers.Serializer):
         queryset=TCondicionesVulnerabilidad.objects.all(),  # Ensure only valid IDs are accepted
         required=False
     )
-
 class TVulneracionNuevoRegistroSerializer(serializers.ModelSerializer):
-    autordv_index = serializers.IntegerField(allow_null=False)
+    autordv_index = serializers.IntegerField(write_only=True, allow_null=False)
+    
     class Meta:
         model = TVulneracion
         fields = '__all__'
@@ -193,10 +193,68 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemanda
         fields = '__all__'
-        extra_kwargs = {
-            'localizacion': {'write_only': True},
-            'informante': {'write_only': True},
-        }
+        
+    def to_representation(self, instance):
+        """Modify representation to include nested relationships for retrieval."""
+        data = super().to_representation(instance)
+
+        # Serialize Localizacion and Informante
+        data['localizacion'] = TLocalizacionSerializer(instance.localizacion).data
+        if instance.informante:
+            data['informante'] = TInformanteSerializer(instance.informante).data
+
+        # Fetch primary NNyA (Main Child)
+        nnya_principal_instance = instance.tdemandapersona_set.filter(nnya_principal=True).first()
+        if nnya_principal_instance:
+            localizacion_nnya_principal = TLocalizacionPersona.objects.filter(persona=nnya_principal_instance.persona).last()
+            condiciones_vulnerabilidad = TPersonaCondicionesVulnerabilidad.objects.filter(persona=nnya_principal_instance.persona, demanda=instance)
+            data['nnya_principal'] = NNyAPrincipalSerializer({
+                'persona': nnya_principal_instance.persona,
+                'demanda_persona': nnya_principal_instance,
+                'localizacion': localizacion_nnya_principal.localizacion if localizacion_nnya_principal else None,
+                'condiciones_vulnerabilidad': [cv.condicion_vulnerabilidad for cv in condiciones_vulnerabilidad],
+                'nnya_educacion': TNNyAEducacion.objects.filter(nnya=nnya_principal_instance.persona).first(),
+                'nnya_salud': TNNyASalud.objects.filter(nnya=nnya_principal_instance.persona).first(),
+                'vulneraciones': TVulneracion.objects.filter(nnya=nnya_principal_instance.persona, demanda=instance)
+            }).data
+        print(f"OK NNyA: {data['nnya_principal']}")
+
+        # Fetch secondary NNyAs
+        nnyas_secundarios_instances = instance.tdemandapersona_set.filter(nnya_principal=False, persona__nnya=True)
+        nnyas_secundarios_data = []
+        for nnya in nnyas_secundarios_instances:
+            localizacion_nnya_secundario = TLocalizacionPersona.objects.filter(persona=nnya.persona).last()
+            condiciones_vulnerabilidad = TPersonaCondicionesVulnerabilidad.objects.filter(persona=nnya.persona, demanda=instance)
+            print(f"nnya secundario: {nnya.persona}")
+            nnyas_secundarios_data.append(NNyASecundariosSerializer({
+                'persona': nnya.persona,
+                'demanda_persona': nnya,
+                'localizacion': localizacion_nnya_secundario.localizacion if localizacion_nnya_secundario else None,
+                'condiciones_vulnerabilidad': [cv.condicion_vulnerabilidad for cv in condiciones_vulnerabilidad],
+                'nnya_educacion': TNNyAEducacion.objects.filter(nnya=nnya.persona).first(),
+                'nnya_salud': TNNyASalud.objects.filter(nnya=nnya.persona).first(),
+                'vinculo_nnya_principal': TVinculoPersonaPersona.objects.filter(persona_1=nnya_principal_instance.persona, persona_2=nnya.persona).first(),
+                'vulneraciones': TVulneracion.objects.filter(nnya=nnya.persona, demanda=instance)
+            }).data)
+        data['nnyas_secundarios'] = nnyas_secundarios_data
+
+        # Fetch Adultos
+        adultos_instances = instance.tdemandapersona_set.filter(persona__adulto=True)
+        adultos_data = []
+        for adulto in adultos_instances:
+            localizacion_adulto = TLocalizacionPersona.objects.filter(persona=adulto.persona).last()
+            condiciones_vulnerabilidad = TPersonaCondicionesVulnerabilidad.objects.filter(persona=adulto.persona, demanda=instance)
+            adultos_data.append(AdultoSerializer({
+                'persona': adulto.persona,
+                'demanda_persona': adulto,
+                'localizacion': localizacion_adulto.localizacion if localizacion_adulto else None,
+                'condiciones_vulnerabilidad': [cv.condicion_vulnerabilidad for cv in condiciones_vulnerabilidad],
+                'vinculo_nnya_principal': TVinculoPersonaPersona.objects.filter(persona_1=nnya_principal_instance.persona, persona_2=adulto.persona).first()
+            }).data)
+        data['adultos'] = adultos_data
+
+        return data
+
 
     def create(self, validated_data):
         localizacion_data = validated_data.pop('localizacion')
@@ -347,6 +405,10 @@ class RegistroCasoFormSerializer(serializers.ModelSerializer):
             
             if nnya_salud_data:
                 TNNyASalud.objects.create(nnya=nnya_secundario_db, **nnya_salud_data)
+ 
+            for vulneracion_data in nnya_secundario_data.pop('vulneraciones', []):
+                autordv_index = vulneracion_data.pop('autordv_index', None)
+                TVulneracion.objects.create(nnya=nnya_secundario_db, autor_dv=adultos_db[autordv_index], demanda=demanda, **vulneracion_data)
 
         return demanda
 
