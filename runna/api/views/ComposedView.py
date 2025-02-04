@@ -17,6 +17,7 @@ from drf_spectacular.utils import extend_schema
 
 from infrastructure.models import (
     TDemanda,
+    TInformante,
     TLocalizacion,
     TPersona,
     TNNyAEducacion,
@@ -63,10 +64,11 @@ class NuevoRegistroFormDropdownsView(APIView):
     def get(self, request):
 
         # Query related models
+        informantes = TInformante.objects.all()
         origenes = TOrigenDemanda.objects.all()
         sub_origenes = TSubOrigenDemanda.objects.all()
-        motivos_ingreso = TCategoriaMotivo.objects.all()
-        submotivos_ingreso = TCategoriaSubmotivo.objects.all()
+        categoria_motivos = TCategoriaMotivo.objects.all()
+        categoria_submotivos = TCategoriaSubmotivo.objects.all()
         barrios = TBarrio.objects.all()
         localidades = TLocalidad.objects.all()
         cpcs = TCPC.objects.all()
@@ -79,10 +81,11 @@ class NuevoRegistroFormDropdownsView(APIView):
 
         # Serialize data
         serialized_data = NuevoRegistroFormDropdownsSerializer({
+            "informantes": informantes,
             "origenes": origenes,
             "sub_origenes": sub_origenes,
-            "motivos_ingreso": motivos_ingreso,
-            "submotivos_ingreso": submotivos_ingreso,
+            "categoria_motivos": categoria_motivos,
+            "categoria_submotivos": categoria_submotivos,
             "barrios": barrios,
             "localidades": localidades,
             "cpcs": cpcs,
@@ -98,9 +101,10 @@ class NuevoRegistroFormDropdownsView(APIView):
 
 
 class RegistroCasoFormView(BaseViewSet):
+    model = TDemanda
     serializer_class = RegistroCasoFormSerializer
     
-    http_method_names = ['post', 'patch']  # Excludes PUT, DELETE, HEAD, OPTIONS
+    http_method_names = ['post', 'patch', 'get']  # Excludes PUT, DELETE, HEAD, OPTIONS
 
     @extend_schema(
         request=RegistroCasoFormSerializer,
@@ -134,6 +138,13 @@ class RegistroCasoFormView(BaseViewSet):
             return Response(serializer.errors, status=400)
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+
+    @extend_schema(
+        responses=RegistroCasoFormSerializer,
+        description="Demanda Detalle info."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
     def get_object(self, pk):
         try:
