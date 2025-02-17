@@ -9,18 +9,19 @@ from .Localizacion import (
     TLocalizacionHistory
 )
 from .Demanda import  (
-    TOrigenDemanda,
-    TSubOrigenDemanda, 
-    TInformante, 
-    TDemanda, 
-    TPrecalificacionDemanda, 
-    TDemandaScore, 
-    TDemandaHistory, 
-    TInforme101,
-    TPrecalificacionDemandaHistory,
+    TBloqueDatosRemitente,
+    TTipoInstitucionDemanda,
+    TAmbitoVulneracion,
+    TTipoPresuntoDelito,
+    TInstitucionDemanda,
+    TDemanda,
+    TDemandaHistory,
+    TTipoCodigoDemanda,
+    TCodigoDemanda,
     TCalificacionDemanda,
     TCalificacionDemandaHistory,
-    TDemandaScoreHistory
+    TDemandaScore, 
+    TDemandaScoreHistory,
 )
 from .Persona import (
     TPersona,
@@ -49,7 +50,7 @@ from .Vulneracion import (
 from .Intermedias import (
     TLocalizacionPersona, 
     TDemandaPersona, 
-    TDemandaAsignado, 
+    TDemandaZona, 
     TDemandaVinculada, 
     TLegajoAsignado, 
     TVinculoPersona, 
@@ -58,7 +59,7 @@ from .Intermedias import (
     TPersonaCondicionesVulnerabilidad, 
     TLocalizacionPersonaHistory, 
     TDemandaPersonaHistory, 
-    TDemandaAsignadoHistory, 
+    TDemandaZonaHistory, 
     TDemandaVinculadaHistory, 
     TVinculoPersonaPersonaHistory,
     TPersonaCondicionesVulnerabilidadHistory,

@@ -8,17 +8,18 @@ from .LocalizacionFilter import (
     TLocalizacionHistoryFilter
 )
 from .DemandaFilters import (
-    TOrigenDemandaFilter,
-    TSubOrigenDemandaFilter,
-    TInformanteFilter, 
-    TDemandaFilter, 
-    TPrecalificacionDemandaFilter, 
-    TDemandaScoreFilter,
-    TDemandaHistoryFilter, 
-    TInforme101Filter,
-    TPrecalificacionDemandaHistoryFilter,
+    TBloqueDatosRemitenteFilter,
+    TTipoInstitucionDemandaFilter,
+    TAmbitoVulneracionFilter,
+    TTipoPresuntoDelitoFilter,
+    TInstitucionDemandaFilter,
+    TDemandaFilter,
+    TDemandaHistoryFilter,
+    TTipoCodigoDemandaFilter,
+    TCodigoDemandaFilter,
     TCalificacionDemandaFilter,
     TCalificacionDemandaHistoryFilter,
+    TDemandaScoreFilter, 
     TDemandaScoreHistoryFilter,
 )
 from .PersonaFilter import (
@@ -48,7 +49,7 @@ from .VulneracionFilter import (
 from .IntermediasFilter import (
     TLocalizacionPersonaFilter, 
     TDemandaPersonaFilter, 
-    TDemandaAsignadoFilter, 
+    TDemandaZonaFilter, 
     TDemandaVinculadaFilter, 
     TLegajoAsignadoFilter, 
     TVinculoPersonaFilter, 
@@ -57,7 +58,7 @@ from .IntermediasFilter import (
     TPersonaCondicionesVulnerabilidadFilter, 
     TLocalizacionPersonaHistoryFilter, 
     TDemandaPersonaHistoryFilter, 
-    TDemandaAsignadoHistoryFilter, 
+    TDemandaZonaHistoryFilter, 
     TDemandaVinculadaHistoryFilter,
     TVinculoPersonaPersonaHistoryFilter,
     TPersonaCondicionesVulnerabilidadHistoryFilter,

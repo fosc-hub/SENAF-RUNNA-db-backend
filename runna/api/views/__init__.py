@@ -8,19 +8,13 @@ from .LocalizacionView import (
     TLocalizacionViewSet, 
     TLocalizacionHistoryViewSet
 )
-from .DemandaView import ( 
-    TOrigenDemandaViewSet,
-    TSubOrigenDemandaViewSet, 
-    TInformanteViewSet, 
-    TDemandaViewSet, 
-    TPrecalificacionDemandaViewSet, 
-    TDemandaScoreViewSet, 
-    TDemandaHistoryViewSet, 
-    TInforme101ViewSet,
-    TPrecalificacionDemandaHistoryViewSet,
+from .DemandaView import (
+    TDemandaViewSet,
+    TDemandaHistoryViewSet,
     TCalificacionDemandaViewSet,
     TCalificacionDemandaHistoryViewSet,
-    TDemandaScoreHistoryViewSet
+    TDemandaScoreViewSet, 
+    TDemandaScoreHistoryViewSet,
 )
 from .PersonaView import (
     TPersonaViewSet, 
@@ -49,7 +43,7 @@ from .VulneracionView import (
 from .IntermediasView import (
     TLocalizacionPersonaViewSet, 
     TDemandaPersonaViewSet, 
-    TDemandaAsignadoViewSet, 
+    TDemandaZonaViewSet, 
     TDemandaVinculadaViewSet, 
     TLegajoAsignadoViewSet, 
     TVinculoPersonaViewSet, 
@@ -58,7 +52,7 @@ from .IntermediasView import (
     TPersonaCondicionesVulnerabilidadViewSet, 
     TLocalizacionPersonaHistoryViewSet, 
     TDemandaPersonaHistoryViewSet, 
-    TDemandaAsignadoHistoryViewSet, 
+    TDemandaZonaHistoryViewSet, 
     TDemandaVinculadaHistoryViewSet,
     TVinculoPersonaPersonaHistoryViewSet,
     TPersonaCondicionesVulnerabilidadHistoryViewSet,

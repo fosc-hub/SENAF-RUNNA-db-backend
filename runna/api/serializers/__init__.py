@@ -8,18 +8,19 @@ from .LocalizacionSerializer import (
     TLocalizacionHistorySerializer,
 )
 from .DemandaSerializer import (
-    TOrigenDemandaSerializer,
-    TSubOrigenDemandaSerializer,
-    TInformanteSerializer,
+    TBloqueDatosRemitenteSerializer,
+    TTipoInstitucionDemandaSerializer,
+    TAmbitoVulneracionSerializer,
+    TTipoPresuntoDelitoSerializer,
+    TInstitucionDemandaSerializer,
     TDemandaSerializer,
-    TPrecalificacionDemandaSerializer,
-    TDemandaScoreSerializer,
     TDemandaHistorySerializer,
-    TInforme101Serializer,
-    TPrecalificacionDemandaHistorySerializer,
+    TTipoCodigoDemandaSerializer,
+    TCodigoDemandaSerializer,
     TCalificacionDemandaSerializer,
     TCalificacionDemandaHistorySerializer,
-    TDemandaScoreHistorySerializer
+    TDemandaScoreSerializer, 
+    TDemandaScoreHistorySerializer,
 )
 from .PersonaSerializer import (
     TPersonaSerializer,
@@ -48,7 +49,7 @@ from .VulneracionSerializer import (
 from .IntermediasSerializer import (
     TLocalizacionPersonaSerializer,
     TDemandaPersonaSerializer,
-    TDemandaAsignadoSerializer,
+    TDemandaZonaSerializer,
     TDemandaVinculadaSerializer,
     TLegajoAsignadoSerializer,
     TVinculoPersonaSerializer,
@@ -57,7 +58,7 @@ from .IntermediasSerializer import (
     TPersonaCondicionesVulnerabilidadSerializer,
     TLocalizacionPersonaHistorySerializer,
     TDemandaPersonaHistorySerializer,
-    TDemandaAsignadoHistorySerializer,
+    TDemandaZonaHistorySerializer,
     TDemandaVinculadaHistorySerializer,
     TVinculoPersonaPersonaHistorySerializer,
     TPersonaCondicionesVulnerabilidadHistorySerializer,

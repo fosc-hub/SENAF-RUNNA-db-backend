@@ -98,7 +98,7 @@ ADMIN_REORDER = [
     {
         'app': 'customAuth',
         'models': [
-            "customAuth.TEquipo",
+            "customAuth.TZona",
             'customAuth.CustomUser',
         ]
     },
@@ -112,14 +112,19 @@ ADMIN_REORDER = [
             "infrastructure.TCPC",
             "infrastructure.TLocalizacion",
 
-            "infrastructure.TOrigenDemanda",
-            "infrastructure.TSubOrigenDemanda",
-            "infrastructure.TInformante",
+            "infrastructure.TBloqueDatosRemitente",
+            "infrastructure.TTipoInstitucionDemanda",
+            "infrastructure.TAmbitoVulneracion",
+            "infrastructure.TTipoPresuntoDelito",
+            "infrastructure.TInstitucionDemanda",
             "infrastructure.TDemanda",
-            "infrastructure.TInforme101",
-            "infrastructure.TPrecalificacionDemanda",
+            "infrastructure.TDemandaHistory",
+            "infrastructure.TTipoCodigoDemanda",
+            "infrastructure.TCodigoDemanda",
             "infrastructure.TCalificacionDemanda",
+            "infrastructure.TCalificacionDemandaHistory",
             "infrastructure.TDemandaScore",
+            "infrastructure.TDemandaScoreHistory",
 
             "infrastructure.TPersona",
             "infrastructure.TInstitucionEducativa",
@@ -140,7 +145,7 @@ ADMIN_REORDER = [
 
             "infrastructure.TLocalizacionPersona",
             "infrastructure.TDemandaPersona",
-            "infrastructure.TDemandaAsignado",
+            "infrastructure.TDemandaZona",
             "infrastructure.TDemandaVinculada",
             "infrastructure.TLegajoAsignado",
             "infrastructure.TVinculoPersona",

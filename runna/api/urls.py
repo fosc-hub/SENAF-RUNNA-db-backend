@@ -9,18 +9,12 @@ from api.views import (
     TLocalizacionHistoryViewSet
 )
 from api.views import (
-    TOrigenDemandaViewSet,
-    TSubOrigenDemandaViewSet, 
-    TInformanteViewSet, 
-    TDemandaViewSet, 
-    TPrecalificacionDemandaViewSet, 
-    TDemandaScoreViewSet, 
-    TDemandaHistoryViewSet, 
-    TInforme101ViewSet,
-    TPrecalificacionDemandaHistoryViewSet,
+    TDemandaViewSet,
+    TDemandaHistoryViewSet,
     TCalificacionDemandaViewSet,
     TCalificacionDemandaHistoryViewSet,
-    TDemandaScoreHistoryViewSet
+    TDemandaScoreViewSet, 
+    TDemandaScoreHistoryViewSet,
 )
 from api.views import (
     TPersonaViewSet, 
@@ -49,7 +43,7 @@ from api.views import (
 from api.views import (
     TLocalizacionPersonaViewSet, 
     TDemandaPersonaViewSet, 
-    TDemandaAsignadoViewSet, 
+    TDemandaZonaViewSet, 
     TDemandaVinculadaViewSet, 
     TLegajoAsignadoViewSet, 
     TVinculoPersonaViewSet, 
@@ -58,7 +52,7 @@ from api.views import (
     TPersonaCondicionesVulnerabilidadViewSet, 
     TLocalizacionPersonaHistoryViewSet, 
     TDemandaPersonaHistoryViewSet, 
-    TDemandaAsignadoHistoryViewSet, 
+    TDemandaZonaHistoryViewSet, 
     TDemandaVinculadaHistoryViewSet,
     TVinculoPersonaPersonaHistoryViewSet,
     TPersonaCondicionesVulnerabilidadHistoryViewSet,
@@ -92,17 +86,11 @@ router.register(r'cpc', TCPCViewSet, basename='cpc')
 router.register(r'localizacion', TLocalizacionViewSet, basename='localizacion')
 router.register(r'localizacion-history', TLocalizacionHistoryViewSet, basename='localizacion-history')
 
-router.register(r'informante', TInformanteViewSet, basename='informante')
-router.register(r'origen-demanda', TOrigenDemandaViewSet, basename='origen-demanda')
-router.register(r'sub-origen-demanda', TSubOrigenDemandaViewSet, basename='sub-origen-demanda')
 router.register(r'demanda', TDemandaViewSet, basename='demanda')
-router.register(r'precalificacion-demanda', TPrecalificacionDemandaViewSet, basename='precalificacion-demanda')
-router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score')
 router.register(r'demanda-history', TDemandaHistoryViewSet, basename='demanda-history')
-router.register(r'informe101', TInforme101ViewSet, basename='informe101')
-router.register(r'precalificacion-demanda-history', TPrecalificacionDemandaHistoryViewSet, basename='precalificacion-demanda-history')
 router.register(r'calificacion-demanda', TCalificacionDemandaViewSet, basename='calificacion-demanda')
 router.register(r'calificacion-demanda-history', TCalificacionDemandaHistoryViewSet, basename='calificacion-demanda-history')
+router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score')
 router.register(r'demanda-score-history', TDemandaScoreHistoryViewSet, basename='demanda-score-history')
 
 router.register(r'persona', TPersonaViewSet, basename='persona')
@@ -129,7 +117,7 @@ router.register(r'vulneracion-history', TVulneracionHistoryViewSet, basename='vu
 
 router.register(r'localizacion-persona', TLocalizacionPersonaViewSet, basename='localizacion-persona')
 router.register(r'demanda-persona', TDemandaPersonaViewSet, basename='demanda-persona')
-router.register(r'demanda-asignado', TDemandaAsignadoViewSet, basename='demanda-asignado')
+router.register(r'demanda-asignado', TDemandaZonaViewSet, basename='demanda-asignado')
 router.register(r'demanda-vinculada', TDemandaVinculadaViewSet, basename='demanda-vinculada')
 router.register(r'legajo-asignado', TLegajoAsignadoViewSet, basename='legajo-asignado')
 router.register(r'vinculo-persona', TVinculoPersonaViewSet, basename='vinculo-persona')
@@ -138,7 +126,7 @@ router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSe
 router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
 router.register(r'localizacion-persona-history', TLocalizacionPersonaHistoryViewSet, basename='localizacion-persona-history')
 router.register(r'demanda-persona-history', TDemandaPersonaHistoryViewSet, basename='demanda-persona-history')
-router.register(r'demanda-asignado-history', TDemandaAsignadoHistoryViewSet, basename='demanda-asignado-history')
+router.register(r'demanda-asignado-history', TDemandaZonaHistoryViewSet, basename='demanda-asignado-history')
 router.register(r'demanda-vinculada-history', TDemandaVinculadaHistoryViewSet, basename='demanda-vinculada-history')
 router.register(r'vinculo-persona-persona-history', TVinculoPersonaPersonaHistoryViewSet, basename='vinculo-persona-persona-history')
 router.register(r'persona-condiciones-vulnerabilidad-history', TPersonaCondicionesVulnerabilidadHistoryViewSet, basename='persona-condiciones-vulnerabilidad-history')

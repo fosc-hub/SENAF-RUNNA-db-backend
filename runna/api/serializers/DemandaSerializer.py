@@ -1,86 +1,85 @@
 from rest_framework import serializers
 from infrastructure.models import ( 
-    TOrigenDemanda,
-    TSubOrigenDemanda, 
-    TInformante, 
-    TDemanda, 
-    TPrecalificacionDemanda, 
-    TDemandaScore, 
-    TDemandaHistory, 
-    TInforme101,
-    TPrecalificacionDemandaHistory,
+    TBloqueDatosRemitente,
+    TTipoInstitucionDemanda,
+    TAmbitoVulneracion,
+    TTipoPresuntoDelito,
+    TInstitucionDemanda,
+    TDemanda,
+    TDemandaHistory,
+    TTipoCodigoDemanda,
+    TCodigoDemanda,
     TCalificacionDemanda,
     TCalificacionDemandaHistory,
-    TDemandaScoreHistory
+    TDemandaScore, 
+    TDemandaScoreHistory,
 )
-        
-class TOrigenDemandaSerializer(serializers.ModelSerializer):
+
+
+class TBloqueDatosRemitenteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TOrigenDemanda
+        model = TBloqueDatosRemitente
         fields = '__all__'
 
-class TSubOrigenDemandaSerializer(serializers.ModelSerializer):
+class TTipoInstitucionDemandaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TSubOrigenDemanda
+        model = TTipoInstitucionDemanda
         fields = '__all__'
 
-class TInformanteSerializer(serializers.ModelSerializer):
+class TAmbitoVulneracionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TInformante
+        model = TAmbitoVulneracion
         fields = '__all__'
 
+class TTipoPresuntoDelitoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TTipoPresuntoDelito
+        fields = '__all__'
+
+class TInstitucionDemandaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TInstitucionDemanda
+        fields = '__all__'
 
 class TDemandaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemanda
         fields = '__all__'
 
-class TInforme101Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = TInforme101
-        fields = '__all__'
-
-class TPrecalificacionDemandaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TPrecalificacionDemanda
-        fields = '__all__'
-
-    def update(self, instance, validated_data):
-        if 'demanda' in validated_data:
-            raise serializers.ValidationError({"demanda": "This field cannot be updated."})
-        return super().update(instance, validated_data)
-    
-
-
-class TDemandaScoreSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDemandaScore
-        fields = '__all__'
-
-
 class TDemandaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaHistory
         fields = '__all__'
 
+class TTipoCodigoDemandaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TTipoCodigoDemanda
+        fields = '__all__'
+
+class TCodigoDemandaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TCodigoDemanda
+        fields = '__all__'
 
 class TCalificacionDemandaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TCalificacionDemanda
         fields = '__all__'
 
+    def update(self, instance, validated_data):
+        if 'demanda' in validated_data:
+            raise serializers.ValidationError({"demanda": "This field cannot be updated."})
+        return super().update(instance, validated_data)
 
 class TCalificacionDemandaHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TCalificacionDemandaHistory
         fields = '__all__'
 
-
-class TPrecalificacionDemandaHistorySerializer(serializers.ModelSerializer):
+class TDemandaScoreSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TPrecalificacionDemandaHistory
+        model = TDemandaScore
         fields = '__all__'
-
 
 class TDemandaScoreHistorySerializer(serializers.ModelSerializer):
     class Meta:
