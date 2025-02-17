@@ -105,8 +105,6 @@ ADMIN_REORDER = [
     {
         'app': 'infrastructure',
         'models': [
-            "infrastructure.TProvincia",
-            "infrastructure.TDepartamento",
             "infrastructure.TLocalidad",
             "infrastructure.TBarrio",
             "infrastructure.TCPC",

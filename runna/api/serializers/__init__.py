@@ -1,6 +1,4 @@
 from .LocalizacionSerializer import (
-    TProvinciaSerializer,
-    TDepartamentoSerializer,
     TLocalidadSerializer,
     TBarrioSerializer,
     TCPCSerializer,

@@ -1,7 +1,5 @@
 from .BaseView import BaseViewSet
 from .LocalizacionView import (
-    TProvinciaViewSet, 
-    TDepartamentoViewSet, 
     TLocalidadViewSet, 
     TBarrioViewSet, 
     TCPCViewSet, 

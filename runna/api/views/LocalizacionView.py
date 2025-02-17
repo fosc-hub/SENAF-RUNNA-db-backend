@@ -9,96 +9,20 @@ from infrastructure.models import (
 )
 
 from core.use_cases import (
-    TProvinciaUseCase, TDepartamentoUseCase, TLocalidadUseCase, TBarrioUseCase, TCPCUseCase
+    TLocalidadUseCase, TBarrioUseCase, TCPCUseCase
 )
 
 from api.serializers import (
-    TProvinciaSerializer, TDepartamentoSerializer, TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer, TLocalizacionHistorySerializer
+    TLocalidadSerializer, TBarrioSerializer, TCPCSerializer, TLocalizacionSerializer, TLocalizacionHistorySerializer
 )
 
 from infrastructure.repositories import (
-    TProvinciaRepository, TDepartamentoRepository, TLocalidadRepository, TBarrioRepository, TCPCRepository, TLocalizacionRepository
+    TLocalidadRepository, TBarrioRepository, TCPCRepository, TLocalizacionRepository
 )
 
 from infrastructure.filters import (
-    TProvinciaFilter, TDepartamentoFilter, TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter, TLocalizacionHistoryFilter
+    TLocalidadFilter, TBarrioFilter, TCPCFilter, TLocalizacionFilter, TLocalizacionHistoryFilter
 )
-
-
-
-class TProvinciaViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = TProvinciaFilter
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.tprovincia_use_case = TProvinciaUseCase()
-        self.tprovincia_repo = TProvinciaRepository()
-
-    @extend_schema(
-        responses=TProvinciaSerializer(many=True),
-        description="Retrieve a list of all Provincia entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TProvincia."""
-        queryset = self.tprovincia_repo.get_all()
-        filtered_queryset = self.filter_queryset(queryset)  # Apply filters
-        serializer = TProvinciaSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-    
-    @extend_schema(
-        request=TProvinciaSerializer,
-        responses=TProvinciaSerializer,
-        description="Retrieve a single TProvincia"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TProvincia."""
-        tprovincia = self.tprovincia_repo.get_provincia(pk)
-        serializer = TProvinciaSerializer(tprovincia)
-        return Response(serializer.data)
-    
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
-
-
-
-class TDepartamentoViewSet(viewsets.ViewSet):
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = TDepartamentoFilter    
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.tdepartamento_use_case = TDepartamentoUseCase()
-        self.tdepartamento_repo = TDepartamentoRepository()
-
-    @extend_schema(
-        responses=TDepartamentoSerializer(many=True),
-        description="Retrieve a list of all TDepartamento entries with optional filtering."
-    )
-    def list(self, request):
-        """List all TDepartamento."""
-        queryset = self.tdepartamento_repo.get_all()
-        filtered_queryset = self.filter_queryset(queryset)
-        serializer = TDepartamentoSerializer(filtered_queryset, many=True)
-        return Response(serializer.data)
-    
-    @extend_schema(
-        request=TDepartamentoSerializer,
-        responses=TDepartamentoSerializer,
-        description="Retrieve a single TDepartamento"
-    )
-    def retrieve(self, request, pk=None):
-        """Retrieve a single TDepartamento."""
-        tdepartamento = self.tdepartamento_repo.get_departamento(pk)
-        serializer = TDepartamentoSerializer(tdepartamento)
-        return Response(serializer.data)
-
-    def filter_queryset(self, queryset):
-        """Applies filters to the queryset."""
-        filter_backend = DjangoFilterBackend()
-        return filter_backend.filter_queryset(self.request, queryset, self)
 
 
 class TLocalidadViewSet(viewsets.ViewSet):

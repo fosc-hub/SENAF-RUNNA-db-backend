@@ -1,6 +1,4 @@
 from .LocalizacionFilter import (
-    TProvinciaFilter, 
-    TDepartamentoFilter, 
     TLocalidadFilter, 
     TBarrioFilter, 
     TCPCFilter, 

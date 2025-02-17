@@ -3,37 +3,9 @@ from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
 
-# The following models are used to represent the location of a user in the system.
-class TProvincia(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Provincia')
-        verbose_name_plural = _('Provincias')
-
-    def __str__(self):
-        return self.nombre
-
-
-class TDepartamento(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    provincia = models.ForeignKey('infrastructure.TProvincia', on_delete=models.CASCADE)
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Departamento')
-        verbose_name_plural = _('Departamentos')
-
-    def __str__(self):
-        return f"{self.nombre} - {self.provincia}"
-
 
 class TLocalidad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    departamento = models.ForeignKey('infrastructure.TDepartamento', on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'infrastructure'
@@ -41,7 +13,8 @@ class TLocalidad(models.Model):
         verbose_name_plural = _('Localidades')
     
     def __str__(self):
-        return f"{self.nombre} - {self.departamento}"
+        return f"{self.nombre}"
+
 
 class TBarrio(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -71,7 +44,8 @@ class TCPC(models.Model):
 
 class TLocalizacionBase(models.Model):
     deleted = models.BooleanField(default=False)
-    calle = models.CharField(max_length=255, null=True, blank=True)
+
+    calle = models.CharField(max_length=255, null=False, blank=False)
     tipo_calle_choices = [
         ('CALLE', 'Calle'),
         ('AVENIDA', 'Avenida'),
@@ -81,13 +55,17 @@ class TLocalizacionBase(models.Model):
         ('OTRO', 'Otro')
     ]
     tipo_calle = models.CharField(max_length=10, choices=tipo_calle_choices, null=True, blank=True)
+
     piso_depto = models.IntegerField(null=True, blank=True)
     lote = models.IntegerField(null=True, blank=True)
     mza = models.IntegerField(null=True, blank=True)
-    casa_nro = models.IntegerField(null=True, blank=True)
+    casa_nro = models.IntegerField(null=False, blank=False)
+
     referencia_geo = models.TextField(null=False, blank=False)
+    geolocalizacion = models.CharField(max_length=255, null=True, blank=True)
+
     barrio = models.ForeignKey('infrastructure.TBarrio', on_delete=models.SET_NULL, null=True, blank=True)
-    localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.CASCADE, null=False)
+    localidad = models.ForeignKey('infrastructure.TLocalidad', on_delete=models.PROTECT, null=False)
     cpc = models.ForeignKey('infrastructure.TCPC', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:

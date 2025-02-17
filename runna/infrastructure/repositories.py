@@ -1,5 +1,5 @@
 from infrastructure.models import (
-    TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion
+    TLocalidad, TBarrio, TCPC, TLocalizacion
 )
 from core.entities import (
     CPC, Departamento, Provincia, Localidad, Barrio, Localizacion,
@@ -7,17 +7,17 @@ from core.entities import (
 
 class TProvinciaRepository:
     def get_all(self):
-        return TProvincia.objects.all() # returns a QuerySet (not a list) to be used in filtering
+        pass # return TProvincia.objects.all() # returns a QuerySet (not a list) to be used in filtering
 
     def get_provincia(self, id):
-        return TProvincia.objects.get(id=id)
+        pass # return TProvincia.objects.get(id=id)
 
 class TDepartamentoRepository:
     def get_all(self):
-        return TDepartamento.objects.all()
+        pass # return TDepartamento.objects.all()
     
     def get_departamento(self, id):
-        return TDepartamento.objects.get(id=id)
+        pass # return TDepartamento.objects.get(id=id)
 
 class TLocalidadRepository:
     def get_all(self):

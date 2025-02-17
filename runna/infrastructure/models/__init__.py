@@ -1,7 +1,5 @@
 from .BaseHistory import BaseHistory
 from .Localizacion import (
-    TProvincia, 
-    TDepartamento, 
     TLocalidad, 
     TBarrio, 
     TCPC, 
