@@ -34,22 +34,16 @@ from .VulneracionView import (
     TVulneracionHistoryViewSet,
 )
 from .IntermediasView import (
-    TLocalizacionPersonaViewSet, 
-    TDemandaPersonaViewSet, 
-    TDemandaZonaViewSet, 
-    TDemandaVinculadaViewSet, 
-    TLegajoAsignadoViewSet, 
-    TVinculoPersonaViewSet, 
-    TVinculoPersonaPersonaViewSet, 
-    TDemandaMotivoIntervencionViewSet, 
-    TPersonaCondicionesVulnerabilidadViewSet, 
-    TLocalizacionPersonaHistoryViewSet, 
-    TDemandaPersonaHistoryViewSet, 
-    TDemandaZonaHistoryViewSet, 
+    TLocalizacionPersonaViewSet,
+    TLocalizacionPersonaHistoryViewSet,
+    TDemandaPersonaViewSet,
+    TDemandaPersonaHistoryViewSet,
+    TDemandaZonaViewSet,
+    TDemandaZonaHistoryViewSet,
+    TDemandaVinculadaViewSet,
     TDemandaVinculadaHistoryViewSet,
-    TVinculoPersonaPersonaHistoryViewSet,
+    TPersonaCondicionesVulnerabilidadViewSet,
     TPersonaCondicionesVulnerabilidadHistoryViewSet,
-    TDemandaMotivoIntervencionHistoryViewSet
 )
 from .EvaluacionView import (
     TActividadTipoViewSet, 

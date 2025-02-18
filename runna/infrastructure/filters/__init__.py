@@ -50,22 +50,16 @@ from .VulneracionFilter import (
     TVulneracionHistoryFilter,
 )
 from .IntermediasFilter import (
-    TLocalizacionPersonaFilter, 
-    TDemandaPersonaFilter, 
-    TDemandaZonaFilter, 
-    TDemandaVinculadaFilter, 
-    TLegajoAsignadoFilter, 
-    TVinculoPersonaFilter, 
-    TVinculoPersonaPersonaFilter, 
-    TDemandaMotivoIntervencionFilter, 
-    TPersonaCondicionesVulnerabilidadFilter, 
-    TLocalizacionPersonaHistoryFilter, 
-    TDemandaPersonaHistoryFilter, 
-    TDemandaZonaHistoryFilter, 
+    TLocalizacionPersonaFilter,
+    TLocalizacionPersonaHistoryFilter,
+    TDemandaPersonaFilter,
+    TDemandaPersonaHistoryFilter,
+    TDemandaZonaFilter,
+    TDemandaZonaHistoryFilter,
+    TDemandaVinculadaFilter,
     TDemandaVinculadaHistoryFilter,
-    TVinculoPersonaPersonaHistoryFilter,
+    TPersonaCondicionesVulnerabilidadFilter,
     TPersonaCondicionesVulnerabilidadHistoryFilter,
-    TDemandaMotivoIntervencionHistoryFilter
 )
 from .EvaluacionFilter import (
     TActividadTipoFilter, 

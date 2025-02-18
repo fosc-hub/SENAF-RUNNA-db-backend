@@ -34,22 +34,16 @@ from api.views import (
     TVulneracionHistoryViewSet,
 )
 from api.views import (
-    TLocalizacionPersonaViewSet, 
-    TDemandaPersonaViewSet, 
-    TDemandaZonaViewSet, 
-    TDemandaVinculadaViewSet, 
-    TLegajoAsignadoViewSet, 
-    TVinculoPersonaViewSet, 
-    TVinculoPersonaPersonaViewSet, 
-    TDemandaMotivoIntervencionViewSet, 
-    TPersonaCondicionesVulnerabilidadViewSet, 
-    TLocalizacionPersonaHistoryViewSet, 
-    TDemandaPersonaHistoryViewSet, 
-    TDemandaZonaHistoryViewSet, 
+    TLocalizacionPersonaViewSet,
+    TLocalizacionPersonaHistoryViewSet,
+    TDemandaPersonaViewSet,
+    TDemandaPersonaHistoryViewSet,
+    TDemandaZonaViewSet,
+    TDemandaZonaHistoryViewSet,
+    TDemandaVinculadaViewSet,
     TDemandaVinculadaHistoryViewSet,
-    TVinculoPersonaPersonaHistoryViewSet,
+    TPersonaCondicionesVulnerabilidadViewSet,
     TPersonaCondicionesVulnerabilidadHistoryViewSet,
-    TDemandaMotivoIntervencionHistoryViewSet
 )
 from api.views import (
     TActividadTipoViewSet, 
@@ -103,20 +97,14 @@ router.register(r'vulneracion-history', TVulneracionHistoryViewSet, basename='vu
 
 router.register(r'localizacion-persona', TLocalizacionPersonaViewSet, basename='localizacion-persona')
 router.register(r'demanda-persona', TDemandaPersonaViewSet, basename='demanda-persona')
-router.register(r'demanda-asignado', TDemandaZonaViewSet, basename='demanda-asignado')
+router.register(r'demanda-zona', TDemandaZonaViewSet, basename='demanda-zona')
 router.register(r'demanda-vinculada', TDemandaVinculadaViewSet, basename='demanda-vinculada')
-router.register(r'legajo-asignado', TLegajoAsignadoViewSet, basename='legajo-asignado')
-router.register(r'vinculo-persona', TVinculoPersonaViewSet, basename='vinculo-persona')
-router.register(r'vinculo-persona-persona', TVinculoPersonaPersonaViewSet, basename='vinculo-persona-persona')
-router.register(r'demanda-motivo-intervencion', TDemandaMotivoIntervencionViewSet, basename='demanda-motivo-intervencion')
 router.register(r'persona-condiciones-vulnerabilidad', TPersonaCondicionesVulnerabilidadViewSet, basename='persona-condiciones-vulnerabilidad')
 router.register(r'localizacion-persona-history', TLocalizacionPersonaHistoryViewSet, basename='localizacion-persona-history')
 router.register(r'demanda-persona-history', TDemandaPersonaHistoryViewSet, basename='demanda-persona-history')
-router.register(r'demanda-asignado-history', TDemandaZonaHistoryViewSet, basename='demanda-asignado-history')
+router.register(r'demanda-zona-history', TDemandaZonaHistoryViewSet, basename='demanda-zona-history')
 router.register(r'demanda-vinculada-history', TDemandaVinculadaHistoryViewSet, basename='demanda-vinculada-history')
-router.register(r'vinculo-persona-persona-history', TVinculoPersonaPersonaHistoryViewSet, basename='vinculo-persona-persona-history')
 router.register(r'persona-condiciones-vulnerabilidad-history', TPersonaCondicionesVulnerabilidadHistoryViewSet, basename='persona-condiciones-vulnerabilidad-history')
-router.register(r'demanda-motivo-intervencion-history', TDemandaMotivoIntervencionHistoryViewSet, basename='demanda-motivo-intervencion-history')
 
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')

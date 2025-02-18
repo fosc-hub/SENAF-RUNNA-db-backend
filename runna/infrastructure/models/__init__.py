@@ -51,22 +51,16 @@ from .Vulneracion import (
     TVulneracionHistory,
 )
 from .Intermedias import (
-    TLocalizacionPersona, 
-    TDemandaPersona, 
-    TDemandaZona, 
-    TDemandaVinculada, 
-    TLegajoAsignado, 
-    TVinculoPersona, 
-    TVinculoPersonaPersona, 
-    TDemandaMotivoIntervencion, 
-    TPersonaCondicionesVulnerabilidad, 
-    TLocalizacionPersonaHistory, 
-    TDemandaPersonaHistory, 
-    TDemandaZonaHistory, 
-    TDemandaVinculadaHistory, 
-    TVinculoPersonaPersonaHistory,
+    TLocalizacionPersona,
+    TLocalizacionPersonaHistory,
+    TDemandaPersona,
+    TDemandaPersonaHistory,
+    TDemandaZona,
+    TDemandaZonaHistory,
+    TDemandaVinculada,
+    TDemandaVinculadaHistory,
+    TPersonaCondicionesVulnerabilidad,
     TPersonaCondicionesVulnerabilidadHistory,
-    TDemandaMotivoIntervencionHistory
 )
 from .Evaluacion import (
     TActividadTipo, 
