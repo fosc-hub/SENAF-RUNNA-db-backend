@@ -14,69 +14,36 @@ from infrastructure.models import (
 class TActividadTipoFilter(filters.FilterSet):
     class Meta:
         model = TActividadTipo
-        fields = {
-            'nombre': ['exact', 'icontains'],
-        }
+        fields = "__all__"
 
 class TInstitucionActividadFilter(filters.FilterSet):
     class Meta:
         model = TInstitucionActividad
-        fields = {
-            'nombre': ['exact', 'icontains'],
-            'mail': ['exact', 'icontains'],
-            'telefono': ['exact', 'gte', 'lte'],
-            'localizacion': ['exact'],
-        }
-
+        fields = "__all__"
 class TActividadFilter(filters.FilterSet):
     class Meta:
         model = TActividad
-        fields = {
-            'fecha_y_hora': ['exact', 'gte', 'lte'],
-            'descripcion': ['icontains'],
-            'demanda': ['exact'],
-            'tipo': ['exact'],
-            'institucion': ['exact'],
-        }
+        fields = "__all__"
 
 class TRespuestaFilter(filters.FilterSet):
     class Meta:
         model = TRespuesta
-        fields = {
-            'fecha_y_hora': ['exact', 'gte', 'lte'],
-            'mail': ['exact', 'icontains'],
-            'mensaje': ['icontains'],
-            'demanda': ['exact'],
-            'institucion': ['exact'],
-        }
+        fields = "__all__"
 
 class TIndicadoresValoracionFilter(filters.FilterSet):
     class Meta:
         model = TIndicadoresValoracion
-        fields = {
-            'nombre': ['exact', 'icontains'],
-            'descripcion': ['icontains'],
-            'peso': ['exact', 'gte', 'lte'],
-        }
+        fields = "__all__"
 
 class TEvaluacionesFilter(filters.FilterSet):
     class Meta:
         model = TEvaluaciones
-        fields = {
-            'demanda': ['exact'],
-            'indicador': ['exact'],
-            'si_no': ['exact'],
-        }
+        fields = "__all__"
 
 class TDecisionFilter(filters.FilterSet):
     class Meta:
         model = TDecision
-        fields = {
-            'fecha_y_hora': ['exact', 'gte', 'lte'],
-            'justificacion': ['icontains'],
-            'decision': ['exact'],
-            'demanda': ['exact'],
-        }
+        fields = "__all__"
 
 class TActividadHistoryFilter(filters.FilterSet):
     class Meta:

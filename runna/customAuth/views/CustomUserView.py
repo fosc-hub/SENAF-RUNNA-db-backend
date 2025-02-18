@@ -1,19 +1,35 @@
 from rest_framework import viewsets
 from drf_spectacular.utils import extend_schema
 from rest_framework.response import Response
-from customAuth.models import CustomUser, TEquipo
-from customAuth.serializers import CustomUserSerializer, TEquipoSerializer
+from customAuth.models import (
+    CustomUser,
+    TZona,
+    TCustomUserZona,
+)
+from customAuth.serializers import (
+    CustomUserSerializer,
+    TZonaSerializer,
+    TCustomUserZonaSerializer,
+)
 from rest_framework.exceptions import NotFound
 from customAuth.filters import CustomUserFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-class EquipoViewSet(viewsets.ModelViewSet):
-    queryset = TEquipo.objects.all()
-    serializer_class = TEquipoSerializer
+class TZonaViewSet(viewsets.ModelViewSet):
+    queryset = TZona.objects.all()
+    serializer_class = TZonaSerializer
     
     http_method_names = ['get']
+
+
+class TCustomUserZonaViewSet(viewsets.ModelViewSet):
+    queryset = TCustomUserZona.objects.all()
+    serializer_class = TCustomUserZonaSerializer
+
+    http_method_names = ['get']
+
 
 class CustomUserViewSet(viewsets.ViewSet):
     filter_backends = [DjangoFilterBackend]

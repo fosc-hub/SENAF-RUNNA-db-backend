@@ -2,7 +2,7 @@ from django.db.models.signals import pre_save, post_save, post_delete, pre_delet
 from django.dispatch import receiver
 from infrastructure.models import (
     TDemanda, TDemandaHistory, 
-    TPrecalificacionDemanda, TPrecalificacionDemandaHistory,
+    TCalificacionDemanda, TCalificacionDemandaHistory,
     TDemandaScore, TDemandaScoreHistory
 )
 from .BaseLogs import logs
@@ -31,16 +31,16 @@ def log_demanda_delete(sender, instance, **kwargs):
     logs(TDemandaHistory, action, instance)
 
 
-@receiver(post_save, sender=TPrecalificacionDemanda)
+@receiver(post_save, sender=TCalificacionDemanda)
 def log_preCalificacionDemanda_save(sender, instance, created, **kwargs):
     action = 'CREATE' if created else 'UPDATE'
-    logs(TPrecalificacionDemandaHistory, action, instance)
+    logs(TCalificacionDemandaHistory, action, instance)
 
 
-@receiver(post_delete, sender=TPrecalificacionDemanda)
+@receiver(post_delete, sender=TCalificacionDemanda)
 def log_preCalificacionDemanda_delete(sender, instance, **kwargs):
     action='DELETE'
-    logs(TPrecalificacionDemandaHistory, action, instance)
+    logs(TCalificacionDemandaHistory, action, instance)
     
 
 @receiver(post_save, sender=TDemandaScore)

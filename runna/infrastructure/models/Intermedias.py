@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 """
 TLocalizacionPersona
 TDemandaPersona
-TDemandaAsignado
+TDemandaZona
 TDemandaVinculada
 TLegajoAsignado
 TVinculoPersona
@@ -67,24 +67,39 @@ class TLocalizacionPersonaHistory(TLocalizacionPersonaBase, BaseHistory):
 
 class TDemandaPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
-    conviviente = models.BooleanField(null=False, blank=False)
     
-    supuesto_autordv_choices = [
-        ('NO_CORRESPONDE', 'No corresponde'),
-        ('CORRESPONDE', 'Corresponde'),
-        ('SE_DESCONOCE', 'Se desconoce')
+    conviviente = models.BooleanField(null=False, blank=False)
+    VINCULO_DEMANDA_CHOICES = [
+        ('NNYA_PRINCIPAL', 'NNYA Principal'),
+        ('NNYA_SECUNDARIO', 'NNYA Secundario'),
+        ('SUPUESTO_AUTOR_DV', 'Supuesto Autor DV'),
+        ('SUPUESTO_AUTOR_DV_PRINCIPAL', 'Supuesto Autor DV Principal'),
+        ('GARANTIZA_PROTECCION', 'Garantiza Protección'),
+        ('SE_DESCONOCE', 'Se Desconoce'),
     ]
-    supuesto_autordv = models.CharField(
-        max_length=20,
-        choices=supuesto_autordv_choices,
-        default="Corresponde",
+    vinculo_demanda = models.CharField(
+        max_length=30,
+        choices=VINCULO_DEMANDA_CHOICES,
+        default='SE_DESCONOCE',
         null=False,
         blank=False
     )
-        
-    supuesto_autordv_principal = models.BooleanField(null=False, blank=False)
-    nnya_principal = models.BooleanField(null=False, blank=False)
-    
+    VINCULO_CON_NNyA_PRINCIPAL_CHOICES = [
+        ('MADRE', 'Madre'),
+        ('PADRE', 'Padre'),
+        ('TUTOR', 'Tutor'),
+        ('HERMANO', 'Hermano'),
+        ('ABUELO', 'Abuelo'),
+        ('OTRO', 'Otro'),
+        ('NO_CORRESPONDE', 'No Corresponde'),
+    ]
+    vinculo_con_nnya_principal = models.CharField(
+        max_length=30,
+        choices=VINCULO_CON_NNyA_PRINCIPAL_CHOICES,
+        null=False,
+        blank=False
+    )
+
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
     
@@ -113,17 +128,18 @@ class TDemandaPersona(TDemandaPersonaBase):
         verbose_name_plural = _('Personas asociadas a Demandas')
         
     def save(self, *args, **kwargs):
-        if self.supuesto_autordv_principal:
-            if TDemandaPersona.objects.filter(demanda=self.demanda, supuesto_autordv_principal=True).exclude(pk=self.pk).exists():
-                raise ValidationError("Ya existe un supuesto autor principal para esta demanda.")
-        if self.supuesto_autordv=="CORRESPONDE" or self.supuesto_autordv_principal:
-            if self.persona.nnya:
-                raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto.")
-        if self.nnya_principal:
-            if TDemandaPersona.objects.filter(demanda=self.demanda, nnya_principal=True).exclude(pk=self.pk).exists():
-                raise ValidationError("Ya existe un NNyA principal para esta demanda.")
-            if not self.persona.nnya:
-                raise ValidationError("La persona seleccionada como nnya principal debe ser un NNyA.")
+        if self.vinculo_demanda == 'NNYA_PRINCIPAL':
+            if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='NNYA_PRINCIPAL').exists():
+                raise ValidationError("Ya existe un NNYA Principal para esta demanda y persona")
+            if self.vinculo_con_nnya_principal != 'NO_CORRESPONDE':
+                raise ValidationError("El nnya ingresante es un NNyA principal, no corresponde ingresar un vinculo con si mismo")
+        if self.vinculo_demanda == 'SUPUESTO_AUTOR_DV_PRINCIPAL':
+            if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='SUPUESTO_AUTOR_DV_PRINCIPAL').exists():
+                raise ValidationError("Ya existe un Supuesto Autor DV Principal para esta demanda y persona")
+        if (self.vinculo_demanda in ['NNYA_PRINCIPAL', 'NNYA_SECUNDARIO']) and not self.persona.nnya:
+            raise ValidationError("La persona seleccionada como nnya debe ser un NNyA")
+        if (self.vinculo_demanda in ['SUPUESTO_AUTOR_DV', 'SUPUESTO_AUTOR_DV_PRINCIPAL']) and self.persona.nnya:
+            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
         super().save(*args, **kwargs)
 
 
@@ -140,13 +156,17 @@ class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):
         verbose_name_plural = _('Historial de Personas asociadas a Demandas')
 
 
-class TDemandaAsignadoBase(models.Model):
+class TDemandaZonaBase(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_recibido = models.DateTimeField(null=True, blank=True)
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
     comentarios = models.TextField(null=True, blank=True)
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE,  related_name='%(class)s_user')
+    enviado_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)senviado_por", on_delete=models.PROTECT, null=True)
+    recibido_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)srecibido_por", on_delete=models.PROTECT, null=True)
+    zona = models.ForeignKey('customAuth.TZona', on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -155,7 +175,7 @@ class TDemandaAsignadoBase(models.Model):
         return f"{self.demanda} {self.user} - {self.esta_activo}"
 
 
-class TDemandaAsignado(TDemandaAsignadoBase):
+class TDemandaZona(TDemandaZonaBase):
 
     def delete(self, *args, **kwargs):
         """Override delete to implement soft delete."""
@@ -167,15 +187,14 @@ class TDemandaAsignado(TDemandaAsignadoBase):
         super().delete(*args, **kwargs)
 
     class Meta:
-        unique_together = ('demanda', 'user')
         app_label = 'infrastructure'
         verbose_name = _('Asignacion de Demanda')
         verbose_name_plural = _('Asignaciones de Demandas')
 
 
-class TDemandaAsignadoHistory(TDemandaAsignadoBase, BaseHistory):
+class TDemandaZonaHistory(TDemandaZonaBase, BaseHistory):
     parent = models.ForeignKey(
-        'infrastructure.TDemandaAsignado',
+        'infrastructure.TDemandaZona',
         on_delete=models.CASCADE,
         related_name='history'
     )
@@ -188,14 +207,14 @@ class TDemandaAsignadoHistory(TDemandaAsignadoBase, BaseHistory):
 
 class TDemandaVinculadaBase(models.Model):
     deleted = models.BooleanField(default=False)
-    demanda_1 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_1", on_delete=models.CASCADE)
-    demanda_2 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_2", on_delete=models.CASCADE)
+    demanda_padre = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_padre", on_delete=models.CASCADE)
+    demanda_hijo = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_hijo", on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return f"{self.demanda_1} {self.demanda_2}"
+        return f"{self.demanda_padre} {self.demanda_hijo}"
 
 class TDemandaVinculada(TDemandaVinculadaBase):
 
@@ -226,90 +245,6 @@ class TDemandaVinculadaHistory(TDemandaVinculadaBase, BaseHistory):
         app_label = 'infrastructure'
         verbose_name = _('Historial de Vinculacion de Demandas')
         verbose_name_plural = _('Historial de Vinculaciones de Demandas')
-
-
-class TLegajoAsignado(models.Model):
-    esta_activo = models.BooleanField(default=True)
-    recibido = models.BooleanField(default=False)
-    comentarios = models.TextField(null=True, blank=True)
-    
-    legajo = models.ForeignKey('TLegajo', on_delete=models.CASCADE)
-    user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
-
-    class Meta:
-        # unique_together = ('legajo', 'user')
-        app_label = 'infrastructure'
-        verbose_name = _('Asignacion de Legajo')
-        verbose_name_plural = _('Asignaciones de Legajos')
-
-    def __str__(self):
-        return f"{self.legajo} {self.user} - {self.esta_activo}"
-
-
-class TVinculoPersona(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Vinculo de Personas')
-        verbose_name_plural = _('Vinculos de Personas')
-
-    def __str__(self):
-        return f"{self.nombre}"
-
-class TVinculoPersonaPersonaBase(models.Model):
-    deleted = models.BooleanField(default=False)
-    conviven = models.BooleanField(null=False, blank=False)
-    autordv = models.BooleanField(null=False, blank=False)
-    garantiza_proteccion = models.BooleanField(null=False, blank=False)
-
-    persona_1 = models.ForeignKey('TPersona', related_name='%(class)s_persona_1', on_delete=models.CASCADE)
-    persona_2 = models.ForeignKey('TPersona', related_name='%(class)s_persona_2', on_delete=models.CASCADE)
-    vinculo = models.ForeignKey('TVinculoPersona', on_delete=models.SET_NULL, null=True, blank=True)
-
-    class Meta:
-        abstract = True
-    
-    def __str__(self):
-        return f"{self.persona_1} {self.persona_2} - {self.vinculo} - {self.conviven} - {self.autordv} - {self.garantiza_proteccion}"
-
-
-class TVinculoPersonaPersona(TVinculoPersonaPersonaBase):
-
-    def delete(self, *args, **kwargs):
-        """Override delete to implement soft delete."""
-        self.deleted = True
-        self.save()
-
-    def hard_delete(self, *args, **kwargs):
-        """Permanently delete the object."""
-        super().delete(*args, **kwargs)
-
-    class Meta:
-        # unique_together = ('persona_1', 'persona_2')
-        app_label = 'infrastructure'
-        verbose_name = _('Vinculo entre Personas')
-        verbose_name_plural = _('Vinculos entre Personas')
-
-    def save(self, *args, **kwargs):
-        if self.garantiza_proteccion and self.autordv:
-            raise ValidationError("No puede garantizar proteccion y ser supuesto autor a la vez")
-        if self.garantiza_proteccion and (self.persona_1.nnya and self.persona_2.nnya):
-            raise ValidationError("Un nnya no puede garantizar proteccion a otro nnya")
-        super().save(*args, **kwargs)
-
-
-class TVinculoPersonaPersonaHistory(TVinculoPersonaPersonaBase, BaseHistory):
-    parent = models.ForeignKey(
-        'infrastructure.TVinculoPersonaPersona',
-        on_delete=models.CASCADE,
-        related_name='history'
-    )
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Historial de Vinculo entre Personas')
-        verbose_name_plural = _('Historial de Vinculos entre Personas')
 
 
 class TPersonaCondicionesVulnerabilidadBase(models.Model):
@@ -355,36 +290,3 @@ class TPersonaCondicionesVulnerabilidadHistory(TPersonaCondicionesVulnerabilidad
         verbose_name = _('Historial de Condicion de Vulnerabilidad de Persona')
         verbose_name_plural = _('Historial de Condiciones de Vulnerabilidad de Personas')
 
-class TDemandaMotivoIntervencionBase(models.Model):
-    si_no = models.BooleanField(null=False, blank=False)
-    
-    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    motivo_intervencion = models.ForeignKey('TMotivoIntervencion', on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
-    
-    def __str__(self):
-        return f"{self.demanda} {self.motivo_intervencion} - {self.si_no}"
-
-
-class TDemandaMotivoIntervencion(TDemandaMotivoIntervencionBase):
-
-    class Meta:
-        # unique_together = ('demanda', 'motivo_intervencion')
-        app_label = 'infrastructure'
-        verbose_name = _('Motivo de Intervencion de Demanda')
-        verbose_name_plural = _('Motivos de Intervencion de Demandas')
-
-
-class TDemandaMotivoIntervencionHistory(TDemandaMotivoIntervencionBase, BaseHistory):
-    parent = models.ForeignKey(
-        'infrastructure.TDemandaMotivoIntervencion',
-        on_delete=models.CASCADE,
-        related_name='history'
-    )
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Historial de Motivo de Intervencion de Demanda')
-        verbose_name_plural = _('Historial de Motivos de Intervencion de Demandas')

@@ -1,21 +1,15 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TLocalizacionPersona, 
-    TDemandaPersona, 
-    TDemandaAsignado, 
-    TDemandaVinculada, 
-    TLegajoAsignado, 
-    TVinculoPersona, 
-    TVinculoPersonaPersona, 
-    TDemandaMotivoIntervencion, 
-    TPersonaCondicionesVulnerabilidad, 
-    TLocalizacionPersonaHistory, 
-    TDemandaPersonaHistory, 
-    TDemandaAsignadoHistory, 
-    TDemandaVinculadaHistory, 
-    TVinculoPersonaPersonaHistory,
+    TLocalizacionPersona,
+    TLocalizacionPersonaHistory,
+    TDemandaPersona,
+    TDemandaPersonaHistory,
+    TDemandaZona,
+    TDemandaZonaHistory,
+    TDemandaVinculada,
+    TDemandaVinculadaHistory,
+    TPersonaCondicionesVulnerabilidad,
     TPersonaCondicionesVulnerabilidadHistory,
-    TDemandaMotivoIntervencionHistory
 )
 
 class TLocalizacionPersonaSerializer(serializers.ModelSerializer):
@@ -30,9 +24,9 @@ class TDemandaPersonaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['demanda', 'persona']
 
-class TDemandaAsignadoSerializer(serializers.ModelSerializer):
+class TDemandaZonaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = TDemandaAsignado
+        model = TDemandaZona
         fields = '__all__'
 
 class TDemandaVinculadaSerializer(serializers.ModelSerializer):
@@ -40,34 +34,6 @@ class TDemandaVinculadaSerializer(serializers.ModelSerializer):
         model = TDemandaVinculada
         fields = '__all__'
 
-class TLegajoAsignadoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TLegajoAsignado
-        fields = '__all__'
-
-class TVinculoPersonaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TVinculoPersona
-        fields = '__all__'
-
-class TVinculoPersonaPersonaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TVinculoPersonaPersona
-        fields = '__all__'
-        read_only_fields = ['persona_1', 'persona_2']
-
-class TDemandaMotivoIntervencionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDemandaMotivoIntervencion
-        fields = '__all__'    
-
-    def update(self, instance, validated_data):
-        if 'demanda' in validated_data:
-            raise serializers.ValidationError({"demanda": "This field cannot be updated."})
-        if 'motivo_intervencion' in validated_data:
-            raise serializers.ValidationError({"motivo_intervencion": "This field cannot be updated."})
-        return super().update(instance, validated_data)
-    
 
 class TPersonaCondicionesVulnerabilidadSerializer(serializers.ModelSerializer):
     class Meta:
@@ -92,9 +58,9 @@ class TDemandaPersonaHistorySerializer(serializers.ModelSerializer):
         model = TDemandaPersonaHistory
         fields = '__all__'
     
-class TDemandaAsignadoHistorySerializer(serializers.ModelSerializer):
+class TDemandaZonaHistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = TDemandaAsignadoHistory
+        model = TDemandaZonaHistory
         fields = '__all__'
 
 class TDemandaVinculadaHistorySerializer(serializers.ModelSerializer):
@@ -102,17 +68,9 @@ class TDemandaVinculadaHistorySerializer(serializers.ModelSerializer):
         model = TDemandaVinculadaHistory
         fields = '__all__'
 
-class TVinculoPersonaPersonaHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TVinculoPersonaPersonaHistory
-        fields = '__all__'
 
 class TPersonaCondicionesVulnerabilidadHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = TPersonaCondicionesVulnerabilidadHistory
         fields = '__all__'
 
-class TDemandaMotivoIntervencionHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDemandaMotivoIntervencionHistory
-        fields = '__all__'

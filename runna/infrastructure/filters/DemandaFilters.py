@@ -1,59 +1,48 @@
 from django_filters import rest_framework as filters
 from infrastructure.models import (
-    TOrigenDemanda,
-    TSubOrigenDemanda, 
-    TInformante, 
-    TDemanda, 
-    TPrecalificacionDemanda, 
-    TDemandaScore, 
-    TInforme101, 
-    TDemandaHistory, 
-    TPrecalificacionDemandaHistory,
+    TBloqueDatosRemitente,
+    TTipoInstitucionDemanda,
+    TAmbitoVulneracion,
+    TTipoPresuntoDelito,
+    TInstitucionDemanda,
+    TDemanda,
+    TDemandaHistory,
+    TTipoCodigoDemanda,
+    TCodigoDemanda,
     TCalificacionDemanda,
     TCalificacionDemandaHistory,
-    TDemandaScoreHistory
+    TDemandaScore, 
+    TDemandaScoreHistory,
 )
 
-class TOrigenDemandaFilter(filters.FilterSet):
-    
+class TBloqueDatosRemitenteFilter(filters.FilterSet):
     class Meta:
-        model = TOrigenDemanda
+        model = TBloqueDatosRemitente
         fields = '__all__'
 
-class TSubOrigenDemandaFilter(filters.FilterSet):
-    
+class TTipoInstitucionDemandaFilter(filters.FilterSet):
     class Meta:
-        model = TSubOrigenDemanda
+        model = TTipoInstitucionDemanda
         fields = '__all__'
 
-class TInformanteFilter(filters.FilterSet):
-
+class TAmbitoVulneracionFilter(filters.FilterSet):
     class Meta:
-        model = TInformante
+        model = TAmbitoVulneracion
         fields = '__all__'
+
+class TTipoPresuntoDelitoFilter(filters.FilterSet):
+    class Meta:
+        model = TTipoPresuntoDelito
+        fields = '__all__'
+
+class TInstitucionDemandaFilter(filters.FilterSet):
+    class Meta:
+        model = TInstitucionDemanda
+        fields = '__all__'
+
 class TDemandaFilter(filters.FilterSet):
-    
     class Meta:
         model = TDemanda
-        fields = '__all__'
-
-class TInforme101Filter(filters.FilterSet):
-    
-    class Meta:
-        model = TInforme101
-        fields = ['demanda']
-
-
-class TPrecalificacionDemandaFilter(filters.FilterSet):
-
-    class Meta:
-        model = TPrecalificacionDemanda
-        fields = '__all__'
-
-
-class TDemandaScoreFilter(filters.FilterSet):
-    class Meta:
-        model = TDemandaScore
         fields = '__all__'
 
 class TDemandaHistoryFilter(filters.FilterSet):
@@ -65,6 +54,15 @@ class TDemandaHistoryFilter(filters.FilterSet):
             'by_user': ['exact'],
         }
 
+class TTipoCodigoDemandaFilter(filters.FilterSet):
+    class Meta:
+        model = TTipoCodigoDemanda
+        fields = '__all__'
+
+class TCodigoDemandaFilter(filters.FilterSet):
+    class Meta:
+        model = TCodigoDemanda
+        fields = '__all__'
 
 class TCalificacionDemandaFilter(filters.FilterSet):
     class Meta:
@@ -80,15 +78,10 @@ class TCalificacionDemandaHistoryFilter(filters.FilterSet):
             'by_user': ['exact'],
         }
 
-
-class TPrecalificacionDemandaHistoryFilter(filters.FilterSet):
+class TDemandaScoreFilter(filters.FilterSet):
     class Meta:
-        model = TPrecalificacionDemandaHistory
-        fields = {
-            'parent': ['exact'],
-            'action': ['exact'],
-            'by_user': ['exact'],
-        }
+        model = TDemandaScore
+        fields = '__all__'
 
 class TDemandaScoreHistoryFilter(filters.FilterSet):
     class Meta:

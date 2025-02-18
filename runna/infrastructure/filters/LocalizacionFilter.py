@@ -1,22 +1,6 @@
 from django_filters import rest_framework as filters
-from infrastructure.models import TProvincia, TDepartamento, TLocalidad, TBarrio, TCPC, TLocalizacion, TLocalizacionHistory
+from infrastructure.models import TLocalidad, TBarrio, TCPC, TLocalizacion, TLocalizacionHistory
 
-
-class TProvinciaFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')
-
-    class Meta:
-        model = TProvincia
-        fields = ['nombre']
-
-class TDepartamentoFilter(filters.FilterSet):
-    nombre = filters.CharFilter(lookup_expr='icontains')
-    provincia = filters.NumberFilter(field_name='provincia__id')
-    provincia__nombre = filters.CharFilter(field_name='provincia__nombre', lookup_expr='icontains')
-
-    class Meta:
-        model = TDepartamento
-        fields = ['nombre', 'provincia']
 
 class TLocalidadFilter(filters.FilterSet):
     nombre = filters.CharFilter(lookup_expr='icontains')

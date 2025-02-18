@@ -12,7 +12,7 @@ from services.email_service import EmailService
 @receiver(post_save, sender=TRespuesta)
 def send_respuesta_mail(sender, instance, created, **kwargs):
     """
-    Signal triggered after a TDemandaAsignado instance is created.
+    Signal triggered after a TDemandaZona instance is created.
     Sends an email notification to the assigned user.
     """
     if created:

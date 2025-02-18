@@ -1,6 +1,4 @@
 from .LocalizacionSerializer import (
-    TProvinciaSerializer,
-    TDepartamentoSerializer,
     TLocalidadSerializer,
     TBarrioSerializer,
     TCPCSerializer,
@@ -8,60 +6,60 @@ from .LocalizacionSerializer import (
     TLocalizacionHistorySerializer,
 )
 from .DemandaSerializer import (
-    TOrigenDemandaSerializer,
-    TSubOrigenDemandaSerializer,
-    TInformanteSerializer,
+    TBloqueDatosRemitenteSerializer,
+    TTipoInstitucionDemandaSerializer,
+    TAmbitoVulneracionSerializer,
+    TTipoPresuntoDelitoSerializer,
+    TInstitucionDemandaSerializer,
     TDemandaSerializer,
-    TPrecalificacionDemandaSerializer,
-    TDemandaScoreSerializer,
     TDemandaHistorySerializer,
-    TInforme101Serializer,
-    TPrecalificacionDemandaHistorySerializer,
+    TTipoCodigoDemandaSerializer,
+    TCodigoDemandaSerializer,
     TCalificacionDemandaSerializer,
     TCalificacionDemandaHistorySerializer,
-    TDemandaScoreHistorySerializer
+    TDemandaScoreSerializer, 
+    TDemandaScoreHistorySerializer,
 )
 from .PersonaSerializer import (
     TPersonaSerializer,
-    TInstitucionEducativaSerializer,
-    TNNyAEducacionSerializer,
-    TInstitucionSanitariaSerializer,
-    TNNyASaludSerializer,
-    TNNyAScoreSerializer,
-    TLegajoSerializer,
     TPersonaHistorySerializer,
-    TNNyAEducacionHistorySerializer,
-    TNNyASaludHistorySerializer,
+    TInstitucionEducativaSerializer,
+    TEducacionSerializer,
+    TEducacionHistorySerializer,
+    TInstitucionSanitariaSerializer,
+    TSituacionSaludSerializer,
+    TEnfermedadSerializer,
+    TMedicoSerializer,
+    TCoberturaMedicaSerializer,
+    TCoberturaMedicaHistorySerializer,
+    TPersonaEnfermedadesSerializer,
+    TPersonaEnfermedadesHistorySerializer,
+    TNNyAScoreSerializer,
+    TNNyAScoreHistorySerializer,
+    TLegajoSerializer,
     TLegajoHistorySerializer,
-    TNNyAScoreHistorySerializer
 )
 from .VulneracionSerializer import (
+    TDerechoAfectadoSerializer,
     TCategoriaMotivoSerializer,
     TCategoriaSubmotivoSerializer,
     TGravedadVulneracionSerializer,
     TUrgenciaVulneracionSerializer,
-    TCondicionesVulnerabilidadSerializer,
-    TMotivoIntervencionSerializer,
+    TCondicionesVulnerabilidadSerializer, 
     TVulneracionSerializer,
     TVulneracionHistorySerializer,
 )
 from .IntermediasSerializer import (
     TLocalizacionPersonaSerializer,
-    TDemandaPersonaSerializer,
-    TDemandaAsignadoSerializer,
-    TDemandaVinculadaSerializer,
-    TLegajoAsignadoSerializer,
-    TVinculoPersonaSerializer,
-    TVinculoPersonaPersonaSerializer,
-    TDemandaMotivoIntervencionSerializer,
-    TPersonaCondicionesVulnerabilidadSerializer,
     TLocalizacionPersonaHistorySerializer,
+    TDemandaPersonaSerializer,
     TDemandaPersonaHistorySerializer,
-    TDemandaAsignadoHistorySerializer,
+    TDemandaZonaSerializer,
+    TDemandaZonaHistorySerializer,
+    TDemandaVinculadaSerializer,
     TDemandaVinculadaHistorySerializer,
-    TVinculoPersonaPersonaHistorySerializer,
+    TPersonaCondicionesVulnerabilidadSerializer,
     TPersonaCondicionesVulnerabilidadHistorySerializer,
-    TDemandaMotivoIntervencionHistorySerializer
 )
 from .EvaluacionSerializer import (
     TActividadTipoSerializer,
@@ -75,7 +73,7 @@ from .EvaluacionSerializer import (
     TEvaluacionesHistorySerializer
 )
 from .ComposedSerializer import (
+    RegistroDemandaFormDropdownsSerializer,
+    RegistroDemandaFormSerializer,
     MesaDeEntradaSerializer,
-    NuevoRegistroFormDropdownsSerializer,
-    RegistroCasoFormSerializer
 )

@@ -6,19 +6,33 @@ from .BaseHistory import BaseHistory
 from django.core.exceptions import ValidationError
 
 """
+TDerechoAfectado
 TCategoriaMotivo
 TCategoriaSubmotivo
 TGravedadVulneracion
 TUrgenciaVulneracion
 TVulneracion
 TCondicionesVulnerabilidad
-TMotivoIntervencion
 """
+
+class TDerechoAfectado(models.Model):
+    nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Derecho Afectado')
+        verbose_name_plural = _('Derechos Afectados')
+
+    def __str__(self):
+        return self.nombre
+
 
 class TCategoriaMotivo(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
     descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
+    
+    derecho_afectado = models.ForeignKey('TDerechoAfectado', on_delete=models.CASCADE, null=False)
  
     class Meta:
         app_label = 'infrastructure'
@@ -89,24 +103,13 @@ class TCondicionesVulnerabilidad(models.Model):
         return super().__str__()
 
 
-class TMotivoIntervencion(models.Model):
-    nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
-    peso = models.IntegerField(null=False, blank=False)
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Motivo de Intervencion')
-        verbose_name_plural = _('Motivos de Intervencion')
-    
-    def __str__(self):
-        return super().__str__()
-
-
 class TVulneracionBase(models.Model):
+    deleted = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    ultima_modificacion = models.DateTimeField(auto_now=True)
+
     principal_demanda = models.BooleanField(default=False)
     transcurre_actualidad = models.BooleanField(default=False)
-    deleted = models.BooleanField(default=False)
     sumatoria_de_pesos = models.IntegerField(default=0)
 
     demanda = models.ForeignKey('TDemanda', on_delete=models.SET_NULL, null=True, blank=True)

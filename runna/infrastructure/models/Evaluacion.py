@@ -29,10 +29,6 @@ class TActividadTipo(models.Model):
 
 class TInstitucionActividad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-    mail = models.EmailField(null=True, blank=True)
-    telefono = models.IntegerField(null=True, blank=True)
-
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         app_label = 'infrastructure'
@@ -44,8 +40,10 @@ class TInstitucionActividad(models.Model):
 
 
 class TActividadBase(models.Model):
-    fecha_y_hora = models.DateTimeField()
+    fecha_y_hora = models.DateTimeField(null=False, blank=False, auto_now=True) 
+    fecha_y_hora_manual = models.DateTimeField(null=False, blank=False)
     descripcion = models.TextField(blank=False, null=False)
+
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     tipo = models.ForeignKey('TActividadTipo', on_delete=models.SET_NULL, null=True, blank=True)
     institucion = models.ForeignKey('TInstitucionActividad', on_delete=models.SET_NULL, null=True, blank=True)

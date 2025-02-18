@@ -4,92 +4,119 @@ from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
 from .BaseHistory import BaseHistory
 
-"""
-
-Renombrar '...UsuarioLinea' por '...UsuarioExterno'
-
-"""
-
-class TInformante(models.Model):
-    nombre = models.CharField(max_length=255, null=False)
-    apellido = models.CharField(max_length=255, null=False)
-    telefono = models.IntegerField(null=False, blank=False)
-    mail = models.EmailField(null=False, blank=False, unique=True)    
-    
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Informante de la Demanda')
-        verbose_name_plural = _('Informantes de las Demandas')
-        
-    def __str__(self):
-        return f"{self.nombre} {self.apellido} - {self.mail}"
-
-
-class TOrigenDemanda(models.Model):
+class TBloqueDatosRemitente(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Origen de Demanda')
-        verbose_name_plural = _('Origenes de Demandas')
+        verbose_name = _('Bloque de Datos Remitente, Origen de Demanda')
+        verbose_name_plural = _('Bloques de Datos Remitentes, Origenes de Demandas')
         
     def __str__(self):
         return f"{self.nombre}"
 
 
-class TSubOrigenDemanda(models.Model):
+class TTipoInstitucionDemanda(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-    origen = models.ForeignKey('TOrigenDemanda', on_delete=models.CASCADE, null=False)
+    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.CASCADE, null=False)
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Sub-Origen de Demanda')
-        verbose_name_plural = _('Sub-Origenes de Demandas')
+        verbose_name = _('Tipos de instituciones de demanda, Sub-Origen de Demanda')
+        verbose_name_plural = _('Tipos de instituciones de demanda, Sub-Origenes de Demandas')
         
     def __str__(self):
         return f"{self.nombre} - {self.origen}"
 
-
-class TDemandaBase(models.Model):
-    fecha_creacion = models.DateField(null=False, default=date.today)
-    fecha_oficio_documento = models.DateField(null=False, blank=False)
-    fecha_ingreso_senaf = models.DateField(null=False, blank=False)
-    nro_notificacion_102 = models.IntegerField(null=True, blank=True)
-    nro_sac = models.IntegerField(null=True, blank=True)
-    nro_suac = models.IntegerField(null=True, blank=True)
-    nro_historia_clinica = models.IntegerField(null=True, blank=True)
-    nro_oficio_web = models.IntegerField(null=True, blank=True)
-    autos_caratulados = models.CharField(max_length=255, null=True, blank=True)
-    descripcion = models.TextField(null=True, blank=True)
-    ultima_actualizacion = models.DateTimeField(auto_now=True)
-
-    estado_demanda_choices = [
-        ('SIN_ASIGNAR', 'Sin Asignar'),
-        ('ASIGNADA', 'Asignada'),
-        ('EVALUACION', 'Evaluacion'),
-        ('ARCHIVADA', 'Archivada'),
-        ('COMPLETADA', 'Completada')
-    ]
-    estado_demanda = models.CharField(max_length=20, choices=estado_demanda_choices, null=False, blank=False, default='SIN_ASIGNAR')
-    
-    institucion = models.CharField(max_length=255, null=True, blank=True) 
-    ambito_vulneracion_choices = [
-        ('FAMILIAR', 'Familiar'),
-        ('INSTITUCIONAL', 'Institucional'),
-        ('ENTRE_PARES', 'Entre Pares'),
-        ('OTRO', 'Otro')
-    ]
-    ambito_vulneracion = models.CharField(max_length=20, choices=ambito_vulneracion_choices, null=False, blank=False)
-
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
-    informante = models.ForeignKey('TInformante', on_delete=models.SET_NULL, null=True, blank=True)
-    origen = models.ForeignKey('TOrigenDemanda', on_delete=models.PROTECT, null=False)
-    sub_origen = models.ForeignKey('TSubOrigenDemanda', on_delete=models.PROTECT, null=False)
-    motivo_ingreso = models.ForeignKey('TCategoriaMotivo', on_delete=models.SET_NULL, null=True, blank=True)
-    submotivo_ingreso = models.ForeignKey('TCategoriaSubmotivo', on_delete=models.SET_NULL, null=True, blank=True)
+class TAmbitoVulneracion(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
 
     class Meta:
-        abstract = True  # This model is abstract and won't create a table.
+        app_label = 'infrastructure'
+        verbose_name = _('Ambito de Vulneracion')
+        verbose_name_plural = _('Ambitos de Vulneracion')
+
+    def __str__(self):
+        return f"{self.nombre}"
+
+class TTipoPresuntoDelito(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Tipo de Presunto Delito')
+        verbose_name_plural = _('Tipos de Presuntos Delitos')
+
+    def __str__(self):
+        return f"{self.nombre}"
+
+
+class TInstitucionDemanda(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    tipo_institucion = models.ForeignKey('TTipoInstitucionDemanda', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Institucion de Demanda')
+        verbose_name_plural = _('Instituciones de Demanda')
+
+    def __str__(self):
+        return f"{self.nombre} - {self.tipo_institucion}"
+
+
+class TDemandaBase(models.Model):
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    ultima_actualizacion = models.DateTimeField(auto_now=True)
+    fecha_ingreso_senaf = models.DateField(null=False)
+    fecha_oficio_documento = models.DateField(null=False)
+    descripcion = models.TextField(null=True, blank=True)
+    
+    ESTADO_DEMANDA_CHOICES = [
+        ('SIN_ASIGNAR', 'Sin Asignar'),
+        ('CONSTATACION', 'Constatacion'),
+        ('EVALUACION', 'Evaluacion'),
+        ('PENDIENTE_AUTORIZACION', 'Pendiente Autorizacion'),
+        ('ARCHIVADA', 'Archivada'),
+        ('ADMITIDA', 'Admitida')
+    ]
+    estado_demanda = models.CharField(max_length=30, choices=ESTADO_DEMANDA_CHOICES, null=False, blank=False, default='SIN_ASIGNAR')
+    
+    observaciones = models.TextField(null=True, blank=True, help_text="Observaciones sobre los niños, adultos, cantidad de personas, etc.")
+    
+    ENVIO_DE_RESPUESTA_CHOICES = [
+        ('NO_NECESARIO', 'No Necesario'),
+        ('PENDIENTE', 'Pendiente'),
+        ('ENVIADO', 'Enviado')
+    ]
+    envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
+    
+    TIPO_DEMANDA_CHOICES = [
+        ('DE_PROTECCION', 'De Proteccion'),
+        ('PENAL_JUVENIL', 'Penal Juvenil')
+    ]
+    tipo_demanda = models.CharField(max_length=20, choices=TIPO_DEMANDA_CHOICES, null=False, blank=False)
+
+    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
+
+    ambito_vulneracion = models.ForeignKey('TAmbitoVulneracion', on_delete=models.PROTECT, null=True, blank=True)
+
+    tipos_presuntos_delitos = models.ForeignKey('TTipoPresuntoDelito', on_delete=models.PROTECT, null=True, blank=True)
+
+    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.PROTECT, null=False)
+    tipo_institucion = models.ForeignKey('TTipoInstitucionDemanda', on_delete=models.PROTECT, null=True, blank=True)
+    institucion = models.ForeignKey('TInstitucionDemanda', on_delete=models.PROTECT, null=True, blank=True)
+
+    motivo_ingreso = models.ForeignKey('TCategoriaMotivo', on_delete=models.PROTECT, null=True, blank=True)
+    submotivo_ingreso = models.ForeignKey('TCategoriaSubmotivo', on_delete=models.PROTECT, null=True, blank=True)
+
+    registrado_por_user = models.ForeignKey('customAuth.CustomUser', related_name="%(class)sregistrado_por_user", on_delete=models.PROTECT, null=True, blank=True)
+    registrado_por_user_zona = models.ForeignKey('customAuth.TZona', related_name="%(class)sregistrado_por_user_zona", on_delete=models.PROTECT, null=True, blank=True)
+
+    zona_asignada = models.ForeignKey('customAuth.TZona', related_name="%(class)szona_asignada", on_delete=models.PROTECT, null=False, blank=False)
+    user_responsable = models.ForeignKey('customAuth.CustomUser', related_name="%(class)suser_responsable", on_delete=models.PROTECT, null=True, blank=True)
+
+    class Meta:
+        abstract = True
 
 
 class TDemanda(TDemandaBase):
@@ -107,9 +134,37 @@ class TDemanda(TDemandaBase):
         app_label = 'infrastructure'
         verbose_name = _('Demanda')
         verbose_name_plural = _('Demandas')
-        
+
     def __str__(self):
-        return f"{self.id} {self.origen} - {self.descripcion} - {self.fecha_creacion}"
+        return f"{self.id} {self.bloque_datos_remitente} - {self.descripcion} - {self.fecha_creacion}"
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:  # onCreate
+            
+            if self.tipo_demanda == 'DE_PROTECCION':
+                if not self.ambito_vulneracion:
+                    raise ValueError("El ambito de vulneracion es obligatorio para una demanda de proteccion")
+                if self.tipos_presuntos_delitos:
+                    raise ValueError("El tipo de presunto delito debe ser None para una demanda de proteccion")
+
+            if self.tipo_demanda == 'PENAL_JUVENIL':
+                if not self.tipos_presuntos_delitos:
+                    raise ValueError("El tipo de presunto delito es obligatorio para una demanda penal juvenil")
+            
+            if self.tipo_institucion:
+                if self.bloque_datos_remitente != self.tipo_institucion.bloque_datos_remitente:
+                    raise ValueError("El bloque de datos del remitente debe ser el mismo que el del tipo de institucion")
+            
+            if self.submotivo_ingreso:
+                if self.motivo_ingreso != self.submotivo_ingreso.motivo:
+                    raise ValueError("El motivo de ingreso debe ser el mismo que el del submotivo de ingreso")
+        
+        else:  # onUpdate
+            if self.user_responsable.zona != self.zona_asignada:
+                if self.user != self.user_responsable:
+                    raise ValueError("El usuario asignado debe ser de la misma zona que la demanda")
+        
+        super().save(*args, **kwargs)
 
 
 class TDemandaHistory(TDemandaBase, BaseHistory):
@@ -124,65 +179,56 @@ class TDemandaHistory(TDemandaBase, BaseHistory):
         verbose_name = _('Historial de Demanda')
         verbose_name_plural = _('Historial de Demandas')
 
-class TInforme101(models.Model):
-    fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
-    fields = models.JSONField(null=False, blank=False)
+class TTipoCodigoDemanda(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    datatype_choices = [
+        ('INT', 'Integer'),
+        ('STRING', 'String')
+    ]
+    datatype = models.CharField(max_length=10, choices=datatype_choices, null=False, blank=False)
+    
+    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Tipo de Codigo de Demanda')
+        verbose_name_plural = _('Tipos de Codigos de Demanda')
+
+    def __str__(self):
+        return f"{self.nombre} - {self.datatype} - {self.bloque_datos_remitente}"
+
+
+class TCodigoDemanda(models.Model):
+    codigo = models.CharField(max_length=255, null=False, blank=False)
+    tipo_codigo = models.ForeignKey('TTipoCodigoDemanda', on_delete=models.PROTECT, null=False)
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False)
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Informe 101')
-        verbose_name_plural = _('Informes 101')
-        
+        verbose_name = _('Codigo de Demanda')
+        verbose_name_plural = _('Codigos de Demanda')
+
+    def save(self, *args, **kwargs):
+        if self.tipo_codigo.datatype == 'INT':
+            if not self.codigo.isdigit():
+                raise ValueError("El código debe ser un número")
+        elif self.tipo_codigo.datatype == 'STRING':
+            if not self.codigo.isalpha():
+                raise ValueError("El código debe ser una cadena de texto")
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.fecha_y_hora} - {self.demanda}"
+        return f"{self.codigo} - {self.tipo_codigo} - {self.demanda}"
 
-
-class TPrecalificacionDemandaBase(models.Model):
-    fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
-    descripcion = models.TextField(null=False, blank=False)
-    estado_precalificacion_choices = [
-        ('URGENTE', 'Urgente'),
-        ('NO_URGENTE', 'No Urgente'),
-        ('COMPLETAR', 'Completar')
-    ]
-    estado_precalificacion = models.CharField(max_length=20, choices=estado_precalificacion_choices, null=False, blank=False)
-    ultima_actualizacion = models.DateTimeField(auto_now=True)
-
-    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
-
-    class Meta:
-        abstract = True  # This model is abstract and won't create a table.
-        
-    def __str__(self):
-        return f"{self.fecha_y_hora} - {self.descripcion} - {self.estado_demanda}"
-
-
-class TPrecalificacionDemanda(TPrecalificacionDemandaBase):
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Precalificacion de Demanda')
-        verbose_name_plural = _('Precalificaciones de Demandas')
-
-
-class TPrecalificacionDemandaHistory(TPrecalificacionDemandaBase, BaseHistory):
-    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False, blank=False)
-    parent = models.ForeignKey(
-        'infrastructure.TPrecalificacionDemanda',
-        on_delete=models.CASCADE,
-        related_name='history'
-    )
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Historial de Precalificacion de Demanda')
-        verbose_name_plural = _('Historial de Precalificaciones de Demandas')
 
 class TCalificacionDemandaBase(models.Model):
-    fecha_y_hora = models.DateTimeField(null=False, default=datetime.now())
+    fecha_y_hora_creacion = models.DateTimeField(auto_now_add=True)
     justificacion = models.TextField(null=False, blank=False)
+    
     estado_calificacion_choices = [
+        ('URGENTE', 'Urgente'),
+        ('NO_URGENTE', 'No Urgente'),
+        ('COMPLETAR', 'Completar'),
         ('NO_PERTINENTE_SIPPDD', 'No Pertinente (SIPPDD)'),
         ('NO_PERTINENTE_OTRAS_PROVINCIAS', 'No Pertinente (Otras Provincias)'),
         ('NO_PERTINENTE_OFICIOS_INCOMPLETOS', 'No Pertinente (Oficios Incompletos)'),
@@ -191,21 +237,40 @@ class TCalificacionDemandaBase(models.Model):
     ]
     estado_calificacion = models.CharField(max_length=50, choices=estado_calificacion_choices, null=False, blank=False)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
+    
+    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, null=False, blank=False)
 
-    demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, unique=True, null=False, blank=False)
 
     class Meta:
-        abstract = True  # This model is abstract and won't create a table.
+        abstract = True
 
-    def __str__(self):
-        return f"{self.fecha_y_hora} - {self.justificacion} - {self.estado_calificacion}"
+    def save(self, *args, **kwargs):
+        if not self.pk:  # onCreate
+            if self.estado_calificacion == 'PASA_A_LEGAJO':
+                self.crear_legajo(self.demanda.nnya)
+                self.demanda.estado_demanda = 'ADMITIDA'
+            if self.estado_calificacion != 'NO_PERTINENTE':
+                self.demanda.estado_demanda = 'ARCHIVADA'
+        else:  # onUpdate
+            if self.estado_calificacion == 'PASA_A_LEGAJO':
+                self.crear_legajo(self.demanda.nnya)
+                self.demanda.estado_demanda = 'ADMITIDA'
+            if self.estado_calificacion != 'NO_PERTINENTE':
+                self.demanda.estado_demanda = 'ARCHIVADA'
+        
+        self.demanda.save()
+        super().save(*args, **kwargs)
+
+    def crear_legajo(self, nnya):
+        # Implement the logic to create a legajo
+        pass
 
 
 class TCalificacionDemanda(TCalificacionDemandaBase):
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Calificacion de Demanda')
+        verbose_name = _('Calificación de Demanda')
         verbose_name_plural = _('Calificaciones de Demandas')
 
 
@@ -221,6 +286,7 @@ class TCalificacionDemandaHistory(TCalificacionDemandaBase, BaseHistory):
         app_label = 'infrastructure'
         verbose_name = _('Historial de Calificacion de Demanda')
         verbose_name_plural = _('Historial de Calificaciones de Demandas')
+
 
 class TDemandaScoreBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)

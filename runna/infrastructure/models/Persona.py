@@ -7,23 +7,49 @@ from django.core.exceptions import ValidationError
 
 
 """
-TPersona
-TInstitucionEducativa
-TNNyAEducacion
-TInstitucionSanitaria
-TNNyASalud
-TNNyAScore
-TLegajo
+# List of models in this file:
+# 1. TPersonaBase
+# 2. TPersona
+# 3. TPersonaHistory
+# 4. TInstitucionEducativa
+# 5. TEducacionBase
+# 6. TEducacion
+# 7. TEducacionHistory
+# 8. TInstitucionSanitaria
+# 9. TSituacionSalud
+# 10. TEnfermedad
+# 11. TMedico
+# 12. TCoberturaMedicaBase
+# 13. TCoberturaMedica
+# 14. TCoberturaMedicaHistory
+# 15. TPersonaEnfermedadesBase
+# 16. TPersonaEnfermedades
+# 17. TPersonaEnfermedadesHistory
+# 18. TNNyAScoreBase
+# 19. TNNyAScore
+# 20. TNNyAScoreHistory
+# 21. TLegajoBase
+# 22. TLegajo
+# 23. TLegajoHistory
+
 """
 
 class TPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
     nombre = models.CharField(max_length=255, null=False, blank=False)
+    nombre_autopercibido = models.CharField(max_length=255, null=True, blank=True)
     apellido = models.CharField(max_length=255, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     edad_aproximada = models.IntegerField(null=True, blank=True)
+
+    NACIONALIDAD_CHOICES = [
+        ('ARGENTINA', 'Argentina'),
+        ('EXTRANJERA', 'Extranjera')
+    ]
+    nacionalidad = models.CharField(max_length=10, choices=NACIONALIDAD_CHOICES, null=False, blank=False)
+
     dni = models.IntegerField(null=True, blank=True)
-    situacion_dni_choices = [
+    SITUACION_DNI_CHOICES = [
         ('EN_TRAMITE', 'En Trámite'),
         ('VENCIDO', 'Vencido'),
         ('EXTRAVIADO', 'Extraviado'),
@@ -31,13 +57,14 @@ class TPersonaBase(models.Model):
         ('VALIDO', 'Válido'),
         ('OTRO', 'Otro')
     ]
-    situacion_dni = models.CharField(max_length=20, choices=situacion_dni_choices, null=False, blank=False)
-    genero_choices = [
+    situacion_dni = models.CharField(max_length=20, choices=SITUACION_DNI_CHOICES, null=False, blank=False)
+    GENERO_CHOICES = [
         ('MASCULINO', 'Masculino'),
         ('FEMENINO', 'Femenino'),
         ('NO_BINARIO', 'No Binario')
     ]
-    genero = models.CharField(max_length=10, choices=genero_choices, null=False, blank=False)
+    genero = models.CharField(max_length=10, choices=GENERO_CHOICES, null=False, blank=False)
+
     observaciones = models.TextField(null=True, blank=True)
     adulto = models.BooleanField(null=False, blank=False)
     nnya = models.BooleanField(null=False, blank=False)
@@ -90,10 +117,6 @@ class TPersonaHistory(TPersonaBase, BaseHistory):
 
 class TInstitucionEducativa(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-    mail = models.EmailField(null=True, blank=True)
-    telefono = models.IntegerField(null=True, blank=True)
-
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         app_label = 'infrastructure'
@@ -104,36 +127,61 @@ class TInstitucionEducativa(models.Model):
         return f"{self.nombre} - {self.mail} - {self.telefono}"
 
 
-class TNNyAEducacionBase(models.Model):
+class TEducacionBase(models.Model):
     deleted = models.BooleanField(default=False)
-    curso = models.CharField(max_length=255, null=False, blank=False)
-    nivel_choices = [
+
+    NIVEL_ALCANZADO_CHOICES = [
         ('PRIMARIO', 'Primario'),
         ('SECUNDARIO', 'Secundario'),
         ('TERCIARIO', 'Terciario'),
         ('UNIVERSITARIO', 'Universitario'),
         ('OTRO', 'Otro')
     ]
-    nivel = models.CharField(max_length=15, choices=nivel_choices, null=False, blank=False)
-    turno_choices = [
-        ('MANIANA', 'Mañana'),
-        ('TARDE', 'Tarde'),
-        ('NOCHE', 'Noche'),
+    nivel_alcanzado = models.CharField(max_length=20, choices=NIVEL_ALCANZADO_CHOICES, null=False, blank=False)
+    esta_escolarizado = models.BooleanField(null=False, blank=False)
+    
+    ULTIMO_CURSADO_CHOICES = [
+        ('PRIMERO', 'Primero'),
+        ('SEGUNDO', 'Segundo'),
+        ('TERCERO', 'Tercero'),
+        ('CUARTO', 'Cuarto'),
+        ('QUINTO', 'Quinto'),
+        ('SEXTO', 'Sexto'),
+        ('SEPTIMO', 'Séptimo'),
+        ('OCTAVO', 'Octavo'),
+        ('NOVENO', 'Noveno'),
+        ('PRIMERO_SECUNDARIO', 'Primero Secundario'),
+        ('SEGUNDO_SECUNDARIO', 'Segundo Secundario'),
+        ('TERCERO_SECUNDARIO', 'Tercero Secundario'),
+        ('CUARTO_SECUNDARIO', 'Cuarto Secundario'),
+        ('QUINTO_SECUNDARIO', 'Quinto Secundario'),
         ('OTRO', 'Otro')
     ]
-    turno = models.CharField(max_length=10, choices=turno_choices, null=False, blank=False)
-    comentarios = models.TextField(null=True, blank=True)
-
+    ultimo_cursado = models.CharField(max_length=20, choices=ULTIMO_CURSADO_CHOICES, null=True, blank=True)
+    
+    TIPO_ESCUELA_CHOICES = [
+        ('PUBLICA', 'Pública'),
+        ('PRIVADA', 'Privada'),
+        ('ESTATAL', 'Estatal'),
+        ('COMUN', 'Común'),
+        ('ESPECIAL', 'Especial'),
+        ('OTRO', 'Otro')
+    ]
+    tipo_escuela = models.CharField(max_length=20, choices=TIPO_ESCUELA_CHOICES, null=True, blank=True)
+    
+    comentarios_educativos = models.TextField(null=True, blank=True)
+    
     institucion_educativa = models.ForeignKey('TInstitucionEducativa', on_delete=models.CASCADE, null=False, blank=False)
-    nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+    
+    persona = models.OneToOneField('TPersona',related_name="%(class)spersona", on_delete=models.CASCADE, null=False, blank=False)
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
 
     def __str__(self):
-        return f"{self.curso} - {self.nivel} - {self.turno} - {self.comentarios}"
+        return f"{self.ultimo_cursado} - {self.nivel_alcanzado} - {self.tipo_escuela} - {self.comentarios}"
 
-class TNNyAEducacion(TNNyAEducacionBase):
+class TEducacion(TEducacionBase):
 
     def delete(self, *args, **kwargs):
         """Override delete to implement soft delete."""
@@ -150,10 +198,9 @@ class TNNyAEducacion(TNNyAEducacionBase):
         verbose_name_plural = _('Educacion de los NNyAs')
 
 
-class TNNyAEducacionHistory(TNNyAEducacionBase, BaseHistory):
-    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+class TEducacionHistory(TEducacionBase, BaseHistory):
     parent = models.ForeignKey(
-        'infrastructure.TNNyAEducacion',
+        'infrastructure.TEducacion',
         on_delete=models.CASCADE,
         related_name='history'
     )
@@ -163,34 +210,157 @@ class TNNyAEducacionHistory(TNNyAEducacionBase, BaseHistory):
         verbose_name = _('Historial de Educación del NNyA')
         verbose_name_plural = _('Historial de Educación de los NNyAs')
 
+
 class TInstitucionSanitaria(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-    mail = models.EmailField(null=True, blank=True)
-    telefono = models.IntegerField(null=True, blank=True)
 
-    localizacion = models.ForeignKey('TLocalizacion', on_delete=models.SET_NULL, null=True, blank=True)
-    
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Institucion Sanitaria')
         verbose_name_plural = _('Instituciones Sanitarias')
 
 
-class TNNyASaludBase(models.Model):
+class TSituacionSalud(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Situación de Salud')
+        verbose_name_plural = _('Situaciones de Salud')
+
+    def __str__(self):
+        return self.nombre
+
+
+class TEnfermedad(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    situacion_salud_categoria = models.ForeignKey('TSituacionSalud', on_delete=models.CASCADE, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Enfermedad')
+        verbose_name_plural = _('Enfermedades')
+
+    def __str__(self):
+        return f"{self.nombre} - {self.situacion_salud_categoria}"
+
+
+class TMedico(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    mail = models.EmailField(null=True, blank=True)
+    telefono = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Medico')
+        verbose_name_plural = _('Medicos')
+
+    def __str__(self):
+        return f"{self.nombre} - {self.mail} - {self.telefono}"
+
+
+class TCoberturaMedicaBase(models.Model):
     deleted = models.BooleanField(default=False)
+
+    OBRA_SOCIAL_CHOICES = [
+        ('NO_POSEE', 'No Posee'),
+        ('PAMI', 'PAMI'),
+        ('IOMA', 'IOMA'),
+        ('OSECAC', 'OSECAC'),
+        ('OSDE', 'OSDE'),
+        ('OTRA', 'Otra')
+    ]
+    obra_social = models.CharField(max_length=20, choices=OBRA_SOCIAL_CHOICES, null=False, blank=False)
+
+    INTERVENCION_CHOICES = [
+        ('AUH', 'AUH'),
+        ('OBRA_SOCIAL', 'Obra Social'),
+        ('AMBAS', 'Ambas'),
+        ('NINGUNA', 'Ninguna')
+    ]
+    intervencion = models.CharField(max_length=20, choices=INTERVENCION_CHOICES, null=False, blank=False)
+
+    auh = models.BooleanField(null=False, blank=False)
     observaciones = models.TextField(null=True, blank=True)
 
     institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.CASCADE, null=False, blank=False)
-    nnya = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+    persona = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+    medico_cabecera = models.ForeignKey('TMedico', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
-        
+
     def __str__(self):
-        return f"{self.observaciones} - {self.institucion_sanitaria} - {self.nnya}"
+        return f"{self.obra_social} - {self.auh} - {self.intervencion} - {self.observaciones} - {self.institucion_sanitaria} - {self.persona} - {self.medico_cabecera}"
 
 
-class TNNyASalud(TNNyASaludBase):
+class TCoberturaMedica(TCoberturaMedicaBase):
+    
+    def delete(self, *args, **kwargs):
+        """Override delete to implement soft delete."""
+        self.deleted = True
+        self.save()
+
+    def hard_delete(self, *args, **kwargs):
+        """Permanently delete the object."""
+        super().delete(*args, **kwargs)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Cobertura Médica')
+        verbose_name_plural = _('Coberturas Médicas')
+
+
+class TCoberturaMedicaHistory(TCoberturaMedicaBase, BaseHistory):
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+    parent = models.ForeignKey(
+        'infrastructure.TCoberturaMedica',
+        on_delete=models.CASCADE,
+        related_name='history'
+    )
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Historial de Cobertura Médica')
+        verbose_name_plural = _('Historial de Coberturas Médicas')
+
+
+class TPersonaEnfermedadesBase(models.Model):
+    deleted = models.BooleanField(default=False)
+
+    CERTIFICACION_CHOICES = [
+        ('TIENE', 'Tiene'),
+        ('NO_TIENE', 'No Tiene'),
+        ('EN_TRAMITE', 'En Trámite'),
+        ('SE_INTERVIENE_EN_SU_GESTION', 'Se Interviene en su Gestión'),
+        ('EN_PERIODO_DE_EVALUACION', 'En Período de Evaluación')
+    ]
+    certificacion = models.CharField(max_length=30, choices=CERTIFICACION_CHOICES, null=True, blank=True)
+
+    BENEFICIOS_CHOICES = [
+        ('BOLETO_DE_COLECTIVO', 'Boleto de Colectivo'),
+        ('PROTESIS', 'Prótesis'),
+        ('PENSION', 'Pensión')
+    ]
+    beneficios_gestionados = models.CharField(max_length=20, choices=BENEFICIOS_CHOICES, null=True, blank=True)
+
+    recibe_tratamiento = models.BooleanField(null=False, blank=False)
+    informacion_tratamiento = models.TextField(null=True, blank=True)
+
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False)
+    situacion_salud = models.ForeignKey('TSituacionSalud', on_delete=models.CASCADE, null=False)
+    enfermedad = models.ForeignKey('TEnfermedad', on_delete=models.CASCADE, null=False)
+    institucion_sanitaria_interviniente = models.ForeignKey('TInstitucionSanitaria', on_delete=models.SET_NULL, null=True, blank=True)
+    medico_tratamiento = models.ForeignKey('TMedico', on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        abstract = True  # This model is abstract and won't create a table.
+
+    def __str__(self):
+        return f"{self.persona} - {self.enfermedad} - {self.recibe_tratamiento} - {self.certificacion}"
+
+
+class TPersonaEnfermedades(TPersonaEnfermedadesBase):
 
     def delete(self, *args, **kwargs):
         """Override delete to implement soft delete."""
@@ -203,22 +373,22 @@ class TNNyASalud(TNNyASaludBase):
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Salud del NNyA')
-        verbose_name_plural = _('Salud de los NNyAs')
+        verbose_name = _('Enfermedad de Persona')
+        verbose_name_plural = _('Enfermedades de Personas')
 
 
-class TNNyASaludHistory(TNNyASaludBase, BaseHistory):
-    nnya = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+class TPersonaEnfermedadesHistory(TPersonaEnfermedadesBase, BaseHistory):
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     parent = models.ForeignKey(
-        'infrastructure.TNNyASalud',
+        'infrastructure.TPersonaEnfermedades',
         on_delete=models.CASCADE,
         related_name='history'
     )
 
     class Meta:
         app_label = 'infrastructure'
-        verbose_name = _('Historial de Salud del NNyA')
-        verbose_name_plural = _('Historial de Salud de los NNyAs')
+        verbose_name = _('Historial de Enfermedad de Persona')
+        verbose_name_plural = _('Historial de Enfermedades de Personas')
 
 
 class TNNyAScoreBase(models.Model):

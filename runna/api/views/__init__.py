@@ -1,68 +1,49 @@
 from .BaseView import BaseViewSet
 from .LocalizacionView import (
-    TProvinciaViewSet, 
-    TDepartamentoViewSet, 
     TLocalidadViewSet, 
     TBarrioViewSet, 
     TCPCViewSet, 
     TLocalizacionViewSet, 
     TLocalizacionHistoryViewSet
 )
-from .DemandaView import ( 
-    TOrigenDemandaViewSet,
-    TSubOrigenDemandaViewSet, 
-    TInformanteViewSet, 
-    TDemandaViewSet, 
-    TPrecalificacionDemandaViewSet, 
-    TDemandaScoreViewSet, 
-    TDemandaHistoryViewSet, 
-    TInforme101ViewSet,
-    TPrecalificacionDemandaHistoryViewSet,
+from .DemandaView import (
+    TDemandaViewSet,
+    TDemandaHistoryViewSet,
     TCalificacionDemandaViewSet,
     TCalificacionDemandaHistoryViewSet,
-    TDemandaScoreHistoryViewSet
+    TDemandaScoreViewSet, 
+    TDemandaScoreHistoryViewSet,
 )
 from .PersonaView import (
-    TPersonaViewSet, 
-    TInstitucionEducativaViewSet, 
-    TNNyAEducacionViewSet, 
-    TInstitucionSanitariaViewSet, 
-    TNNyASaludViewSet, 
-    TNNyAScoreViewSet, 
-    TLegajoViewSet, 
-    TPersonaHistoryViewSet, 
-    TNNyAEducacionHistoryViewSet, 
-    TNNyASaludHistoryViewSet,
+    TPersonaViewSet,
+    TPersonaHistoryViewSet,
+    TEducacionViewSet,
+    TEducacionHistoryViewSet,
+    TMedicoViewSet,
+    TCoberturaMedicaViewSet,
+    TCoberturaMedicaHistoryViewSet,
+    TPersonaEnfermedadesViewSet,
+    TPersonaEnfermedadesHistoryViewSet,
+    TNNyAScoreViewSet,
+    TNNyAScoreHistoryViewSet,
+    TLegajoViewSet,
     TLegajoHistoryViewSet,
-    TNNyAScoreHistoryViewSet
 )
 from .VulneracionView import (
-    TCategoriaMotivoViewSet, 
-    TCategoriaSubmotivoViewSet, 
-    TGravedadVulneracionViewSet, 
-    TUrgenciaVulneracionViewSet, 
-    TCondicionesVulnerabilidadViewSet, 
-    TMotivoIntervencionViewSet, 
     TVulneracionViewSet, 
-    TVulneracionHistoryViewSet
+    TVulneracionHistoryViewSet,
 )
 from .IntermediasView import (
-    TLocalizacionPersonaViewSet, 
-    TDemandaPersonaViewSet, 
-    TDemandaAsignadoViewSet, 
-    TDemandaVinculadaViewSet, 
-    TLegajoAsignadoViewSet, 
-    TVinculoPersonaViewSet, 
-    TVinculoPersonaPersonaViewSet, 
-    TDemandaMotivoIntervencionViewSet, 
-    TPersonaCondicionesVulnerabilidadViewSet, 
-    TLocalizacionPersonaHistoryViewSet, 
-    TDemandaPersonaHistoryViewSet, 
-    TDemandaAsignadoHistoryViewSet, 
+    TLocalizacionPersonaViewSet,
+    TLocalizacionPersonaHistoryViewSet,
+    TDemandaPersonaViewSet,
+    TDemandaPersonaHistoryViewSet,
+    TDemandaZonaViewSet,
+    TDemandaZonaHistoryViewSet,
+    TDemandaVinculadaViewSet,
     TDemandaVinculadaHistoryViewSet,
-    TVinculoPersonaPersonaHistoryViewSet,
+    TPersonaCondicionesVulnerabilidadViewSet,
     TPersonaCondicionesVulnerabilidadHistoryViewSet,
-    TDemandaMotivoIntervencionHistoryViewSet
 )
 from .EvaluacionView import (
     TActividadTipoViewSet, 
@@ -79,7 +60,7 @@ from .SuggestDecision import (
     SuggestDecisionView
 )
 from .ComposedView import (
+    RegistroDemandaFormDropdownsView,
+    RegistroDemandaFormView,
     MesaDeEntradaListView,
-    NuevoRegistroFormDropdownsView,
-    RegistroCasoFormView
 )

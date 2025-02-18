@@ -1,4 +1,9 @@
-from customAuth.views import EquipoViewSet ,CustomUserViewSet, CurrentUserView
+from customAuth.views import (
+    TZonaViewSet,
+    CustomUserViewSet,
+    CurrentUserView,
+    TCustomUserZonaViewSet
+)
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
@@ -9,7 +14,8 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()
 
-router.register(r'equipo', EquipoViewSet, basename='equipo')
+router.register(r'users-zonas', TCustomUserZonaViewSet, basename='users-zonas')
+router.register(r'zonas', TZonaViewSet, basename='zonas')
 router.register(r'users', CustomUserViewSet, basename='user')
 
 urlpatterns = router.urls + [
