@@ -1,1 +1,5 @@
-from .CustomUser import CustomUser, TEquipo
+from .CustomUser import (
+    CustomUser, 
+    TZona, 
+    TCustomUserZona
+)

@@ -99,7 +99,8 @@ ADMIN_REORDER = [
         'app': 'customAuth',
         'models': [
             "customAuth.TZona",
-            'customAuth.CustomUser',
+            "customAuth.CustomUser",
+            "customAuth.TCustomUserZona",
         ]
     },
     {
@@ -151,23 +152,26 @@ ADMIN_REORDER = [
             "infrastructure.TVulneracion",
             "infrastructure.TVulneracionHistory",
 
-            "infrastructure.TLocalizacionPersona",
-            "infrastructure.TDemandaPersona",
-            "infrastructure.TDemandaZona",
-            "infrastructure.TDemandaVinculada",
-            "infrastructure.TLegajoAsignado",
-            "infrastructure.TVinculoPersona",
-            "infrastructure.TVinculoPersonaPersona",
-            "infrastructure.TDemandaMotivoIntervencion",
-            "infrastructure.TPersonaCondicionesVulnerabilidad",
+            "TLocalizacionPersona",
+            "TLocalizacionPersonaHistory",
+            "TDemandaPersona",
+            "TDemandaPersonaHistory",
+            "TDemandaZona",
+            "TDemandaZonaHistory",
+            "TDemandaVinculada",
+            "TDemandaVinculadaHistory",
+            "TPersonaCondicionesVulnerabilidad",
+            "TPersonaCondicionesVulnerabilidadHistory",
 
-            "infrastructure.TActividadTipo",
-            "infrastructure.TInstitucionActividad",
-            "infrastructure.TActividad",
-            "infrastructure.TRespuesta",
-            "infrastructure.TIndicadoresValoracion",
-            "infrastructure.TEvaluaciones",
-            "infrastructure.TDecision"
+            "TActividadTipo",
+            "TInstitucionActividad",
+            "TActividad",
+            "TRespuesta",
+            "TIndicadoresValoracion",
+            "TEvaluaciones",
+            "TDecision",
+            "TActividadHistory",
+            "TEvaluacionesHistory",
         ]
     },
 ]

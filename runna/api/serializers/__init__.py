@@ -50,16 +50,16 @@ from .VulneracionSerializer import (
     TVulneracionHistorySerializer,
 )
 from .IntermediasSerializer import (
-    TLocalizacionPersonaFilter,
-    TLocalizacionPersonaHistoryFilter,
-    TDemandaPersonaFilter,
-    TDemandaPersonaHistoryFilter,
-    TDemandaZonaFilter,
-    TDemandaZonaHistoryFilter,
-    TDemandaVinculadaFilter,
-    TDemandaVinculadaHistoryFilter,
-    TPersonaCondicionesVulnerabilidadFilter,
-    TPersonaCondicionesVulnerabilidadHistoryFilter,
+    TLocalizacionPersonaSerializer,
+    TLocalizacionPersonaHistorySerializer,
+    TDemandaPersonaSerializer,
+    TDemandaPersonaHistorySerializer,
+    TDemandaZonaSerializer,
+    TDemandaZonaHistorySerializer,
+    TDemandaVinculadaSerializer,
+    TDemandaVinculadaHistorySerializer,
+    TPersonaCondicionesVulnerabilidadSerializer,
+    TPersonaCondicionesVulnerabilidadHistorySerializer,
 )
 from .EvaluacionSerializer import (
     TActividadTipoSerializer,
