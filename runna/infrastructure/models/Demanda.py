@@ -138,33 +138,33 @@ class TDemanda(TDemandaBase):
     def __str__(self):
         return f"{self.id} {self.bloque_datos_remitente} - {self.descripcion} - {self.fecha_creacion}"
     
-    def save(self, *args, **kwargs):
-        if not self.pk:  # onCreate
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:  # onCreate
             
-            if self.tipo_demanda == 'DE_PROTECCION':
-                if not self.ambito_vulneracion:
-                    raise ValueError("El ambito de vulneracion es obligatorio para una demanda de proteccion")
-                if self.tipos_presuntos_delitos:
-                    raise ValueError("El tipo de presunto delito debe ser None para una demanda de proteccion")
+    #         if self.tipo_demanda == 'DE_PROTECCION':
+    #             if not self.ambito_vulneracion:
+    #                 raise ValueError("El ambito de vulneracion es obligatorio para una demanda de proteccion")
+    #             if self.tipos_presuntos_delitos:
+    #                 raise ValueError("El tipo de presunto delito debe ser None para una demanda de proteccion")
 
-            if self.tipo_demanda == 'PENAL_JUVENIL':
-                if not self.tipos_presuntos_delitos:
-                    raise ValueError("El tipo de presunto delito es obligatorio para una demanda penal juvenil")
+    #         if self.tipo_demanda == 'PENAL_JUVENIL':
+    #             if not self.tipos_presuntos_delitos:
+    #                 raise ValueError("El tipo de presunto delito es obligatorio para una demanda penal juvenil")
             
-            if self.tipo_institucion:
-                if self.bloque_datos_remitente != self.tipo_institucion.bloque_datos_remitente:
-                    raise ValueError("El bloque de datos del remitente debe ser el mismo que el del tipo de institucion")
+    #         if self.tipo_institucion:
+    #             if self.bloque_datos_remitente != self.tipo_institucion.bloque_datos_remitente:
+    #                 raise ValueError("El bloque de datos del remitente debe ser el mismo que el del tipo de institucion")
             
-            if self.submotivo_ingreso:
-                if self.motivo_ingreso != self.submotivo_ingreso.motivo:
-                    raise ValueError("El motivo de ingreso debe ser el mismo que el del submotivo de ingreso")
+    #         if self.submotivo_ingreso:
+    #             if self.motivo_ingreso != self.submotivo_ingreso.motivo:
+    #                 raise ValueError("El motivo de ingreso debe ser el mismo que el del submotivo de ingreso")
         
-        else:  # onUpdate
-            if self.user_responsable.zona != self.zona_asignada:
-                if self.user != self.user_responsable:
-                    raise ValueError("El usuario asignado debe ser de la misma zona que la demanda")
+    #     else:  # onUpdate
+    #         if self.user_responsable.zona != self.zona_asignada:
+    #             if self.user != self.user_responsable:
+    #                 raise ValueError("El usuario asignado debe ser de la misma zona que la demanda")
         
-        super().save(*args, **kwargs)
+    #     super().save(*args, **kwargs)
 
 
 class TDemandaHistory(TDemandaBase, BaseHistory):
