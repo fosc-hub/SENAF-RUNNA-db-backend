@@ -127,12 +127,16 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
             return TPersonaSerializer(demandaPersona.persona).data
         except TDemandaPersona.DoesNotExist:
             return None
+        except AttributeError:
+            return None
 
     def get_calificacion(self, obj):
         try:
             calificacion = TCalificacionDemanda.objects.get(demanda=obj)
             return TCalificacionDemandaSerializer(calificacion).data
         except TCalificacionDemanda.DoesNotExist:
+            return None
+        except AttributeError:
             return None
     
     def get_codigos_demanda(self, obj):
