@@ -69,7 +69,7 @@ class TDemandaPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
     
     conviviente = models.BooleanField(null=False, blank=False)
-    vinculo_demanda_choices = [
+    VINCULO_DEMANDA_CHOICES = [
         ('NNYA_PRINCIPAL', 'NNYA Principal'),
         ('NNYA_SECUNDARIO', 'NNYA Secundario'),
         ('SUPUESTO_AUTOR_DV', 'Supuesto Autor DV'),
@@ -79,12 +79,12 @@ class TDemandaPersonaBase(models.Model):
     ]
     vinculo_demanda = models.CharField(
         max_length=30,
-        choices=vinculo_demanda_choices,
+        choices=VINCULO_DEMANDA_CHOICES,
         default='SE_DESCONOCE',
         null=False,
         blank=False
     )
-    vinculo_con_nnya_principal_choices = [
+    VINCULO_CON_NNyA_PRINCIPAL_CHOICES = [
         ('MADRE', 'Madre'),
         ('PADRE', 'Padre'),
         ('TUTOR', 'Tutor'),
@@ -95,7 +95,7 @@ class TDemandaPersonaBase(models.Model):
     ]
     vinculo_con_nnya_principal = models.CharField(
         max_length=30,
-        choices=vinculo_con_nnya_principal_choices,
+        choices=VINCULO_CON_NNyA_PRINCIPAL_CHOICES,
         null=False,
         blank=False
     )

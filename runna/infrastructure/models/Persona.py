@@ -42,14 +42,14 @@ class TPersonaBase(models.Model):
     fecha_nacimiento = models.DateField(null=True, blank=True)
     edad_aproximada = models.IntegerField(null=True, blank=True)
 
-    nacionalidad_choices = [
+    NACIONALIDAD_CHOICES = [
         ('ARGENTINA', 'Argentina'),
         ('EXTRANJERA', 'Extranjera')
     ]
-    nacionalidad = models.CharField(max_length=10, choices=nacionalidad_choices, null=False, blank=False)
+    nacionalidad = models.CharField(max_length=10, choices=NACIONALIDAD_CHOICES, null=False, blank=False)
 
     dni = models.IntegerField(null=True, blank=True)
-    situacion_dni_choices = [
+    SITUACION_DNI_CHOICES = [
         ('EN_TRAMITE', 'En Trámite'),
         ('VENCIDO', 'Vencido'),
         ('EXTRAVIADO', 'Extraviado'),
@@ -57,13 +57,13 @@ class TPersonaBase(models.Model):
         ('VALIDO', 'Válido'),
         ('OTRO', 'Otro')
     ]
-    situacion_dni = models.CharField(max_length=20, choices=situacion_dni_choices, null=False, blank=False)
-    genero_choices = [
+    situacion_dni = models.CharField(max_length=20, choices=SITUACION_DNI_CHOICES, null=False, blank=False)
+    GENERO_CHOICES = [
         ('MASCULINO', 'Masculino'),
         ('FEMENINO', 'Femenino'),
         ('NO_BINARIO', 'No Binario')
     ]
-    genero = models.CharField(max_length=10, choices=genero_choices, null=False, blank=False)
+    genero = models.CharField(max_length=10, choices=GENERO_CHOICES, null=False, blank=False)
 
     observaciones = models.TextField(null=True, blank=True)
     adulto = models.BooleanField(null=False, blank=False)
@@ -130,17 +130,17 @@ class TInstitucionEducativa(models.Model):
 class TEducacionBase(models.Model):
     deleted = models.BooleanField(default=False)
 
-    nivel_alcanzado_choices = [
+    NIVEL_ALCANZADO_CHOICES = [
         ('PRIMARIO', 'Primario'),
         ('SECUNDARIO', 'Secundario'),
         ('TERCIARIO', 'Terciario'),
         ('UNIVERSITARIO', 'Universitario'),
         ('OTRO', 'Otro')
     ]
-    nivel_alcanzado = models.CharField(max_length=20, choices=nivel_alcanzado_choices, null=False, blank=False)
+    nivel_alcanzado = models.CharField(max_length=20, choices=NIVEL_ALCANZADO_CHOICES, null=False, blank=False)
     esta_escolarizado = models.BooleanField(null=False, blank=False)
     
-    ultimo_cursado_choices = [
+    ULTIMO_CURSADO_CHOICES = [
         ('PRIMERO', 'Primero'),
         ('SEGUNDO', 'Segundo'),
         ('TERCERO', 'Tercero'),
@@ -157,9 +157,9 @@ class TEducacionBase(models.Model):
         ('QUINTO_SECUNDARIO', 'Quinto Secundario'),
         ('OTRO', 'Otro')
     ]
-    ultimo_cursado = models.CharField(max_length=20, choices=ultimo_cursado_choices, null=True, blank=True)
+    ultimo_cursado = models.CharField(max_length=20, choices=ULTIMO_CURSADO_CHOICES, null=True, blank=True)
     
-    tipo_escuela_choices = [
+    TIPO_ESCUELA_CHOICES = [
         ('PUBLICA', 'Pública'),
         ('PRIVADA', 'Privada'),
         ('ESTATAL', 'Estatal'),
@@ -167,7 +167,7 @@ class TEducacionBase(models.Model):
         ('ESPECIAL', 'Especial'),
         ('OTRO', 'Otro')
     ]
-    tipo_escuela = models.CharField(max_length=20, choices=tipo_escuela_choices, null=True, blank=True)
+    tipo_escuela = models.CharField(max_length=20, choices=TIPO_ESCUELA_CHOICES, null=True, blank=True)
     
     comentarios_educativos = models.TextField(null=True, blank=True)
     

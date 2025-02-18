@@ -71,7 +71,7 @@ class TDemandaBase(models.Model):
     fecha_oficio_documento = models.DateField(null=False)
     descripcion = models.TextField(null=True, blank=True)
     
-    estado_demanda_choices = [
+    ESTADO_DEMANDA_CHOICES = [
         ('SIN_ASIGNAR', 'Sin Asignar'),
         ('CONSTATACION', 'Constatacion'),
         ('EVALUACION', 'Evaluacion'),
@@ -79,22 +79,22 @@ class TDemandaBase(models.Model):
         ('ARCHIVADA', 'Archivada'),
         ('ADMITIDA', 'Admitida')
     ]
-    estado_demanda = models.CharField(max_length=30, choices=estado_demanda_choices, null=False, blank=False, default='SIN_ASIGNAR')
+    estado_demanda = models.CharField(max_length=30, choices=ESTADO_DEMANDA_CHOICES, null=False, blank=False, default='SIN_ASIGNAR')
     
     observaciones = models.TextField(null=True, blank=True, help_text="Observaciones sobre los niños, adultos, cantidad de personas, etc.")
     
-    envio_de_respuesta_choices = [
+    ENVIO_DE_RESPUESTA_CHOICES = [
         ('NO_NECESARIO', 'No Necesario'),
         ('PENDIENTE', 'Pendiente'),
         ('ENVIADO', 'Enviado')
     ]
-    envio_de_respuesta = models.CharField(max_length=20, choices=envio_de_respuesta_choices, null=False, blank=False, default='NO_NECESARIO')
+    envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
     
-    tipo_demanda_choices = [
+    TIPO_DEMANDA_CHOICES = [
         ('DE_PROTECCION', 'De Proteccion'),
         ('PENAL_JUVENIL', 'Penal Juvenil')
     ]
-    tipo_demanda = models.CharField(max_length=20, choices=tipo_demanda_choices, null=False, blank=False)
+    tipo_demanda = models.CharField(max_length=20, choices=TIPO_DEMANDA_CHOICES, null=False, blank=False)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
 
@@ -136,7 +136,7 @@ class TDemanda(TDemandaBase):
         verbose_name_plural = _('Demandas')
 
     def __str__(self):
-        return f"{self.id} {self.origen} - {self.descripcion} - {self.fecha_creacion}"
+        return f"{self.id} {self.bloque_datos_remitente} - {self.descripcion} - {self.fecha_creacion}"
     
     def save(self, *args, **kwargs):
         if not self.pk:  # onCreate
@@ -186,6 +186,8 @@ class TTipoCodigoDemanda(models.Model):
         ('STRING', 'String')
     ]
     datatype = models.CharField(max_length=10, choices=datatype_choices, null=False, blank=False)
+    
+    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.CASCADE, null=False)
 
     class Meta:
         app_label = 'infrastructure'
@@ -193,7 +195,7 @@ class TTipoCodigoDemanda(models.Model):
         verbose_name_plural = _('Tipos de Codigos de Demanda')
 
     def __str__(self):
-        return f"{self.nombre} - {self.datatype}"
+        return f"{self.nombre} - {self.datatype} - {self.bloque_datos_remitente}"
 
 
 class TCodigoDemanda(models.Model):

@@ -46,7 +46,7 @@ class TLocalizacionBase(models.Model):
     deleted = models.BooleanField(default=False)
 
     calle = models.CharField(max_length=255, null=False, blank=False)
-    tipo_calle_choices = [
+    TIPO_CALLE_CHOICES = [
         ('CALLE', 'Calle'),
         ('AVENIDA', 'Avenida'),
         ('PASAJE', 'Pasaje'),
@@ -54,7 +54,7 @@ class TLocalizacionBase(models.Model):
         ('BOULEVARD', 'Boulevard'),
         ('OTRO', 'Otro')
     ]
-    tipo_calle = models.CharField(max_length=10, choices=tipo_calle_choices, null=True, blank=True)
+    tipo_calle = models.CharField(max_length=10, choices=TIPO_CALLE_CHOICES, null=True, blank=True)
 
     piso_depto = models.IntegerField(null=True, blank=True)
     lote = models.IntegerField(null=True, blank=True)

@@ -40,7 +40,7 @@ class TInstitucionActividad(models.Model):
 
 
 class TActividadBase(models.Model):
-    fecha_y_hora = models.DateTimeField()
+    fecha_y_hora = models.DateTimeField(null=False, blank=False, auto_now=True) 
     fecha_y_hora_manual = models.DateTimeField(null=False, blank=False)
     descripcion = models.TextField(blank=False, null=False)
 
