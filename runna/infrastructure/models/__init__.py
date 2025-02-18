@@ -23,17 +23,22 @@ from .Demanda import  (
 )
 from .Persona import (
     TPersona,
-    TInstitucionEducativa,
-    TNNyAEducacion,
-    TInstitucionSanitaria,
-    TNNyASalud,
-    TNNyAScore,
-    TLegajo,
     TPersonaHistory,
-    TNNyAEducacionHistory,
-    TNNyASaludHistory,
+    TInstitucionEducativa,
+    TEducacion,
+    TEducacionHistory,
+    TInstitucionSanitaria,
+    TSituacionSalud,
+    TEnfermedad,
+    TMedico,
+    TCoberturaMedica,
+    TCoberturaMedicaHistory,
+    TPersonaEnfermedades,
+    TPersonaEnfermedadesHistory,
+    TNNyAScore,
+    TNNyAScoreHistory,
+    TLegajo,
     TLegajoHistory,
-    TNNyAScoreHistory
 )
 from .Vulneracion import (
     TCategoriaMotivo,

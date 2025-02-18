@@ -15,18 +15,19 @@ from .DemandaView import (
     TDemandaScoreHistoryViewSet,
 )
 from .PersonaView import (
-    TPersonaViewSet, 
-    TInstitucionEducativaViewSet, 
-    TNNyAEducacionViewSet, 
-    TInstitucionSanitariaViewSet, 
-    TNNyASaludViewSet, 
-    TNNyAScoreViewSet, 
-    TLegajoViewSet, 
-    TPersonaHistoryViewSet, 
-    TNNyAEducacionHistoryViewSet, 
-    TNNyASaludHistoryViewSet,
+    TPersonaViewSet,
+    TPersonaHistoryViewSet,
+    TEducacionViewSet,
+    TEducacionHistoryViewSet,
+    TMedicoViewSet,
+    TCoberturaMedicaViewSet,
+    TCoberturaMedicaHistoryViewSet,
+    TPersonaEnfermedadesViewSet,
+    TPersonaEnfermedadesHistoryViewSet,
+    TNNyAScoreViewSet,
+    TNNyAScoreHistoryViewSet,
+    TLegajoViewSet,
     TLegajoHistoryViewSet,
-    TNNyAScoreHistoryViewSet
 )
 from .VulneracionView import (
     TCategoriaMotivoViewSet, 

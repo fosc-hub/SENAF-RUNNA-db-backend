@@ -22,17 +22,22 @@ from .DemandaSerializer import (
 )
 from .PersonaSerializer import (
     TPersonaSerializer,
-    TInstitucionEducativaSerializer,
-    TNNyAEducacionSerializer,
-    TInstitucionSanitariaSerializer,
-    TNNyASaludSerializer,
-    TNNyAScoreSerializer,
-    TLegajoSerializer,
     TPersonaHistorySerializer,
-    TNNyAEducacionHistorySerializer,
-    TNNyASaludHistorySerializer,
+    TInstitucionEducativaSerializer,
+    TEducacionSerializer,
+    TEducacionHistorySerializer,
+    TInstitucionSanitariaSerializer,
+    TSituacionSaludSerializer,
+    TEnfermedadSerializer,
+    TMedicoSerializer,
+    TCoberturaMedicaSerializer,
+    TCoberturaMedicaHistorySerializer,
+    TPersonaEnfermedadesSerializer,
+    TPersonaEnfermedadesHistorySerializer,
+    TNNyAScoreSerializer,
+    TNNyAScoreHistorySerializer,
+    TLegajoSerializer,
     TLegajoHistorySerializer,
-    TNNyAScoreHistorySerializer
 )
 from .VulneracionSerializer import (
     TCategoriaMotivoSerializer,

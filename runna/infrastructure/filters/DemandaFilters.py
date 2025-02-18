@@ -48,7 +48,11 @@ class TDemandaFilter(filters.FilterSet):
 class TDemandaHistoryFilter(filters.FilterSet):
     class Meta:
         model = TDemandaHistory
-        fields = '__all__'
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
 
 class TTipoCodigoDemandaFilter(filters.FilterSet):
     class Meta:
@@ -68,7 +72,11 @@ class TCalificacionDemandaFilter(filters.FilterSet):
 class TCalificacionDemandaHistoryFilter(filters.FilterSet):
     class Meta:
         model = TCalificacionDemandaHistory
-        fields = '__all__'
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }
 
 class TDemandaScoreFilter(filters.FilterSet):
     class Meta:
@@ -78,4 +86,8 @@ class TDemandaScoreFilter(filters.FilterSet):
 class TDemandaScoreHistoryFilter(filters.FilterSet):
     class Meta:
         model = TDemandaScoreHistory
-        fields = '__all__'
+        fields = {
+            'parent': ['exact'],
+            'action': ['exact'],
+            'by_user': ['exact'],
+        }

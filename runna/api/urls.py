@@ -15,18 +15,19 @@ from api.views import (
     TDemandaScoreHistoryViewSet,
 )
 from api.views import (
-    TPersonaViewSet, 
-    TInstitucionEducativaViewSet, 
-    TNNyAEducacionViewSet, 
-    TInstitucionSanitariaViewSet, 
-    TNNyASaludViewSet, 
-    TNNyAScoreViewSet, 
-    TLegajoViewSet, 
-    TPersonaHistoryViewSet, 
-    TNNyAEducacionHistoryViewSet, 
-    TNNyASaludHistoryViewSet,
+    TPersonaViewSet,
+    TPersonaHistoryViewSet,
+    TEducacionViewSet,
+    TEducacionHistoryViewSet,
+    TMedicoViewSet,
+    TCoberturaMedicaViewSet,
+    TCoberturaMedicaHistoryViewSet,
+    TPersonaEnfermedadesViewSet,
+    TPersonaEnfermedadesHistoryViewSet,
+    TNNyAScoreViewSet,
+    TNNyAScoreHistoryViewSet,
+    TLegajoViewSet,
     TLegajoHistoryViewSet,
-    TNNyAScoreHistoryViewSet
 )
 from api.views import (
     TCategoriaMotivoViewSet, 
@@ -90,17 +91,18 @@ router.register(r'demanda-score', TDemandaScoreViewSet, basename='demanda-score'
 router.register(r'demanda-score-history', TDemandaScoreHistoryViewSet, basename='demanda-score-history')
 
 router.register(r'persona', TPersonaViewSet, basename='persona')
-router.register(r'institucion-educativa', TInstitucionEducativaViewSet, basename='institucion-educativa')
-router.register(r'nnya-educacion', TNNyAEducacionViewSet, basename='nnya-educacion')
-router.register(r'institucion-sanitaria', TInstitucionSanitariaViewSet, basename='institucion-sanitaria')
-router.register(r'nnya-salud', TNNyASaludViewSet, basename='nnya-salud')
-router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
-router.register(r'legajo', TLegajoViewSet, basename='legajo')
 router.register(r'persona-history', TPersonaHistoryViewSet, basename='persona-history')
-router.register(r'nnya-educacion-history', TNNyAEducacionHistoryViewSet, basename='nnya-educacion-history')
-router.register(r'nnya-salud-history', TNNyASaludHistoryViewSet, basename='nnya-salud-history')
-router.register(r'legajo-history', TLegajoHistoryViewSet, basename='legajo-history')
+router.register(r'educacion', TEducacionViewSet, basename='educacion')
+router.register(r'educacion-history', TEducacionHistoryViewSet, basename='educacion-history')
+router.register(r'medico', TMedicoViewSet, basename='medico')
+router.register(r'cobertura-medica', TCoberturaMedicaViewSet, basename='cobertura-medica')
+router.register(r'cobertura-medica-history', TCoberturaMedicaHistoryViewSet, basename='cobertura-medica-history')
+router.register(r'persona-enfermedades', TPersonaEnfermedadesViewSet, basename='persona-enfermedades')
+router.register(r'persona-enfermedades-history', TPersonaEnfermedadesHistoryViewSet, basename='persona-enfermedades-history')
+router.register(r'nnya-score', TNNyAScoreViewSet, basename='nnya-score')
 router.register(r'nnya-score-history', TNNyAScoreHistoryViewSet, basename='nnya-score-history')
+router.register(r'legajo', TLegajoViewSet, basename='legajo')
+router.register(r'legajo-history', TLegajoHistoryViewSet, basename='legajo-history')
 
 router.register(r'categoria-motivo', TCategoriaMotivoViewSet, basename='categoria-motivo')
 router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='categoria-submotivo')
