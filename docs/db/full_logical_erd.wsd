@@ -96,9 +96,9 @@ entity T_DEMANDA {
     --
     localizacion: FOREIGN_KEY(T_LOCALIZACION) : on_delete=PROTECT, null=False
 
-    ambito_vulneracion: FOREIGN_KEY(T_AMBITO_VULNERACION) : on_delete=PROTECT, null=False, blank=False
+    ambito_vulneracion: FOREIGN_KEY(T_AMBITO_VULNERACION) : on_delete=PROTECT, null=True, blank=True
 
-    tipos_presuntos_delitos: FOREIGN_KEY(T_TIPO_PRESUNTO_DELITO) : on_delete=PROTECT, null=False, blank=False
+    tipos_presuntos_delitos: FOREIGN_KEY(T_TIPO_PRESUNTO_DELITO) : on_delete=PROTECT, null=True, blank=True
 
     bloque_datos_remitente: FOREIGN_KEY(T_BLOQUE_DATOS_REMITENTE) : on_delete=PROTECT, null=False
     tipo_institucion: FOREIGN_KEY(T_TIPO_INSTITUCION_DEMANDA) : on_delete=PROTECT, null=True, blank=True
@@ -190,7 +190,7 @@ entity T_CODIGO_DEMANDA {
     --
     codigo : string, null=False, blank=False
     --
-    tipo_codigo: FOREIGN_KEY(T_TIPO_CODIGO_DEMANDA) : on_delete=CASCADE, null=False
+    tipo_codigo: FOREIGN_KEY(T_TIPO_CODIGO_DEMANDA) : on_delete=PROTECT, null=False
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     --
     ** onCreate( {
@@ -239,8 +239,8 @@ entity T_DEMANDA_ZONA {
     comentarios : text, null=True, blank=True
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
-    enviado_por: FOREIGN_KEY(T_USER) : on_delete=SET_NULL, autogenerate
-    recibido_por: FOREIGN_KEY(T_USER) : on_delete=SET_NULL, autogenerate
+    enviado_por: FOREIGN_KEY(T_USER) : on_delete=PROTECT, autogenerate
+    recibido_por: FOREIGN_KEY(T_USER) : on_delete=PROTECT, autogenerate
     zona: FOREIGN_KEY(T_ZONA) : on_delete=CASCADE, null=False
     --
     * onCreate( {
@@ -540,7 +540,7 @@ entity T_DEMANDA_PERSONA {
     * onCreate || onUpdate( {
         UNIQUE(demanda, persona)
         ** if vinculo_demanda==NNYA_PRINCIPAL:
-            UNIQUE(demanda, persona, vinculo_demanda=NNYA_SECUNDARIO)
+            UNIQUE(demanda, persona, vinculo_demanda=NNYA_PRINCIPAL)
             Validar(
                 vinculo_con_nnya_principal!=NO_CORRESPONDE,
                 "El nnya ingresante es un NNyA principal, no corresponde ingresar un vinculo con si mismo"
@@ -596,6 +596,9 @@ entity T_DEMANDA_PERSONA {
 entity T_VULNERACION {
     + PRIMARY_KEY(id)
     --
+    fecha_creacion : datetime, null=False, autogenerate
+    ultima_modificacion : datetime, null=False, autogenerate
+
     principal_demanda : bool, default=false
     transcurre_actualidad : bool, default=false
     sumatoria_de_pesos : int, default=0
@@ -773,8 +776,6 @@ entity T_ZONA {
     + PRIMARY_KEY(id)
     --
     nombre : string, null=False, blank=False
-    --
-    jefe_zona: FOREIGN_KEY(T_USER) : on_delete=SET_NULL, null=False, blank=False
 }
 
 class AbstractBaseUser {
@@ -848,7 +849,6 @@ class CustomUser {
     + telefono : null=True, blank=True
 
     --
-    + zona : FOREIGN_KEY(T_ZONA) : on_delete=SET_NULL, null=True, blank=True
     + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
     --
 }
@@ -878,8 +878,17 @@ entity T_USER {
     )
     + telefono : null=True, blank
     --
-    + zona : FOREIGN_KEY(T_ZONA) : on_delete=SET_NULL, null=True, blank=True
     + localidad : FOREIGN_KEY(T_LOCALIDAD) : on_delete=SET_NULL, null=True, blank=True
+    --
+}
+
+entity T_USER_ZONA {
+    + COMPOSITE_KEY(T_USER, T_ZONA)
+    --
+    jefe : bool, default=false
+    --
+    user: FOREIGN_KEY(T_USER) : on_delete=CASCADE, null=False
+    zona: FOREIGN_KEY(T_ZONA) : on_delete=CASCADE, null=False
     --
 }
 
@@ -962,7 +971,7 @@ entity T_LOCALIDAD {
     --
     nombre : string, null=False, blank=False
     --
-    departamento : FOREIGN_KEY(T_DEPARTAMENTO) : on_delete=CASCADE, null=False
+    ' departamento : FOREIGN_KEY(T_DEPARTAMENTO) : on_delete=CASCADE, null=False
 }
 
 ' entity T_PROVINCIA {
