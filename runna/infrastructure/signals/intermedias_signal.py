@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from infrastructure.models import (
     TLocalizacionPersona, TLocalizacionPersonaHistory,
     TDemandaPersona, TDemandaPersonaHistory,
-    TDemandaAsignado, TDemandaAsignadoHistory,
+    TDemandaZona, TDemandaZonaHistory,
     TDemandaVinculada, TDemandaVinculadaHistory,
     TVinculoPersonaPersona, TVinculoPersonaPersonaHistory,
     TPersonaCondicionesVulnerabilidad, TPersonaCondicionesVulnerabilidadHistory,
@@ -25,17 +25,17 @@ def log_demandaPersona_delete(sender, instance, **kwargs):
     logs(TDemandaPersonaHistory, action, instance)
 
 
-@receiver(post_save, sender=TDemandaAsignado)
+@receiver(post_save, sender=TDemandaZona)
 def set_demanda_asignado(sender, instance, created, **kwargs):
     if created:
         instance.demanda.estado_demanda = "ASIGNADA"
         instance.demanda.save()
 
 
-@receiver(post_save, sender=TDemandaAsignado)
+@receiver(post_save, sender=TDemandaZona)
 def send_mail_to_user_asignado(sender, instance, created, **kwargs):
     """
-    Signal triggered after a TDemandaAsignado instance is created.
+    Signal triggered after a TDemandaZona instance is created.
     Sends an email notification to the assigned user.
     """
     if created:
@@ -58,16 +58,16 @@ def send_mail_to_user_asignado(sender, instance, created, **kwargs):
         return email_response 
 
 
-@receiver(post_save, sender=TDemandaAsignado)
+@receiver(post_save, sender=TDemandaZona)
 def log_demandaAsignado_save(sender, instance, created, **kwargs):
     action = 'CREATE' if created else 'UPDATE'
-    logs(TDemandaAsignadoHistory, action, instance)
+    logs(TDemandaZonaHistory, action, instance)
 
 
-@receiver(post_delete, sender=TDemandaAsignado)
+@receiver(post_delete, sender=TDemandaZona)
 def log_demandaAsignado_delete(sender, instance, **kwargs):
     action='DELETE'
-    logs(TDemandaAsignadoHistory, action, instance)
+    logs(TDemandaZonaHistory, action, instance)
 
 
 @receiver(post_save, sender=TDemandaVinculada)
