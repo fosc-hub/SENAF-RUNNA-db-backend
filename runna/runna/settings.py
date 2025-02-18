@@ -142,14 +142,14 @@ ADMIN_REORDER = [
             "infrastructure.TLegajo",
             "infrastructure.TLegajoHistory",
 
+            "infrastructure.TDerechoAfectado",
             "infrastructure.TCategoriaMotivo",
             "infrastructure.TCategoriaSubmotivo",
             "infrastructure.TGravedadVulneracion",
             "infrastructure.TUrgenciaVulneracion",
-            "infrastructure.TVulneracion",
-
             "infrastructure.TCondicionesVulnerabilidad",
-            "infrastructure.TMotivoIntervencion",
+            "infrastructure.TVulneracion",
+            "infrastructure.TVulneracionHistory",
 
             "infrastructure.TLocalizacionPersona",
             "infrastructure.TDemandaPersona",

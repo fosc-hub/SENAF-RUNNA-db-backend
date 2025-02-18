@@ -40,14 +40,14 @@ from .PersonaFilter import (
     TLegajoHistoryFilter,
 )
 from .VulneracionFilter import (
-    TCategoriaMotivoFilter, 
-    TCategoriaSubmotivoFilter, 
-    TGravedadVulneracionFilter, 
-    TUrgenciaVulneracionFilter, 
+    TDerechoAfectadoFilter,
+    TCategoriaMotivoFilter,
+    TCategoriaSubmotivoFilter,
+    TGravedadVulneracionFilter,
+    TUrgenciaVulneracionFilter,
     TCondicionesVulnerabilidadFilter, 
-    TMotivoIntervencionFilter, 
-    TVulneracionFilter, 
-    TVulneracionHistoryFilter
+    TVulneracionFilter,
+    TVulneracionHistoryFilter,
 )
 from .IntermediasFilter import (
     TLocalizacionPersonaFilter, 

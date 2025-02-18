@@ -30,14 +30,8 @@ from api.views import (
     TLegajoHistoryViewSet,
 )
 from api.views import (
-    TCategoriaMotivoViewSet, 
-    TCategoriaSubmotivoViewSet, 
-    TGravedadVulneracionViewSet, 
-    TUrgenciaVulneracionViewSet, 
-    TCondicionesVulnerabilidadViewSet, 
-    TMotivoIntervencionViewSet, 
     TVulneracionViewSet, 
-    TVulneracionHistoryViewSet
+    TVulneracionHistoryViewSet,
 )
 from api.views import (
     TLocalizacionPersonaViewSet, 
@@ -104,12 +98,6 @@ router.register(r'nnya-score-history', TNNyAScoreHistoryViewSet, basename='nnya-
 router.register(r'legajo', TLegajoViewSet, basename='legajo')
 router.register(r'legajo-history', TLegajoHistoryViewSet, basename='legajo-history')
 
-router.register(r'categoria-motivo', TCategoriaMotivoViewSet, basename='categoria-motivo')
-router.register(r'categoria-submotivo', TCategoriaSubmotivoViewSet, basename='categoria-submotivo')
-router.register(r'gravedad-vulneracion', TGravedadVulneracionViewSet, basename='gravedad-vulneracion')
-router.register(r'urgencia-vulneracion', TUrgenciaVulneracionViewSet, basename='urgencia-vulneracion')
-router.register(r'condiciones-vulnerabilidad', TCondicionesVulnerabilidadViewSet, basename='condiciones-vulnerabilidad')
-router.register(r'motivo-intervencion', TMotivoIntervencionViewSet, basename='motivo-intervencion')
 router.register(r'vulneracion', TVulneracionViewSet, basename='vulneracion')
 router.register(r'vulneracion-history', TVulneracionHistoryViewSet, basename='vulneracion-history')
 

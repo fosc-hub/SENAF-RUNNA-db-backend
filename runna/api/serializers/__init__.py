@@ -40,12 +40,12 @@ from .PersonaSerializer import (
     TLegajoHistorySerializer,
 )
 from .VulneracionSerializer import (
+    TDerechoAfectadoSerializer,
     TCategoriaMotivoSerializer,
     TCategoriaSubmotivoSerializer,
     TGravedadVulneracionSerializer,
     TUrgenciaVulneracionSerializer,
-    TCondicionesVulnerabilidadSerializer,
-    TMotivoIntervencionSerializer,
+    TCondicionesVulnerabilidadSerializer, 
     TVulneracionSerializer,
     TVulneracionHistorySerializer,
 )

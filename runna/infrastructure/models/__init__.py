@@ -41,14 +41,14 @@ from .Persona import (
     TLegajoHistory,
 )
 from .Vulneracion import (
+    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,
     TUrgenciaVulneracion,
     TCondicionesVulnerabilidad,
-    TMotivoIntervencion,
     TVulneracion,
-    TVulneracionHistory
+    TVulneracionHistory,
 )
 from .Intermedias import (
     TLocalizacionPersona, 

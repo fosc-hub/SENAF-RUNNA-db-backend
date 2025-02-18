@@ -30,14 +30,8 @@ from .PersonaView import (
     TLegajoHistoryViewSet,
 )
 from .VulneracionView import (
-    TCategoriaMotivoViewSet, 
-    TCategoriaSubmotivoViewSet, 
-    TGravedadVulneracionViewSet, 
-    TUrgenciaVulneracionViewSet, 
-    TCondicionesVulnerabilidadViewSet, 
-    TMotivoIntervencionViewSet, 
     TVulneracionViewSet, 
-    TVulneracionHistoryViewSet
+    TVulneracionHistoryViewSet,
 )
 from .IntermediasView import (
     TLocalizacionPersonaViewSet, 
