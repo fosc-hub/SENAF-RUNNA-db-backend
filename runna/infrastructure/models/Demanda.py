@@ -26,7 +26,7 @@ class TTipoInstitucionDemanda(models.Model):
         verbose_name_plural = _('Tipos de instituciones de demanda, Sub-Origenes de Demandas')
         
     def __str__(self):
-        return f"{self.nombre} - {self.origen}"
+        return f"{self.nombre} - {self.bloque_datos_remitente}"
 
 class TAmbitoVulneracion(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -187,7 +187,7 @@ class TTipoCodigoDemanda(models.Model):
     ]
     datatype = models.CharField(max_length=10, choices=datatype_choices, null=False, blank=False)
     
-    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.CASCADE, null=False)
+    bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.CASCADE, null=True)
 
     class Meta:
         app_label = 'infrastructure'
@@ -264,6 +264,9 @@ class TCalificacionDemandaBase(models.Model):
     def crear_legajo(self, nnya):
         # Implement the logic to create a legajo
         pass
+    
+    def __str__(self):
+        return f"{self.estado_calificacion} - {self.demanda}"
 
 
 class TCalificacionDemanda(TCalificacionDemandaBase):

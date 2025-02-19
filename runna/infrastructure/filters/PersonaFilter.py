@@ -1,5 +1,6 @@
 from django_filters import rest_framework as filters
 from infrastructure.models import (
+    TVinculoDePersonas,
     TPersona,
     TPersonaHistory,
     TInstitucionEducativa,
@@ -18,6 +19,12 @@ from infrastructure.models import (
     TLegajo,
     TLegajoHistory,
 )
+
+class TVinculoDePersonasFilter(filters.FilterSet):
+    class Meta:
+        model = TVinculoDePersonas
+        fields = '__all__'
+
 class TPersonaFilter(filters.FilterSet):
     class Meta:
         model = TPersona

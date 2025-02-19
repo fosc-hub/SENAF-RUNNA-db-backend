@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 
 """
 # List of models in this file:
+# 0. TVinculoDePersonas
 # 1. TPersonaBase
 # 2. TPersona
 # 3. TPersonaHistory
@@ -33,6 +34,18 @@ from django.core.exceptions import ValidationError
 # 23. TLegajoHistory
 
 """
+
+class TVinculoDePersonas(models.Model):
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Vínculo de Persona')
+        verbose_name_plural = _('Vínculos de Personas')
+
+    def __str__(self):
+        return self.nombre
+
 
 class TPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
@@ -124,7 +137,7 @@ class TInstitucionEducativa(models.Model):
         verbose_name_plural = _('Instituciones Educativas')
         
     def __str__(self):
-        return f"{self.nombre} - {self.mail} - {self.telefono}"
+        return f"{self.nombre}"
 
 
 class TEducacionBase(models.Model):
@@ -179,7 +192,7 @@ class TEducacionBase(models.Model):
         abstract = True  # This model is abstract and won't create a table.
 
     def __str__(self):
-        return f"{self.ultimo_cursado} - {self.nivel_alcanzado} - {self.tipo_escuela} - {self.comentarios}"
+        return f"{self.ultimo_cursado} - {self.nivel_alcanzado} - {self.tipo_escuela} - {self.comentarios_educativos}"
 
 class TEducacion(TEducacionBase):
 
@@ -218,6 +231,9 @@ class TInstitucionSanitaria(models.Model):
         app_label = 'infrastructure'
         verbose_name = _('Institucion Sanitaria')
         verbose_name_plural = _('Instituciones Sanitarias')
+    
+    def __str__(self):
+        return f"{self.nombre}"
 
 
 class TSituacionSalud(models.Model):
@@ -256,7 +272,7 @@ class TMedico(models.Model):
         verbose_name_plural = _('Medicos')
 
     def __str__(self):
-        return f"{self.nombre} - {self.mail} - {self.telefono}"
+        return f"{self.nombre}"
 
 
 class TCoberturaMedicaBase(models.Model):
@@ -283,7 +299,7 @@ class TCoberturaMedicaBase(models.Model):
     auh = models.BooleanField(null=False, blank=False)
     observaciones = models.TextField(null=True, blank=True)
 
-    institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.CASCADE, null=False, blank=False)
+    institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.CASCADE, null=True, blank=True)
     persona = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     medico_cabecera = models.ForeignKey('TMedico', on_delete=models.SET_NULL, null=True, blank=True)
 

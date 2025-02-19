@@ -21,6 +21,7 @@ from .DemandaSerializer import (
     TDemandaScoreHistorySerializer,
 )
 from .PersonaSerializer import (
+    TVinculoDePersonasSerializer,
     TPersonaSerializer,
     TPersonaHistorySerializer,
     TInstitucionEducativaSerializer,
@@ -40,7 +41,6 @@ from .PersonaSerializer import (
     TLegajoHistorySerializer,
 )
 from .VulneracionSerializer import (
-    TDerechoAfectadoSerializer,
     TCategoriaMotivoSerializer,
     TCategoriaSubmotivoSerializer,
     TGravedadVulneracionSerializer,

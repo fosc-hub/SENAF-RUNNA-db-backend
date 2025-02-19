@@ -1,6 +1,5 @@
 from django_filters import rest_framework as filters
 from infrastructure.models import (
-    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,
@@ -9,12 +8,6 @@ from infrastructure.models import (
     TVulneracion,
     TVulneracionHistory,
 )
-
-
-class TDerechoAfectadoFilter(filters.FilterSet):
-    class Meta:
-        model = TDerechoAfectado
-        fields = "__all__"
 
 
 class TCategoriaMotivoFilter(filters.FilterSet):

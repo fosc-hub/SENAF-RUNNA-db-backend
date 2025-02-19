@@ -22,6 +22,7 @@ from .Demanda import  (
     TDemandaScoreHistory,
 )
 from .Persona import (
+    TVinculoDePersonas,
     TPersona,
     TPersonaHistory,
     TInstitucionEducativa,
@@ -41,7 +42,6 @@ from .Persona import (
     TLegajoHistory,
 )
 from .Vulneracion import (
-    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,

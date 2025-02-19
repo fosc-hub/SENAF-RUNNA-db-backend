@@ -42,6 +42,7 @@ from infrastructure.models import (
     TCPC,
     TLocalizacion,
     
+    TVinculoDePersonas,
     TPersona,
     TInstitucionEducativa,
     TEducacion,
@@ -53,7 +54,6 @@ from infrastructure.models import (
     TPersonaEnfermedades,
     TNNyAScore,
 
-    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,
@@ -106,12 +106,12 @@ class RegistroDemandaFormDropdownsView(APIView):
         barrio = TBarrio.objects.all()
         cpc = TCPC.objects.all()
 
+        vinculo_de_personas = TVinculoDePersonas.objects.all()
         institucion_educativa = TInstitucionEducativa.objects.all()
         institucion_sanitaria = TInstitucionSanitaria.objects.all()
         situacion_salud = TSituacionSalud.objects.all()
         enfermedad = TEnfermedad.objects.all()
 
-        derecho_afectado = TDerechoAfectado.objects.all()
         categoria_motivo = TCategoriaMotivo.objects.all()
         categoria_submotivo = TCategoriaSubmotivo.objects.all()
         gravedad_vulneracion = TGravedadVulneracion.objects.all()
@@ -133,12 +133,12 @@ class RegistroDemandaFormDropdownsView(APIView):
             "barrio": barrio,
             "cpc": cpc,
 
+            "vinculo_de_personas": vinculo_de_personas,
             "institucion_educativa": institucion_educativa,
             "institucion_sanitaria": institucion_sanitaria,
             "situacion_salud": situacion_salud,
             "enfermedad": enfermedad,
 
-            "derecho_afectado": derecho_afectado,
             "categoria_motivo": categoria_motivo,
             "categoria_submotivo": categoria_submotivo,
             "gravedad_vulneracion": gravedad_vulneracion,

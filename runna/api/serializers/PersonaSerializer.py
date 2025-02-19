@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from infrastructure.models import (
+    TVinculoDePersonas,
     TPersona,
     TPersonaHistory,
     TInstitucionEducativa,
@@ -18,6 +19,12 @@ from infrastructure.models import (
     TLegajo,
     TLegajoHistory,
 )
+
+
+class TVinculoDePersonasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TVinculoDePersonas
+        fields = '__all__'
 
 
 class TPersonaSerializer(serializers.ModelSerializer):

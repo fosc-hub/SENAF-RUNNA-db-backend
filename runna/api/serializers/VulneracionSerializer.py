@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from infrastructure.models import (
-    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,
@@ -9,12 +8,6 @@ from infrastructure.models import (
     TVulneracion,
     TVulneracionHistory,
 )
-
-
-class TDerechoAfectadoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TDerechoAfectado
-        fields = '__all__'
 
 
 class TCategoriaMotivoSerializer(serializers.ModelSerializer):
