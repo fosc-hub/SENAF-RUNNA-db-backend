@@ -1,68 +1,67 @@
-# from django.contrib import admin
-# from unfold.admin import ModelAdmin
-# # from simple_history.admin import SimpleHistoryAdmin
-# # from unfold.contrib.auth.admin import UserAdmin
-# from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
+from unfold.admin import ModelAdmin
+# from simple_history.admin import SimpleHistoryAdmin
+# from unfold.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin
 
-# from django.apps import apps
+from django.apps import apps
 
-# from customAuth.models import CustomUser
+from customAuth.models import CustomUser
 
 
-# class NoDeleteAdmin(ModelAdmin):
-#     def has_delete_permission(self, request, obj=None):
-#         return False
+class NoDeleteAdmin(ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        return False
 
-# # ===== Custom User Admin ===== #
-# @admin.register(CustomUser)
-# class CustomUserAdmin(ModelAdmin, UserAdmin):
-#     """Admin for managing users with roles and permissions."""
-#     fieldsets = UserAdmin.fieldsets + (
-#         (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad', 'equipo')}),
-#     )
-#     add_fieldsets = (
-#         (None, {
-#             'classes': ('wide',),
-#             'fields': (
-#                 'username',
-#                 'password1',
-#                 'password2',
-#                 'first_name',
-#                 'last_name',
-#                 'email',
-#                 'fecha_nacimiento',
-#                 'genero',
-#                 'telefono',
-#                 'localidad',
-#                 'equipo',
-#                 'is_active',
-#                 'is_staff',
-#                 'is_superuser',
-#                 'groups',
-#                 'user_permissions',
-#             ),
-#         }),
-#     )
+# ===== Custom User Admin ===== #
+@admin.register(CustomUser)
+class CustomUserAdmin(ModelAdmin, UserAdmin):
+    """Admin for managing users with roles and permissions."""
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('fecha_nacimiento', 'genero', 'telefono', 'localidad')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'username',
+                'password1',
+                'password2',
+                'first_name',
+                'last_name',
+                'email',
+                'fecha_nacimiento',
+                'genero',
+                'telefono',
+                'localidad',
+                'is_active',
+                'is_staff',
+                'is_superuser',
+                'groups',
+                'user_permissions',
+            ),
+        }),
+    )
 
-#     list_display = ('username', 'email', 'is_staff', 'is_active')
-#     list_filter = ('is_staff', 'is_active', 'groups')
-#     search_fields = ('username', 'email')
-#     ordering = ('email',)
+    list_display = ('username', 'email', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active', 'groups')
+    search_fields = ('username', 'email')
+    ordering = ('email',)
 
-# """
-# DESCOMENTAR ESTO 
-# Para acelerar el admin register de los models en el DESARROLLO
-# # Get all models from your app
-# models = apps.get_models()
+"""
+DESCOMENTAR ESTO 
+Para acelerar el admin register de los models en el DESARROLLO
+# Get all models from your app
+"""
+models = apps.get_models()
+for model in models:
+    try:
+        if model == CustomUser:
+            continue
+        admin.site.register(model)
+    except admin.sites.AlreadyRegistered:
+        pass  # Skip already registered models
 
-# for model in models:
-#     try:
-#         if model == CustomUser:
-#             continue
-#         admin.site.register(model)
-#     except admin.sites.AlreadyRegistered:
-#         pass  # Skip already registered models
-# """
 
 # # ===== models ===== #
 

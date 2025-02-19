@@ -524,16 +524,8 @@ entity T_DEMANDA_PERSONA {
         GARANTIZA_PROTECCION,
         SE DESCONOCE,
     ) : null=False, blank=False, default="SE DESCONOCE"
-    vinculo_con_nnya_principal : (
-        MADRE,
-        PADRE,
-        TUTOR,
-        HERMANO,
-        ABUELO,
-        OTRO,
-        NO_CORRESPONDE
-    )
     --
+    vinculo_con_nnya_principal : FOREIGN_KEY(T_VINCULO_DE_PERSONAS) : on_delete=SET_NULL, null=True, blank=True
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     persona: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False
     --
@@ -556,13 +548,13 @@ entity T_DEMANDA_PERSONA {
     } )
 }
 
-' entity T_VINCULO_PERSONA {
-'     + PRIMARY_KEY(id)
-'     --
-'     nombre : string, null=False, blank=False
-'     --
-'     --
-' }
+entity T_VINCULO_DE_PERSONAS {
+    + PRIMARY_KEY(id)
+    --
+    nombre : string, null=False, blank=False
+    --
+    --
+}
 
 ' entity T_VINCULO_PERSONA_PERSONA {
 '     + COMPOSITE_KEY(T_PERSONA, T_PERSONA)
@@ -573,7 +565,7 @@ entity T_DEMANDA_PERSONA {
 '     --
 '     persona_1: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, related_name=persona_1
 '     persona_2: FOREIGN_KEY(T_PERSONA) : on_delete=CASCADE, null=False, related_name=persona_2
-'     vinculo: FOREIGN_KEY(T_VINCULO_PERSONA) : on_delete=SET_NULL, null=True, blank=True
+'     vinculo: FOREIGN_KEY(T_VINCULO_DE_PERSONAS) : on_delete=SET_NULL, null=True, blank=True
 '     --
 '     * onCreate( {
 '         UNIQUE(persona_1, persona_2)
@@ -1163,7 +1155,7 @@ T_DEMANDA_PERSONA "*" -- "1" T_DEMANDA
 T_PERSONA "1" -- "*" T_DEMANDA_PERSONA
 
 T_VINCULO_PERSONA_PERSONA "*" -- "1" T_PERSONA
-T_VINCULO_PERSONA "1" -- "*" T_VINCULO_PERSONA_PERSONA
+T_VINCULO_DE_PERSONAS "1" -- "*" T_VINCULO_PERSONA_PERSONA
 
 
 T_DEMANDA "1" -- "*" T_VULNERACION

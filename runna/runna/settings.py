@@ -125,6 +125,7 @@ ADMIN_REORDER = [
             "infrastructure.TDemandaScore",
             "infrastructure.TDemandaScoreHistory",
 
+            "infrastructure.TVinculoDePersonas",
             "infrastructure.TPersona",
             "infrastructure.TPersonaHistory",
             "infrastructure.TInstitucionEducativa",
@@ -143,7 +144,6 @@ ADMIN_REORDER = [
             "infrastructure.TLegajo",
             "infrastructure.TLegajoHistory",
 
-            "infrastructure.TDerechoAfectado",
             "infrastructure.TCategoriaMotivo",
             "infrastructure.TCategoriaSubmotivo",
             "infrastructure.TGravedadVulneracion",
@@ -276,7 +276,7 @@ CORS_ORIGIN_WHITELIST = [
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=600),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "TOKEN_OBTAIN_SERIALIZER": "customAuth.serializers.MyTokenObtainPairSerializer",
 }

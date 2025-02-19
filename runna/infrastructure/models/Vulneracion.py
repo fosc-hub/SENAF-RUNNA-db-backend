@@ -6,7 +6,6 @@ from .BaseHistory import BaseHistory
 from django.core.exceptions import ValidationError
 
 """
-TDerechoAfectado
 TCategoriaMotivo
 TCategoriaSubmotivo
 TGravedadVulneracion
@@ -15,24 +14,10 @@ TVulneracion
 TCondicionesVulnerabilidad
 """
 
-class TDerechoAfectado(models.Model):
-    nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Derecho Afectado')
-        verbose_name_plural = _('Derechos Afectados')
-
-    def __str__(self):
-        return self.nombre
-
 
 class TCategoriaMotivo(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
-    
-    derecho_afectado = models.ForeignKey('TDerechoAfectado', on_delete=models.CASCADE, null=False)
  
     class Meta:
         app_label = 'infrastructure'
@@ -40,12 +25,11 @@ class TCategoriaMotivo(models.Model):
         verbose_name_plural = _('Categorias de Motivo')
     
     def __str__(self):
-        return super().__str__()
+        return f"{self.nombre} - {self.peso}"
         
 
 class TCategoriaSubmotivo(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
     motivo = models.ForeignKey('TCategoriaMotivo', on_delete=models.CASCADE)
@@ -56,12 +40,11 @@ class TCategoriaSubmotivo(models.Model):
         verbose_name_plural = _('Categorias de Sub-Motivo')
 
     def __str__(self):
-        return super().__str__()
+        return f"{self.nombre} - {self.motivo} - {self.peso}"
 
 
 class TGravedadVulneracion(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
 
     class Meta:
@@ -70,12 +53,11 @@ class TGravedadVulneracion(models.Model):
         verbose_name_plural = _('Gravedades de Vulneracion')
 
     def __str__(self):
-        return super().__str__()
+        return f"{self.nombre} - {self.peso}"
 
 
 class TUrgenciaVulneracion(models.Model):
     nombre = models.CharField(max_length=255, unique=True, null=False, blank=False)
-    descripcion = models.TextField(null=True, blank=True)
     peso = models.IntegerField(null=False, blank=False)
     
     class Meta:
@@ -84,7 +66,7 @@ class TUrgenciaVulneracion(models.Model):
         verbose_name_plural = _('Urgencias de Vulneracion')
     
     def __str__(self):
-        return super().__str__()
+        return f"{self.nombre} - {self.peso}"
 
 
 class TCondicionesVulnerabilidad(models.Model):
@@ -100,7 +82,7 @@ class TCondicionesVulnerabilidad(models.Model):
         verbose_name_plural = _('Condiciones de Vulnerabilidad')
     
     def __str__(self):
-        return super().__str__()
+        return f"{self.nombre} - {self.peso} - {self.nnya} - {self.adulto}"
 
 
 class TVulneracionBase(models.Model):

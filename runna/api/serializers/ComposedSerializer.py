@@ -39,7 +39,6 @@ from infrastructure.models import (
     TPersonaEnfermedades,
     TNNyAScore,
 
-    TDerechoAfectado,
     TCategoriaMotivo,
     TCategoriaSubmotivo,
     TGravedadVulneracion,
@@ -70,6 +69,7 @@ from api.serializers import (
     TCPCSerializer,
     TLocalizacionSerializer,
     
+    TVinculoDePersonasSerializer,
     TPersonaSerializer,
     TInstitucionEducativaSerializer,
     TEducacionSerializer,
@@ -81,7 +81,6 @@ from api.serializers import (
     TPersonaEnfermedadesSerializer,
     TNNyAScoreSerializer,
 
-    TDerechoAfectadoSerializer,
     TCategoriaMotivoSerializer,
     TCategoriaSubmotivoSerializer,
     TGravedadVulneracionSerializer,
@@ -196,7 +195,6 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     certificacion_choices = serializers.SerializerMethodField()
     beneficios_choices = serializers.SerializerMethodField()
     vinculo_demanda_choices = serializers.SerializerMethodField()
-    vinculo_con_nnya_principal_choices = serializers.SerializerMethodField()
 
     bloques_datos_remitente = TBloqueDatosRemitenteSerializer(many=True)
     tipo_institucion_demanda = TTipoInstitucionDemandaSerializer(many=True)
@@ -209,12 +207,12 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     barrio = TBarrioSerializer(many=True)
     cpc = TCPCSerializer(many=True)
     
+    vinculo_con_nnya_principal_choices = TVinculoDePersonasSerializer(many=True)
     institucion_educativa = TInstitucionEducativaSerializer(many=True)
     institucion_sanitaria = TInstitucionSanitariaSerializer(many=True)
     situacion_salud = TSituacionSaludSerializer(many=True)
     enfermedad = TEnfermedadSerializer(many=True)
 
-    derecho_afectado = TDerechoAfectadoSerializer(many=True)
     categoria_motivo = TCategoriaMotivoSerializer(many=True)
     categoria_submotivo = TCategoriaSubmotivoSerializer(many=True)
     gravedad_vulneracion = TGravedadVulneracionSerializer(many=True)
@@ -271,9 +269,6 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
 
     def get_vinculo_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_DEMANDA_CHOICES)
-
-    def get_vinculo_con_nnya_principal_choices(self, obj):
-        return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_CON_NNyA_PRINCIPAL_CHOICES)
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):

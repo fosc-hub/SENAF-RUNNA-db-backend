@@ -23,6 +23,7 @@
         "infrastructure.TDemandaScore",
         "infrastructure.TDemandaScoreHistory",
 
+        "infrastructure.TVinculoDePersonas",
         "infrastructure.TPersona",
         "infrastructure.TPersonaHistory",
         "infrastructure.TInstitucionEducativa",
@@ -41,7 +42,6 @@
         "infrastructure.TLegajo",
         "infrastructure.TLegajoHistory",
 
-        "infrastructure.TDerechoAfectado",
         "infrastructure.TCategoriaMotivo",
         "infrastructure.TCategoriaSubmotivo",
         "infrastructure.TGravedadVulneracion",

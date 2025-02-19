@@ -21,6 +21,7 @@ from .DemandaFilters import (
     TDemandaScoreHistoryFilter,
 )
 from .PersonaFilter import (
+    TVinculoDePersonasFilter,
     TPersonaFilter,
     TPersonaHistoryFilter,
     TInstitucionEducativaFilter,
@@ -40,7 +41,6 @@ from .PersonaFilter import (
     TLegajoHistoryFilter,
 )
 from .VulneracionFilter import (
-    TDerechoAfectadoFilter,
     TCategoriaMotivoFilter,
     TCategoriaSubmotivoFilter,
     TGravedadVulneracionFilter,

@@ -84,22 +84,13 @@ class TDemandaPersonaBase(models.Model):
         null=False,
         blank=False
     )
-    VINCULO_CON_NNyA_PRINCIPAL_CHOICES = [
-        ('MADRE', 'Madre'),
-        ('PADRE', 'Padre'),
-        ('TUTOR', 'Tutor'),
-        ('HERMANO', 'Hermano'),
-        ('ABUELO', 'Abuelo'),
-        ('OTRO', 'Otro'),
-        ('NO_CORRESPONDE', 'No Corresponde'),
-    ]
-    vinculo_con_nnya_principal = models.CharField(
-        max_length=30,
-        choices=VINCULO_CON_NNyA_PRINCIPAL_CHOICES,
-        null=False,
-        blank=False
-    )
 
+    vinculo_con_nnya_principal = models.ForeignKey(
+        'TVinculoDePersonas',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     persona = models.ForeignKey('TPersona', on_delete=models.CASCADE)
     
@@ -107,7 +98,7 @@ class TDemandaPersonaBase(models.Model):
         abstract = True
 
     def __str__(self):
-        return f"{self.demanda} {self.persona} - {self.supuesto_autordv} - {self.supuesto_autordv_principal} - {self.nnya_principal}"
+        return f"{self.demanda} {self.persona} - {self.vinculo_demanda} - {self.conviviente} - {self.vinculo_con_nnya_principal}"
 
 
 class TDemandaPersona(TDemandaPersonaBase):
@@ -172,7 +163,7 @@ class TDemandaZonaBase(models.Model):
         abstract = True
     
     def __str__(self):
-        return f"{self.demanda} {self.user} - {self.esta_activo}"
+        return f"{self.demanda} {self.zona} - {self.recibido} - {self.recibido_por}"
 
 
 class TDemandaZona(TDemandaZonaBase):
