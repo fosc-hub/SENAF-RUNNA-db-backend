@@ -133,7 +133,7 @@ class RegistroDemandaFormDropdownsView(APIView):
             "barrio": barrio,
             "cpc": cpc,
 
-            "vinculo_de_personas": vinculo_de_personas,
+            "vinculo_con_nnya_principal_choices": vinculo_de_personas,
             "institucion_educativa": institucion_educativa,
             "institucion_sanitaria": institucion_sanitaria,
             "situacion_salud": situacion_salud,
