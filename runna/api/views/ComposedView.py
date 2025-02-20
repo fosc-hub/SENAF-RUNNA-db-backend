@@ -68,6 +68,9 @@ from infrastructure.models import (
     TDemandaVinculada,
     TPersonaCondicionesVulnerabilidad,
 )
+from infrastructure.filters import (
+    TDemandaFilter,
+)
 from api.serializers import (
     RegistroDemandaFormDropdownsSerializer,
     RegistroDemandaFormSerializer,
@@ -90,7 +93,7 @@ class MesaDeEntradaListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ['fecha_creacion', 'estado_demanda']  # Fields allowed for sorting
     ordering = ['-fecha_creacion']  # Default sorting (descending)
-    # filterset_fields = ['estado_demanda']  # Fields allowed for filtering
+    filterset_fields = ['estado_demanda', 'envio_de_respuesta', 'tipo_demanda']  # Fields allowed for filtering
 
 class RegistroDemandaFormDropdownsView(APIView):
     @method_decorator(cache_page(60*15), name='get')
