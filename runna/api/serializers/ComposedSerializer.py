@@ -95,6 +95,7 @@ from api.serializers import (
     TPersonaCondicionesVulnerabilidadSerializer,
 )
 
+
 class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
     enviado_por = CustomUserSerializer()
     recibido_por = CustomUserSerializer()
@@ -105,6 +106,13 @@ class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
         model = TDemandaZona
         fields = '__all__'
         read_only_fields = ['demanda']
+
+
+class GestionDemandaZonaSerializer(serializers.Serializer):
+    demanda_zonas = TDemandaZonaRegistroSerializer(many=True)
+    zonas = TZonaSerializer(many=True)
+    user_zonas = TCustomUserZonaSerializer(many=True)
+    users = CustomUserSerializer(many=True)
 
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
@@ -166,6 +174,7 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
         model = TDemanda
         fields = '__all__'
 
+
 # Custom ChoiceField Serializer to avoid redundant code
 class ChoiceFieldSerializer(serializers.Serializer):
     key = serializers.CharField()
@@ -175,6 +184,7 @@ class ChoiceFieldSerializer(serializers.Serializer):
     def from_model(choices):
         """Converts model choices into a serializable format"""
         return [{"key": key, "value": value} for key, value in choices]
+
 
 class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     """Main serializer to group all dropdown data"""
@@ -381,6 +391,7 @@ class TDemandaPersonaRegistroSerializer(serializers.ModelSerializer):
 
         return TDemandaPersona.objects.create(**validated_data)
 
+
 class PersonaRegistroSerializer(serializers.Serializer):
     localizacion = TLocalizacionSerializer(required=False, allow_null=True)
     educacion = TEducacionRegistroSerializer(required=False, allow_null=True)
@@ -459,6 +470,7 @@ class PersonaRegistroSerializer(serializers.Serializer):
             demanda_persona_serializer.save()
 
         return persona_db
+
 
 class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
     class Meta:
