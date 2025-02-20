@@ -158,6 +158,7 @@ class TDemandaZonaBase(models.Model):
     enviado_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)senviado_por", on_delete=models.PROTECT, null=True)
     recibido_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)srecibido_por", on_delete=models.PROTECT, null=True)
     zona = models.ForeignKey('customAuth.TZona', on_delete=models.CASCADE)
+    user_responsable = models.ForeignKey('customAuth.CustomUser', related_name="%(class)sencargado", on_delete=models.PROTECT, null=True)
 
     class Meta:
         abstract = True
@@ -198,14 +199,14 @@ class TDemandaZonaHistory(TDemandaZonaBase, BaseHistory):
 
 class TDemandaVinculadaBase(models.Model):
     deleted = models.BooleanField(default=False)
-    demanda_padre = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_padre", on_delete=models.CASCADE)
-    demanda_hijo = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_hijo", on_delete=models.CASCADE)
+    demanda_1 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_padre", on_delete=models.CASCADE)
+    demanda_2 = models.ForeignKey('TDemanda', related_name="%(class)sdemanda_hijo", on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return f"{self.demanda_padre} {self.demanda_hijo}"
+        return f"{self.demanda_1} {self.demanda_2}"
 
 class TDemandaVinculada(TDemandaVinculadaBase):
 

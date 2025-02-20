@@ -60,6 +60,7 @@ from api.views import (
     RegistroDemandaFormDropdownsView,
     RegistroDemandaFormView,
     MesaDeEntradaListView,
+    GestionDemandaZonaZonaView,
 )
 from api.views import SuggestDecisionView
 from django.urls import path, include
@@ -124,4 +125,5 @@ urlpatterns = [
     path('mesa-de-entrada/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-all'),  # List all
     # path('mesa-de-entrada/<int:pk>/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-single'),  # Retrieve single
     path('registro-demanda-form-dropdowns/', RegistroDemandaFormDropdownsView.as_view(), name='registro-demanda-form-dropdowns'),  # Retrieve choices
+    path('gestion-demanda-zona/<int:pk>/', GestionDemandaZonaZonaView.as_view(), name='demanda-zona-single'),  # Retrieve single
 ]

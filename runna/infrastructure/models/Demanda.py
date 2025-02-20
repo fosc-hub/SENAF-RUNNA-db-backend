@@ -112,9 +112,6 @@ class TDemandaBase(models.Model):
     registrado_por_user = models.ForeignKey('customAuth.CustomUser', related_name="%(class)sregistrado_por_user", on_delete=models.PROTECT, null=True, blank=True)
     registrado_por_user_zona = models.ForeignKey('customAuth.TZona', related_name="%(class)sregistrado_por_user_zona", on_delete=models.PROTECT, null=True, blank=True)
 
-    zona_asignada = models.ForeignKey('customAuth.TZona', related_name="%(class)szona_asignada", on_delete=models.PROTECT, null=False, blank=False)
-    user_responsable = models.ForeignKey('customAuth.CustomUser', related_name="%(class)suser_responsable", on_delete=models.PROTECT, null=True, blank=True)
-
     class Meta:
         abstract = True
 

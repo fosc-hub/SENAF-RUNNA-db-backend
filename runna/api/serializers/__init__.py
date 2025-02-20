@@ -76,4 +76,5 @@ from .ComposedSerializer import (
     RegistroDemandaFormDropdownsSerializer,
     RegistroDemandaFormSerializer,
     MesaDeEntradaSerializer,
+    GestionDemandaZonaSerializer,
 )

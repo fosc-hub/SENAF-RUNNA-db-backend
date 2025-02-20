@@ -6,6 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
@@ -71,6 +72,7 @@ from api.serializers import (
     RegistroDemandaFormDropdownsSerializer,
     RegistroDemandaFormSerializer,
     MesaDeEntradaSerializer,
+    GestionDemandaZonaSerializer,
 )
 
 class MesaDeEntradaPagination(PageNumberPagination):
@@ -204,4 +206,22 @@ class RegistroDemandaFormView(BaseViewSet):
         except TDemanda.DoesNotExist:
             raise Http404
 
+class GestionDemandaZonaZonaView(APIView):
+    def get(self, request, pk):
+        try:
+            demanda = TDemanda.objects.get(pk=pk)
+        except TDemanda.DoesNotExist:
+            raise Http404
 
+        demanda_zonas = TDemandaZona.objects.filter(demanda=demanda)
+        zonas = TZona.objects.all()
+        user_zonas = TCustomUserZona.objects.all()
+        users = CustomUser.objects.all()
+        serialized_data = GestionDemandaZonaSerializer({
+            "demanda_zonas": demanda_zonas,
+            "zonas": zonas,
+            "user_zonas": user_zonas,
+            "users": users,
+        })
+
+        return Response(serialized_data.data)
