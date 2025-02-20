@@ -95,20 +95,30 @@ from api.serializers import (
     TPersonaCondicionesVulnerabilidadSerializer,
 )
 
+class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
+    enviado_por = CustomUserSerializer()
+    recibido_por = CustomUserSerializer()
+    zona = TZonaSerializer()
+    user_responsable = CustomUserSerializer()
+
+    class Meta:
+        model = TDemandaZona
+        fields = '__all__'
+        read_only_fields = ['demanda']
+
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
     demanda_score = serializers.SerializerMethodField()
-    bloque_datos_remitente = serializers.SerializerMethodField()
+    bloque_datos_remitente = TBloqueDatosRemitenteSerializer()
     nnya_principal = serializers.SerializerMethodField()
     calificacion = serializers.SerializerMethodField()
     codigos_demanda = serializers.SerializerMethodField()
     localidad = serializers.SerializerMethodField()
     barrio = serializers.SerializerMethodField()
     cpc = serializers.SerializerMethodField()
-    zona_asignada = serializers.SerializerMethodField()
-    registrado_por_user = serializers.SerializerMethodField()
-    registrado_por_user_zona = serializers.SerializerMethodField()
-    user_responsable = serializers.SerializerMethodField()
+    registrado_por_user = CustomUserSerializer()
+    registrado_por_user_zona = TZonaSerializer()
+    demanda_zona  = serializers.SerializerMethodField()
 
     def get_demanda_score(self, obj):
         try:
@@ -116,9 +126,6 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
             return TDemandaScoreSerializer(score).data
         except TDemandaScore.DoesNotExist:
             return None
-
-    def get_bloque_datos_remitente(self, obj):
-        return TBloqueDatosRemitenteSerializer(obj.bloque_datos_remitente).data if obj.bloque_datos_remitente else None
 
     def get_nnya_principal(self, obj):
         try:
@@ -151,17 +158,9 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     def get_cpc(self, obj):
         return TCPCSerializer(obj.localizacion.cpc).data if obj.localizacion else None
     
-    def get_zona_asignada(self, obj):
-        return TZonaSerializer(obj.zona_asignada).data if obj.zona_asignada else None
-    
-    def get_registrado_por_user(self, obj):
-        return CustomUserSerializer(obj.registrado_por_user).data if obj.registrado_por_user else None
-    
-    def get_registrado_por_user_zona(self, obj):
-        return TZonaSerializer(obj.registrado_por_user_zona).data if obj.registrado_por_user_zona else None
-
-    def get_user_responsable(self, obj):
-        return CustomUserSerializer(obj.user_responsable).data if obj.user_responsable else None
+    def get_demanda_zona(self, obj):
+        demanda_zona = TDemandaZona.objects.filter(demanda=obj, esta_activo=True).last()
+        return TDemandaZonaRegistroSerializer(demanda_zona).data if demanda_zona else None
 
     class Meta:
         model = TDemanda
@@ -195,6 +194,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     certificacion_choices = serializers.SerializerMethodField()
     beneficios_choices = serializers.SerializerMethodField()
     vinculo_demanda_choices = serializers.SerializerMethodField()
+    calificacion_choices = serializers.SerializerMethodField()
 
     bloques_datos_remitente = TBloqueDatosRemitenteSerializer(many=True)
     tipo_institucion_demanda = TTipoInstitucionDemandaSerializer(many=True)
@@ -269,6 +269,9 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
 
     def get_vinculo_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_DEMANDA_CHOICES)
+    
+    def get_calificacion_choices(self, obj):
+        return ChoiceFieldSerializer.from_model(TCalificacionDemanda.CALIFICACION_CHOICES)
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):

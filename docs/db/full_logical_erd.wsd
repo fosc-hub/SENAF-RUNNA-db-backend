@@ -109,9 +109,6 @@ entity T_DEMANDA {
 
     registrado_por_user: FOREIGN_KEY(T_USER) : on_delete=SET_NULL, autogenerate
     registrado_por_user_zona: FOREIGN_KEY(T_ZONA) : on_delete=SET_NULL, autogenerate
-
-    zona_asignada: FOREIGN_KEY(T_ZONA) : on_delete=SET_NULL, null=False, blank=False, default=self.registrado_por_user.zona
-    user_responsable: FOREIGN_KEY(T_USER) : on_delete=SET_NULL, null=True, blank=True
     --
 
     * onCreate( {
@@ -669,8 +666,8 @@ entity T_DEMANDA_VINCULADA {
     + COMPOSITE_KEY(T_DEMANDA, T_DEMANDA)
     --
     --
-    demanda_padre: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
-    demanda_hijo: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    demanda_1: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    demanda_2: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
     --
     * onCreate( {
         ** UNIQUE(demanda_1, demanda_2)
