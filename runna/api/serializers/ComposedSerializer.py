@@ -395,7 +395,7 @@ class TDemandaPersonaRegistroSerializer(serializers.ModelSerializer):
 class PersonaRegistroSerializer(serializers.Serializer):
     localizacion = TLocalizacionSerializer(required=False, allow_null=True)
     educacion = TEducacionRegistroSerializer(required=False, allow_null=True)
-    cobertura_medica = TCoberturaMedicaSerializer(required=False, allow_null=True)
+    cobertura_medica = TCoberturaMedicaRegistroSerializer(required=False, allow_null=True)
     persona_enfermedades = TPersonaEnfermedadesRegistroSerializer(many=True, required=False)
 
     demanda_persona = TDemandaPersonaSerializer()
@@ -491,6 +491,7 @@ class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
 class RegistroDemandaFormSerializer(serializers.ModelSerializer):
     institucion_demanda = TInstitucionDemandaSerializer()
     codigos_demanda = TCodigoDemandaRegistroSerializer(many=True)
+    demanda_zona = TDemandaZonaSerializer()
     localizacion = TLocalizacionSerializer()
     personas = PersonaRegistroSerializer(many=True, required=False)
 
@@ -512,6 +513,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         """Create and return a TDemanda instance along with its related objects."""
         institucion_data = validated_data.pop('institucion_demanda')
         codigos_data = validated_data.pop('codigos_demanda')
+        demanda_zona_data = validated_data.pop('demanda_zona')
         localizacion_data = validated_data.pop('localizacion')
         personas_data = validated_data.pop('personas', [])
 
@@ -526,6 +528,10 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         print(f"Created demanda: {demanda}")
         # Pass demanda as context to nested serializers
         self.context['demanda'] = demanda
+        
+        demanda_zona_data['demanda'] = demanda
+        demanda_zona = TDemandaZona.objects.create(**demanda_zona_data)
+        print(f"Created demanda_zona: {demanda_zona}")
 
         # Handle CodigosDemanda (without requiring `demanda` in request)
         for codigo_data in codigos_data:
