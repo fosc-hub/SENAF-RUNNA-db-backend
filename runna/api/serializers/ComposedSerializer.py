@@ -516,21 +516,27 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
         # You can also override your other fields if needed
         data['localizacion'] = TLocalizacionSerializer(instance.localizacion).data
-        data['institucion'] = TInstitucionDemandaSerializer(instance.institucion).data
+        data['institucion'] = TInstitucionDemandaSerializer(instance.institucion).data if instance.institucion else None
         
         data['personas'] = []
-        for persona in TDemandaPersona.objects.filter(demanda=instance):
+        for demanda_persona in TDemandaPersona.objects.filter(demanda=instance):
+            localizacion_persona = TLocalizacionPersona.objects.filter(persona=demanda_persona.persona).last()
+            educacion = TEducacion.objects.filter(persona=demanda_persona.persona).last()
+            cobertura_medica = TCoberturaMedica.objects.filter(persona=demanda_persona.persona).last()
+            persona_enfermedades = TPersonaEnfermedades.objects.filter(persona=demanda_persona.persona)
+            persona_condiciones_vulnerabilidad = TPersonaCondicionesVulnerabilidad.objects.filter(persona=demanda_persona.persona)
+            persona_vulneraciones = TVulneracion.objects.filter(nnya=demanda_persona.persona)
             data['personas'].append(
                 PersonaRegistroSerializer(
                     {
-                        'persona': persona.persona,
-                        'localizacion': TLocalizacionPersona.objects.get(persona=persona.persona).localizacion,
-                        'educacion': TEducacion.objects.get(persona=persona.persona),
-                        'cobertura_medica': TCoberturaMedica.objects.get(persona=persona.persona),
-                        'persona_enfermedades': TPersonaEnfermedades.objects.filter(persona=persona.persona),
-                        'demanda_persona': persona,
-                        'condiciones_vulnerabilidad': TPersonaCondicionesVulnerabilidad.objects.filter(persona=persona.persona),
-                        'vulneraciones': TVulneracion.objects.filter(nnya=persona.persona)
+                        'persona': demanda_persona.persona,
+                        'localizacion': localizacion_persona.localizacion if localizacion_persona else None,
+                        'educacion': educacion if educacion else None,
+                        'cobertura_medica': cobertura_medica if cobertura_medica else None,
+                        'persona_enfermedades': persona_enfermedades if persona_enfermedades else [],
+                        'demanda_persona': demanda_persona,
+                        'condiciones_vulnerabilidad': persona_condiciones_vulnerabilidad if persona_condiciones_vulnerabilidad else [],
+                        'vulneraciones': persona_vulneraciones if persona_vulneraciones else []
                     }
                 ).data
             )
