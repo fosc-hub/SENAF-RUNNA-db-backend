@@ -282,7 +282,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
         return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_DEMANDA_CHOICES)
     
     def get_calificacion_choices(self, obj):
-        return ChoiceFieldSerializer.from_model(TCalificacionDemanda.CALIFICACION_CHOICES)
+        return ChoiceFieldSerializer.from_model(TCalificacionDemanda.ESTADO_CALIFICACION_CHOICES)
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):

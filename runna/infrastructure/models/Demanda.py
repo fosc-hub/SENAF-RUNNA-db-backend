@@ -222,7 +222,7 @@ class TCalificacionDemandaBase(models.Model):
     fecha_y_hora_creacion = models.DateTimeField(auto_now_add=True)
     justificacion = models.TextField(null=False, blank=False)
     
-    estado_calificacion_choices = [
+    ESTADO_CALIFICACION_CHOICES = [
         ('URGENTE', 'Urgente'),
         ('NO_URGENTE', 'No Urgente'),
         ('COMPLETAR', 'Completar'),
@@ -232,7 +232,7 @@ class TCalificacionDemandaBase(models.Model):
         ('NO_PERTINENTE_LEY_9944', 'No Pertinente (Ley 9944)'),
         ('PASA_A_LEGAJO', 'Pasa a Legajo')
     ]
-    estado_calificacion = models.CharField(max_length=50, choices=estado_calificacion_choices, null=False, blank=False)
+    estado_calificacion = models.CharField(max_length=50, choices=ESTADO_CALIFICACION_CHOICES, null=False, blank=False)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
     
     demanda = models.OneToOneField('TDemanda', on_delete=models.CASCADE, null=False, blank=False)
