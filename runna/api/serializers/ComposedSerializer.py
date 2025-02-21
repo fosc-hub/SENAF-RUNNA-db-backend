@@ -51,6 +51,7 @@ from infrastructure.models import (
     TDemandaZona,
     TDemandaVinculada,
     TPersonaCondicionesVulnerabilidad,
+    TVinculoDePersonas,
 )
 from api.serializers import (
     TBloqueDatosRemitenteSerializer,
@@ -285,7 +286,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):
-    autordv_index = serializers.IntegerField(write_only=True, allow_null=False)
+    autordv_index = serializers.IntegerField(write_only=True, allow_null=True, required=False)
     
     class Meta:
         model = TVulneracion
@@ -300,12 +301,6 @@ class TEducacionRegistroSerializer(serializers.ModelSerializer):
         model = TEducacion
         read_only_fields = ['persona']
         fields = '__all__'
-    
-    def to_internal_value(self, data):
-        """Remove `persona` from validation to allow deferred assignment"""
-        data = data.copy()
-        data.pop('persona', None)  # Prevents validation from requiring `persona`
-        return super().to_internal_value(data)
 
     def create(self, validated_data):
         """Handles creation of both TEducacion and new TInstitucionEducativa if provided"""
@@ -378,12 +373,11 @@ class TPersonaEnfermedadesRegistroSerializer(serializers.ModelSerializer):
 
 
 class TDemandaPersonaRegistroSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = TDemandaPersona
         read_only_fields = ['demanda', 'persona']
         fields = '__all__'
-    
+
     def create(self, validated_data):
         """Create and return a TDemandaPersona object"""
         validated_data['demanda'] = self.context.get('demanda')  # Get demanda from context
@@ -395,21 +389,18 @@ class TDemandaPersonaRegistroSerializer(serializers.ModelSerializer):
 class PersonaRegistroSerializer(serializers.Serializer):
     localizacion = TLocalizacionSerializer(required=False, allow_null=True)
     educacion = TEducacionRegistroSerializer(required=False, allow_null=True)
-    cobertura_medica = TCoberturaMedicaSerializer(required=False, allow_null=True)
+    cobertura_medica = TCoberturaMedicaRegistroSerializer(required=False, allow_null=True)
     persona_enfermedades = TPersonaEnfermedadesRegistroSerializer(many=True, required=False)
 
-    demanda_persona = TDemandaPersonaSerializer()
+    demanda_persona = TDemandaPersonaRegistroSerializer()
     use_demanda_localizacion = serializers.BooleanField(required=False, default=False)
     condiciones_vulnerabilidad = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=TCondicionesVulnerabilidad.objects.all(),  # Ensure only valid IDs are accepted
+        queryset=TCondicionesVulnerabilidad.objects.all(),
         required=False
     )
+    persona = TPersonaSerializer()
     vulneraciones = TVulneracionRegistroSerializer(many=True, required=False)
-    
-    class Meta:
-        model = TPersona
-        fields = '__all__'
     
     def create(self, validated_data):
         """Create and return a Persona object"""
@@ -448,6 +439,7 @@ class PersonaRegistroSerializer(serializers.Serializer):
         # Handle Educacion
         if educacion_data:
             educacion_serializer = TEducacionRegistroSerializer(data=educacion_data, context=self.context)
+            print(f"Educacion data: {educacion_data}")
             educacion_serializer.is_valid(raise_exception=True)
             educacion_serializer.save(persona=persona_db)
 
@@ -459,8 +451,11 @@ class PersonaRegistroSerializer(serializers.Serializer):
 
         # Handle Enfermedades
         for enfermedad_data in persona_enfermedades_data:
+            print(f"Enfermedad data: {enfermedad_data}")
             enfermedad_serializer = TPersonaEnfermedadesRegistroSerializer(data=enfermedad_data, context=self.context)
+            print(f"Enfermedad serializer: {enfermedad_serializer}")
             enfermedad_serializer.is_valid(raise_exception=True)
+            print("Enfermedad serializer is valid")
             enfermedad_serializer.save(persona=persona_db)
         
         # Handle DemandaPersona
@@ -487,78 +482,182 @@ class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
         # Assign demanda and create the object
         return TCodigoDemanda.objects.create(demanda=demanda, **validated_data)
 
+class RelacionDemandaSerializer(serializers.Serializer):
+    codigos_demanda = TCodigoDemandaRegistroSerializer(many=True)
+    demanda_zona = TDemandaZonaSerializer()
 
 class RegistroDemandaFormSerializer(serializers.ModelSerializer):
-    institucion_demanda = TInstitucionDemandaSerializer()
-    codigos_demanda = TCodigoDemandaRegistroSerializer(many=True)
+    institucion = TInstitucionDemandaSerializer()
+    relacion_demanda = RelacionDemandaSerializer(write_only=True)
     localizacion = TLocalizacionSerializer()
     personas = PersonaRegistroSerializer(many=True, required=False)
 
     class Meta:
         model = TDemanda
         fields = '__all__'
-        
+
     def to_representation(self, instance):
         """Modify representation to include nested relationships for retrieval."""
         data = super().to_representation(instance)
 
-        # Serialize Localizacion and Informante
+        # Now "inject" your nested structure:
+        data['relacion_demanda'] = {
+            'codigos_demanda': TCodigoDemandaSerializer(
+                TCodigoDemanda.objects.filter(demanda=instance), 
+                many=True
+            ).data,
+            'demanda_zona': TDemandaZonaSerializer(
+                TDemandaZona.objects.filter(
+                    demanda=instance, 
+                    esta_activo=True
+                ).last()
+            ).data
+        }
+
+        # You can also override your other fields if needed
         data['localizacion'] = TLocalizacionSerializer(instance.localizacion).data
+        data['institucion'] = TInstitucionDemandaSerializer(instance.institucion).data
+        
+        data['personas'] = []
+        for persona in TDemandaPersona.objects.filter(demanda=instance):
+            data['personas'].append(
+                PersonaRegistroSerializer(
+                    {
+                        'persona': persona.persona,
+                        'localizacion': TLocalizacionPersona.objects.get(persona=persona.persona).localizacion,
+                        'educacion': TEducacion.objects.get(persona=persona.persona),
+                        'cobertura_medica': TCoberturaMedica.objects.get(persona=persona.persona),
+                        'persona_enfermedades': TPersonaEnfermedades.objects.filter(persona=persona.persona),
+                        'demanda_persona': persona,
+                        'condiciones_vulnerabilidad': TPersonaCondicionesVulnerabilidad.objects.filter(persona=persona.persona),
+                        'vulneraciones': TVulneracion.objects.filter(nnya=persona.persona)
+                    }
+                ).data
+            )
+
+        print(f"Modified representation: {data}")
 
         return data
 
 
     def create(self, validated_data):
         """Create and return a TDemanda instance along with its related objects."""
-        institucion_data = validated_data.pop('institucion_demanda')
-        codigos_data = validated_data.pop('codigos_demanda')
+        institucion_data = validated_data.pop('institucion')
+        relacion_demanda_data = validated_data.pop('relacion_demanda')
         localizacion_data = validated_data.pop('localizacion')
         personas_data = validated_data.pop('personas', [])
 
         # Create or get InstitucionDemanda
-        institucion_demanda, _ = TInstitucionDemanda.objects.get_or_create(**institucion_data)
+        institucion, _ = TInstitucionDemanda.objects.get_or_create(**institucion_data)
 
         # Handle Localizacion (always create one for Demanda)
         localizacion = TLocalizacion.objects.create(**localizacion_data)
 
         # Create TDemanda instance
-        demanda = TDemanda.objects.create(localizacion=localizacion, institucion=institucion_demanda, **validated_data)
+        demanda = TDemanda.objects.create(localizacion=localizacion, institucion=institucion, **validated_data)
         print(f"Created demanda: {demanda}")
         # Pass demanda as context to nested serializers
         self.context['demanda'] = demanda
+        
+        demanda_zona_data = relacion_demanda_data.pop('demanda_zona')
+        demanda_zona_data['demanda'] = demanda
+        demanda_zona = TDemandaZona.objects.create(**demanda_zona_data)
+        print(f"Created demanda_zona: {demanda_zona}")
 
+        codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
         # Handle CodigosDemanda (without requiring `demanda` in request)
         for codigo_data in codigos_data:
-            codigo_serializer = TCodigoDemandaRegistroSerializer(data=codigo_data, context=self.context)
-            print(f"Creating codigo with data: {codigo_data}")
-            print(f"Context: {self.context}")
-            codigo_serializer.is_valid(raise_exception=True)
-            print(f"Validated data: {codigo_serializer.validated_data}")
-            codigo_serializer.save()  # demanda is assigned automatically
+            codigo, _ = TCodigoDemanda.objects.get_or_create(demanda=demanda, **codigo_data)
+            print(f"Created codigo: {codigo}")
 
         self.context['personas_db'] = []  # Store created personas to link them to demanda
+        self.context['vulneraciones_temp'] = []  # Store temporary vulneraciones to link them to a after created autordv
         # Handle Personas
         for persona_data in personas_data:
-            persona_serializer = PersonaRegistroSerializer(data=persona_data, context=self.context)
-            persona_serializer.is_valid(raise_exception=True)
-            persona_db = persona_serializer.save()
-            self.context['personas_db'].append(persona_db)  # Store created personas to link them to demanda
-        
+            print()
+            persona = persona_data.pop('persona')
+            localizacion = persona_data.pop('localizacion', None)
+            educacion = persona_data.pop('educacion', None)
+            cobertura_medica = persona_data.pop('cobertura_medica', None)
+            persona_enfermedades = persona_data.pop('persona_enfermedades', [])
+            
+            use_demanda_localizacion = persona_data.pop('use_demanda_localizacion', False)
+            demanda_persona = persona_data.pop('demanda_persona', None)
+            vulneraciones = persona_data.pop('vulneraciones', [])
+            condiciones_vulnerabilidad = persona_data.pop('condiciones_vulnerabilidad', [])
+            print(f"Persona data: {persona_data}")
+            
+            persona_db = TPersona.objects.create(**persona)
+            self.context['persona'] = persona_db
+            self.context['personas_db'].append(persona_db)
+            
+            if use_demanda_localizacion:
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona_db, localizacion=demanda.localizacion)
+                print(f"Localizacion created: {localizacion_persona}")
+            elif localizacion:
+                new_localizacion, _ = TLocalizacion.objects.get_or_create(**localizacion)
+                localizacion_persona = TLocalizacionPersona.objects.create(persona=persona_db, localizacion=new_localizacion)
+            
+                print(f"Localizacion created: {localizacion_persona}")
+            
+            if educacion:
+                institucion_educativa, _ = TInstitucionEducativa.objects.get_or_create(**educacion.pop('institucion_educativa'))
+                educacion['institucion_educativa'] = institucion_educativa
+                educacion, _ = TEducacion.objects.get_or_create(persona=persona_db, **educacion)
+            
+                print(f"Educacion created: {educacion}")
+            
+            if cobertura_medica:
+
+                institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**cobertura_medica.pop('institucion_sanitaria'))
+                cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
+                medico_cabecera, _ = TMedico.objects.get_or_create(**cobertura_medica.pop('medico_cabecera'))
+                cobertura_medica['medico_cabecera'] = medico_cabecera
+                cobertura_medica, _ = TCoberturaMedica.objects.get_or_create(persona=persona_db, **cobertura_medica)
+            
+                print(f"CoberturaMedica created: {cobertura_medica}")
+            
+            for enfermedad_data in persona_enfermedades:
+
+                enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad_data.pop('enfermedad'))
+                enfermedad_data['enfermedad'] = enfermedad
+                institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**enfermedad_data.pop('institucion_sanitaria_interviniente'))
+                enfermedad_data['institucion_sanitaria_interviniente'] = institucion_sanitaria
+                medico_tratamiento, _ = TMedico.objects.get_or_create(**enfermedad_data.pop('medico_tratamiento'))
+                enfermedad_data['medico_tratamiento'] = medico_tratamiento
+
+                enfermedad, _ = TPersonaEnfermedades.objects.get_or_create(persona=persona_db, **enfermedad_data)
+                print(f"Enfermedad created: {enfermedad}")
+
+            if demanda_persona:
+                demanda_persona['demanda'] = demanda
+                demanda_persona['persona'] = persona_db
+                demanda_persona = TDemandaPersona.objects.create(**demanda_persona)
+
+                print(f"DemandaPersona created: {demanda_persona}")
+            
+            for condicion in condiciones_vulnerabilidad:
+                TPersonaCondicionesVulnerabilidad.objects.create(
+                    persona=persona_db,
+                    condicion_vulnerabilidad=condicion,
+                    demanda=demanda,
+                    si_no=True
+                )
+            
+            for vulneracion in vulneraciones:
+                vulneracion['nnya'] = persona_db
+                vulneracion['demanda'] = demanda
+                self.context['vulneraciones_temp'].append(vulneracion)
+            
+        print(f"Vulneraciones Temporales: {self.context['vulneraciones_temp']}")
+        for vulneracion in self.context['vulneraciones_temp']:
+            autordv_index = vulneracion.pop('autordv_index') if 'autordv_index' in vulneracion else None
+            if autordv_index is not None:
+                autordv = self.context['personas_db'][autordv_index]
+                vulneracion['autordv'] = autordv
+            TVulneracion.objects.create(**vulneracion)
+
         print(f"Personas created: {self.context['personas_db']}")
 
         return demanda
 
-    def update(self, instance, validated_data):
-        localizacion_data = validated_data.pop('localizacion', None)
-        informante = validated_data.pop('informante', None)
-
-        if localizacion_data:
-            for attr, value in localizacion_data.items():
-                setattr(instance.localizacion, attr, value)
-            instance.localizacion.save()
-
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        
-        instance.save()
-        return instance

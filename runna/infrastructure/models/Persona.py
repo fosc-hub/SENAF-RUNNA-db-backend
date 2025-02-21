@@ -299,7 +299,7 @@ class TCoberturaMedicaBase(models.Model):
     auh = models.BooleanField(null=False, blank=False)
     observaciones = models.TextField(null=True, blank=True)
 
-    institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.CASCADE, null=True, blank=True)
+    institucion_sanitaria = models.ForeignKey('TInstitucionSanitaria', on_delete=models.SET_NULL, null=True, blank=True)
     persona = models.OneToOneField('TPersona', on_delete=models.CASCADE, null=False, blank=False)
     medico_cabecera = models.ForeignKey('TMedico', on_delete=models.SET_NULL, null=True, blank=True)
 

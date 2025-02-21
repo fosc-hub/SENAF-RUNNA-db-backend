@@ -68,6 +68,9 @@ from infrastructure.models import (
     TDemandaVinculada,
     TPersonaCondicionesVulnerabilidad,
 )
+from infrastructure.filters import (
+    TDemandaFilter,
+)
 from api.serializers import (
     RegistroDemandaFormDropdownsSerializer,
     RegistroDemandaFormSerializer,
@@ -90,7 +93,7 @@ class MesaDeEntradaListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ['fecha_creacion', 'estado_demanda']  # Fields allowed for sorting
     ordering = ['-fecha_creacion']  # Default sorting (descending)
-    # filterset_fields = ['estado_demanda']  # Fields allowed for filtering
+    filterset_fields = ['estado_demanda', 'envio_de_respuesta', 'tipo_demanda']  # Fields allowed for filtering
 
 class RegistroDemandaFormDropdownsView(APIView):
     @method_decorator(cache_page(60*15), name='get')
@@ -170,8 +173,12 @@ class RegistroDemandaFormView(BaseViewSet):
         if serializer.is_valid():
             try:
                 with transaction.atomic():
-                    serializer.save()
-                return Response(serializer.data, status=201)
+                    demanda = serializer.save()
+                    
+                print(f"Demanda creada: {demanda}")
+                
+                return Response({"message_encrypted": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJIaW50IjoiTG9vayBhdCB0aGUgd2luZG93IGF0IDk6NTggR01ULTIifQ.Jbldjuw5yGPQ1ytzlP25xghgycL89TmYssiHr2CLC0M",
+                                 "demanda": demanda.pk}, status=201)
             except Exception as e:
                 return Response({"error": str(e)}, status=400)
         return Response(serializer.errors, status=400)
