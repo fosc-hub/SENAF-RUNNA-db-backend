@@ -152,29 +152,32 @@ class TDemandaZonaViewSet(BaseViewSet):
     )
     def create(self, request):
         # Create the object using the serializer
-        serializer = TDemandaZonaSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        instance = serializer.save()
+        try:
+            serializer = TDemandaZonaSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            instance = serializer.save()
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Capture signal response
-        responses = post_save.send(
-            sender=TDemandaZona,
-            instance=instance,
-            created=True,
-            raw=False,
-            using=None,
-        )
-        logger.info(f"Creation of TDemandAsignado instance: {instance}")
-        logger.info(f"Signal responses: {responses}")
+        # responses = post_save.send(
+        #     sender=TDemandaZona,
+        #     instance=instance,
+        #     created=True,
+        #     raw=False,
+        #     using=None,
+        # )
+        # logger.info(f"Creation of TDemandAsignado instance: {instance}")
+        # logger.info(f"Signal responses: {responses}")
         # Collect the first valid response from signal receivers
         signal_response = None
-        for receiver, response in responses:
-            print(f'Receiver: {receiver}')
-            print(f'Response: {response}')
-            if response and 'email_status' in response and 'email_details' in response:
-                signal_response = response
-                logger.info(f"signal_response set to: {response}")
-                break
+        # for receiver, response in responses:
+        #     print(f'Receiver: {receiver}')
+        #     print(f'Response: {response}')
+        #     if response and 'email_status' in response and 'email_details' in response:
+        #         signal_response = response
+        #         logger.info(f"signal_response set to: {response}")
+        #         break
 
         # Prepare the API response
         response_data = {

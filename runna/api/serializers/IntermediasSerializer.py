@@ -28,7 +28,6 @@ class TDemandaZonaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDemandaZona
         fields = '__all__'
-        read_only_fields = ['demanda']
 
 class TDemandaVinculadaSerializer(serializers.ModelSerializer):
     class Meta:
