@@ -174,8 +174,11 @@ class RegistroDemandaFormView(BaseViewSet):
             try:
                 with transaction.atomic():
                     demanda = serializer.save()
+                    
+                print(f"Demanda creada: {demanda}")
                 
-                return Response({"demanda": "ultra mega creada perri, 10 puntos"}, status=201)
+                return Response({"message_encrypted": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJIaW50IjoiTG9vayBhdCB0aGUgd2luZG93IGF0IDk6NTggR01ULTIifQ.Jbldjuw5yGPQ1ytzlP25xghgycL89TmYssiHr2CLC0M",
+                                 "demanda": demanda.pk}, status=201)
             except Exception as e:
                 return Response({"error": str(e)}, status=400)
         return Response(serializer.errors, status=400)
