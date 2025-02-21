@@ -94,8 +94,16 @@ from api.serializers import (
     TDemandaZonaSerializer,
     TDemandaVinculadaSerializer,
     TPersonaCondicionesVulnerabilidadSerializer,
+    
+    TActividadTipoSerializer,
+    TInstitucionActividadSerializer,
 )
 
+
+class TActividadDropdownSerializer(serializers.Serializer):
+    tipos_actividad = TActividadTipoSerializer(many=True)
+    instituciones_actividad = TInstitucionActividadSerializer(many=True)
+    
 
 class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
     enviado_por = CustomUserSerializer()
