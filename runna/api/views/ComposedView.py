@@ -173,8 +173,9 @@ class RegistroDemandaFormView(BaseViewSet):
         if serializer.is_valid():
             try:
                 with transaction.atomic():
-                    serializer.save()
-                return Response(serializer.data, status=201)
+                    demanda = serializer.save()
+                
+                return Response({"demanda": "ultra mega creada perri, 10 puntos"}, status=201)
             except Exception as e:
                 return Response({"error": str(e)}, status=400)
         return Response(serializer.errors, status=400)
