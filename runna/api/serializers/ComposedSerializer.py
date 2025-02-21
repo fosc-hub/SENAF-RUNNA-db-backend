@@ -128,6 +128,7 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     registrado_por_user = CustomUserSerializer()
     registrado_por_user_zona = TZonaSerializer()
     demanda_zona  = serializers.SerializerMethodField()
+    calificacion_choices = serializers.SerializerMethodField()
 
     def get_demanda_score(self, obj):
         try:
@@ -170,6 +171,9 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     def get_demanda_zona(self, obj):
         demanda_zona = TDemandaZona.objects.filter(demanda=obj, esta_activo=True).last()
         return TDemandaZonaRegistroSerializer(demanda_zona).data if demanda_zona else None
+    
+    def get_calificacion_choices(self, obj):
+        return TCalificacionDemanda.ESTADO_CALIFICACION_CHOICES
 
     class Meta:
         model = TDemanda
@@ -205,7 +209,6 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     certificacion_choices = serializers.SerializerMethodField()
     beneficios_choices = serializers.SerializerMethodField()
     vinculo_demanda_choices = serializers.SerializerMethodField()
-    calificacion_choices = serializers.SerializerMethodField()
 
     bloques_datos_remitente = TBloqueDatosRemitenteSerializer(many=True)
     tipo_institucion_demanda = TTipoInstitucionDemandaSerializer(many=True)
@@ -280,9 +283,6 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
 
     def get_vinculo_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_DEMANDA_CHOICES)
-    
-    def get_calificacion_choices(self, obj):
-        return ChoiceFieldSerializer.from_model(TCalificacionDemanda.ESTADO_CALIFICACION_CHOICES)
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):
