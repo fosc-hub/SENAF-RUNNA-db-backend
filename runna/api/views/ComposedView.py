@@ -67,6 +67,9 @@ from infrastructure.models import (
     TDemandaZona,
     TDemandaVinculada,
     TPersonaCondicionesVulnerabilidad,
+    
+    TActividadTipo,
+    TInstitucionActividad,
 )
 from infrastructure.filters import (
     TDemandaFilter,
@@ -76,6 +79,7 @@ from api.serializers import (
     RegistroDemandaFormSerializer,
     MesaDeEntradaSerializer,
     GestionDemandaZonaSerializer,
+    TActividadDropdownSerializer,
 )
 
 class MesaDeEntradaPagination(PageNumberPagination):
@@ -229,6 +233,20 @@ class GestionDemandaZonaZonaView(APIView):
             "zonas": zonas,
             "user_zonas": user_zonas,
             "users": users,
+        })
+
+        return Response(serialized_data.data)
+
+
+class TActividadDropdownView(APIView):
+    @method_decorator(cache_page(60*15), name='get')
+    def get(self, request):
+        actividad_tipo = TActividadTipo.objects.all()
+        institucion_actividad = TInstitucionActividad.objects.all()
+        
+        serialized_data = TActividadDropdownSerializer({
+            "tipos_actividad": actividad_tipo,
+            "instituciones_actividad": institucion_actividad,
         })
 
         return Response(serialized_data.data)

@@ -77,4 +77,5 @@ from .ComposedSerializer import (
     RegistroDemandaFormSerializer,
     MesaDeEntradaSerializer,
     GestionDemandaZonaSerializer,
+    TActividadDropdownSerializer,
 )

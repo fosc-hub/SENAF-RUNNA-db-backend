@@ -64,4 +64,5 @@ from .ComposedView import (
     RegistroDemandaFormView,
     MesaDeEntradaListView,
     GestionDemandaZonaZonaView,
+    TActividadDropdownView,
 )

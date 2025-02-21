@@ -94,8 +94,16 @@ from api.serializers import (
     TDemandaZonaSerializer,
     TDemandaVinculadaSerializer,
     TPersonaCondicionesVulnerabilidadSerializer,
+    
+    TActividadTipoSerializer,
+    TInstitucionActividadSerializer,
 )
 
+
+class TActividadDropdownSerializer(serializers.Serializer):
+    tipos_actividad = TActividadTipoSerializer(many=True)
+    instituciones_actividad = TInstitucionActividadSerializer(many=True)
+    
 
 class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
     enviado_por = CustomUserSerializer()
@@ -482,9 +490,18 @@ class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
         # Assign demanda and create the object
         return TCodigoDemanda.objects.create(demanda=demanda, **validated_data)
 
+
+class TDemandaZonaRegistroPOSTSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaZona
+        fields = '__all__'
+        read_only_fields = ['demanda']
+
 class RelacionDemandaSerializer(serializers.Serializer):
     codigos_demanda = TCodigoDemandaRegistroSerializer(many=True)
-    demanda_zona = TDemandaZonaSerializer()
+    demanda_zona = TDemandaZonaRegistroPOSTSerializer()
+
+
 
 class RegistroDemandaFormSerializer(serializers.ModelSerializer):
     institucion = TInstitucionDemandaSerializer()
@@ -506,7 +523,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                 TCodigoDemanda.objects.filter(demanda=instance), 
                 many=True
             ).data,
-            'demanda_zona': TDemandaZonaSerializer(
+            'demanda_zona': TDemandaZonaRegistroPOSTSerializer(
                 TDemandaZona.objects.filter(
                     demanda=instance, 
                     esta_activo=True
