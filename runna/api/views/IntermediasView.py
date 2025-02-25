@@ -372,7 +372,7 @@ class TDemandaZonaHistoryViewSet(BaseViewSet):
 
 class AuditoriaDemandaZonaZonaView(APIView):
     def get(self, request, pk):
-        objects = TDemandaZonaHistory.objects.filter(parent=pk)
+        objects = TDemandaZonaHistory.objects.filter(parent__demanda=pk)
         serializer_data = TDemandaZonaHistorySerializer(objects, many=True).data
 
         return Response(serializer_data, status=status.HTTP_200_OK)
