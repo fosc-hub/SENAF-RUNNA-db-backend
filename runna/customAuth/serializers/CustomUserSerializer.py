@@ -41,6 +41,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
     groups = GroupSerializer(many=True)  # Serialize groups with permissions
     # user_permissions = PermissionSerializer(many=True)
     all_permissions = serializers.SerializerMethodField()
+    zonas = serializers.SerializerMethodField()
+    zonas_ids = serializers.ListField(child=serializers.IntegerField(), read_only=True)
 
     class Meta:
         model = CustomUser
@@ -48,7 +50,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'id', 'username', 'first_name', 'last_name', 'email',
             'fecha_nacimiento', 'genero', 'telefono', 'localidad', 'is_staff',
             'is_active', 'is_superuser', 'groups', 'user_permissions',
-            'all_permissions'
+            'all_permissions', 'zonas', 'zonas_ids'
         ]
 
     def get_all_permissions(self, obj):
@@ -56,3 +58,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
         # Collect both direct and group permissions
         permissions = obj.user_permissions.all() | Permission.objects.filter(group__user=obj)
         return PermissionSerializer(permissions, many=True).data
+
+    def get_zonas(self, obj):
+        """Return the zones the user is assigned to."""
+        user_zonas = TCustomUserZona.objects.filter(user=obj)
+        obj.zonas_ids = user_zonas.values_list('zona', flat=True )
+        return TCustomUserZonaSerializer(user_zonas, many=True).data

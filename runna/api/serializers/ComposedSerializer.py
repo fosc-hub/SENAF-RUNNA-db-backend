@@ -106,8 +106,6 @@ class TActividadDropdownSerializer(serializers.Serializer):
     
 
 class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
-    enviado_por = CustomUserSerializer()
-    recibido_por = CustomUserSerializer()
     zona = TZonaSerializer()
     user_responsable = CustomUserSerializer()
 
@@ -120,7 +118,6 @@ class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
 class GestionDemandaZonaSerializer(serializers.Serializer):
     demanda_zonas = TDemandaZonaRegistroSerializer(many=True)
     zonas = TZonaSerializer(many=True)
-    user_zonas = TCustomUserZonaSerializer(many=True)
     users = CustomUserSerializer(many=True)
 
 
