@@ -120,7 +120,6 @@ class TDemandaZonaRegistroSerializer(serializers.ModelSerializer):
 class GestionDemandaZonaSerializer(serializers.Serializer):
     demanda_zonas = TDemandaZonaRegistroSerializer(many=True)
     zonas = TZonaSerializer(many=True)
-    user_zonas = TCustomUserZonaSerializer(many=True)
     users = CustomUserSerializer(many=True)
 
 

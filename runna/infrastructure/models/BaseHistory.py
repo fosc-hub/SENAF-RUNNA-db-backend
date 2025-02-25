@@ -1,6 +1,7 @@
 from django.db import models
 
 class BaseHistory(models.Model):
+    descripcion = models.TextField(null=True, blank=True)
     ACTION_CHOICES = [
         ('CREATE', 'Create'),
         ('UPDATE', 'Update'),

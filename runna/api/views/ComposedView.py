@@ -226,12 +226,10 @@ class GestionDemandaZonaZonaView(APIView):
 
         demanda_zonas = TDemandaZona.objects.filter(demanda=demanda)
         zonas = TZona.objects.all()
-        user_zonas = TCustomUserZona.objects.all()
         users = CustomUser.objects.all()
         serialized_data = GestionDemandaZonaSerializer({
             "demanda_zonas": demanda_zonas,
             "zonas": zonas,
-            "user_zonas": user_zonas,
             "users": users,
         })
 

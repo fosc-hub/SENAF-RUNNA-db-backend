@@ -40,6 +40,7 @@ from api.views import (
     TDemandaPersonaHistoryViewSet,
     TDemandaZonaViewSet,
     TDemandaZonaHistoryViewSet,
+    AuditoriaDemandaZonaZonaView,
     TDemandaVinculadaViewSet,
     TDemandaVinculadaHistoryViewSet,
     TPersonaCondicionesVulnerabilidadViewSet,
@@ -128,4 +129,5 @@ urlpatterns = [
     path('registro-demanda-form-dropdowns/', RegistroDemandaFormDropdownsView.as_view(), name='registro-demanda-form-dropdowns'),  # Retrieve choices
     path('gestion-demanda-zona/<int:pk>/', GestionDemandaZonaZonaView.as_view(), name='demanda-zona-single'),  # Retrieve single
     path('actividad-dropdown/', TActividadDropdownView.as_view(), name='actividad-dropdown'),  # Retrieve choices
+    path('auditoria-demanda-zona/<int:pk>', AuditoriaDemandaZonaZonaView.as_view(), name='auditoria-demanda-zona-zona'),  # Retrieve choices
 ]

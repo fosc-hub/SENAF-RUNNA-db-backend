@@ -164,6 +164,21 @@ class Command(BaseCommand):
                         model.objects.get_or_create(**enfermedad_data)
                     except Exception as e:
                         self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            elif model_name == 'customAuth.TCustomUserZona':
+                for i in range(1, 10):
+                    try:
+                        user = apps.get_model("customAuth.CustomUser").objects.get(id=i)
+                        zona = apps.get_model("customAuth.TZona").objects.get(id=1)
+                        user_zona_data = {
+                            'director': random.choice([False]),
+                            'jefe': random.choice([False]),
+                            'user': user,
+                            'zona': zona,
+                        }
+                        model.objects.get_or_create(**user_zona_data)
+                        self.stdout.write(f'User {user} added to Zona 1')
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
             else:
                 for _ in range(10):  # Number of objects per model
                     obj_data = {}

@@ -40,6 +40,7 @@ from .IntermediasView import (
     TDemandaPersonaHistoryViewSet,
     TDemandaZonaViewSet,
     TDemandaZonaHistoryViewSet,
+    AuditoriaDemandaZonaZonaView,
     TDemandaVinculadaViewSet,
     TDemandaVinculadaHistoryViewSet,
     TPersonaCondicionesVulnerabilidadViewSet,

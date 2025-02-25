@@ -20,6 +20,7 @@ class CustomUser(AbstractUser):
 
 
 class TCustomUserZona(models.Model):
+    director = models.BooleanField(default=False)
     jefe = models.BooleanField(default=False)
     
     user = models.ForeignKey('customAuth.CustomUser', on_delete=models.CASCADE)
@@ -34,5 +35,8 @@ class TCustomUserZona(models.Model):
         if self.jefe:
             if TCustomUserZona.objects.filter(zona=self.zona, jefe=True).exists():
                 raise ValueError("Solo puede haber un jefe por zona.")
+        if self.director:
+            if TCustomUserZona.objects.filter(zona=self.zona, director=True).exists():
+                raise ValueError("Solo puede haber un director por zona.") 
         super(TCustomUserZona, self).save(*args, **kwargs)
 

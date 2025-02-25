@@ -148,17 +148,16 @@ class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):
 
 
 class TDemandaZonaBase(models.Model):
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_recibido = models.DateTimeField(null=True, blank=True)
     esta_activo = models.BooleanField(default=True)
     recibido = models.BooleanField(default=False)
     comentarios = models.TextField(null=True, blank=True)
-    
+
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
-    enviado_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)senviado_por", on_delete=models.PROTECT, null=True)
-    recibido_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)srecibido_por", on_delete=models.PROTECT, null=True)
     zona = models.ForeignKey('customAuth.TZona', on_delete=models.CASCADE)
     user_responsable = models.ForeignKey('customAuth.CustomUser', related_name="%(class)sencargado", on_delete=models.PROTECT, null=True)
+
+    enviado_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)senviado_por", on_delete=models.PROTECT, null=True)
+    recibido_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)srecibido_por", on_delete=models.PROTECT, null=True)
 
     class Meta:
         abstract = True

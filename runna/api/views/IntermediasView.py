@@ -1,5 +1,9 @@
 from drf_spectacular.utils import extend_schema
-from requests import Response
+# from requests import Response
+from rest_framework.response import Response
+
+from rest_framework.views import APIView
+
 from rest_framework import status
 import logging
 logger = logging.getLogger(__name__)
@@ -217,6 +221,7 @@ class TDemandaZonaViewSet(BaseViewSet):
         return super().destroy(request, pk=pk)
 
 
+
 class TDemandaVinculadaViewSet(BaseViewSet):
     model = TDemandaVinculada
     serializer_class = TDemandaVinculadaSerializer
@@ -365,6 +370,13 @@ class TDemandaZonaHistoryViewSet(BaseViewSet):
         return super().retrieve(request, pk=pk)
 
 
+class AuditoriaDemandaZonaZonaView(APIView):
+    def get(self, request, pk):
+        objects = TDemandaZonaHistory.objects.filter(parent__demanda=pk)
+        serializer_data = TDemandaZonaHistorySerializer(objects, many=True).data
+
+        return Response(serializer_data, status=status.HTTP_200_OK)
+
 class TDemandaVinculadaHistoryViewSet(BaseViewSet):
     model = TDemandaVinculadaHistory
     serializer_class = TDemandaVinculadaHistorySerializer
@@ -386,6 +398,15 @@ class TDemandaVinculadaHistoryViewSet(BaseViewSet):
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
+
+class GestionDemandaZonaZonaView(APIView):
+    def get(self, request, pk):
+
+        objects = TDemandaZonaHistory.objects.filter(parent=pk)
+        
+        serializer_data = TDemandaZonaHistorySerializer(objects, many=True).data
+
+        return JsonResponse(serializer_data, status=status.HTTP_200_OK)
 
 
 class TPersonaCondicionesVulnerabilidadHistoryViewSet(BaseViewSet):
