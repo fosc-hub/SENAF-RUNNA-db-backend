@@ -16,6 +16,7 @@ from infrastructure.models import (
 )
 from .BaseLogs import logs
 from services.email_service import EmailService
+from datetime import datetime
 
 
 # @receiver(post_save, sender=TDemandaPersona)
@@ -93,7 +94,7 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
             """
 
             # Send email and return the response
-            email_response = EmailService.send_email(to, subject, html_content)
+            # email_response = EmailService.send_email(to, subject, html_content)
             
             print(f"Email sent to {to} with subject: {subject}")
 
@@ -127,7 +128,26 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
 @receiver(post_save, sender=TDemandaZona)
 def log_demandaAsignado_save(sender, instance, created, **kwargs):
     action = 'CREATE' if created else 'UPDATE'
-    logs(TDemandaZonaHistory, action, instance)
+    descripcion = ""
+    previous_values = TDemandaZonaHistory.objects.filter(parent=instance.id).last()
+    if previous_values:
+        descripcion_dict = {
+            'esta_activo': f"Ha quitado la derivacion de la demanda en la zona {previous_values.zona.nombre}" if instance.esta_activo == False and previous_values.esta_activo == True else "",
+            'recibido': "Ha recibido la demanda" if instance.recibido == True and previous_values.recibido  == False else "",
+            'zona': f"Se ha derivado esta demanda a la zona {instance.zona.nombre}" if instance.zona != previous_values.zona else "",
+            'user_responsable': f"Ha cambiado el responsable de esta zona a {instance.user_responsable.first_name}" if instance.user_responsable != previous_values.user_responsable else "",
+        }
+        descripcion += f"{descripcion_dict['esta_activo']}"
+        descripcion += f"{descripcion_dict['recibido']}"
+        descripcion += f"{descripcion_dict['zona']}"
+        descripcion += f"{descripcion_dict['user_responsable']}"
+        
+        print(descripcion)
+    else:
+        descripcion += f"Ha derivado la demanda a la zona {instance.zona.nombre}"
+        print(descripcion)
+
+    logs(TDemandaZonaHistory, action, instance, descripcion)
 
 
 @receiver(post_delete, sender=TDemandaZona)

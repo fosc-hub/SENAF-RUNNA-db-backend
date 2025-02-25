@@ -1,10 +1,13 @@
 from runna.middleware import get_current_authenticated_user
 from django.db.utils import IntegrityError
+from datetime import datetime
 
 
-def logs(HistoryModelName, action, instance):
+def logs(HistoryModelName, action, instance, descripcion_temp=None):
     try:
+        descripcion = f"{datetime.now().strftime('%d/%m/%y %H:%M')} {get_current_authenticated_user()} - " + descripcion_temp
         HistoryModelName.objects.create(
+            descripcion=descripcion,
             parent=instance,
             action=action,
             by_user=get_current_authenticated_user(),
@@ -12,6 +15,7 @@ def logs(HistoryModelName, action, instance):
         )
     except ValueError:
         HistoryModelName.objects.create(
+            descripcion=descripcion,
             parent=instance,
             action=action,
             by_user=None,
