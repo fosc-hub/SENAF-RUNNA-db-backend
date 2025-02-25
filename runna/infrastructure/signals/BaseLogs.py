@@ -12,7 +12,9 @@ def logs(HistoryModelName, action, instance, descripcion_temp=None):
             break
     print(f"Request: {request.user}")
 
-    current_user = request.user
+    current_user = get_current_authenticated_user()
+    if current_user is None:
+        current_user = request.user
 
     try:
         descripcion = f"{datetime.now().strftime('%d/%m/%y %H:%M')} {current_user} - " + descripcion_temp
