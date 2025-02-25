@@ -34,7 +34,15 @@ from runna.middleware import get_current_authenticated_user
 
 @receiver(pre_save, sender=TDemandaZona)
 def set_enviado_recibido(sender, instance, **kwargs):
-    current_user = get_current_authenticated_user()
+    
+    import inspect
+    for frame_record in inspect.stack():
+        if frame_record[3]=='get_response':
+            request = frame_record[0].f_locals['request']
+            break
+    print(f"Request: {request.user}")
+
+    current_user = request.user
     if instance.pk and current_user is not None:
         previous_values = TDemandaZona.objects.get(pk=instance.pk)
         if previous_values.recibido != instance.recibido:
