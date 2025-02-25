@@ -156,6 +156,9 @@ class TDemandaZonaBase(models.Model):
     zona = models.ForeignKey('customAuth.TZona', on_delete=models.CASCADE)
     user_responsable = models.ForeignKey('customAuth.CustomUser', related_name="%(class)sencargado", on_delete=models.PROTECT, null=True)
 
+    enviado_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)senviado_por", on_delete=models.PROTECT, null=True)
+    recibido_por = models.ForeignKey('customAuth.CustomUser', related_name="%(class)srecibido_por", on_delete=models.PROTECT, null=True)
+
     class Meta:
         abstract = True
     

@@ -17,6 +17,7 @@ from infrastructure.models import (
 from .BaseLogs import logs
 from services.email_service import EmailService
 from datetime import datetime
+from runna.middleware import get_current_authenticated_user
 
 
 # @receiver(post_save, sender=TDemandaPersona)
@@ -30,6 +31,16 @@ from datetime import datetime
 #     action='DELETE'
 #     logs(TDemandaPersonaHistory, action, instance)
 
+
+@receiver(pre_save, sender=TDemandaZona)
+def set_enviado_recibido(sender, instance, **kwargs):
+    current_user = get_current_authenticated_user()
+    if instance.pk and current_user is not None:
+        previous_values = TDemandaZona.objects.get(pk=instance.pk)
+        if previous_values.recibido != instance.recibido:
+            instance.recibido_por = current_user
+        if previous_values.user_responsable != instance.user_responsable:
+            instance.enviado_por = current_user
 
 @receiver(post_save, sender=TDemandaZona)
 def set_demanda_constatacion(sender, instance, created, **kwargs):
