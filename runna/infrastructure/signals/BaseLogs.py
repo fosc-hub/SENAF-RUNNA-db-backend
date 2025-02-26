@@ -1,4 +1,3 @@
-from runna.middleware import get_current_authenticated_user
 from django.db.utils import IntegrityError
 from datetime import datetime
 
