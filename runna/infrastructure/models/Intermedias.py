@@ -118,20 +118,20 @@ class TDemandaPersona(TDemandaPersonaBase):
         verbose_name = _('Persona asociada a Demanda')
         verbose_name_plural = _('Personas asociadas a Demandas')
         
-    def save(self, *args, **kwargs):
-        if self.vinculo_demanda == 'NNYA_PRINCIPAL':
-            if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='NNYA_PRINCIPAL').exists():
-                raise ValidationError("Ya existe un NNYA Principal para esta demanda y persona")
-            if self.vinculo_con_nnya_principal != 'NO_CORRESPONDE':
-                raise ValidationError("El nnya ingresante es un NNyA principal, no corresponde ingresar un vinculo con si mismo")
-        if self.vinculo_demanda == 'SUPUESTO_AUTOR_DV_PRINCIPAL':
-            if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='SUPUESTO_AUTOR_DV_PRINCIPAL').exists():
-                raise ValidationError("Ya existe un Supuesto Autor DV Principal para esta demanda y persona")
-        if (self.vinculo_demanda in ['NNYA_PRINCIPAL', 'NNYA_SECUNDARIO']) and not self.persona.nnya:
-            raise ValidationError("La persona seleccionada como nnya debe ser un NNyA")
-        if (self.vinculo_demanda in ['SUPUESTO_AUTOR_DV', 'SUPUESTO_AUTOR_DV_PRINCIPAL']) and self.persona.nnya:
-            raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.vinculo_demanda == 'NNYA_PRINCIPAL':
+    #         if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='NNYA_PRINCIPAL').exists():
+    #             raise ValidationError("Ya existe un NNYA Principal para esta demanda y persona")
+    #         if self.vinculo_con_nnya_principal != 'NO_CORRESPONDE':
+    #             raise ValidationError("El nnya ingresante es un NNyA principal, no corresponde ingresar un vinculo con si mismo")
+    #     if self.vinculo_demanda == 'SUPUESTO_AUTOR_DV_PRINCIPAL':
+    #         if TDemandaPersona.objects.filter(demanda=self.demanda, persona=self.persona, vinculo_demanda='SUPUESTO_AUTOR_DV_PRINCIPAL').exists():
+    #             raise ValidationError("Ya existe un Supuesto Autor DV Principal para esta demanda y persona")
+    #     if (self.vinculo_demanda in ['NNYA_PRINCIPAL', 'NNYA_SECUNDARIO']) and not self.persona.nnya:
+    #         raise ValidationError("La persona seleccionada como nnya debe ser un NNyA")
+    #     if (self.vinculo_demanda in ['SUPUESTO_AUTOR_DV', 'SUPUESTO_AUTOR_DV_PRINCIPAL']) and self.persona.nnya:
+    #         raise ValidationError("La persona seleccionada como supuesto autor debe ser un adulto")
+    #     super().save(*args, **kwargs)
 
 
 class TDemandaPersonaHistory(TDemandaPersonaBase, BaseHistory):

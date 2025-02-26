@@ -584,17 +584,6 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         print(f"Created demanda: {demanda}")
         # Pass demanda as context to nested serializers
         self.context['demanda'] = demanda
-        
-        demanda_zona_data = relacion_demanda_data.pop('demanda_zona')
-        demanda_zona_data['demanda'] = demanda
-        demanda_zona = TDemandaZona.objects.create(**demanda_zona_data)
-        print(f"Created demanda_zona: {demanda_zona}")
-
-        codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
-        # Handle CodigosDemanda (without requiring `demanda` in request)
-        for codigo_data in codigos_data:
-            codigo, _ = TCodigoDemanda.objects.get_or_create(demanda=demanda, **codigo_data)
-            print(f"Created codigo: {codigo}")
 
         self.context['personas_db'] = []  # Store created personas to link them to demanda
         self.context['vulneraciones_temp'] = []  # Store temporary vulneraciones to link them to a after created autordv
@@ -635,22 +624,32 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             
             if cobertura_medica:
 
-                institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**cobertura_medica.pop('institucion_sanitaria'))
-                cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
-                medico_cabecera, _ = TMedico.objects.get_or_create(**cobertura_medica.pop('medico_cabecera'))
-                cobertura_medica['medico_cabecera'] = medico_cabecera
+                institucion_sanitaria = cobertura_medica.pop('institucion_sanitaria', None)
+                if institucion_sanitaria:
+                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**institucion_sanitaria)
+                    cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
+                medico_cabecera = cobertura_medica.pop('medico_cabecera', None)
+                if medico_cabecera:
+                    medico_cabecera, _ = TMedico.objects.get_or_create(**medico_cabecera)
+                    cobertura_medica['medico_cabecera'] = medico_cabecera
                 cobertura_medica, _ = TCoberturaMedica.objects.get_or_create(persona=persona_db, **cobertura_medica)
             
                 print(f"CoberturaMedica created: {cobertura_medica}")
             
             for enfermedad_data in persona_enfermedades:
 
-                enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad_data.pop('enfermedad'))
-                enfermedad_data['enfermedad'] = enfermedad
-                institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**enfermedad_data.pop('institucion_sanitaria_interviniente'))
-                enfermedad_data['institucion_sanitaria_interviniente'] = institucion_sanitaria
-                medico_tratamiento, _ = TMedico.objects.get_or_create(**enfermedad_data.pop('medico_tratamiento'))
-                enfermedad_data['medico_tratamiento'] = medico_tratamiento
+                enfermedad = enfermedad_data.get('enfermedad', None)
+                if enfermedad:
+                    enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad_data.pop('enfermedad'))
+                    enfermedad_data['enfermedad'] = enfermedad
+                institucion_sanitaria = enfermedad_data.get('institucion_sanitaria_interviniente', None)
+                if institucion_sanitaria:
+                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**enfermedad_data.pop('institucion_sanitaria_interviniente'))
+                    enfermedad_data['institucion_sanitaria_interviniente'] = institucion_sanitaria
+                medico_tratamiento = enfermedad_data.get('medico_tratamiento', None)
+                if medico_tratamiento:
+                    medico_tratamiento, _ = TMedico.objects.get_or_create(**enfermedad_data.pop('medico_tratamiento'))
+                    enfermedad_data['medico_tratamiento'] = medico_tratamiento
 
                 enfermedad, _ = TPersonaEnfermedades.objects.get_or_create(persona=persona_db, **enfermedad_data)
                 print(f"Enfermedad created: {enfermedad}")
@@ -683,6 +682,17 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             TVulneracion.objects.create(**vulneracion)
 
         print(f"Personas created: {self.context['personas_db']}")
+
+        demanda_zona_data = relacion_demanda_data.pop('demanda_zona')
+        demanda_zona_data['demanda'] = demanda
+        demanda_zona = TDemandaZona.objects.create(**demanda_zona_data)
+        print(f"Created demanda_zona: {demanda_zona}")
+
+        codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
+        # Handle CodigosDemanda (without requiring `demanda` in request)
+        for codigo_data in codigos_data:
+            codigo, _ = TCodigoDemanda.objects.get_or_create(demanda=demanda, **codigo_data)
+            print(f"Created codigo: {codigo}")
 
         return demanda
 
