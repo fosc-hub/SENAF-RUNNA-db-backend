@@ -289,8 +289,6 @@ AUTH_USER_MODEL = 'customAuth.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
@@ -303,9 +301,6 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 5,  # Adjust as needed
 }
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'RUNNA API',
