@@ -683,3 +683,22 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
         return demanda
 
+
+    def update(self, instance, validated_data):
+        localizacion_data = validated_data.pop('localizacion', None)
+        institucion_data = validated_data.pop('institucion', None)
+
+        if localizacion_data:
+            for attr, value in localizacion_data.items():
+                setattr(instance.localizacion, attr, value)
+            instance.localizacion.save()
+            
+        if institucion_data:
+            institucion, _ = TInstitucionDemanda.objects.get_or_create(**institucion_data)
+            instance.institucion = institucion
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        instance.save()
+        return instance
