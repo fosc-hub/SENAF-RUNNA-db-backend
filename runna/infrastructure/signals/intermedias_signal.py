@@ -17,8 +17,7 @@ from infrastructure.models import (
 from .BaseLogs import logs
 from services.email_service import EmailService
 from datetime import datetime
-from runna.middleware import get_current_authenticated_user
-
+import inspect
 
 # @receiver(post_save, sender=TDemandaPersona)
 # def log_demandaPersona_save(sender, instance, created, **kwargs):
@@ -35,11 +34,12 @@ from runna.middleware import get_current_authenticated_user
 @receiver(pre_save, sender=TDemandaZona)
 def set_enviado_recibido(sender, instance, **kwargs):
     
-    import inspect
     for frame_record in inspect.stack():
         if frame_record[3]=='get_response':
             request = frame_record[0].f_locals['request']
             break
+    else:
+        request = None
     print(f"Request: {request.user}")
 
     current_user = request.user
@@ -146,6 +146,15 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=TDemandaZona)
 def log_demandaAsignado_save(sender, instance, created, **kwargs):
+    
+    for frame_record in inspect.stack():
+        if frame_record[3]=='get_response':
+            request = frame_record[0].f_locals['request']
+            break
+    else:
+        request = None
+    print(f"Request: {request.user}")
+
     action = 'CREATE' if created else 'UPDATE'
     descripcion = ""
     previous_values = TDemandaZonaHistory.objects.filter(parent=instance.id).last()
@@ -166,13 +175,21 @@ def log_demandaAsignado_save(sender, instance, created, **kwargs):
         descripcion += f"Ha derivado la demanda a la zona {instance.zona.nombre}"
         print(descripcion)
 
-    logs(TDemandaZonaHistory, action, instance, descripcion)
+    
+    logs(TDemandaZonaHistory, action, instance, current_user=request.user, descripcion_temp=descripcion)
 
 
 @receiver(post_delete, sender=TDemandaZona)
 def log_demandaAsignado_delete(sender, instance, **kwargs):
+    for frame_record in inspect.stack():
+        if frame_record[3]=='get_response':
+            request = frame_record[0].f_locals['request']
+            break
+    else:
+        request = None
+
     action='DELETE'
-    logs(TDemandaZonaHistory, action, instance)
+    logs(TDemandaZonaHistory, action, instance, current_user=request.user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
 
 
 # @receiver(post_save, sender=TDemandaVinculada)
@@ -233,4 +250,3 @@ def log_demandaAsignado_delete(sender, instance, **kwargs):
 # def log_demandaMotivoIntervencion_delete(sender, instance, **kwargs):
 #     action='DELETE'
 #     logs(TDemandaMotivoIntervencionHistory, action, instance)
-
