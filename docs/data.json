@@ -1,29 +1,282 @@
-{
-  "institucion": {
-        "nombre": "Otra instit",
-        "tipo_institucion": 1
-      },
-      "relacion_demanda":{        
-      "codigos_demanda": [
-          {
-          "id":12,
-            "codigo": "223",
-            "tipo_codigo": 2
+  {
+    "institucion": {
+      "nombre": "Nueva Institucion",
+      "tipo_institucion": 1
+    },
+    "relacion_demanda":{        
+    "codigos_demanda": [
+        {
+          "codigo": "223",
+          "tipo_codigo": 2,
+          "demanda": 1
+        }
+      ],
+      "demanda_zona": {
+        "comentarios": "Observaciones sobre la demanda",
+        "zona": 2
+      }
+    },
+    "localizacion": {
+      "calle": "Av. Siempre Viva",
+      "tipo_calle": "AVENIDA",
+      "casa_nro": 23,
+      "referencia_geo": "Cerca del parque central",
+      "geolocalizacion": "-31.4201,-64.1888",
+      "barrio": 2,
+      "localidad": 1,
+      "cpc": 3
+    },
+    "personas": [
+      {
+        "persona": {
+        "nombre": "Carlos",
+        "nombre_autopercibido": "Carlitos",
+        "apellido": "Gómez",
+        "fecha_nacimiento": "2015-03-10",
+        "edad_aproximada": 10,
+        "nacionalidad": "ARGENTINA",
+        "dni": 45236789,
+        "situacion_dni": "VALIDO",
+        "genero": "MASCULINO",
+        "observaciones": "Muy activo y participativo",
+        "adulto": false,
+        "nnya": true
+        },
+        "educacion": {
+          "institucion_educativa": {
+            "nombre": "Escuela Pública N° 45"
           },
-          {   
-          "codigo": "1111",
-            "tipo_codigo": 4
+          "nivel_alcanzado": "SECUNDARIO",
+          "esta_escolarizado": true,
+          "ultimo_cursado": "TERCERO",
+          "tipo_escuela": "PUBLICA",
+          "comentarios_educativos": "Buen desempeño académico"
+        },
+        "cobertura_medica": {
+          "institucion_sanitaria": {
+            "nombre": "Hospital Central"
+          },
+          "medico_cabecera": {
+            "nombre": "Dr. Juan Pérez",
+            "mail": "juan.perez@hospital.com",
+            "telefono": 3511234567
+          },
+          "obra_social": "OSDE",
+          "intervencion": "AUH",
+          "auh": true,
+          "observaciones": "Control regular"
+        },
+        "persona_enfermedades": [
+          {
+            "enfermedad": {
+              "nombre": "Asma",
+              "situacion_salud_categoria": 1
+            },
+            "institucion_sanitaria_interviniente": {
+              "nombre": "Centro de Salud Sur"
+            },
+            "medico_tratamiento": {
+              "nombre": "Dra. Ana López",
+              "mail": "ana.lopez@salud.com",
+              "telefono": 3519876543
+            },
+            "certificacion": "TIENE",
+            "beneficios_gestionados": "BOLETO_DE_COLECTIVO",
+            "recibe_tratamiento": true,
+            "informacion_tratamiento": "Inhalador cada 12 horas",
+            "situacion_salud": 1
           }
         ],
-        "demanda_zona": {
-         "id": 23,
-          "comentarios": "Observaciones sobre la demanda",
-          "zona": 2
-        }
-      },
-      "localizacion": {
-        "calle": "CAMBIO DE CALLE",
-        "cpc": 4
+        "demanda_persona": {
+          "conviviente": true,
+          "vinculo_demanda": "NNYA_SECUNDARIO",
+          "vinculo_con_nnya_principal": 2
+        },
+        "use_demanda_localizacion": true,
+        "condiciones_vulnerabilidad": [
+          {
+            "condicion_vulnerabilidad": 1,
+            "si_no": true
+          }
+        ],
+        "vulneraciones": [
+        ]
       }
-  
+    ],
+    "fecha_ingreso_senaf": "2025-02-20",
+    "fecha_oficio_documento": "2025-02-20",
+    "descripcion": "Demanda de protección por situación de vulnerabilidad",
+    "estado_demanda": "SIN_ASIGNAR",
+    "observaciones": "Caso en análisis",
+    "envio_de_respuesta": "NO_NECESARIO",
+    "tipo_demanda": "DE_PROTECCION",
+    "ambito_vulneracion": 1,
+    "tipos_presuntos_delitos": 1,
+    "bloque_datos_remitente": 1,
+    "tipo_institucion": 1,
+    "motivo_ingreso": 1,
+    "submotivo_ingreso": 1
   }
+
+
+
+reservorio de modelos pdf (tipos de actividad)
+
+edad como columna
+si es penal: presuntos delitos, y medida penal que se está ordenando
+sino: motivos, submotivos, vulneraciones para el niño
+
+zona tiene director/jefe = Usuario
+
+Usuario tiene una sola zona/equipo
+
+hay un jefe y hay un director
+
+jefe asigna tecnico
+tecnico solicita direccion a jefe
+
+dentro de cada equipo hay un jefe y un director
+equipo=zona
+
+
+1. solo registra
+2. tecnico
+3. jefe zona/equipo
+4. jefe de zonas/equipos
+5. admin/superadmin
+
+
+
+buscar relaciones por todos los chicos de la demanda
+
+
+{
+  "id": 51,
+  "action": "CREATE",
+  "timestamp": "2025-02-25T04:04:12.075492Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": null,
+  "parent": 55
+},
+{
+  "id": 52,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:05:42.589623Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 2,
+  "parent": 55
+},
+{
+  "id": 53,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:08:17.285830Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 3,
+  "parent": 55
+},
+{
+  "id": 54,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:08:26.438894Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 3,
+  "parent": 55
+},
+{
+  "id": 55,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:08:34.615562Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 5,
+  "parent": 55
+},
+{
+  "id": 56,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:12:46.154198Z",
+  "esta_activo": false,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 5,
+  "parent": 55
+},
+{
+  "id": 57,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:14:38.739693Z",
+  "esta_activo": false,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 6,
+  "parent": 55
+},
+{
+  "id": 58,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:15:00.136303Z",
+  "esta_activo": false,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 6,
+  "parent": 55
+},
+{
+  "id": 59,
+  "action": "UPDATE",
+  "timestamp": "2025-02-25T04:16:13.985392Z",
+  "esta_activo": false,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": null,
+  "demanda": 4,
+  "zona": 1,
+  "user_responsable": 7,
+  "parent": 55
+},
+{
+  "id": 60,
+  "action": "CREATE",
+  "timestamp": "2025-02-25T04:18:39.851927Z",
+  "esta_activo": true,
+  "recibido": false,
+  "comentarios": "asdasd",
+  "by_user": 1,
+  "demanda": 5,
+  "zona": 1,
+  "user_responsable": null,
+  "parent": 56
+}

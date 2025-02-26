@@ -774,7 +774,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                             setattr(localizacion_db, attr, value)
                         localizacion_db.save()
                 else:
-                    localizacion_db, _ = TLocalizacion.objects.create(**localizacion)
+                    localizacion_db = TLocalizacion.objects.create(**localizacion)
                     localizacion_persona_db = TLocalizacionPersona.objects.create(persona=persona_db, localizacion=localizacion_db)
 
                 print(f"Localizacion created: {localizacion_db}")
