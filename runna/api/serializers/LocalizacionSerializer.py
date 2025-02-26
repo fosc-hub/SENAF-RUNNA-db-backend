@@ -20,6 +20,7 @@ class TCPCSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TLocalizacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TLocalizacion
         fields = '__all__'

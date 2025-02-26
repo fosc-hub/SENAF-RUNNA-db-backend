@@ -46,6 +46,7 @@ class TInstitucionEducativaSerializer(serializers.ModelSerializer):
 
 
 class TEducacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TEducacion
         read_only_fields = ['persona']

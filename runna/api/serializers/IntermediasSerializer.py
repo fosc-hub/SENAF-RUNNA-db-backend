@@ -36,8 +36,10 @@ class TDemandaVinculadaSerializer(serializers.ModelSerializer):
 
 
 class TPersonaCondicionesVulnerabilidadSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TPersonaCondicionesVulnerabilidad
+        read_only_fields = ['persona', 'demanda']
         fields = '__all__'
 
     def update(self, instance, validated_data):
