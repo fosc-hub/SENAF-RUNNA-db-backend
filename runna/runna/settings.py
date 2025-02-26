@@ -302,7 +302,6 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 5,  # Adjust as needed
 }
 
-
 SPECTACULAR_SETTINGS = {
     'TITLE': 'RUNNA API',
     'DESCRIPTION': 'API documentation for the RUNNA re-Engineering project.',

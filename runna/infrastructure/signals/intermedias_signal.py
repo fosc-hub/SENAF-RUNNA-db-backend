@@ -146,13 +146,13 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=TDemandaZona)
 def log_demandaAsignado_save(sender, instance, created, **kwargs):
-    
     for frame_record in inspect.stack():
         if frame_record[3]=='get_response':
             request = frame_record[0].f_locals['request']
             break
     else:
         request = None
+
     print(f"Request: {request.user}")
 
     action = 'CREATE' if created else 'UPDATE'
@@ -187,6 +187,8 @@ def log_demandaAsignado_delete(sender, instance, **kwargs):
             break
     else:
         request = None
+
+    print(f"Request: {request.user}")
 
     action='DELETE'
     logs(TDemandaZonaHistory, action, instance, current_user=request.user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
