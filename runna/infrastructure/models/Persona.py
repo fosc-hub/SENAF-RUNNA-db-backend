@@ -85,16 +85,16 @@ class TPersonaBase(models.Model):
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
 
-    def save(self, *args, **kwargs):
-        if not self.nnya and not self.adulto:
-            raise ValidationError(f"({self.nombre} {self.apellido})  Debe ser adulto o NNyA")
-        if self.nnya and self.adulto:
-            raise ValidationError(f"({self.nombre} {self.apellido}) No puede ser adulto y NNyA a la vez")
-        if self.situacion_dni == 'VALIDO' and self.dni is None:
-            raise ValidationError(f"({self.nombre} {self.apellido}) El DNI no puede ser nulo si la situacion es valido")
-        if self.situacion_dni != 'VALIDO' and self.dni is not None:
-            raise ValidationError(f"({self.nombre} {self.apellido}) El DNI debe ser nulo si la situacion no es valido")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.nnya and not self.adulto:
+    #         raise ValidationError(f"({self.nombre} {self.apellido})  Debe ser adulto o NNyA")
+    #     if self.nnya and self.adulto:
+    #         raise ValidationError(f"({self.nombre} {self.apellido}) No puede ser adulto y NNyA a la vez")
+    #     if self.situacion_dni == 'VALIDO' and self.dni is None:
+    #         raise ValidationError(f"({self.nombre} {self.apellido}) El DNI no puede ser nulo si la situacion es valido")
+    #     if self.situacion_dni != 'VALIDO' and self.dni is not None:
+    #         raise ValidationError(f"({self.nombre} {self.apellido}) El DNI debe ser nulo si la situacion no es valido")
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.nombre} - {self.apellido} - {self.fecha_nacimiento} - {self.edad_aproximada} - {self.dni} - {self.situacion_dni} - {self.genero} - {self.observaciones} - {self.adulto} - {self.nnya}"
