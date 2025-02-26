@@ -4,9 +4,8 @@ from jsonschema import ValidationError
 from infrastructure.models import (
     TDemandaScore, TNNyAScore,
     TVulneracion,
+    TDemandaPersona,
     TPersonaCondicionesVulnerabilidad,
-    TVinculoPersonaPersona,
-    TDemandaMotivoIntervencion,
     TEvaluaciones
 )
 
@@ -162,23 +161,18 @@ def personaCondicionVulnerabilidad_update_sumatoria_and_score(sender, instance, 
     condicion_vulnerabilidad_peso = instance.condicion_vulnerabilidad.peso if instance.si_no else instance.condicion_vulnerabilidad.peso*(-1)
     if instance.persona.adulto:
         # Filter TVinculoPersonaPersona related to the persona
-        related_vinculos = TVinculoPersonaPersona.objects.filter(
-            persona_1=instance.persona
-        ) | TVinculoPersonaPersona.objects.filter(
-            persona_2=instance.persona
-        )
+        demandas_relacionadas = TDemandaPersona.filter(persona=instance.persona, deleted=False, vinculo_demanda="GARANTIZA_PROTECCION")
 
-        for vinculo in related_vinculos:
-            if vinculo.persona_1.nnya:
-                nnya_score, created = TNNyAScore.objects.get_or_create(nnya=vinculo.persona_1)
+        for demanda in demandas_relacionadas:
+            nnyas_afectados = TDemandaPersona.filter(demanda=demanda.demanda, deleted=False, vinculo_demanda__in=["NNYA_PRINCIPAL", "NNYA_SECUNDARIO"])
+            
+            for nnya in nnyas_afectados:
+                nnya_score, created = TNNyAScore.objects.get_or_create(nnya=nnya.persona)
+
                 nnya_score.score += condicion_vulnerabilidad_peso
                 nnya_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
                 nnya_score.save()
-            if vinculo.persona_2.nnya:
-                nnya_score, created = TNNyAScore.objects.get_or_create(nnya=vinculo.persona_2)
-                nnya_score.score += condicion_vulnerabilidad_peso
-                nnya_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
-                nnya_score.save()
+
     if instance.persona.nnya:
         nnya_score, created = TNNyAScore.objects.get_or_create(nnya=instance.persona)
         nnya_score.score += condicion_vulnerabilidad_peso
@@ -191,42 +185,6 @@ def personaCondicionVulnerabilidad_update_sumatoria_and_score(sender, instance, 
         demanda_score.score_condiciones_vulnerabilidad += condicion_vulnerabilidad_peso
         demanda_score.save()
 
-
-@receiver(pre_save, sender=TDemandaMotivoIntervencion)
-def demandaMotivoIntervencion_track_old_values(sender, instance, **kwargs):
-    """
-    """
-    
-    if instance.pk:  # Only for updates, not creates
-        old_instance = TDemandaMotivoIntervencion.objects.get(pk=instance.pk)
-        instance._old_motivo_intervencion = old_instance.motivo_intervencion
-        instance._old_demanda = old_instance.demanda
-        instance._old_si_no = old_instance.si_no
-
-    else:
-        # For new instances, no old values
-        instance._old_motivo_intervencion = None
-        instance._old_demanda = None
-        instance._old_si_no = None
-
-@receiver(post_save, sender=TDemandaMotivoIntervencion)
-def demandaMotivoIntervencion_update_sumatoria_and_score(sender, instance, created, **kwargs):
-    """
-    On creation or update of a TVulneracion object:
-    1. Check if the 'persona.adulto' field is true, so all the TVinculoPersonaPersona related
-    to the persona must be filtered by the 'TVinculoPersonaPersona.persona_1' andor 'TVinculoPersonaPersona.persona_2' fields.
-    2. For those filtered_objects in which 'persona.nnya' is true, sum the 'conidicion_vulnerabilidad.peso' value .
-    to its related TNNyAScore object
-    """
-    if instance._old_si_no == instance.si_no:
-        return
-
-    motivo_intervencion_peso = instance.motivo_intervencion.peso if instance.si_no else instance.motivo_intervencion.peso*(-1)
-
-    demanda_score, created = TDemandaScore.objects.get_or_create(demanda=instance.demanda)
-    demanda_score.score += motivo_intervencion_peso
-    demanda_score.score_motivos_intervencion += motivo_intervencion_peso
-    demanda_score.save()
 
 
 @receiver(pre_save, sender=TEvaluaciones)

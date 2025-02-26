@@ -20,13 +20,13 @@ def send_respuesta_mail(sender, instance, created, **kwargs):
         to = [instance.mail]
         subject = f"Nueva respuesta para la Demanda ID {instance.demanda.id}"
         html_content = f"""
-            <strong>Estimada {instance.institucion.nombre},</strong><br>
-            Se ha enviado respuesta de una nueva demanda.<br>
+            <strong>Estimada {instance.institucion},</strong><br>
+            Se ha enviado una nueva respuesta de la demanda. {instance.demanda.id}<br>
             <strong>Detalles:</strong><br>
             Demanda ID: {instance.demanda.id}<br>
             Mensaje: {instance.mensaje}<br>
             Saludos,<br>
-            El equipo
+            Nuevo RUNNA
         """
 
         # Send email and return the response
@@ -34,26 +34,26 @@ def send_respuesta_mail(sender, instance, created, **kwargs):
 
         return email_response 
 
-@receiver(post_save, sender=TActividad)
-def log_actividad_save(sender, instance, created, **kwargs):
-    action = 'CREATE' if created else 'UPDATE'
-    logs(TActividadHistory, action, instance)
+# @receiver(post_save, sender=TActividad)
+# def log_actividad_save(sender, instance, created, **kwargs):
+#     action = 'CREATE' if created else 'UPDATE'
+#     logs(TActividadHistory, action, instance)
 
 
-@receiver(post_delete, sender=TActividad)
-def log_actividad_delete(sender, instance, **kwargs):
-    action='DELETE'
-    logs(TActividadHistory, action, instance)
+# @receiver(post_delete, sender=TActividad)
+# def log_actividad_delete(sender, instance, **kwargs):
+#     action='DELETE'
+#     logs(TActividadHistory, action, instance)
 
 
-@receiver(post_save, sender=TEvaluaciones)
-def log_evaluaciones_save(sender, instance, created, **kwargs):
-    action = 'CREATE' if created else 'UPDATE'
-    logs(TEvaluacionesHistory, action, instance)
+# @receiver(post_save, sender=TEvaluaciones)
+# def log_evaluaciones_save(sender, instance, created, **kwargs):
+#     action = 'CREATE' if created else 'UPDATE'
+#     logs(TEvaluacionesHistory, action, instance)
 
 
-@receiver(post_delete, sender=TEvaluaciones)
-def log_evaluaciones_delete(sender, instance, **kwargs):
-    action='DELETE'
-    logs(TEvaluacionesHistory, action, instance)
+# @receiver(post_delete, sender=TEvaluaciones)
+# def log_evaluaciones_delete(sender, instance, **kwargs):
+#     action='DELETE'
+#     logs(TEvaluacionesHistory, action, instance)
 
