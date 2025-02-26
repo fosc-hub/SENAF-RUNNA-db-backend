@@ -293,6 +293,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     autordv_index = serializers.IntegerField(write_only=True, allow_null=True, required=False)
     
     class Meta:
@@ -324,6 +325,7 @@ class TEducacionRegistroSerializer(serializers.ModelSerializer):
 class TCoberturaMedicaRegistroSerializer(serializers.ModelSerializer):
     institucion_sanitaria = TInstitucionSanitariaSerializer(required=False, allow_null=True)  # Nested Serializer
     medico_cabecera = TMedicoSerializer(required=False, allow_null=True)
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = TCoberturaMedica
@@ -351,6 +353,7 @@ class TPersonaEnfermedadesRegistroSerializer(serializers.ModelSerializer):
     enfermedad = TEnfermedadSerializer()
     institucion_sanitaria_interviniente = TInstitucionSanitariaSerializer(required=False, allow_null=True)
     medico_tratamiento = TMedicoSerializer(required=False, allow_null=True)
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = TPersonaEnfermedades
@@ -380,6 +383,7 @@ class TPersonaEnfermedadesRegistroSerializer(serializers.ModelSerializer):
 
 
 class TDemandaPersonaRegistroSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TDemandaPersona
         read_only_fields = ['demanda', 'persona']
@@ -401,13 +405,10 @@ class PersonaRegistroSerializer(serializers.Serializer):
 
     demanda_persona = TDemandaPersonaRegistroSerializer()
     use_demanda_localizacion = serializers.BooleanField(required=False, default=False)
-    condiciones_vulnerabilidad = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=TCondicionesVulnerabilidad.objects.all(),
-        required=False
-    )
+    condiciones_vulnerabilidad = TPersonaCondicionesVulnerabilidadSerializer(many=True, required=False)
     persona = TPersonaSerializer()
     vulneraciones = TVulneracionRegistroSerializer(many=True, required=False)
+    persona_id = serializers.IntegerField(required=False)
     
     def create(self, validated_data):
         """Create and return a Persona object"""
@@ -475,6 +476,8 @@ class PersonaRegistroSerializer(serializers.Serializer):
 
 
 class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = TCodigoDemanda
         read_only_fields = ['demanda']
@@ -491,6 +494,7 @@ class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
 
 
 class TDemandaZonaRegistroPOSTSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TDemandaZona
         fields = '__all__'
@@ -661,9 +665,8 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             for condicion in condiciones_vulnerabilidad:
                 TPersonaCondicionesVulnerabilidad.objects.create(
                     persona=persona_db,
-                    condicion_vulnerabilidad=condicion,
                     demanda=demanda,
-                    si_no=True
+                    **condicion
                 )
             
             for vulneracion in vulneraciones:
@@ -683,3 +686,219 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
         return demanda
 
+
+    def update(self, instance, validated_data):
+        localizacion_data = validated_data.pop('localizacion', None)
+        institucion_data = validated_data.pop('institucion', None)
+        relacion_demanda_data = validated_data.pop('relacion_demanda', None)
+        personas_data = validated_data.pop('personas', [])
+
+        if localizacion_data:
+            for attr, value in localizacion_data.items():
+                setattr(instance.localizacion, attr, value)
+            instance.localizacion.save()
+        
+        print(f"Institucion data: {institucion_data}")
+        if institucion_data:
+            institucion, _ = TInstitucionDemanda.objects.get_or_create(**institucion_data)
+            instance.institucion = institucion
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        if relacion_demanda_data:
+            codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
+            for codigo_data in codigos_data:
+                codigo_id = codigo_data.get('id', None)
+                if 'id' in codigo_data:
+                    # Update existing
+                    codigo = TCodigoDemanda.objects.get(pk=codigo_data['id'])
+                    for attr, value in codigo_data.items():
+                        setattr(codigo, attr, value)
+                    codigo.save()
+                else:
+                    # Create new
+                    codigo, _ = TCodigoDemanda.objects.get_or_create(
+                        demanda=instance,
+                        **codigo_data
+                    )
+            demanda_zona_data = relacion_demanda_data.pop('demanda_zona', None)
+            if demanda_zona_data:
+                demanda_zona_id = demanda_zona_data.get('id', None)
+                if demanda_zona_id:
+                    demanda_zona = TDemandaZona.objects.get(pk=demanda_zona_id)
+                    for attr, value in demanda_zona_data.items():
+                        setattr(demanda_zona, attr, value)
+                    demanda_zona.save()
+                else:
+                    demanda_zona = TDemandaZona.objects.create(demanda=instance, **demanda_zona_data)
+        
+        self.context['personas_db'] = []  # Store created personas to link them to demanda
+        self.context['vulneraciones_temp'] = []  # Store temporary vulneraciones to link them to a after created autordv
+        # Handle Personas
+        print(f"Personas data: {personas_data}")
+        for persona_data in personas_data:
+            persona_id = persona_data.pop('persona_id', None)
+            persona = persona_data.pop('persona', None)
+            localizacion = persona_data.pop('localizacion', None)
+            educacion = persona_data.pop('educacion', None)
+            cobertura_medica = persona_data.pop('cobertura_medica', None)
+            persona_enfermedades = persona_data.pop('persona_enfermedades', [])
+            
+            use_demanda_localizacion = persona_data.pop('use_demanda_localizacion', False)
+            demanda_persona = persona_data.pop('demanda_persona', None)
+            vulneraciones = persona_data.pop('vulneraciones', [])
+            condiciones_vulnerabilidad = persona_data.pop('condiciones_vulnerabilidad', [])
+            
+            print(f"Persona data: {persona}")
+            if persona_id:
+                persona_db = TPersona.objects.get(pk=persona_id)
+                if persona:
+                    for attr, value in persona.items():
+                        setattr(persona_db, attr, value)
+                    persona_db.save()
+            else:
+                persona_db = TPersona.objects.create(**persona)
+            self.context['persona'] = persona_db
+            self.context['personas_db'].append(persona_db)
+            
+            if use_demanda_localizacion:
+                localizacion_persona = TLocalizacionPersona.objects.get_or_create(persona=persona_db, localizacion=instance.localizacion)
+                print(f"Localizacion created: {localizacion_persona}")
+            elif localizacion:
+                localizacion_id = localizacion.get('id', None)
+                if localizacion_id:
+                    localizacion_db = TLocalizacion.objects.get(pk=localizacion_id)
+                    if localizacion:
+                        for attr, value in localizacion.items():
+                            setattr(localizacion_db, attr, value)
+                        localizacion_db.save()
+                else:
+                    localizacion_db, _ = TLocalizacion.objects.create(**localizacion)
+                    localizacion_persona_db = TLocalizacionPersona.objects.create(persona=persona_db, localizacion=localizacion_db)
+
+                print(f"Localizacion created: {localizacion_db}")
+            
+            if educacion:
+                institucion_educativa = educacion.get('institucion_educativa', None)
+                if institucion_educativa:
+                    institucion_educativa, _ = TInstitucionEducativa.objects.get_or_create(**educacion.pop('institucion_educativa'))
+                    educacion['institucion_educativa'] = institucion_educativa
+    
+                educacion_id = educacion.pop('id', None)
+                if educacion_id:
+                    educacion_db = TEducacion.objects.get(pk=educacion_id)
+                    if educacion:
+                        for attr, value in educacion.items():
+                            setattr(educacion_db, attr, value)
+                        educacion_db.save()
+                else:
+                    print(f"Educacion data: {educacion}")
+                    educacion_db = TEducacion.objects.create(persona=persona_db, **educacion)
+                
+                print(f"Educacion created: {educacion_db}")
+                
+            if cobertura_medica:
+                institucion_sanitaria = cobertura_medica.get('institucion_sanitaria', None)
+                if institucion_sanitaria:
+                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**cobertura_medica.pop('institucion_sanitaria'))
+                    cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
+                
+                medico_cabecera = cobertura_medica.get('medico_cabecera', None)
+                if medico_cabecera:
+                    medico_cabecera, _ = TMedico.objects.get_or_create(**cobertura_medica.pop('medico_cabecera'))
+                    cobertura_medica['medico_cabecera'] = medico_cabecera
+                
+                cobertura_medica_id = cobertura_medica.pop('id', None)    
+                if cobertura_medica_id:
+                    cobertura_medica_db = TCoberturaMedica.objects.get(pk=cobertura_medica_id)
+                    if cobertura_medica:
+                        for attr, value in cobertura_medica.items():
+                            setattr(cobertura_medica_db, attr, value)
+                        cobertura_medica_db.save()
+                else:
+                    cobertura_medica_db = TCoberturaMedica.objects.create(persona=persona_db, **cobertura_medica)
+                
+                print(f"CoberturaMedica created: {cobertura_medica_db}")
+            
+            for enfermedad_data in persona_enfermedades:
+                enfermedad_id = enfermedad_data.pop('id', None)
+                enfermedad = enfermedad_data.pop('enfermedad', None)
+                institucion_sanitaria = enfermedad_data.pop('institucion_sanitaria_interviniente', None)
+                medico_tratamiento = enfermedad_data.pop('medico_tratamiento', None)
+                if enfermedad:
+                    enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad)
+                    enfermedad_data['enfermedad'] = enfermedad
+                if institucion_sanitaria:
+                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**institucion_sanitaria)
+                    enfermedad_data['institucion_sanitaria_interviniente'] = institucion_sanitaria
+                if medico_tratamiento:
+                    medico_tratamiento, _ = TMedico.objects.get_or_create(**medico_tratamiento)
+                    enfermedad_data['medico_tratamiento'] = medico_tratamiento
+                
+                if enfermedad_id:
+                    enfermedad_db = TPersonaEnfermedades.objects.get(pk=enfermedad_id)
+                    if enfermedad_data:
+                        for attr, value in enfermedad_data.items():
+                            setattr(enfermedad_db, attr, value)
+                        enfermedad_db.save()
+                else:
+                    enfermedad_db= TPersonaEnfermedades.objects.create(persona=persona_db, **enfermedad_data)
+                
+                print(f"Enfermedad created: {enfermedad_db}")
+            
+            if demanda_persona:
+                demanda_persona_id = demanda_persona.get('id', None)
+                demanda_persona['demanda'] = instance
+                demanda_persona['persona'] = persona_db
+                if demanda_persona_id:
+                    demanda_persona_db = TDemandaPersona.objects.get(pk=demanda_persona_id)
+                    if demanda_persona:
+                        for attr, value in demanda_persona.items():
+                            setattr(demanda_persona_db, attr, value)
+                        demanda_persona_db.save()
+                else:
+                    demanda_persona_db = TDemandaPersona.objects.create(**demanda_persona)
+                
+                print(f"DemandaPersona created: {demanda_persona_db}")
+            
+            for condicion in condiciones_vulnerabilidad:
+                condicion_id = condicion.pop('id', None)
+                condicion['persona'] = persona_db
+                condicion['demanda'] = instance
+                if condicion_id:
+                    condicion_db = TPersonaCondicionesVulnerabilidad.objects.get(pk=condicion_id)
+                    if condicion:
+                        for attr, value in condicion.items():
+                            setattr(condicion_db, attr, value)
+                        condicion_db.save()
+                else:
+                    TPersonaCondicionesVulnerabilidad.objects.create(**condicion)
+
+                print(f"Condicion created: {condicion}")
+            
+            for vulneracion in vulneraciones:
+                vulneracion['nnya'] = persona_db
+                vulneracion['demanda'] = instance
+                self.context['vulneraciones_temp'].append(vulneracion)
+            
+        print(f"Vulneraciones Temporales: {self.context['vulneraciones_temp']}")
+        for vulneracion in self.context['vulneraciones_temp']:
+            autordv_index = vulneracion.pop('autordv_index', None)
+            if autordv_index is not None:
+                autordv = self.context['personas_db'][autordv_index]
+                vulneracion['autordv'] = autordv
+            vulneracion_id = vulneracion.pop('id', None)
+            if vulneracion_id:
+                vulneracion_db = TVulneracion.objects.get(pk=vulneracion_id)
+                if vulneracion:
+                    for attr, value in vulneracion.items():
+                        setattr(vulneracion_db, attr, value)
+                    vulneracion_db.save()
+            else:
+                TVulneracion.objects.create(**vulneracion)
+        
+        print(f"Personas created: {self.context['personas_db']}")
+
+        instance.save()
+        return instance

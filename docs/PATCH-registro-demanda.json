@@ -1,0 +1,79 @@
+{
+    "personas": [
+          {
+            "persona": {
+            "nombre": "Carlos",
+            "nombre_autopercibido": "Carlitos",
+            "apellido": "Gómez",
+            "fecha_nacimiento": "2015-03-10",
+            "edad_aproximada": 10,
+            "nacionalidad": "ARGENTINA",
+            "dni": 45236789,
+            "situacion_dni": "VALIDO",
+            "genero": "MASCULINO",
+            "observaciones": "Muy activo y participativo",
+            "adulto": false,
+            "nnya": true
+            },
+            "educacion": {
+              "institucion_educativa": {
+                "nombre": "Escuela Pública N° 45"
+              },
+              "nivel_alcanzado": "SECUNDARIO",
+              "esta_escolarizado": true,
+              "ultimo_cursado": "TERCERO",
+              "tipo_escuela": "PUBLICA",
+              "comentarios_educativos": "Buen desempeño académico"
+            },
+            "cobertura_medica": {
+              "institucion_sanitaria": {
+                "nombre": "Hospital Central"
+              },
+              "medico_cabecera": {
+                "nombre": "Dr. Juan Pérez",
+                "mail": "juan.perez@hospital.com",
+                "telefono": 3511234567
+              },
+              "obra_social": "OSDE",
+              "intervencion": "AUH",
+              "auh": true,
+              "observaciones": "Control regular"
+            },
+            "persona_enfermedades": [
+              {
+                "enfermedad": {
+                  "nombre": "Asma",
+                  "situacion_salud_categoria": 1
+                },
+                "institucion_sanitaria_interviniente": {
+                  "nombre": "Centro de Salud Sur"
+                },
+                "medico_tratamiento": {
+                  "nombre": "Dra. Ana López",
+                  "mail": "ana.lopez@salud.com",
+                  "telefono": 3519876543
+                },
+                "certificacion": "TIENE",
+                "beneficios_gestionados": "BOLETO_DE_COLECTIVO",
+                "recibe_tratamiento": true,
+                "informacion_tratamiento": "Inhalador cada 12 horas",
+                "situacion_salud": 1
+              }
+            ],
+            "demanda_persona": {
+              "conviviente": true,
+              "vinculo_demanda": "NNYA_SECUNDARIO",
+              "vinculo_con_nnya_principal": 2
+            },
+            "use_demanda_localizacion": true,
+            "condiciones_vulnerabilidad": [
+              {
+                "condicion_vulnerabilidad": 3,
+                "si_no": true
+              }
+            ],
+            "vulneraciones": [
+            ]
+          }
+        ]
+    }
