@@ -539,7 +539,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         data['institucion'] = TInstitucionDemandaSerializer(instance.institucion).data if instance.institucion else None
         
         data['personas'] = []
-        for demanda_persona in TDemandaPersona.objects.filter(demanda=instance):
+        for demanda_persona in TDemandaPersona.objects.filter(demanda=instance, deleted=False):
             localizacion_persona = TLocalizacionPersona.objects.filter(persona=demanda_persona.persona).last()
             educacion = TEducacion.objects.filter(persona=demanda_persona.persona).last()
             cobertura_medica = TCoberturaMedica.objects.filter(persona=demanda_persona.persona).last()
@@ -616,19 +616,21 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                 print(f"Localizacion created: {localizacion_persona}")
             
             if educacion:
-                institucion_educativa, _ = TInstitucionEducativa.objects.get_or_create(**educacion.pop('institucion_educativa'))
-                educacion['institucion_educativa'] = institucion_educativa
+                institucion_educativa = educacion.get('institucion_educativa', None)
+                if institucion_educativa:
+                    institucion_educativa, _ = TInstitucionEducativa.objects.get_or_create(**educacion.pop('institucion_educativa'))
+                    educacion['institucion_educativa'] = institucion_educativa
                 educacion, _ = TEducacion.objects.get_or_create(persona=persona_db, **educacion)
             
                 print(f"Educacion created: {educacion}")
             
             if cobertura_medica:
 
-                institucion_sanitaria = cobertura_medica.pop('institucion_sanitaria', None)
+                institucion_sanitaria = cobertura_medica.get('institucion_sanitaria', None)
                 if institucion_sanitaria:
                     institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**institucion_sanitaria)
                     cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
-                medico_cabecera = cobertura_medica.pop('medico_cabecera', None)
+                medico_cabecera = cobertura_medica.get('medico_cabecera', None)
                 if medico_cabecera:
                     medico_cabecera, _ = TMedico.objects.get_or_create(**medico_cabecera)
                     cobertura_medica['medico_cabecera'] = medico_cabecera
@@ -675,15 +677,16 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             
         print(f"Vulneraciones Temporales: {self.context['vulneraciones_temp']}")
         for vulneracion in self.context['vulneraciones_temp']:
-            autordv_index = vulneracion.pop('autordv_index') if 'autordv_index' in vulneracion else None
+            autordv_index = vulneracion.pop('autordv_index', None)
             if autordv_index is not None:
                 autordv = self.context['personas_db'][autordv_index]
                 vulneracion['autordv'] = autordv
-            TVulneracion.objects.create(**vulneracion)
+            vulneracion_db = TVulneracion.objects.create(**vulneracion)
+            print(f"Vulneracion created: {vulneracion_db}")
 
         print(f"Personas created: {self.context['personas_db']}")
 
-        demanda_zona_data = relacion_demanda_data.pop('demanda_zona')
+        demanda_zona_data = relacion_demanda_data.pop('demanda_zona', None)
         demanda_zona_data['demanda'] = demanda
         demanda_zona = TDemandaZona.objects.create(**demanda_zona_data)
         print(f"Created demanda_zona: {demanda_zona}")
@@ -761,28 +764,26 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             condiciones_vulnerabilidad = persona_data.pop('condiciones_vulnerabilidad', [])
             
             print(f"Persona data: {persona}")
-            if persona_id:
+            if persona_id and persona:
                 persona_db = TPersona.objects.get(pk=persona_id)
-                if persona:
-                    for attr, value in persona.items():
-                        setattr(persona_db, attr, value)
-                    persona_db.save()
+                for attr, value in persona.items():
+                    setattr(persona_db, attr, value)
+                persona_db.save()
             else:
                 persona_db = TPersona.objects.create(**persona)
             self.context['persona'] = persona_db
             self.context['personas_db'].append(persona_db)
             
             if use_demanda_localizacion:
-                localizacion_persona = TLocalizacionPersona.objects.get_or_create(persona=persona_db, localizacion=instance.localizacion)
+                localizacion_persona, _ = TLocalizacionPersona.objects.get_or_create(persona=persona_db, localizacion=instance.localizacion)
                 print(f"Localizacion created: {localizacion_persona}")
             elif localizacion:
                 localizacion_id = localizacion.get('id', None)
                 if localizacion_id:
                     localizacion_db = TLocalizacion.objects.get(pk=localizacion_id)
-                    if localizacion:
-                        for attr, value in localizacion.items():
-                            setattr(localizacion_db, attr, value)
-                        localizacion_db.save()
+                    for attr, value in localizacion.items():
+                        setattr(localizacion_db, attr, value)
+                    localizacion_db.save()
                 else:
                     localizacion_db = TLocalizacion.objects.create(**localizacion)
                     localizacion_persona_db = TLocalizacionPersona.objects.create(persona=persona_db, localizacion=localizacion_db)
@@ -796,27 +797,27 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                     educacion['institucion_educativa'] = institucion_educativa
     
                 educacion_id = educacion.pop('id', None)
-                if educacion_id:
+                if educacion_id and educacion:
                     educacion_db = TEducacion.objects.get(pk=educacion_id)
-                    if educacion:
-                        for attr, value in educacion.items():
-                            setattr(educacion_db, attr, value)
-                        educacion_db.save()
+                    for attr, value in educacion.items():
+                        setattr(educacion_db, attr, value)
+                    educacion_db.save()
+                    print(f"Educacion modified: {educacion_db}")
                 else:
                     print(f"Educacion data: {educacion}")
                     educacion_db = TEducacion.objects.create(persona=persona_db, **educacion)
                 
-                print(f"Educacion created: {educacion_db}")
+                    print(f"Educacion created: {educacion_db}")
                 
             if cobertura_medica:
                 institucion_sanitaria = cobertura_medica.get('institucion_sanitaria', None)
                 if institucion_sanitaria:
-                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**cobertura_medica.pop('institucion_sanitaria'))
+                    institucion_sanitaria, _ = TInstitucionSanitaria.objects.get_or_create(**institucion_sanitaria)
                     cobertura_medica['institucion_sanitaria'] = institucion_sanitaria
                 
                 medico_cabecera = cobertura_medica.get('medico_cabecera', None)
                 if medico_cabecera:
-                    medico_cabecera, _ = TMedico.objects.get_or_create(**cobertura_medica.pop('medico_cabecera'))
+                    medico_cabecera, _ = TMedico.objects.get_or_create(**medico_cabecera)
                     cobertura_medica['medico_cabecera'] = medico_cabecera
                 
                 cobertura_medica_id = cobertura_medica.pop('id', None)    
@@ -833,9 +834,9 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             
             for enfermedad_data in persona_enfermedades:
                 enfermedad_id = enfermedad_data.pop('id', None)
-                enfermedad = enfermedad_data.pop('enfermedad', None)
-                institucion_sanitaria = enfermedad_data.pop('institucion_sanitaria_interviniente', None)
-                medico_tratamiento = enfermedad_data.pop('medico_tratamiento', None)
+                enfermedad = enfermedad_data.get('enfermedad', None)
+                institucion_sanitaria = enfermedad_data.get('institucion_sanitaria_interviniente', None)
+                medico_tratamiento = enfermedad_data.get('medico_tratamiento', None)
                 if enfermedad:
                     enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad)
                     enfermedad_data['enfermedad'] = enfermedad
@@ -858,7 +859,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                 print(f"Enfermedad created: {enfermedad_db}")
             
             if demanda_persona:
-                demanda_persona_id = demanda_persona.get('id', None)
+                demanda_persona_id = demanda_persona.pop('id', None)
                 demanda_persona['demanda'] = instance
                 demanda_persona['persona'] = persona_db
                 if demanda_persona_id:
@@ -895,7 +896,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         print(f"Vulneraciones Temporales: {self.context['vulneraciones_temp']}")
         for vulneracion in self.context['vulneraciones_temp']:
             autordv_index = vulneracion.pop('autordv_index', None)
-            if autordv_index is not None:
+            if autordv_index:
                 autordv = self.context['personas_db'][autordv_index]
                 vulneracion['autordv'] = autordv
             vulneracion_id = vulneracion.pop('id', None)

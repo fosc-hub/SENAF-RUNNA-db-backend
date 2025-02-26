@@ -79,13 +79,13 @@ def send_mail_to_zona_derivada(sender, instance, created, **kwargs):
         """
 
         # Send email and return the response
-        # email_response = EmailService.send_email(to, subject, html_content)
+        email_response = EmailService.send_email(to, subject, html_content)
 
         print(f"Email sent to {to} with subject: {subject}")
 
-        return {"to": to, "subject": subject, "html_content": html_content}
+        # return {"to": to, "subject": subject, "html_content": html_content}
         
-        # return email_response
+        return email_response
 
 @receiver(post_save, sender=TDemandaZona)
 def send_mail_to_user_responsable(sender, instance, created, **kwargs):
@@ -113,13 +113,13 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
             """
 
             # Send email and return the response
-            # email_response = EmailService.send_email(to, subject, html_content)
+            email_response = EmailService.send_email(to, subject, html_content)
             
             print(f"Email sent to {to} with subject: {subject}")
 
-            return {"to": to, "subject": subject, "html_content": html_content}
+            # return {"to": to, "subject": subject, "html_content": html_content}
             
-            # return email_response
+            return email_response
         
         if previous_values.user_responsable != instance.user_responsable:
             to = [instance.user_responsable.email]
@@ -135,13 +135,13 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
             """
 
             # Send email and return the response
-            # email_response = EmailService.send_email(to, subject, html_content)
+            email_response = EmailService.send_email(to, subject, html_content)
             
-            print(f"Email sent to {to} with subject: {subject}")
+            # print(f"Email sent to {to} with subject: {subject}")
 
-            return {"to": to, "subject": subject, "html_content": html_content}
+            # return {"to": to, "subject": subject, "html_content": html_content}
             
-            # return email_response
+            return email_response
 
 
 @receiver(post_save, sender=TDemandaZona)
