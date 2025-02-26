@@ -205,14 +205,14 @@ class TCodigoDemanda(models.Model):
         verbose_name = _('Codigo de Demanda')
         verbose_name_plural = _('Codigos de Demanda')
 
-    def save(self, *args, **kwargs):
-        if self.tipo_codigo.datatype == 'INT':
-            if not self.codigo.isdigit():
-                raise ValueError("El código debe ser un número")
-        elif self.tipo_codigo.datatype == 'STRING':
-            if not self.codigo.isalpha():
-                raise ValueError("El código debe ser una cadena de texto")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if self.tipo_codigo.datatype == 'INT':
+    #         if not self.codigo.isdigit():
+    #             raise ValueError("El código debe ser un número")
+    #     elif self.tipo_codigo.datatype == 'STRING':
+    #         if not self.codigo.isalpha():
+    #             raise ValueError("El código debe ser una cadena de texto")
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.codigo} - {self.tipo_codigo} - {self.demanda}"
