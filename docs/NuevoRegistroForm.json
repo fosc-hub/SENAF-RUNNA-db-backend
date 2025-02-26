@@ -1,0 +1,444 @@
+{
+    "Demanda":{
+        "fecha_creacion": "2023-10-01",
+        "fecha_oficio_documento": "2023-10-02",
+        "fecha_ingreso_senaf": "2023-10-03",
+        "nro_notificacion_102": 123,
+        "nro_sac": 456,
+        "nro_suac": 789,
+        "nro_historia_clinica": 101112,
+        "nro_oficio_web": 131415,
+        "autos_caratulados": "Example Autos Caratulados",
+        "descripcion": "Example Description",
+        "ultima_actualizacion": "2023-10-04T12:00:00Z",
+        "estado_demanda": "SIN_ASIGNAR",
+        "institucion": "Example Institution",
+        "ambito_vulneracion": "FAMILIAR",
+        "origen": 3,
+        "sub_origen": 4,
+        "motivo_ingreso": 5,
+        "submotivo_ingreso": 6
+    },
+    "Localizacion": {
+        "deleted": false,
+        "calle": "Example Street",
+        "tipo_calle": "CALLE",
+        "piso_depto": 1,
+        "lote": 2,
+        "mza": 3,
+        "casa_nro": 4,
+        "referencia_geo": "Example Reference",
+        "barrio": 1,
+        "localidad": 2,
+        "cpc": 3
+    },
+    "Informante": {
+        "nombre": "John",
+        "apellido": "Doe",
+        "telefono": 123456789,
+        "mail": "john.doe@example.com"
+    },
+    "Adultos": [
+        {
+            "reference_id": "p1",
+            "deleted": false,
+            "nombre": "Jane",
+            "apellido": "Smith",
+            "fecha_nacimiento": "1980-01-01",
+            "edad_aproximada": 43,
+            "dni": 12345678,
+            "situacion_dni": "VALIDO",
+            "genero": "FEMENINO",
+            "observaciones": "No observations",
+            "adulto": true,
+            "nnya": false,
+            "DemandaPersona":{
+                "deleted": false,
+                "conviviente": true,
+                "supuesto_autordv": "NO_CORRESPONDE",
+                "supuesto_autordv_principal": false,
+                "nnya_principal": false,
+                "demanda": 1,
+                "persona": "p1"
+            },
+            "Localizacion": null or {
+                "deleted": false,
+                "calle": "Example Street",
+                "tipo_calle": "CALLE",
+                "piso_depto": 1,
+                "lote": 2,
+                "mza": 3,
+                "casa_nro": 4,
+                "referencia_geo": "Example Reference",
+                "barrio": 1,
+                "localidad": 2,
+                "cpc": 3
+            },
+            "VinculoNNyAPrincipal": null or {
+                "deleted": false,
+                "conviven": true,
+                "autordv": false,
+                "garantiza_proteccion": true,
+                "persona_1": "p1",
+                "persona_2": "NNyAPrincipal",
+                "vinculo": 1
+            },
+            "condiciones_vulnerabilidad": [1, 2]
+        }
+    ],
+    "NNyAPrincipal":[
+        {
+            "deleted": false,
+            "nombre": "John",
+            "apellido": "Doe",
+            "fecha_nacimiento": "2010-01-01",
+            "edad_aproximada": 13,
+            "dni": 87654321,
+            "situacion_dni": "VALIDO",
+            "genero": "MASCULINO",
+            "observaciones": "No observations",
+            "adulto": false,
+            "nnya": true,
+            "DemandaPersona":{
+                "deleted": false,
+                "conviviente": true,
+                "supuesto_autordv": "NO_CORRESPONDE",
+                "supuesto_autordv_principal": false,
+                "nnya_principal": true,
+                "demanda": 1,
+                "persona": "NNyAPrincipal"
+            },
+            "Localizacion": null or {
+                "deleted": false,
+                "calle": "Example Street",
+                "tipo_calle": "CALLE",
+                "piso_depto": 1,
+                "lote": 2,
+                "mza": 3,
+                "casa_nro": 4,
+                "referencia_geo": "Example Reference",
+                "barrio": 1,
+                "localidad": 2,
+                "cpc": 3
+            },
+            "NNyAEducacion":{
+                "deleted": false,
+                "curso": "6th Grade",
+                "nivel": "PRIMARIO",
+                "turno": "MANIANA",
+                "comentarios": "No comments",
+                "institucion_educativa": 1,
+            },
+            "NNyASalud": {
+                "deleted": false,
+                "observaciones": "No observations",
+                "institucion_sanitaria": 1
+            },
+            "condiciones_vulnerabilidad": [1, 2],
+            "vulneracion": [
+                    {
+                    "principal_demanda": false,
+                    "transcurre_actualidad": false,
+                    "deleted": false,
+                    "sumatoria_de_pesos": 0,
+                    "autor_dv": "p1",
+                    "categoria_motivo": 1,
+                    "categoria_submotivo": 1,
+                    "gravedad_vulneracion": 1,
+                    "urgencia_vulneracion": 1
+                }
+            ]
+        }
+    ],
+    "NNyAs"[
+        {
+            "reference_id": "NNyA1",
+            "deleted": false,
+            "nombre": "John",
+            "apellido": "Doe",
+            "fecha_nacimiento": "2010-01-01",
+            "edad_aproximada": 13,
+            "dni": 87654321,
+            "situacion_dni": "VALIDO",
+            "genero": "MASCULINO",
+            "observaciones": "No observations",
+            "adulto": false,
+            "nnya": true,
+            "DemandaPersona":{
+                "deleted": false,
+                "conviviente": true,
+                "supuesto_autordv": "NO_CORRESPONDE",
+                "supuesto_autordv_principal": false,
+                "nnya_principal": false,
+                "demanda": 1,
+                "persona": "NNyAPrincipal"
+            },
+            "Localizacion": null or {
+                "deleted": false,
+                "calle": "Example Street",
+                "tipo_calle": "CALLE",
+                "piso_depto": 1,
+                "lote": 2,
+                "mza": 3,
+                "casa_nro": 4,
+                "referencia_geo": "Example Reference",
+                "barrio": 1,
+                "localidad": 2,
+                "cpc": 3
+            },
+            "NNyAEducacion":{
+                "deleted": false,
+                "curso": "6th Grade",
+                "nivel": "PRIMARIO",
+                "turno": "MANIANA",
+                "comentarios": "No comments",
+                "institucion_educativa": 1,
+            },
+            "NNyASalud": {
+                "deleted": false,
+                "observaciones": "No observations",
+                "institucion_sanitaria": 1
+            },
+            "condiciones_vulnerabilidad": [1, 2],
+            "vulneracion": [
+                    {
+                    "principal_demanda": false,
+                    "transcurre_actualidad": false,
+                    "deleted": false,
+                    "sumatoria_de_pesos": 0,
+                    "autor_dv": "p1",
+                    "categoria_motivo": 1,
+                    "categoria_submotivo": 1,
+                    "gravedad_vulneracion": 1,
+                    "urgencia_vulneracion": 1
+                }
+            ],
+            "VinculoNNyAPrincipal": null or {
+                "deleted": false,
+                "conviven": true,
+                "autordv": false,
+                "garantiza_proteccion": true,
+                "persona_1": "NNyA1",
+                "persona_2": "NNyAPrincipal",
+                "vinculo": 1
+            }
+        }
+    ]
+}
+
+{
+    "localizacion": {
+      "calle": "string",
+      "tipo_calle": "CALLE",
+      "referencia_geo": "CALLE",
+      "barrio": 2,
+      "localidad": 1,
+      "cpc": 3
+    },
+    "fecha_oficio_documento": "2025-02-01",
+    "fecha_ingreso_senaf": "2025-02-01",
+    "nro_notificacion_102": 9223372036854776,
+    "nro_sac": 92233720368547760,
+    "nro_suac": 922337203685477,
+    "autos_caratulados": "string",
+    "descripcion": "string",
+    "estado_demanda": "SIN_ASIGNAR",
+    "institucion": "string",
+    "ambito_vulneracion": "FAMILIAR",
+    "origen": 3,
+    "sub_origen": 3,
+    "motivo_ingreso": 4,
+    "submotivo_ingreso": 2
+  }
+
+  {
+    "localizacion": {
+     "calle": "string",
+     "tipo_calle": "CALLE",
+     "referencia_geo": "CALLE",
+     "barrio": 2,
+     "localidad": 1,
+     "cpc": 3
+   },
+   "adultos": [
+     {
+       
+       "persona": {
+         "nombre": "string",
+         "apellido": "string",
+         "fecha_nacimiento": "2025-02-03",
+         "edad_aproximada": 12,
+         "situacion_dni": "EN_TRAMITE",
+         "genero": "MASCULINO",
+         "observaciones": "string",
+         "adulto": true,
+         "nnya": false
+       },
+       "demanda_persona": {
+         "deleted": true,
+         "conviviente": true,
+         "supuesto_autordv": "NO_CORRESPONDE",
+         "supuesto_autordv_principal": true,
+         "nnya_principal": true
+       },
+       "demanda_persona": {
+         "conviviente": true,
+         "supuesto_autordv": "NO_CORRESPONDE",
+         "supuesto_autordv_principal": false,
+         "nnya_principal": false
+       },
+       "use_demanda_localizacion": true,
+       "vinculo_nnya_principal": {
+         "conviven": true,
+         "autordv": true,
+         "garantiza_proteccion": false,
+         "vinculo": 3
+       },
+       "condiciones_vulnerabilidad": [
+         2
+       ]
+     }
+   ],
+   "nnya_principal": {
+     "persona": {
+       "nombre": "qq",
+       "apellido": "qqqqqqqqqq",
+       "fecha_nacimiento": "2025-02-03",
+       "edad_aproximada": 1111,
+       "dni": 222,
+       "situacion_dni": "VALIDO",
+       "genero": "MASCULINO",
+       "observaciones": "string",
+       "adulto": false,
+       "nnya": true
+     },
+     "demanda_persona": {
+       "conviviente": true,
+       "supuesto_autordv": "NO_CORRESPONDE",
+       "supuesto_autordv_principal": false,
+       "nnya_principal": true
+     },
+     "use_demanda_localizacion": true,
+     "condiciones_vulnerabilidad": [
+       6
+     ],
+     "nnya_educacion": {
+       "curso": "string",
+       "nivel": "PRIMARIO",
+       "turno": "MANIANA",
+       "comentarios": "string",
+       "institucion_educativa": 1
+     },
+     "nnya_salud": {
+       "observaciones": "string",
+       "institucion_sanitaria": 1
+     },
+     "vulneraciones": [
+       {
+         "autordv_index": 0,
+         "principal_demanda": true,
+         "transcurre_actualidad": true,
+         "categoria_motivo": 1,
+         "categoria_submotivo": 2,
+         "gravedad_vulneracion": 1,
+         "urgencia_vulneracion": 1
+       }
+     ]
+   },
+   "nnyas_secundarios": [
+     {
+       "persona": {
+         "deleted": true,
+         "nombre": "zzzz",
+         "apellido": "zzzz",
+         "fecha_nacimiento": "2025-02-03",
+         "edad_aproximada": 123223,
+         "situacion_dni": "EN_TRAMITE",
+         "genero": "MASCULINO",
+         "observaciones": "string",
+         "adulto": false,
+         "nnya": true
+       },
+       "demanda_persona": {
+         "conviviente": true,
+         "supuesto_autordv": "NO_CORRESPONDE",
+         "supuesto_autordv_principal": false,
+         "nnya_principal": false
+       },
+       "use_demanda_localizacion": true,
+       "condiciones_vulnerabilidad": [
+         6
+       ],
+       "nnya_educacion": {
+         "curso": "string",
+         "nivel": "PRIMARIO",
+         "turno": "MANIANA",
+         "comentarios": "string",
+         "institucion_educativa": 1
+       },
+       "nnya_salud": {
+         "observaciones": "string",
+         "institucion_sanitaria": 1
+       },
+       "vulneraciones": [
+         {
+           "autordv_index": 1,
+           "principal_demanda": false,
+           "transcurre_actualidad": true,
+           "categoria_motivo": 1,
+           "categoria_submotivo": 2,
+           "gravedad_vulneracion": 3,
+           "urgencia_vulneracion": 1
+         }
+       ],
+       "vinculo_nnya_principal": {
+         "conviven": true,
+         "autordv": false,
+         "garantiza_proteccion": false,
+         "vinculo": 1
+       }
+     }
+   ],
+   "fecha_creacion": "2025-02-03",
+   "fecha_oficio_documento": "2025-02-03",
+   "fecha_ingreso_senaf": "2025-02-03",
+   "nro_notificacion_102": 11,
+   "nro_sac": 1111,
+   "nro_suac": 111,
+   "nro_historia_clinica": 11,
+   "nro_oficio_web": 11111,
+   "autos_caratulados": "string",
+   "descripcion": "string",
+   "estado_demanda": "SIN_ASIGNAR",
+   "institucion": "string",
+   "ambito_vulneracion": "FAMILIAR",
+   "origen": 1,
+   "sub_origen": 1,
+   "motivo_ingreso": 1,
+   "submotivo_ingreso": 1
+ }
+
+ 
+ bloque_datos_remitente: ( //mismo que el origen
+ PODER_JUDICIAL,
+ MINISTERIO_PUBLICO_FISCAL,
+ OFICIO_WEB,
+ OTRO
+) : null=False, blank=False
+
+tipo_institucion: ( // deriva de bloque_datos_remitente
+        JUZGADO,
+        ESCUELA,
+        FISCALIA,
+        DEFENSORIA,
+        OTRO
+    ) : null=False, blank=False
+
+    tipo_codigo: ( // deriva de tipo_institucion
+    OFICIO_WEB,
+    NOTIFICACION_102,
+    SAC,
+    SUAC,
+    HISTORIA_CLINICA,
+    OTRO
+) : null=False, blank=False
