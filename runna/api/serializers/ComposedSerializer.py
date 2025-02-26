@@ -475,6 +475,8 @@ class PersonaRegistroSerializer(serializers.Serializer):
 
 
 class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
+
     class Meta:
         model = TCodigoDemanda
         read_only_fields = ['demanda']
@@ -491,6 +493,7 @@ class TCodigoDemandaRegistroSerializer(serializers.ModelSerializer):
 
 
 class TDemandaZonaRegistroPOSTSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = TDemandaZona
         fields = '__all__'
@@ -687,12 +690,15 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         localizacion_data = validated_data.pop('localizacion', None)
         institucion_data = validated_data.pop('institucion', None)
+        relacion_demanda_data = validated_data.pop('relacion_demanda', None)
+        personas_data = validated_data.pop('personas', [])
 
         if localizacion_data:
             for attr, value in localizacion_data.items():
                 setattr(instance.localizacion, attr, value)
             instance.localizacion.save()
-            
+        
+        print(f"Institucion data: {institucion_data}")
         if institucion_data:
             institucion, _ = TInstitucionDemanda.objects.get_or_create(**institucion_data)
             instance.institucion = institucion
@@ -700,5 +706,31 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         
+        codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
+        for codigo_data in codigos_data:
+            codigo_id = codigo_data.get('id', None)
+            if 'id' in codigo_data:
+                # Update existing
+                codigo = TCodigoDemanda.objects.get(pk=codigo_data['id'])
+                for attr, value in codigo_data.items():
+                    setattr(codigo, attr, value)
+                codigo.save()
+            else:
+                # Create new
+                codigo, _ = TCodigoDemanda.objects.get_or_create(
+                    demanda=instance,
+                    **codigo_data
+                )
+        demanda_zona_data = relacion_demanda_data.pop('demanda_zona', None)
+        if demanda_zona_data:
+            demanda_zona_id = demanda_zona_data.get('id', None)
+            if demanda_zona_id:
+                demanda_zona = TDemandaZona.objects.get(pk=demanda_zona_id)
+                for attr, value in demanda_zona_data.items():
+                    setattr(demanda_zona, attr, value)
+                demanda_zona.save()
+            else:
+                demanda_zona = TDemandaZona.objects.create(demanda=instance, **demanda_zona_data)
+
         instance.save()
         return instance
