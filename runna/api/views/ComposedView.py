@@ -269,7 +269,7 @@ class GestionDemandaZonaZonaView(APIView):
         except TDemanda.DoesNotExist:
             raise Http404
 
-        demanda_zonas = TDemandaZona.objects.filter(demanda=demanda)
+        demanda_zonas = TDemandaZona.objects.filter(demanda=demanda, esta_activo=True)
         zonas = TZona.objects.all()
         users = CustomUser.objects.all()
         serialized_data = GestionDemandaZonaSerializer({
