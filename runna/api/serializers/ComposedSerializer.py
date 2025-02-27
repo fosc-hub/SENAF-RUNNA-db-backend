@@ -764,11 +764,12 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             condiciones_vulnerabilidad = persona_data.pop('condiciones_vulnerabilidad', [])
             
             print(f"Persona data: {persona}")
-            if persona_id and persona:
+            if persona_id:
                 persona_db = TPersona.objects.get(pk=persona_id)
-                for attr, value in persona.items():
-                    setattr(persona_db, attr, value)
-                persona_db.save()
+                if persona:
+                    for attr, value in persona.items():
+                        setattr(persona_db, attr, value)
+                    persona_db.save()
             else:
                 persona_db = TPersona.objects.create(**persona)
             self.context['persona'] = persona_db
@@ -797,12 +798,13 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                     educacion['institucion_educativa'] = institucion_educativa
     
                 educacion_id = educacion.pop('id', None)
-                if educacion_id and educacion:
+                if educacion_id:
                     educacion_db = TEducacion.objects.get(pk=educacion_id)
-                    for attr, value in educacion.items():
-                        setattr(educacion_db, attr, value)
-                    educacion_db.save()
-                    print(f"Educacion modified: {educacion_db}")
+                    if educacion:
+                        for attr, value in educacion.items():
+                            setattr(educacion_db, attr, value)
+                        educacion_db.save()
+                        print(f"Educacion modified: {educacion_db}")
                 else:
                     print(f"Educacion data: {educacion}")
                     educacion_db = TEducacion.objects.create(persona=persona_db, **educacion)
