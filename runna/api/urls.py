@@ -123,7 +123,7 @@ router.register(r'registro-demanda-form', RegistroDemandaFormView, basename='reg
 
 urlpatterns = [
     path('', include(router.urls)),  # Include all router URLs
-    path('suggest-decision/<int:nnya_id>/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
+    path('suggest-decision/<int:demanda_id>', SuggestDecisionView.as_view(), name='suggest-decision'),
     path('mesa-de-entrada/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-all'),  # List all
     # path('mesa-de-entrada/<int:pk>/', MesaDeEntradaListView.as_view(), name='mesa-de-entrada-single'),  # Retrieve single
     path('registro-demanda-form-dropdowns/', RegistroDemandaFormDropdownsView.as_view(), name='registro-demanda-form-dropdowns'),  # Retrieve choices

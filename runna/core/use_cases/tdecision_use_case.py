@@ -5,7 +5,7 @@ class TDecisionUseCase:
     Logic to suggest a decision based on scores.
     """
     DECISION_CHOICES = [
-        ('APERTURA DE LEGAJO', 'Apertura de Legajo'),
+        ('ADMITIR CASO', 'Admision de Caso'),
         ('RECHAZAR CASO', 'Rechazar Caso'),
     ]
 
@@ -26,20 +26,18 @@ class TDecisionUseCase:
         # Logic for suggesting a decision
         if nnya_score > 10 and demanda_score > 10:
             return {
-                "decision": "APERTURA DE LEGAJO",
-                "reason": f"Dado el alto score del nnya ({nnya_score}), y el alto score de la demanda ({demanda_score}), la decision sugerida es APERTURA DE LEGAJO.",
+                "decision": "ADMITIR CASO",
+                "reason": f"Dado el alto score del nnya ({nnya_score}), y el alto score de la demanda ({demanda_score}), la decision sugerida es ADMISION DE CASO.",
                 "Demanda Scores": {
                     "score": getattr(demanda, 'score', None),
                     "score_condiciones_vulnerabilidad": getattr(demanda, 'score_condiciones_vulnerabilidad', None),
                     "score_vulneracion": getattr(demanda, 'score_vulneracion', None),
-                    "score_motivos_intervencion": getattr(demanda, 'score_motivos_intervencion', None),
                     "score_indicadores_valoracion": getattr(demanda, 'score_indicadores_valoracion', None)
                 },
                 "NNyA Scores": {
                     "score": getattr(nnya, 'score', None),
                     "score_condiciones_vulnerabilidad": getattr(nnya, 'score_condiciones_vulnerabilidad', None),
                     "score_vulneracion": getattr(nnya, 'score_vulneracion', None),
-                    "score_motivos_intervencion": getattr(nnya, 'score_motivos_intervencion', None)
                 }
             }
         else:
