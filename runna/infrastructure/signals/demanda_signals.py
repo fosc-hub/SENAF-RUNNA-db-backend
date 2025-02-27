@@ -3,10 +3,16 @@ from django.dispatch import receiver
 from infrastructure.models import (
     TDemanda, TDemandaHistory, 
     TCalificacionDemanda, TCalificacionDemandaHistory,
-    TDemandaScore, TDemandaScoreHistory
+    TDemandaScore, TDemandaScoreHistory,
+)
+from customAuth.models import (
+    CustomUser,
+    TCustomUserZona,
+    TZona,
 )
 from .BaseLogs import logs
 from django.db import IntegrityError
+import inspect
 
 @receiver(pre_save, sender=TDemanda)
 def set_evaluacion_validar(sender, instance, **kwargs):
@@ -30,6 +36,28 @@ def demanda_create_score(sender, instance, created, **kwargs):
         except IntegrityError:
             # Handle the exception (e.g., log the error, notify someone, etc.)
             pass
+
+@receiver(pre_save, sender=TDemanda)
+def set_demanda_registrado(sender, instance, **kwargs):
+    action = 'CREATE' if instance.pk is None else 'UPDATE'
+    if action == 'CREATE':
+        for frame_record in inspect.stack():
+            if frame_record[3]=='get_response':
+                request = frame_record[0].f_locals['request']
+                break
+        else:
+            request = None
+        print(f"Request: {request.user}")
+
+        current_user = request.user
+        instance.registrado_por_user = current_user
+        
+        user_zonas = TCustomUserZona.objects.filter(user=current_user)
+        if user_zonas.exists():
+            instance.registrado_por_user_zona = user_zonas.first().zona
+        else:
+            instance.registrado_por_user_zona = None
+        print(f"Registrado por: {instance.registrado_por_user} en zona {instance.registrado_por_user_zona}")
 
 
 # @receiver(post_save, sender=TDemanda)
