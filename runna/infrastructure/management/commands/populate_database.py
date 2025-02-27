@@ -39,6 +39,9 @@ class Command(BaseCommand):
         vinculo_de_personas = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos de relaciones vinculares.xlsx', sheet_name='Hoja1')
         localidades = load_excel_data(self, './runna/infrastructure/management/fixtures/localidades prov cba.xlsx', sheet_name='Hoja1')
         salud = load_excel_data(self, './runna/infrastructure/management/fixtures/salud.xlsx', sheet_name='Sheet1')
+        condiciones_vulnerabilidad = load_excel_data(self, './runna/infrastructure/management/fixtures/condiciones_vulnerabilidad.xlsx', sheet_name='Sheet1')
+        indicadores_valoracion = load_excel_data(self, './runna/infrastructure/management/fixtures/indicadores_valoracion.xlsx', sheet_name='Sheet1')
+        tipos_actividad = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos_actividad.xlsx', sheet_name='Sheet1')
 
         for model_name in model_order:
             model = apps.get_model(model_name)  # Adjust 'myapp' to your app name
@@ -126,12 +129,16 @@ class Command(BaseCommand):
                     except Exception as e:
                         self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
             elif model_name == 'infrastructure.TLocalidad':
+                cont = 0
                 for index, row in localidades.iterrows():
+                    if cont == 15:
+                        break
                     obj_data = {
                         'nombre': row['NOMBRE LOCAL'],
                     }
                     try:
                         model.objects.get_or_create(**obj_data)
+                        cont += 1
                     except Exception as e:
                         self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
             elif model_name == 'infrastructure.TVinculoDePersonas':
@@ -179,8 +186,39 @@ class Command(BaseCommand):
                         self.stdout.write(f'User {user} added to Zona 1')
                     except Exception as e:
                         self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            elif model_name == 'infrastructure.TCondicionesVulnerabilidad':
+                for index, row in condiciones_vulnerabilidad.iterrows():
+                    obj_data = {
+                        'nombre': row['condiciones_vulnerabilidad'],
+                        'peso': random.randint(1, 5),
+                        'nnya': 'NNA' in row['condiciones_vulnerabilidad'],
+                        'adulto': 'NNA' not in row['condiciones_vulnerabilidad'],
+                    }
+                    try:
+                        model.objects.get_or_create(**obj_data)
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            elif model_name == 'infrastructure.TIndicadoresValoracion':
+                for index, row in indicadores_valoracion.iterrows():
+                    obj_data = {
+                        'nombre': row['indicadores_valoracion'],
+                        'peso': random.randint(1, 5),
+                    }
+                    try:
+                        model.objects.get_or_create(**obj_data)
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            elif model_name == 'infrastructure.TActividadTipo':
+                for index, row in tipos_actividad.iterrows():
+                    obj_data = {
+                        'nombre': row['tipos_actividad'],
+                    }
+                    try:
+                        model.objects.get_or_create(**obj_data)
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
             else:
-                for _ in range(10):  # Number of objects per model
+                for _ in range(40):  # Number of objects per model
                     obj_data = {}
                     for field in model._meta.fields:
                         if field.name == 'id':  # Skip ID field
