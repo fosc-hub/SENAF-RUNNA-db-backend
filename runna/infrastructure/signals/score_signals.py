@@ -161,10 +161,10 @@ def personaCondicionVulnerabilidad_update_sumatoria_and_score(sender, instance, 
     condicion_vulnerabilidad_peso = instance.condicion_vulnerabilidad.peso if instance.si_no else instance.condicion_vulnerabilidad.peso*(-1)
     if instance.persona.adulto:
         # Filter TVinculoPersonaPersona related to the persona
-        demandas_relacionadas = TDemandaPersona.filter(persona=instance.persona, deleted=False, vinculo_demanda="GARANTIZA_PROTECCION")
+        demandas_relacionadas = TDemandaPersona.objects.filter(persona=instance.persona, deleted=False, vinculo_demanda="GARANTIZA_PROTECCION")
 
         for demanda in demandas_relacionadas:
-            nnyas_afectados = TDemandaPersona.filter(demanda=demanda.demanda, deleted=False, vinculo_demanda__in=["NNYA_PRINCIPAL", "NNYA_SECUNDARIO"])
+            nnyas_afectados = TDemandaPersona.objects.filter(demanda=demanda.demanda, deleted=False, vinculo_demanda__in=["NNYA_PRINCIPAL", "NNYA_SECUNDARIO"])
             
             for nnya in nnyas_afectados:
                 nnya_score, created = TNNyAScore.objects.get_or_create(nnya=nnya.persona)
