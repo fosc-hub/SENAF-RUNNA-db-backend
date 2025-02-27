@@ -40,9 +40,14 @@ def set_enviado_recibido(sender, instance, **kwargs):
             break
     else:
         request = None
-    print(f"Request: {request.user}")
 
-    current_user = request.user
+    try:
+        current_user = request.user
+    except AttributeError:
+        current_user = None
+    except Exception as e:
+        current_user = None
+
     if instance.pk and current_user is not None:
         previous_values = TDemandaZona.objects.get(pk=instance.pk)
         if previous_values.recibido != instance.recibido:
@@ -65,27 +70,29 @@ def send_mail_to_zona_derivada(sender, instance, created, **kwargs):
     """
     if created:
         users_zona = TCustomUserZona.objects.filter(zona=instance.zona)
+        try:
+            to = [user.user.email for user in users_zona]
+            subject = f"Nueva derivación en zona {instance.zona.nombre} para la Demanda ID {instance.demanda.id}"
+            html_content = f"""
+                <strong>Estimados,</strong><br>
+                Se ha derivado una nueva demanda a su zona.<br>
+                <strong>Details:</strong><br>
+                Demanda ID: {instance.demanda.id}<br>
+                Comentarios: {instance.comentarios}<br>
+                Saludos,<br>
+                Nuevo RUNNA
+            """
 
-        to = [user.user.email for user in users_zona]
-        subject = f"Nueva derivación en zona {instance.zona.nombre} para la Demanda ID {instance.demanda.id}"
-        html_content = f"""
-            <strong>Estimados,</strong><br>
-            Se ha derivado una nueva demanda a su zona.<br>
-            <strong>Details:</strong><br>
-            Demanda ID: {instance.demanda.id}<br>
-            Comentarios: {instance.comentarios}<br>
-            Saludos,<br>
-            Nuevo RUNNA
-        """
+            # Send email and return the response
+            email_response = EmailService.send_email(to, subject, html_content)
 
-        # Send email and return the response
-        email_response = EmailService.send_email(to, subject, html_content)
+            print(f"Email sent to {to} with subject: {subject}")
 
-        print(f"Email sent to {to} with subject: {subject}")
-
-        # return {"to": to, "subject": subject, "html_content": html_content}
-        
-        return email_response
+            # return {"to": to, "subject": subject, "html_content": html_content}
+            
+            return email_response
+        except AttributeError:
+            return None
 
 @receiver(post_save, sender=TDemandaZona)
 def send_mail_to_user_responsable(sender, instance, created, **kwargs):
@@ -100,26 +107,29 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
         if instance.esta_activo == False and previous_values.esta_activo == True:
             users_zona = TCustomUserZona.objects.filter(zona=instance.zona)
 
-            to = [user.user.email for user in users_zona]
-            subject = f"Demanda ID {instance.demanda.id} ha sido desactivada"
-            html_content = f"""
-                <strong>Estimados,</strong><br>
-                La demanda ID {instance.demanda.id} ha sido desactivada.<br>
-                <strong>Details:</strong><br>
-                Zona: {instance.zona.nombre}<br>
-                Comentarios: {instance.comentarios}<br>
-                Saludos,<br>
-                Nuevo RUNNA
-            """
+            try:
+                to = [user.user.email for user in users_zona]
+                subject = f"Demanda ID {instance.demanda.id} ha sido desactivada"
+                html_content = f"""
+                    <strong>Estimados,</strong><br>
+                    La demanda ID {instance.demanda.id} ha sido desactivada.<br>
+                    <strong>Details:</strong><br>
+                    Zona: {instance.zona.nombre}<br>
+                    Comentarios: {instance.comentarios}<br>
+                    Saludos,<br>
+                    Nuevo RUNNA
+                """
 
-            # Send email and return the response
-            email_response = EmailService.send_email(to, subject, html_content)
-            
-            print(f"Email sent to {to} with subject: {subject}")
+                # Send email and return the response
+                email_response = EmailService.send_email(to, subject, html_content)
+                
+                print(f"Email sent to {to} with subject: {subject}")
 
-            # return {"to": to, "subject": subject, "html_content": html_content}
-            
-            return email_response
+                # return {"to": to, "subject": subject, "html_content": html_content}
+                
+                return email_response
+            except AttributeError:
+                return None
         
         if previous_values.user_responsable != instance.user_responsable:
             to = [instance.user_responsable.email]
@@ -152,8 +162,11 @@ def log_demandaAsignado_save(sender, instance, created, **kwargs):
             break
     else:
         request = None
-
-    print(f"Request: {request.user}")
+    
+    try:
+        current_user = request.user
+    except AttributeError:
+        current_user = None
 
     action = 'CREATE' if created else 'UPDATE'
     descripcion = ""
@@ -176,7 +189,7 @@ def log_demandaAsignado_save(sender, instance, created, **kwargs):
         print(descripcion)
 
     
-    logs(TDemandaZonaHistory, action, instance, current_user=request.user, descripcion_temp=descripcion)
+    logs(TDemandaZonaHistory, action, instance, current_user=current_user, descripcion_temp=descripcion)
 
 
 @receiver(post_delete, sender=TDemandaZona)
@@ -188,10 +201,13 @@ def log_demandaAsignado_delete(sender, instance, **kwargs):
     else:
         request = None
 
-    print(f"Request: {request.user}")
+    try:
+        current_user = request.user
+    except AttributeError:
+        current_user = None
 
     action='DELETE'
-    logs(TDemandaZonaHistory, action, instance, current_user=request.user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
+    logs(TDemandaZonaHistory, action, instance, current_user=current_user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
 
 
 # @receiver(post_save, sender=TDemandaVinculada)
