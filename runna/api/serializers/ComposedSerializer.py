@@ -304,6 +304,7 @@ class TVulneracionRegistroSerializer(serializers.ModelSerializer):
 
 class TEducacionRegistroSerializer(serializers.ModelSerializer):
     institucion_educativa = TInstitucionEducativaSerializer()  # Nested Serializer
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = TEducacion
