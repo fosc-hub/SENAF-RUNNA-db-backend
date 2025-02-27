@@ -47,18 +47,21 @@ def set_demanda_registrado(sender, instance, **kwargs):
                 break
         else:
             request = None
-        print(f"Request: {request.user}")
 
-        current_user = request.user
-        instance.registrado_por_user = current_user
-        
-        user_zonas = TCustomUserZona.objects.filter(user=current_user)
-        if user_zonas.exists():
-            instance.registrado_por_user_zona = user_zonas.first().zona
-        else:
-            instance.registrado_por_user_zona = None
-        print(f"Registrado por: {instance.registrado_por_user} en zona {instance.registrado_por_user_zona}")
+        try:
+            current_user = request.user
+            instance.registrado_por_user = current_user
+            user_zonas = TCustomUserZona.objects.filter(user=current_user)
+            if user_zonas.exists():
+                instance.registrado_por_user_zona = user_zonas.first().zona
+            else:
+                instance.registrado_por_user_zona = None
+            print(f"Registrado por: {instance.registrado_por_user} en zona {instance.registrado_por_user_zona}")
 
+        except AttributeError:
+            pass
+        except Exception as e:
+            pass
 
 # @receiver(post_save, sender=TDemanda)
 # def log_demanda_save(sender, instance, created, **kwargs):
