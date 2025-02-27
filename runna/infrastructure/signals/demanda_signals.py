@@ -20,7 +20,6 @@ def set_evaluacion_validar(sender, instance, **kwargs):
         not_null_fields = {
             "motivo de ingreso": instance.motivo_ingreso,
             "submotivo de ingreso": instance.submotivo_ingreso,
-            "referencia geografica de la demanda": instance.localizacion.referencia_geo if instance.localizacion else None,
             "geolocalizacion de la demanda": instance.localizacion.geolocalizacion if instance.localizacion else None,
         }
         if not all(not_null_fields.values()):
