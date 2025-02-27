@@ -49,7 +49,7 @@ def set_demanda_registrado(sender, instance, **kwargs):
             request = None
         print(f"Request: {request.user}")
 
-        current_user = request.user
+        current_user = request.user if request else None
         instance.registrado_por_user = current_user
         
         user_zonas = TCustomUserZona.objects.filter(user=current_user)
