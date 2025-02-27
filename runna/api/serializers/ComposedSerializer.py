@@ -164,7 +164,14 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     
     def get_codigos_demanda(self, obj):
         codigos_demanda = TCodigoDemanda.objects.filter(demanda=obj)
-        return TCodigoDemandaSerializer(codigos_demanda.all(), many=True).data
+        serialized_codigos = TCodigoDemandaSerializer(codigos_demanda.all(), many=True).data
+        
+        for codigo in serialized_codigos:
+            tipo_codigo = TTipoCodigoDemanda.objects.get(id=codigo['tipo_codigo'])
+            codigo['tipo_codigo_nombre'] = tipo_codigo.nombre
+            codigo['tipo_codigo_datatype'] = tipo_codigo.datatype
+        
+        return serialized_codigos
     
     def get_localidad(self, obj):
         return TLocalidadSerializer(obj.localizacion.localidad).data if obj.localizacion else None
