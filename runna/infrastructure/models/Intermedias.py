@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-from .BaseHistory import BaseHistory
+from .BaseClass import BaseHistory
 from django.core.exceptions import ValidationError
 
 """

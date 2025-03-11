@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-from .BaseHistory import BaseHistory
+from .BaseClass import BaseHistory, BaseAdjunto
 from django.core.exceptions import ValidationError
 
 
@@ -406,6 +406,27 @@ class TPersonaEnfermedadesHistory(TPersonaEnfermedadesBase, BaseHistory):
         verbose_name = _('Historial de Enfermedad de Persona')
         verbose_name_plural = _('Historial de Enfermedades de Personas')
 
+class TPersonaOficioAdjunto(BaseAdjunto):
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Adjunto de Oficio de Persona')
+        verbose_name_plural = _('Adjuntos de Oficios de Personas')
+
+    def __str__(self):
+        return f"{self.persona} - {self.archivo}"
+
+class TPersonaCertificadoAdjunto(BaseAdjunto):
+    persona = models.ForeignKey('TPersona', on_delete=models.CASCADE, null=False, blank=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Adjunto de Certificado de Persona')
+        verbose_name_plural = _('Adjuntos de Certificados de Personas')
+
+    def __str__(self):
+        return f"{self.persona} - {self.archivo}"
 
 class TNNyAScoreBase(models.Model):
     ultima_actualizacion = models.DateTimeField(auto_now=True)

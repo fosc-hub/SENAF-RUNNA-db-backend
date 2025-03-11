@@ -118,6 +118,7 @@ ADMIN_REORDER = [
             "infrastructure.TInstitucionDemanda",
             "infrastructure.TDemanda",
             "infrastructure.TDemandaHistory",
+            "infrastructure.TDemandaAdjunto",
             "infrastructure.TTipoCodigoDemanda",
             "infrastructure.TCodigoDemanda",
             "infrastructure.TCalificacionDemanda",
@@ -139,6 +140,8 @@ ADMIN_REORDER = [
             "infrastructure.TCoberturaMedicaHistory",
             "infrastructure.TPersonaEnfermedades",
             "infrastructure.TPersonaEnfermedadesHistory",
+            "infrastructure.TPersonaOficioAdjunto",
+            "infrastructure.TPersonaCertificadoAdjunto",
             "infrastructure.TNNyAScore",
             "infrastructure.TNNyAScoreHistory",
             "infrastructure.TLegajo",
@@ -164,17 +167,23 @@ ADMIN_REORDER = [
             "infrastructure.TPersonaCondicionesVulnerabilidadHistory",
 
             "infrastructure.TActividadTipo",
-            "infrastructure.TInstitucionActividad",
+            "infrastructure.TActividadTipoModelo",
+            "infrastructure.TInstitucionActividad", 
             "infrastructure.TActividad",
-            "infrastructure.TRespuesta",
-            "infrastructure.TIndicadoresValoracion",
-            "infrastructure.TEvaluaciones",
-            "infrastructure.TDecision",
-            "infrastructure.TActividadHistory",
-            "infrastructure.TEvaluacionesHistory",
+            "infrastructure.TActividadAdjunto",
+            "infrastructure.TRespuesta", 
+            "infrastructure.TRespuestaAdjunto",
+            "infrastructure.TIndicadoresValoracion", 
+            "infrastructure.TEvaluaciones", 
+            "infrastructure.TDecision", 
+            "infrastructure.TActividadHistory", 
+            "infrastructure.TEvaluacionesHistory"
         ]
     },
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 ROOT_URLCONF = 'runna.urls'
 

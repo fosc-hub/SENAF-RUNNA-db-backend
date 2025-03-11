@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-from .BaseHistory import BaseHistory
+from .BaseClass import BaseHistory, BaseAdjunto
 from django.core.exceptions import ValidationError
 from .Persona import TLegajo
 
@@ -27,6 +27,14 @@ class TActividadTipo(models.Model):
     def __str__(self):
         return f"{self.nombre}"
 
+class TActividadTipoModelo(BaseAdjunto):
+    actividad_tipo = models.ForeignKey('TActividadTipo', on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Modelo de Tipo de Actividad')
+        verbose_name_plural = _('Modelos de Tipos de Actividades')
+
 class TInstitucionActividad(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
 
@@ -36,7 +44,7 @@ class TInstitucionActividad(models.Model):
         verbose_name_plural = _('Instituciones de Actividades')
 
     def __str__(self):
-        return f"{self.nombre} - {self.mail}"
+        return f"{self.nombre}"
 
 
 class TActividadBase(models.Model):
@@ -56,6 +64,7 @@ class TActividadBase(models.Model):
 
 
 class TActividad(TActividadBase):
+    # adjuntos = models.FileField(upload_to=file_directory('actividad-adjuntos', 'actividad_', 'infrastructure.TActividad'), null=True, blank=True)
 
     class Meta:
         app_label = 'infrastructure'
@@ -75,6 +84,13 @@ class TActividadHistory(TActividadBase, BaseHistory):
         verbose_name = _('Historial de Actividad')
         verbose_name_plural = _('Historial de Actividades')
 
+class TActividadAdjunto(BaseAdjunto):
+    actividad = models.ForeignKey('TActividad', on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Adjunto de Actividad')
+        verbose_name_plural = _('Adjuntos de Actividades')
 
 class TRespuesta(models.Model):
     fecha_y_hora = models.DateTimeField(auto_now=True)
@@ -92,6 +108,13 @@ class TRespuesta(models.Model):
     def __str__(self):
         return f"{self.fecha_y_hora} - {self.mail} - {self.mensaje} - {self.demanda} - {self.institucion}"
 
+class TRespuestaAdjunto(BaseAdjunto):
+    respuesta = models.ForeignKey('TRespuesta', on_delete=models.CASCADE)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Adjunto de Respuesta')
+        verbose_name_plural = _('Adjuntos de Respuestas')
 
 class TIndicadoresValoracion(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)

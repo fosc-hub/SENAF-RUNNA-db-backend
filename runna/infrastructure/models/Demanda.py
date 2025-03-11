@@ -2,7 +2,7 @@ from datetime import datetime, date
 from django.db import models
 from simple_history.models import HistoricalRecords
 from django.utils.translation import gettext_lazy as _
-from .BaseHistory import BaseHistory
+from .BaseClass import BaseHistory, BaseAdjunto
 
 class TBloqueDatosRemitente(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -175,6 +175,17 @@ class TDemandaHistory(TDemandaBase, BaseHistory):
         app_label = 'infrastructure'
         verbose_name = _('Historial de Demanda')
         verbose_name_plural = _('Historial de Demandas')
+
+class TDemandaAdjunto(BaseAdjunto):
+    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False)
+
+    class Meta:
+        app_label = 'infrastructure'
+        verbose_name = _('Adjunto de Demanda')
+        verbose_name_plural = _('Adjuntos de Demandas')
+
+    def __str__(self):
+        return f"{self.demanda} - {self.archivo}"
 
 class TTipoCodigoDemanda(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)

@@ -1,4 +1,4 @@
-from .BaseHistory import BaseHistory
+from .BaseClass import (BaseAdjunto, BaseHistory)
 from .Localizacion import (
     TLocalidad, 
     TBarrio, 
@@ -14,6 +14,7 @@ from .Demanda import  (
     TInstitucionDemanda,
     TDemanda,
     TDemandaHistory,
+    TDemandaAdjunto,
     TTipoCodigoDemanda,
     TCodigoDemanda,
     TCalificacionDemanda,
@@ -36,6 +37,8 @@ from .Persona import (
     TCoberturaMedicaHistory,
     TPersonaEnfermedades,
     TPersonaEnfermedadesHistory,
+    TPersonaOficioAdjunto,
+    TPersonaCertificadoAdjunto,
     TNNyAScore,
     TNNyAScoreHistory,
     TLegajo,
@@ -63,10 +66,13 @@ from .Intermedias import (
     TPersonaCondicionesVulnerabilidadHistory,
 )
 from .Evaluacion import (
-    TActividadTipo, 
+    TActividadTipo,
+    TActividadTipoModelo,
     TInstitucionActividad, 
     TActividad,
+    TActividadAdjunto,
     TRespuesta, 
+    TRespuestaAdjunto,
     TIndicadoresValoracion, 
     TEvaluaciones, 
     TDecision, 
