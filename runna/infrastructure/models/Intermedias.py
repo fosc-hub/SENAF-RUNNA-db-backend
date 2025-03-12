@@ -75,6 +75,7 @@ class TDemandaPersonaBase(models.Model):
         ('SUPUESTO_AUTOR_DV', 'Supuesto Autor DV'),
         ('SUPUESTO_AUTOR_DV_PRINCIPAL', 'Supuesto Autor DV Principal'),
         ('GARANTIZA_PROTECCION', 'Garantiza Protección'),
+        ('LEGALMENTE_RESPONSABLE', 'Legalmente Responsable'),
         ('SE_DESCONOCE', 'Se Desconoce'),
     ]
     vinculo_demanda = models.CharField(

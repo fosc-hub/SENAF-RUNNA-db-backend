@@ -81,6 +81,7 @@ class TPersonaBase(models.Model):
     observaciones = models.TextField(null=True, blank=True)
     adulto = models.BooleanField(null=False, blank=False)
     nnya = models.BooleanField(null=False, blank=False)
+    telefono = models.IntegerField(null=True, blank=True)
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
