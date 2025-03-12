@@ -171,6 +171,7 @@ ADMIN_REORDER = [
             "infrastructure.TInstitucionActividad", 
             "infrastructure.TActividad",
             "infrastructure.TActividadAdjunto",
+            "infrastructure.TRespuestaEtiqueta",
             "infrastructure.TRespuesta", 
             "infrastructure.TRespuestaAdjunto",
             "infrastructure.TIndicadoresValoracion", 

@@ -1,47 +1,82 @@
 import os
+import base64
 import resend
 from typing import List
 import logging
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 # Set the Resend API key
 resend.api_key = os.getenv("RESEND_API_KEY")
 
+def prepare_attachment(file_path: str) -> dict:
+    with open(file_path, "rb") as f:
+        file_content = f.read()
+    encoded_content = base64.b64encode(file_content).decode("utf-8")
+    filename = os.path.basename(file_path)
+    return {"filename": filename, "content": encoded_content}
 
 class EmailService:
     """Service for sending emails using Resend."""
 
     @staticmethod
-    def send_email(to: List[str], subject: str, html_content: str, sender: str = "Acme <onboarding@resend.dev>"):
+    def send_email(
+        to: List[str],
+        subject: str,
+        html_content: str,
+        sender: str = "Acme <onboarding@resend.dev>",
+        bcc: List[str] = None,
+        cc: List[str] = None,
+        attachments: List[str] = None
+    ) -> dict:
         """
         Sends an email using the Resend API.
-
-        :param to: List of recipient email addresses.
-        :param subject: Email subject line.
-        :param html_content: HTML content of the email body.
-        :param sender: The sender's email address and name.
-        :return: Response from the Resend API.
         """
+        # Process attachments if provided
+        prepared_attachments = None
+        if attachments:
+            prepared_attachments = [prepare_attachment(path) for path in attachments]
+
         params: resend.Emails.SendParams = {
             "from": sender,
             "to": to,
+            "bcc": bcc,  # Correctly using bcc here
+            "cc": cc,
+            "attachments": prepared_attachments,
             "subject": subject,
             "html": html_content,
         }
         
         print("resend.api_key: ", resend.api_key)
+        # print("params: ", params)
 
         try:
             email_response = resend.Emails.send(params)
-            # print("email_response: ", email_response)
             return {
                 "email_status": "201",
-                "email_details": "email enviado exitosamente",
+                "email_details": "Email sent successfully",
                 "error": None
             }
         except Exception as e:
-            # Log the error if logging is set up, or handle gracefully
             print(f"Failed to send email: {e}")
             logger.error(f"Failed to send email: {e}")
             return None
+
+# Example usage
+# cc = ["santiagocarranzazinny@gmail.com"]
+# bcc = ["facundoolivam@gmail.com"]
+# to = ["facundoolivam@gmail.com"]
+# attachments_paths = ["C:\\Users\\facun\\Downloads\\Fisica2-FacundoOlivaMarchetto-2406097.pdf"]
+# subject = "Demanda ID 1 ha sido desactivada"
+# html_content = """
+#     <strong>Estimados,</strong><br>
+#     La demanda ID 1 ha sido desactivada.<br>
+#     <strong>Details:</strong><br>
+#     Zona: ads <br>
+#     Comentarios: asds<br>
+#     Saludos,<br>
+#     Nuevo RUNNA
+# """
+
+# email_response = EmailService.send_email(to, subject, html_content, bcc=bcc, cc=cc, attachments=attachments_paths)
+# print(f"Email response: {email_response}")

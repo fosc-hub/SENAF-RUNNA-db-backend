@@ -71,6 +71,7 @@ from .Evaluacion import (
     TInstitucionActividad, 
     TActividad,
     TActividadAdjunto,
+    TRespuestaEtiqueta,
     TRespuesta, 
     TRespuestaAdjunto,
     TIndicadoresValoracion, 

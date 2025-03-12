@@ -64,6 +64,7 @@
         "infrastructure.TActividadTipo",
         "infrastructure.TInstitucionActividad",
         "infrastructure.TActividad",
+        "infrastructure.TRespuestaEtiqueta",
         "infrastructure.TRespuesta",
         "infrastructure.TIndicadoresValoracion",
         "infrastructure.TEvaluaciones",
