@@ -451,6 +451,7 @@ entity T_PERSONA {
     apellido : string, null=False, blank=False
     fecha_nacimiento : date, null=True, blank=True
     edad_aproximada : int, null=True, blank=True
+    telefono : int, null=True, blank=True
 
     nacionalidad : (
         ARGENTINA,
@@ -519,6 +520,7 @@ entity T_DEMANDA_PERSONA {
         SUPUESTO_AUTOR_DV,
         SUPUESTO_AUTOR_DV_PRINCIPAL,
         GARANTIZA_PROTECCION,
+        LEGALMENTE_RESPONSABLE,
         SE DESCONOCE,
     ) : null=False, blank=False, default="SE DESCONOCE"
     --
@@ -645,17 +647,27 @@ entity T_ACTIVIDAD {
     } )
 }
 
+entity T_ETIQUETA_RESPUESTA {
+    + PRIMARY_KEY(id)
+    --
+    nombre : string, null=False, blank=False
+    --
+}
+
 entity T_RESPUESTA {
     + PRIMARY_KEY(id)
     --
     fecha_y_hora : datetime, null=False, autogenerate
-    mail : mail, null=False, blank=False
+    sender : string, null=False, blank=False, default="Acme <onboarding@resend.dev>"
+    cc : json, null=True, blank=True, default=[]
+    bcc : json, null=True, blank=True, default=[]
+    to : json, null=False, blank=False, default=[]
+    asunto : string, null=False, blank=False
     mensaje : text, null=False, blank=False
-    institucion : string, null=False, blank=False
-
     adjuntos : List<Blob>, null=True, blank=True // Admite documentos Word, PDF, imágenes
     --
     demanda: FOREIGN_KEY(T_DEMANDA) : on_delete=CASCADE, null=False
+    etiqueta: FOREIGN_KEY(T_ETIQUETA_RESPUESTA) : on_delete=SET_NULL, null=True, blank=True
     --
     * onCreate( {
         ** enviar_mail( mail, "Respuesta a demanda", mensaje )
@@ -1112,6 +1124,7 @@ entity T_NNyA_SCORE {
 entity T_ACTIVIDAD_TIPO {
     + PRIMARY_KEY(id)
     --
+    modelo : Blob, null=True, blank=True
     nombre : string, null=False, blank=False
     --
 }
