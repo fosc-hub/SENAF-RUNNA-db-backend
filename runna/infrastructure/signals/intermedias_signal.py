@@ -83,10 +83,13 @@ def send_mail_to_zona_derivada(sender, instance, created, **kwargs):
                 Nuevo RUNNA
             """
 
+            print(f"Email sent to {to} with subject: {subject}")
+
+            if len(to) == 0:
+                return None
+
             # Send email and return the response
             email_response = EmailService.send_email(to, subject, html_content)
-
-            print(f"Email sent to {to} with subject: {subject}")
 
             # return {"to": to, "subject": subject, "html_content": html_content}
             
@@ -119,12 +122,14 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
                     Saludos,<br>
                     Nuevo RUNNA
                 """
+                print(f"Email sent to {to} with subject: {subject}")
+
+                if len(to) == 0:
+                    return None
 
                 # Send email and return the response
                 email_response = EmailService.send_email(to, subject, html_content)
                 
-                print(f"Email sent to {to} with subject: {subject}")
-
                 # return {"to": to, "subject": subject, "html_content": html_content}
                 
                 return email_response
@@ -143,11 +148,13 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
                 Saludos,<br>
                 Nuevo RUNNA
             """
+            print(f"Email sent to {to} with subject: {subject}")
+
+            if len(to) == 0:
+                return None
 
             # Send email and return the response
             email_response = EmailService.send_email(to, subject, html_content)
-            
-            # print(f"Email sent to {to} with subject: {subject}")
 
             # return {"to": to, "subject": subject, "html_content": html_content}
             
