@@ -9,12 +9,27 @@ logger = logging.getLogger(__name__)
 # Set the Resend API key
 resend.api_key = os.getenv("RESEND_API_KEY")
 
-def prepare_attachment(file_path: str) -> dict:
-    with open(file_path, "rb") as f:
-        file_content = f.read()
+def prepare_attachment(file_obj) -> dict:
+    """
+    Accepts a file-like object (e.g., TemporaryUploadedFile) or a file path,
+    reads its content, encodes it in base64, and returns a dict with filename and content.
+    """
+    # If the object is a TemporaryUploadedFile or any file-like object:
+    if hasattr(file_obj, 'read'):
+        file_content = file_obj.read()
+        # Reset pointer if needed:
+        if hasattr(file_obj, 'seek'):
+            file_obj.seek(0)
+        filename = file_obj.name
+    else:
+        # Otherwise, assume it's a file path.
+        with open(file_obj, "rb") as f:
+            file_content = f.read()
+        filename = os.path.basename(file_obj)
+    
     encoded_content = base64.b64encode(file_content).decode("utf-8")
-    filename = os.path.basename(file_path)
     return {"filename": filename, "content": encoded_content}
+
 
 class EmailService:
     """Service for sending emails using Resend."""
@@ -60,7 +75,7 @@ class EmailService:
         except Exception as e:
             print(f"Failed to send email: {e}")
             logger.error(f"Failed to send email: {e}")
-            return None
+            raise e
 
 # Example usage
 # cc = ["santiagocarranzazinny@gmail.com"]

@@ -2,9 +2,11 @@ from drf_spectacular.utils import extend_schema
 import logging
 logger = logging.getLogger(__name__)
 
-from django.http import JsonResponse
+from rest_framework.response import Response
+from django.http import JsonResponse, Http404
 from rest_framework import status
 from django.db.models.signals import post_save
+from django.db import transaction
 
 
 from .BaseView import BaseViewSet
@@ -13,6 +15,7 @@ from infrastructure.models import (
     TActividadTipo, 
     TInstitucionActividad, 
     TActividad,
+    TRespuestaEtiqueta,
     TRespuesta, 
     TIndicadoresValoracion, 
     TEvaluaciones, 
@@ -24,6 +27,7 @@ from api.serializers import (
     TActividadTipoSerializer,
     TInstitucionActividadSerializer,
     TActividadSerializer,
+    TRespuestaEtiquetaSerializer,
     TRespuestaSerializer,
     TIndicadoresValoracionSerializer,
     TEvaluacionesSerializer,
@@ -124,6 +128,25 @@ class TActividadViewSet(BaseViewSet):
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
+class TRespuestaEtiquetaViewSet(BaseViewSet):
+    model = TRespuestaEtiqueta
+    serializer_class = TRespuestaEtiquetaSerializer
+
+    http_method_names = ['get'] # Only allow GET requests
+
+    @extend_schema(
+        responses=TRespuestaEtiquetaSerializer(many=True),
+        description="Retrieve a list of TRespuestaEtiqueta entries."
+    )
+    def list(self, request):
+        return super().list(request)
+
+    @extend_schema(
+        responses=TRespuestaEtiquetaSerializer,
+        description="Retrieve a single TRespuestaEtiqueta entry."
+    )
+    def retrieve(self, request, pk=None):
+        return super().retrieve(request, pk=pk)
 
 class TRespuestaViewSet(BaseViewSet):
     model = TRespuesta
@@ -140,36 +163,51 @@ class TRespuestaViewSet(BaseViewSet):
     def create(self, request):
         # Create the object using the serializer
         serializer = TRespuestaSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        instance = serializer.save()
+        if serializer.is_valid():
+            try:
+                with transaction.atomic():
+                    validated_data = serializer.validated_data
+                    adjuntos_data = validated_data.pop('adjuntos', [])
+                    print(f"adjuntos_data: {adjuntos_data}")
+                    instance = TRespuesta(**validated_data)
+                    instance._adjuntos = adjuntos_data
+                    instance.save()
+                    # print(f"Serializer data: {serializer.validated_data}")
+                    # serializer._adjuntos = serializer.validated_data['adjuntos']
+                    # instance = serializer.save()  # _adjuntos is set on instance before saving.
+                return Response(serializer.data, status=201)
+            except Exception as e:
+                return Response({"error": str(e)}, status=400)
+            # instance = serializer.save()
 
-        # Capture signal response
-        responses = post_save.send(
-            sender=TRespuesta,
-            instance=instance,
-            created=True,
-            raw=False,
-            using=None,
-        )
-        logger.info(f"Creation of TRespuesta instance: {instance}")
-        logger.info(f"Signal responses: {responses}")
-        # Collect the first valid response from signal receivers
-        signal_response = None
-        for receiver, response in responses:
-            print(f'Receiver: {receiver}')
-            print(f'Response: {response}')
-            if response and 'email_status' in response and 'email_details' in response:
-                signal_response = response
-                logger.info(f"signal_response set to: {response}")
-                break
+            # # Capture signal response
+            # responses = post_save.send(
+            #     sender=TRespuesta,
+            #     instance=instance,
+            #     created=True,
+            #     raw=False,
+            #     using=None,
+            # )
+            # logger.info(f"Creation of TRespuesta instance: {instance}")
+            # logger.info(f"Signal responses: {responses}")
+            # # Collect the first valid response from signal receivers
+            # signal_response = None
+            # for receiver, response in responses:
+            #     print(f'Receiver: {receiver}')
+            #     print(f'Response: {response}')
+            #     if response and 'email_status' in response and 'email_details' in response:
+            #         signal_response = response
+            #         logger.info(f"signal_response set to: {response}")
+            #         break
 
-        # Prepare the API response
-        response_data = {
-            "message": "TRespuesta instance created successfully",
-            **serializer.data,  # Pass the serialized data
-            "email_response": signal_response,  # Pass the captured signal response
-        }
-        return JsonResponse(response_data, status=status.HTTP_201_CREATED)
+            # # Prepare the API response
+            # response_data = {
+            #     "message": "TRespuesta instance created successfully",
+            #     **serializer.data,  # Pass the serialized data
+            #     "email_response": signal_response,  # Pass the captured signal response
+            # }
+            # return JsonResponse(response_data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=400)
 
 
     @extend_schema(

@@ -23,12 +23,12 @@ class TInstitucionActividadFilter(filters.FilterSet):
 class TActividadFilter(filters.FilterSet):
     class Meta:
         model = TActividad
-        fields = "__all__"
+        fields = ["demanda", "tipo", "institucion"]
 
 class TRespuestaFilter(filters.FilterSet):
     class Meta:
         model = TRespuesta
-        fields = "__all__"
+        fields = ["demanda", "institucion", "etiqueta"]
 
 class TIndicadoresValoracionFilter(filters.FilterSet):
     class Meta:
