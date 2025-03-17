@@ -23,8 +23,11 @@ from drf_spectacular.views import (
 )
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 urlpatterns = [
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/', include('customAuth.urls')),
@@ -36,5 +39,6 @@ urlpatterns = [
 
     # Redoc UI (Optional)
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
