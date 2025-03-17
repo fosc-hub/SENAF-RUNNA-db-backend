@@ -7,6 +7,7 @@ from infrastructure.models import (
     TInstitucionDemanda,
     TDemanda,
     TDemandaHistory,
+    TDemandaAdjunto,
     TTipoCodigoDemanda,
     TCodigoDemanda,
     TCalificacionDemanda,
@@ -40,6 +41,11 @@ class TInstitucionDemandaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TInstitucionDemanda
         fields = '__all__'
+
+class TDemandaAdjuntoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TDemandaAdjunto
+        fields = ['archivo']
 
 class TDemandaSerializer(serializers.ModelSerializer):
     class Meta:
