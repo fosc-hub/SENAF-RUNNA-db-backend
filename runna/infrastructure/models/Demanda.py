@@ -177,7 +177,12 @@ class TDemandaHistory(TDemandaBase, BaseHistory):
         verbose_name_plural = _('Historial de Demandas')
 
 class TDemandaAdjunto(BaseAdjunto):
-    demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE, null=False)
+    demanda = models.ForeignKey(
+        'TDemanda', 
+        on_delete=models.CASCADE, 
+        null=False,
+        related_name='adjuntos'
+    )
 
     class Meta:
         app_label = 'infrastructure'

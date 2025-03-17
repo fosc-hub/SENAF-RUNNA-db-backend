@@ -28,7 +28,11 @@ class TActividadTipo(models.Model):
         return f"{self.nombre}"
 
 class TActividadTipoModelo(BaseAdjunto):
-    actividad_tipo = models.ForeignKey('TActividadTipo', on_delete=models.CASCADE)
+    actividad_tipo = models.ForeignKey(
+        'TActividadTipo',
+        on_delete=models.CASCADE,
+        related_name='modelos'
+    )
 
     class Meta:
         app_label = 'infrastructure'
@@ -85,7 +89,11 @@ class TActividadHistory(TActividadBase, BaseHistory):
         verbose_name_plural = _('Historial de Actividades')
 
 class TActividadAdjunto(BaseAdjunto):
-    actividad = models.ForeignKey('TActividad', on_delete=models.CASCADE)
+    actividad = models.ForeignKey(
+        TActividad, 
+        on_delete=models.CASCADE, 
+        related_name="adjuntos"  # This creates a reverse relation "adjuntos" on TActividad
+    )
 
     class Meta:
         app_label = 'infrastructure'
@@ -105,7 +113,6 @@ class TRespuestaEtiqueta(models.Model):
 
 class TRespuesta(models.Model):
     fecha_y_hora = models.DateTimeField(auto_now=True)
-    sender = models.CharField(max_length=255, null=False, blank=False, default="Acme <onboarding@resend.dev>")
 
     cc = models.JSONField(null=True, blank=True, default=list)
     bcc = models.JSONField(null=True, blank=True, default=list)
@@ -127,7 +134,11 @@ class TRespuesta(models.Model):
         return f"{self.fecha_y_hora} - {self.mensaje} - {self.demanda} - {self.institucion}"
 
 class TRespuestaAdjunto(BaseAdjunto):
-    respuesta = models.ForeignKey('TRespuesta', on_delete=models.CASCADE)
+    respuesta = models.ForeignKey(
+        'TRespuesta',
+        on_delete=models.CASCADE,
+        related_name='adjuntos'
+    )
 
     class Meta:
         app_label = 'infrastructure'
