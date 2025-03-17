@@ -50,6 +50,7 @@ from api.views import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
     TActividadViewSet,
+    TRespuestaEtiquetaViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
@@ -112,6 +113,7 @@ router.register(r'persona-condiciones-vulnerabilidad-history', TPersonaCondicion
 router.register(r'actividad-tipo', TActividadTipoViewSet, basename='actividad-tipo')
 router.register(r'institucion-actividad', TInstitucionActividadViewSet, basename='institucion-actividad')
 router.register(r'actividad', TActividadViewSet, basename='actividad')
+router.register(r'respuesta-etiqueta', TRespuestaEtiquetaViewSet, basename='respuesta-etiqueta')
 router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')

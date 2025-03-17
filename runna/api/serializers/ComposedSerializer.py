@@ -18,6 +18,7 @@ from infrastructure.models import (
     TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
+    TDemandaAdjunto,
     TTipoCodigoDemanda,
     TCodigoDemanda,
     TCalificacionDemanda,
@@ -37,6 +38,8 @@ from infrastructure.models import (
     TMedico,
     TCoberturaMedica,
     TPersonaEnfermedades,
+    TPersonaOficioAdjunto,
+    TPersonaCertificadoAdjunto,
     TNNyAScore,
 
     TCategoriaMotivo,
@@ -60,6 +63,7 @@ from api.serializers import (
     TTipoPresuntoDelitoSerializer,
     TInstitucionDemandaSerializer,
     TDemandaSerializer,
+    TDemandaAdjuntoSerializer,
     TTipoCodigoDemandaSerializer,
     TCodigoDemandaSerializer,
     TCalificacionDemandaSerializer,
@@ -79,6 +83,8 @@ from api.serializers import (
     TEnfermedadSerializer,
     TMedicoSerializer,
     TCoberturaMedicaSerializer,
+    TPersonaOficioAdjuntoSerializer,
+    TPersonaCertificadoAdjuntoSerializer,
     TPersonaEnfermedadesSerializer,
     TNNyAScoreSerializer,
 
@@ -358,6 +364,9 @@ class TCoberturaMedicaRegistroSerializer(serializers.ModelSerializer):
     
 
 class TPersonaEnfermedadesRegistroSerializer(serializers.ModelSerializer):
+    oficio_adjunto = TPersonaOficioAdjuntoSerializer(many=True, required=False)
+    certificado_adjunto = TPersonaCertificadoAdjuntoSerializer(many=True, required=False)
+
     enfermedad = TEnfermedadSerializer()
     institucion_sanitaria_interviniente = TInstitucionSanitariaSerializer(required=False, allow_null=True)
     medico_tratamiento = TMedicoSerializer(required=False, allow_null=True)
@@ -515,6 +524,7 @@ class RelacionDemandaSerializer(serializers.Serializer):
 
 
 class RegistroDemandaFormSerializer(serializers.ModelSerializer):
+    adjuntos=TDemandaAdjuntoSerializer(many=True, required=False)
     institucion = TInstitucionDemandaSerializer()
     relacion_demanda = RelacionDemandaSerializer(write_only=True)
     localizacion = TLocalizacionSerializer()
@@ -576,6 +586,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create and return a TDemanda instance along with its related objects."""
+        adjuntos_data = validated_data.pop('adjuntos', [])
         institucion_data = validated_data.pop('institucion')
         relacion_demanda_data = validated_data.pop('relacion_demanda')
         localizacion_data = validated_data.pop('localizacion')
@@ -592,6 +603,11 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
         print(f"Created demanda: {demanda}")
         # Pass demanda as context to nested serializers
         self.context['demanda'] = demanda
+
+        # Handle Adjuntos
+        for adjunto_data in adjuntos_data:
+            adjunto = TDemandaAdjunto.objects.create(demanda=demanda, **adjunto_data)
+            print(f"Adjunto created: {adjunto}")
 
         self.context['personas_db'] = []  # Store created personas to link them to demanda
         self.context['vulneraciones_temp'] = []  # Store temporary vulneraciones to link them to a after created autordv
@@ -649,6 +665,8 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
             for enfermedad_data in persona_enfermedades:
 
                 enfermedad = enfermedad_data.get('enfermedad', None)
+                oficios_adjuntos_data = enfermedad_data.pop('oficio_adjunto', [])
+                certificados_adjuntos_data = enfermedad_data.pop('certificado_adjunto', [])
                 if enfermedad:
                     enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad_data.pop('enfermedad'))
                     enfermedad_data['enfermedad'] = enfermedad
@@ -661,8 +679,15 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                     medico_tratamiento, _ = TMedico.objects.get_or_create(**enfermedad_data.pop('medico_tratamiento'))
                     enfermedad_data['medico_tratamiento'] = medico_tratamiento
 
-                enfermedad, _ = TPersonaEnfermedades.objects.get_or_create(persona=persona_db, **enfermedad_data)
-                print(f"Enfermedad created: {enfermedad}")
+                persona_enfermedad, _ = TPersonaEnfermedades.objects.get_or_create(persona=persona_db, **enfermedad_data)
+                print(f"Enfermedad created: {persona_enfermedad}")
+                
+                for oficio_adjunto_data in oficios_adjuntos_data:
+                    oficio = TPersonaOficioAdjunto.objects.create(persona_enfermedades=persona_enfermedad, **oficio_adjunto_data)
+                    print(f"Oficio created: {oficio}")
+                for certificado_adjunto_data in certificados_adjuntos_data:
+                    certificado = TPersonaCertificadoAdjunto.objects.create(persona_enfermedades=persona_enfermedad, **certificado_adjunto_data)
+                    print(f"Certificado created: {certificado}")
 
             if demanda_persona:
                 demanda_persona['demanda'] = demanda
@@ -709,6 +734,7 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
 
     def update(self, instance, validated_data):
+        adjuntos_data = validated_data.pop('adjuntos', [])
         localizacion_data = validated_data.pop('localizacion', None)
         institucion_data = validated_data.pop('institucion', None)
         relacion_demanda_data = validated_data.pop('relacion_demanda', None)
@@ -726,6 +752,11 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
+
+        # Handle Adjuntos
+        for adjunto_data in adjuntos_data:
+            adjunto = TDemandaAdjunto.objects.get_or_create(demanda=instance, **adjunto_data)
+            print(f"Adjunto created: {adjunto}")
 
         if relacion_demanda_data:
             codigos_data = relacion_demanda_data.pop('codigos_demanda', [])
@@ -847,6 +878,8 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                 enfermedad = enfermedad_data.get('enfermedad', None)
                 institucion_sanitaria = enfermedad_data.get('institucion_sanitaria_interviniente', None)
                 medico_tratamiento = enfermedad_data.get('medico_tratamiento', None)
+                oficios_adjuntos_data = enfermedad_data.pop('oficio_adjunto', [])
+                certificados_adjuntos_data = enfermedad_data.pop('certificado_adjunto', [])
                 if enfermedad:
                     enfermedad, _ = TEnfermedad.objects.get_or_create(**enfermedad)
                     enfermedad_data['enfermedad'] = enfermedad
@@ -858,15 +891,22 @@ class RegistroDemandaFormSerializer(serializers.ModelSerializer):
                     enfermedad_data['medico_tratamiento'] = medico_tratamiento
                 
                 if enfermedad_id:
-                    enfermedad_db = TPersonaEnfermedades.objects.get(pk=enfermedad_id)
+                    persona_enfermedad_db = TPersonaEnfermedades.objects.get(pk=enfermedad_id)
                     if enfermedad_data:
                         for attr, value in enfermedad_data.items():
-                            setattr(enfermedad_db, attr, value)
-                        enfermedad_db.save()
+                            setattr(persona_enfermedad_db, attr, value)
+                        persona_enfermedad_db.save()
                 else:
-                    enfermedad_db= TPersonaEnfermedades.objects.create(persona=persona_db, **enfermedad_data)
+                    persona_enfermedad_db= TPersonaEnfermedades.objects.create(persona=persona_db, **enfermedad_data)
+
+                print(f"Enfermedad created: {persona_enfermedad_db}")
                 
-                print(f"Enfermedad created: {enfermedad_db}")
+                for oficio_adjunto_data in oficios_adjuntos_data:
+                    oficio = TPersonaOficioAdjunto.objects.get_or_create(persona_enfermedades=persona_enfermedad_db, **oficio_adjunto_data)
+                    print(f"Oficio created: {oficio}")
+                for certificado_adjunto_data in certificados_adjuntos_data:
+                    certificado = TPersonaCertificadoAdjunto.objects.get_or_create(persona_enfermedades=persona_enfermedad_db, **certificado_adjunto_data)
+                    print(f"Certificado created: {certificado}")
             
             if demanda_persona:
                 demanda_persona_id = demanda_persona.pop('id', None)

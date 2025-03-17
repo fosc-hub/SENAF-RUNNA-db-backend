@@ -50,6 +50,7 @@ from .EvaluacionView import (
     TActividadTipoViewSet, 
     TInstitucionActividadViewSet, 
     TActividadViewSet,
+    TRespuestaEtiquetaViewSet,
     TRespuestaViewSet, 
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
