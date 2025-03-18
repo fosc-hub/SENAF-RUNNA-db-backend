@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 self.stdout.write('Creating superuser...')
                 CustomUser.objects.create_superuser(
                     username='admin',
-                    email='admin@gmail.com',
+                    email='facundoolivam@gmail.com',
                     password='pepe1234'
                 )
                 self.stdout.write(self.style.SUCCESS('Superuser created successfully.'))
