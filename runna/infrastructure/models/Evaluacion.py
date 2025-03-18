@@ -18,7 +18,8 @@ TDecision
 
 class TActividadTipo(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
-    
+    remitir_a_jefe = models.BooleanField(default=False)
+
     class Meta:
         app_label = 'infrastructure'
         verbose_name = _('Tipo de Actividad')

@@ -1,12 +1,19 @@
 from django.db.models.signals import post_save, post_delete, pre_delete, pre_save
 from django.dispatch import receiver
+from customAuth.models import (
+    CustomUser,
+    TCustomUserZona,
+    TZona,
+)
 from infrastructure.models import (
     TActividad, TActividadHistory,
     TEvaluaciones, TEvaluacionesHistory,
-    TRespuesta
+    TRespuesta, TDemandaZona
 )
 from .BaseLogs import logs
+from django.contrib.auth.models import AnonymousUser
 from services.email_service import EmailService
+import inspect
 
 
 @receiver(pre_save, sender=TRespuesta)
@@ -41,6 +48,48 @@ def send_respuesta_mail(sender, instance, **kwargs):
         except Exception as e:
             print(f"Error sending email: {e}")
             raise e
+
+@receiver(post_save, sender=TActividad)
+def remitir_a_jefe(sender, instance, created, **kwargs):
+    """
+    Signal triggered after a TActividad instance is created.
+    Sends an email notification to the assigned user.
+    """
+    if created and instance.tipo is not None:
+        if instance.tipo.remitir_a_jefe:
+            try:
+                try:                  
+                    demanda_zonas = TDemandaZona.objects.filter(demanda=instance.demanda)
+
+                    print(f"Demanda zonas: {demanda_zonas}")
+                    jefes_zona = TCustomUserZona.objects.filter(
+                        zona__in=[demanda_zona.zona for demanda_zona in demanda_zonas],
+                        jefe=True
+                    )
+                    print(f"Jefes de zona: {jefes_zona}")
+
+                    to = [jefe_zona.user.email for jefe_zona in jefes_zona]
+                    print(f"Jefes de zona: {to}")
+                    subject = f"Nueva actividad registrada para la demanda {instance.demanda.id}"
+                    html_content = f"""
+                        <strong>Estimado,</strong><br>
+                        Se ha registrado una nueva actividad del tipo {instance.tipo.nombre}.<br>
+                        <strong>Detalles:</strong><br>
+                        Descripción de la actividad: {instance.descripcion}<br>
+                        Saludos,<br>
+                        Nuevo RUNNA
+                    """
+                    # Send email and return the response
+                    email_response = EmailService.send_email(to, subject, html_content)
+
+                    return email_response
+                except AttributeError:
+                    pass
+                except Exception as e:
+                    pass
+            except Exception as e:
+                print(f"Error getting request: {e}")
+                pass
 
 # @receiver(post_save, sender=TActividad)
 # def log_actividad_save(sender, instance, created, **kwargs):
