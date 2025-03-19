@@ -88,11 +88,16 @@ class TRespuestaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        # Extract nested attachments data if provided
+        # Extract nested attachments data if provided.
         adjuntos_data = validated_data.pop('adjuntos', [])
-        respuesta = TRespuesta.objects.create(**validated_data)
-        for adjunto_data in adjuntos_data:
-            TRespuestaAdjunto.objects.create(respuesta=respuesta, **adjunto_data)
+        # Create the instance without saving it immediately.
+        respuesta = TRespuesta(**validated_data)
+        # Attach the extra data so that pre_save signal can access it.
+        respuesta._adjuntos = adjuntos_data
+        # Now save the instance; this will trigger pre_save and the signal will see _adjuntos.
+        respuesta.save()
+        if adjuntos_data:
+            respuesta.adjuntos.set([TRespuestaAdjunto(**adjunto_data) for adjunto_data in adjuntos_data], bulk=False)
         return respuesta
 
     def update(self, instance, validated_data):

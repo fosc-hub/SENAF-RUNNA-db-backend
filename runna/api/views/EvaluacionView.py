@@ -166,15 +166,15 @@ class TRespuestaViewSet(BaseViewSet):
         if serializer.is_valid():
             try:
                 with transaction.atomic():
-                    validated_data = serializer.validated_data
-                    adjuntos_data = validated_data.pop('adjuntos', [])
-                    print(f"adjuntos_data: {adjuntos_data}")
-                    instance = TRespuesta(**validated_data)
-                    instance._adjuntos = adjuntos_data
-                    instance.save()
+                    # validated_data = serializer.validated_data
+                    # adjuntos_data = validated_data.pop('adjuntos', [])
+                    # print(f"adjuntos_data: {adjuntos_data}")
+                    # instance = TRespuesta(**validated_data)
+                    # instance._adjuntos = adjuntos_data
+                    # instance.save()
                     # print(f"Serializer data: {serializer.validated_data}")
-                    # serializer._adjuntos = serializer.validated_data['adjuntos']
-                    # instance = serializer.save()  # _adjuntos is set on instance before saving.
+                    serializer._adjuntos = serializer.validated_data['adjuntos']
+                    instance = serializer.save()  # _adjuntos is set on instance before saving.
                 return Response(serializer.data, status=201)
             except Exception as e:
                 return Response({"error": str(e)}, status=400)

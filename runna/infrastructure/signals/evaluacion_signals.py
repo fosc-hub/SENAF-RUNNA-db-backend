@@ -24,6 +24,7 @@ def send_respuesta_mail(sender, instance, **kwargs):
     """
     if instance.pk is None:
         try:
+            print(f"valores de instance {instance.__dict__}")
             extra_adjuntos = getattr(instance, '_adjuntos', None)
             print(f"Extra adjuntos: {extra_adjuntos}")
 
@@ -39,10 +40,10 @@ def send_respuesta_mail(sender, instance, **kwargs):
                 Nuevo RUNNA
             """
             
-            print(type(extra_adjuntos))
-            print([obj['archivo'] for obj in extra_adjuntos])
             # Send email and return the response
-            email_response = EmailService.send_email(to, subject, html_content, attachments=[obj['archivo'] for obj in extra_adjuntos])
+            attachments=[obj['archivo'] for obj in extra_adjuntos] if type(extra_adjuntos) == list else None
+            print(f"Attachments: {attachments}")
+            email_response = EmailService.send_email(to, subject, html_content, attachments=attachments)
 
             return email_response 
         except Exception as e:
