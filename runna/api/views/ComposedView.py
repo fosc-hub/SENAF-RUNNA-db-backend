@@ -97,7 +97,7 @@ class MesaDeEntradaListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ['fecha_creacion', 'estado_demanda']  # Fields allowed for sorting
     ordering = ['-fecha_creacion']  # Default sorting (descending)
-    filterset_fields = ['estado_demanda', 'envio_de_respuesta', 'tipo_demanda']  # Fields allowed for filtering
+    filterset_fields = ['estado_demanda', 'objetivo_de_demanda', 'tipo_demanda']  # Fields allowed for filtering
 
     def get_queryset(self):
         user = self.request.user

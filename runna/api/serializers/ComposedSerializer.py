@@ -215,7 +215,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     """Main serializer to group all dropdown data"""
     
     estado_demanda_choices = serializers.SerializerMethodField()
-    envio_de_respuesta_choices = serializers.SerializerMethodField()
+    objetivo_de_demanda_choices = serializers.SerializerMethodField()
     tipo_demanda_choices = serializers.SerializerMethodField()
     tipo_calle_choices = serializers.SerializerMethodField()
     nacionalidad_choices = serializers.SerializerMethodField()
@@ -262,8 +262,8 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     def get_estado_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemanda.ESTADO_DEMANDA_CHOICES)
 
-    def get_envio_de_respuesta_choices(self, obj):
-        return ChoiceFieldSerializer.from_model(TDemanda.ENVIO_DE_RESPUESTA_CHOICES)
+    def get_objetivo_de_demanda_choices(self, obj):
+        return ChoiceFieldSerializer.from_model(TDemanda.OBJETIVO_DE_DEMANDA_CHOICES)
 
     def get_tipo_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemanda.TIPO_DEMANDA_CHOICES)

@@ -54,12 +54,21 @@ def set_enviado_recibido(sender, instance, **kwargs):
             instance.recibido_por = current_user
         if previous_values.user_responsable != instance.user_responsable:
             instance.enviado_por = current_user
+    elif instance.pk is None and current_user is not None:
+        instance.enviado_por = current_user
 
 @receiver(post_save, sender=TDemandaZona)
 def set_demanda_constatacion(sender, instance, created, **kwargs):
     if created:
-        instance.demanda.estado_demanda = "CONSTATACION"
-        instance.demanda.save()
+        if instance.objetivo_de_demanda == "CONSTATACION":
+            instance.demanda.estado_demanda = "CONSTATACION"
+            instance.demanda.save()
+        if instance.objetivo_de_demanda == "ENVÍO_DE_RESPUESTA":
+            instance.demanda.estado_demanda = "RESPUESTA_SIN_ENVIAR"
+            instance.demanda.save()
+        if instance.objetivo_de_demanda == "PETICION_DE_INFORME":
+            instance.demanda.estado_demanda = "INFORME_SIN_ENVIAR"
+            instance.demanda.save()
 
 
 @receiver(post_save, sender=TDemandaZona)

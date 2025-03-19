@@ -71,25 +71,36 @@ class TDemandaBase(models.Model):
     fecha_oficio_documento = models.DateField(null=False)
     descripcion = models.TextField(null=True, blank=True)
     
+    OBJETIVO_DE_DEMANDA_CHOICES = [
+        ('CONSTATACION', 'Constatacion'),
+        ('ENVÍO_DE_RESPUESTA', 'Envío de Respuesta'),
+        ('PETICION_DE_INFORME', 'Petición de Informe'),
+    ]
+    objetivo_de_demanda = models.CharField(max_length=30, choices=OBJETIVO_DE_DEMANDA_CHOICES, null=False, blank=False)
+
     ESTADO_DEMANDA_CHOICES = [
         ('SIN_ASIGNAR', 'Sin Asignar'),
         ('CONSTATACION', 'Constatacion'),
         ('EVALUACION', 'Evaluacion'),
         ('PENDIENTE_AUTORIZACION', 'Pendiente Autorizacion'),
         ('ARCHIVADA', 'Archivada'),
-        ('ADMITIDA', 'Admitida')
+        ('ADMITIDA', 'Admitida'),
+        ('RESPUESTA_SIN_ENVIAR', 'Respuesta Sin Enviar'),
+        ('INFORME_SIN_ENVIAR', 'Informe Sin Enviar'),
+        ('REPUESTA_ENVIADA', 'Respuesta Enviada'),
+        ('INFORME_ENVIADO', 'Informe Enviado'),
     ]
     estado_demanda = models.CharField(max_length=30, choices=ESTADO_DEMANDA_CHOICES, null=False, blank=False, default='SIN_ASIGNAR')
     
     observaciones = models.TextField(null=True, blank=True, help_text="Observaciones sobre los niños, adultos, cantidad de personas, etc.")
     
-    ENVIO_DE_RESPUESTA_CHOICES = [
-        ('NO_NECESARIO', 'No Necesario'),
-        ('PENDIENTE', 'Pendiente'),
-        ('ENVIADO', 'Enviado')
-    ]
-    envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
-    
+    # ENVIO_DE_RESPUESTA_CHOICES = [
+    #     ('NO_NECESARIO', 'No Necesario'),
+    #     ('PENDIENTE', 'Pendiente'),
+    #     ('ENVIADO', 'Enviado')
+    # ]
+    # envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
+
     TIPO_DEMANDA_CHOICES = [
         ('DE_PROTECCION', 'De Proteccion'),
         ('PENAL_JUVENIL', 'Penal Juvenil')
