@@ -145,7 +145,7 @@ class MesaDeEntradaListView(generics.ListAPIView):
         return TDemanda.objects.filter(final_filter).distinct()
 
 class RegistroDemandaFormDropdownsView(APIView):
-    @method_decorator(cache_page(60*15), name='get')
+    # @method_decorator(cache_page(60*15), name='get')
     def get(self, request):
 
         # Query related models
@@ -282,7 +282,7 @@ class GestionDemandaZonaZonaView(APIView):
 
 
 class TActividadDropdownView(APIView):
-    @method_decorator(cache_page(60*15), name='get')
+    # @method_decorator(cache_page(60*15), name='get')
     def get(self, request):
         actividad_tipo = TActividadTipo.objects.all()
         institucion_actividad = TInstitucionActividad.objects.all()
