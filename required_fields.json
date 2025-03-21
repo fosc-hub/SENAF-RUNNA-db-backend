@@ -1,0 +1,349 @@
+{
+    "TLocalidad": [
+        "nombre"
+    ],
+    "TBarrio": [
+        "nombre",
+        "localidad"
+    ],
+    "TCPC": [
+        "nombre",
+        "localidad"
+    ],
+    "TLocalizacion": [
+        "calle",
+        "casa_nro",
+        "referencia_geo",
+        "localidad"
+    ],
+    "TLocalizacionHistory": [
+        "action",
+        "calle",
+        "casa_nro",
+        "referencia_geo",
+        "localidad",
+        "parent"
+    ],
+    "TBloqueDatosRemitente": [
+        "nombre"
+    ],
+    "TTipoInstitucionDemanda": [
+        "nombre",
+        "bloque_datos_remitente"
+    ],
+    "TAmbitoVulneracion": [
+        "nombre"
+    ],
+    "TTipoPresuntoDelito": [
+        "nombre"
+    ],
+    "TInstitucionDemanda": [
+        "nombre",
+        "tipo_institucion"
+    ],
+    "TDemanda": [
+        "fecha_ingreso_senaf",
+        "fecha_oficio_documento",
+        "objetivo_de_demanda",
+        "tipo_demanda",
+        "localizacion",
+        "bloque_datos_remitente"
+    ],
+    "TDemandaHistory": [
+        "action",
+        "fecha_ingreso_senaf",
+        "fecha_oficio_documento",
+        "objetivo_de_demanda",
+        "tipo_demanda",
+        "localizacion",
+        "bloque_datos_remitente",
+        "parent"
+    ],
+    "TDemandaAdjunto": [
+        "demanda"
+    ],
+    "TTipoCodigoDemanda": [
+        "nombre",
+        "datatype"
+    ],
+    "TCodigoDemanda": [
+        "codigo",
+        "tipo_codigo",
+        "demanda"
+    ],
+    "TCalificacionDemanda": [
+        "justificacion",
+        "estado_calificacion",
+        "demanda"
+    ],
+    "TCalificacionDemandaHistory": [
+        "action",
+        "justificacion",
+        "estado_calificacion",
+        "demanda",
+        "parent"
+    ],
+    "TDemandaScore": [
+        "demanda"
+    ],
+    "TDemandaScoreHistory": [
+        "action",
+        "demanda",
+        "parent"
+    ],
+    "TVinculoDePersonas": [
+        "nombre"
+    ],
+    "TPersona": [
+        "nombre",
+        "apellido",
+        "nacionalidad",
+        "situacion_dni",
+        "genero",
+        "adulto",
+        "nnya"
+    ],
+    "TPersonaHistory": [
+        "action",
+        "nombre",
+        "apellido",
+        "nacionalidad",
+        "situacion_dni",
+        "genero",
+        "adulto",
+        "nnya",
+        "parent"
+    ],
+    "TInstitucionEducativa": [
+        "nombre"
+    ],
+    "TEducacion": [
+        "nivel_alcanzado",
+        "esta_escolarizado",
+        "institucion_educativa",
+        "persona"
+    ],
+    "TEducacionHistory": [
+        "action",
+        "nivel_alcanzado",
+        "esta_escolarizado",
+        "institucion_educativa",
+        "persona",
+        "parent"
+    ],
+    "TInstitucionSanitaria": [
+        "nombre"
+    ],
+    "TSituacionSalud": [
+        "nombre"
+    ],
+    "TEnfermedad": [
+        "nombre",
+        "situacion_salud_categoria"
+    ],
+    "TMedico": [
+        "nombre"
+    ],
+    "TCoberturaMedica": [
+        "obra_social",
+        "intervencion",
+        "auh",
+        "persona"
+    ],
+    "TCoberturaMedicaHistory": [
+        "action",
+        "obra_social",
+        "intervencion",
+        "auh",
+        "persona",
+        "parent"
+    ],
+    "TPersonaEnfermedades": [
+        "recibe_tratamiento",
+        "persona",
+        "situacion_salud",
+        "enfermedad"
+    ],
+    "TPersonaEnfermedadesHistory": [
+        "action",
+        "recibe_tratamiento",
+        "situacion_salud",
+        "enfermedad",
+        "persona",
+        "parent"
+    ],
+    "TPersonaOficioAdjunto": [
+        "persona_enfermedades"
+    ],
+    "TPersonaCertificadoAdjunto": [
+        "persona_enfermedades"
+    ],
+    "TNNyAScore": [
+        "nnya"
+    ],
+    "TNNyAScoreHistory": [
+        "action",
+        "nnya",
+        "parent"
+    ],
+    "TLegajo": [
+        "info_legajo",
+        "nnya"
+    ],
+    "TLegajoHistory": [
+        "action",
+        "info_legajo",
+        "nnya",
+        "parent"
+    ],
+    "TCategoriaMotivo": [
+        "nombre",
+        "peso"
+    ],
+    "TCategoriaSubmotivo": [
+        "nombre",
+        "peso",
+        "motivo"
+    ],
+    "TGravedadVulneracion": [
+        "nombre",
+        "peso"
+    ],
+    "TUrgenciaVulneracion": [
+        "nombre",
+        "peso"
+    ],
+    "TCondicionesVulnerabilidad": [
+        "nombre",
+        "peso",
+        "nnya",
+        "adulto"
+    ],
+    "TVulneracion": [
+        "nnya",
+        "categoria_motivo",
+        "categoria_submotivo",
+        "gravedad_vulneracion",
+        "urgencia_vulneracion"
+    ],
+    "TVulneracionHistory": [
+        "action",
+        "nnya",
+        "categoria_motivo",
+        "categoria_submotivo",
+        "gravedad_vulneracion",
+        "urgencia_vulneracion",
+        "parent"
+    ],
+    "TLocalizacionPersona": [
+        "persona",
+        "localizacion"
+    ],
+    "TLocalizacionPersonaHistory": [
+        "action",
+        "persona",
+        "localizacion",
+        "parent"
+    ],
+    "TDemandaPersona": [
+        "conviviente",
+        "demanda",
+        "persona"
+    ],
+    "TDemandaPersonaHistory": [
+        "action",
+        "conviviente",
+        "demanda",
+        "persona",
+        "parent"
+    ],
+    "TDemandaZona": [
+        "demanda",
+        "zona"
+    ],
+    "TDemandaZonaHistory": [
+        "action",
+        "demanda",
+        "zona",
+        "parent"
+    ],
+    "TDemandaVinculada": [
+        "demanda_1",
+        "demanda_2"
+    ],
+    "TDemandaVinculadaHistory": [
+        "action",
+        "demanda_1",
+        "demanda_2",
+        "parent"
+    ],
+    "TPersonaCondicionesVulnerabilidad": [
+        "si_no",
+        "persona",
+        "condicion_vulnerabilidad"
+    ],
+    "TPersonaCondicionesVulnerabilidadHistory": [
+        "action",
+        "si_no",
+        "persona",
+        "condicion_vulnerabilidad",
+        "parent"
+    ],
+    "TActividadTipo": [
+        "nombre"
+    ],
+    "TActividadTipoModelo": [
+        "actividad_tipo"
+    ],
+    "TInstitucionActividad": [
+        "nombre"
+    ],
+    "TActividad": [
+        "fecha_y_hora_manual",
+        "descripcion",
+        "demanda"
+    ],
+    "TActividadHistory": [
+        "action",
+        "fecha_y_hora_manual",
+        "descripcion",
+        "demanda",
+        "parent"
+    ],
+    "TActividadAdjunto": [
+        "actividad"
+    ],
+    "TRespuestaEtiqueta": [
+        "nombre"
+    ],
+    "TRespuesta": [
+        "asunto",
+        "mensaje",
+        "demanda",
+        "institucion"
+    ],
+    "TRespuestaAdjunto": [
+        "respuesta"
+    ],
+    "TIndicadoresValoracion": [
+        "nombre"
+    ],
+    "TEvaluaciones": [
+        "demanda",
+        "indicador",
+        "si_no"
+    ],
+    "TEvaluacionesHistory": [
+        "action",
+        "demanda",
+        "indicador",
+        "si_no",
+        "parent"
+    ],
+    "TDecision": [
+        "justificacion",
+        "decision",
+        "demanda",
+        "nnya"
+    ]
+}
