@@ -12,10 +12,12 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
 from django.db import transaction
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .BaseView import BaseViewSet
 from drf_spectacular.utils import extend_schema
 from django.db.models import Q
+import json
 
 from customAuth.models import (
     CustomUser,
@@ -207,10 +209,10 @@ class RegistroDemandaFormDropdownsView(APIView):
 
 
 class RegistroDemandaFormView(BaseViewSet):
+    parser_classes = (MultiPartParser, FormParser)
     model = TDemanda
     serializer_class = RegistroDemandaFormSerializer
-    
-    http_method_names = ['post', 'patch', 'get']  # Excludes PUT, DELETE, HEAD, OPTIONS
+    http_method_names = ['post', 'patch', 'get']
 
     @extend_schema(
         request=RegistroDemandaFormSerializer,
@@ -218,16 +220,30 @@ class RegistroDemandaFormView(BaseViewSet):
         description="Create a new TDemanda entry"
     )
     def create(self, request):
-        serializer = RegistroDemandaFormSerializer(data=request.data)
+        # Extraer el campo "data" que contiene el JSON con la data transformada
+        data_field = request.data.get("data")
+        if data_field:
+            try:
+                final_data = json.loads(data_field)
+            except json.JSONDecodeError:
+                return Response({"error": "JSON inválido en el campo 'data'."}, status=400)
+        else:
+            final_data = {}
+
+        # Incorporar los archivos (vienen en request.FILES)
+        for key in request.FILES:
+            files = request.FILES.getlist(key)
+            final_data[key] = files[0] if len(files) == 1 else files
+
+        serializer = RegistroDemandaFormSerializer(data=final_data)
         if serializer.is_valid():
             try:
                 with transaction.atomic():
                     demanda = serializer.save()
-                    
-                print(f"Demanda creada: {demanda}")
-                
-                return Response({"message_encrypted": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJIaW50IjoiTG9vayBhdCB0aGUgd2luZG93IGF0IDk6NTggR01ULTIifQ.Jbldjuw5yGPQ1ytzlP25xghgycL89TmYssiHr2CLC0M",
-                                 "demanda": demanda.pk}, status=201)
+                return Response({
+                    "message_encrypted": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",  # Token de ejemplo
+                    "demanda": demanda.pk
+                }, status=201)
             except Exception as e:
                 return Response({"error": str(e)}, status=400)
         return Response(serializer.errors, status=400)
@@ -238,9 +254,23 @@ class RegistroDemandaFormView(BaseViewSet):
         description="Partially update an existing TDemanda entry"
     )
     def partial_update(self, request, pk=None):
+        data_field = request.data.get("data")
+        if data_field:
+            try:
+                final_data = json.loads(data_field)
+            except json.JSONDecodeError:
+                return Response({"error": "JSON inválido en el campo 'data'."}, status=400)
+        else:
+            final_data = {}
+
+        # Agregar los archivos que vienen en request.FILES
+        for key in request.FILES:
+            files = request.FILES.getlist(key)
+            final_data[key] = files[0] if len(files) == 1 else files
+
         try:
             instance = self.get_object(pk)
-            serializer = RegistroDemandaFormSerializer(instance, data=request.data, partial=True)
+            serializer = RegistroDemandaFormSerializer(instance, data=final_data, partial=True)
             if serializer.is_valid():
                 with transaction.atomic():
                     serializer.save()
@@ -249,10 +279,6 @@ class RegistroDemandaFormView(BaseViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=400)
 
-    @extend_schema(
-        responses=RegistroDemandaFormSerializer,
-        description="Demanda Detalle info."
-    )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
@@ -261,7 +287,7 @@ class RegistroDemandaFormView(BaseViewSet):
             return TDemanda.objects.get(pk=pk)
         except TDemanda.DoesNotExist:
             raise Http404
-
+        
 class GestionDemandaZonaZonaView(APIView):
     def get(self, request, pk):
         try:
