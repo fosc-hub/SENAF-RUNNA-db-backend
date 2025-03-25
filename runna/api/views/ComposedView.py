@@ -209,7 +209,6 @@ class RegistroDemandaFormDropdownsView(APIView):
 
 
 class RegistroDemandaFormView(BaseViewSet):
-    parser_classes = (MultiPartParser, FormParser)
     model = TDemanda
     serializer_class = RegistroDemandaFormSerializer
     http_method_names = ['post', 'patch', 'get']
@@ -220,7 +219,7 @@ class RegistroDemandaFormView(BaseViewSet):
         description="Create a new TDemanda entry"
     )
     def create(self, request):
-        # Extraer el campo "data" que contiene el JSON con la data transformada
+        # Extraer el JSON enviado en el campo "data"
         data_field = request.data.get("data")
         if data_field:
             try:
@@ -230,10 +229,12 @@ class RegistroDemandaFormView(BaseViewSet):
         else:
             final_data = {}
 
-        # Incorporar los archivos (vienen en request.FILES)
+        # Agregar archivos: para cada archivo, se envuelve en un diccionario con la clave "archivo"
+        final_data["adjuntos"] = []
         for key in request.FILES:
             files = request.FILES.getlist(key)
-            final_data[key] = files[0] if len(files) == 1 else files
+            for f in files:
+                final_data["adjuntos"].append({"archivo": f})
 
         serializer = RegistroDemandaFormSerializer(data=final_data)
         if serializer.is_valid():
@@ -263,10 +264,11 @@ class RegistroDemandaFormView(BaseViewSet):
         else:
             final_data = {}
 
-        # Agregar los archivos que vienen en request.FILES
+        final_data["adjuntos"] = []
         for key in request.FILES:
             files = request.FILES.getlist(key)
-            final_data[key] = files[0] if len(files) == 1 else files
+            for f in files:
+                final_data["adjuntos"].append({"archivo": f})
 
         try:
             instance = self.get_object(pk)
