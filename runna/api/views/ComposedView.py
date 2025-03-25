@@ -233,7 +233,7 @@ class RegistroDemandaFormView(BaseViewSet):
         for key in request.FILES:
             files = request.FILES.getlist(key)
             
-            # Si la clave indica que es un certificado adjunto
+            # Actualizar la expresión regular para el nuevo formato
             certificado_pattern = r'^personas\[(\d+)\]persona_enfermedades\[(\d+)\]certificado_adjunto\[(\d+)\]archivo$'
             match = re.match(certificado_pattern, key)
             if match:
@@ -241,10 +241,9 @@ class RegistroDemandaFormView(BaseViewSet):
                 enfermedad_index = int(match.group(2))
                 certificado_index = int(match.group(3))
                 
-                # Inicializar estructura si no existe
+                # Inicializar la estructura si no existe
                 if "personas" not in final_data:
                     final_data["personas"] = []
-                # Asegurarse de que la lista de personas tenga el tamaño necesario
                 while len(final_data["personas"]) <= persona_index:
                     final_data["personas"].append({})
                 if "persona_enfermedades" not in final_data["personas"][persona_index]:
@@ -253,11 +252,11 @@ class RegistroDemandaFormView(BaseViewSet):
                     final_data["personas"][persona_index]["persona_enfermedades"].append({})
                 if "certificado_adjunto" not in final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]:
                     final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"] = []
-                # Finalmente, agregar el archivo
+                # Agregar el archivo al certificado correspondiente
                 for f in files:
                     final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"].append({"archivo": f})
             else:
-                # Procesar archivos que no son certificados adjuntos (por ejemplo, adjuntos generales)
+                # Procesar archivos que no son certificados adjuntos (ej. adjuntos generales)
                 if "adjuntos" not in final_data:
                     final_data["adjuntos"] = []
                 for f in files:
