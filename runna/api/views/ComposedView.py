@@ -1,3 +1,4 @@
+import re
 from django.http import Http404
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -229,12 +230,38 @@ class RegistroDemandaFormView(BaseViewSet):
         else:
             final_data = {}
 
-        # Agregar archivos: para cada archivo, se envuelve en un diccionario con la clave "archivo"
-        final_data["adjuntos"] = []
         for key in request.FILES:
             files = request.FILES.getlist(key)
-            for f in files:
-                final_data["adjuntos"].append({"archivo": f})
+            
+            # Si la clave indica que es un certificado adjunto
+            certificado_pattern = r'^personas\[(\d+)\]persona_enfermedades\[(\d+)\]certificado_adjunto\[(\d+)\]archivo$'
+            match = re.match(certificado_pattern, key)
+            if match:
+                persona_index = int(match.group(1))
+                enfermedad_index = int(match.group(2))
+                certificado_index = int(match.group(3))
+                
+                # Inicializar estructura si no existe
+                if "personas" not in final_data:
+                    final_data["personas"] = []
+                # Asegurarse de que la lista de personas tenga el tamaño necesario
+                while len(final_data["personas"]) <= persona_index:
+                    final_data["personas"].append({})
+                if "persona_enfermedades" not in final_data["personas"][persona_index]:
+                    final_data["personas"][persona_index]["persona_enfermedades"] = []
+                while len(final_data["personas"][persona_index]["persona_enfermedades"]) <= enfermedad_index:
+                    final_data["personas"][persona_index]["persona_enfermedades"].append({})
+                if "certificado_adjunto" not in final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]:
+                    final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"] = []
+                # Finalmente, agregar el archivo
+                for f in files:
+                    final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"].append({"archivo": f})
+            else:
+                # Procesar archivos que no son certificados adjuntos (por ejemplo, adjuntos generales)
+                if "adjuntos" not in final_data:
+                    final_data["adjuntos"] = []
+                for f in files:
+                    final_data["adjuntos"].append({"archivo": f})
 
         serializer = RegistroDemandaFormSerializer(data=final_data)
         if serializer.is_valid():
