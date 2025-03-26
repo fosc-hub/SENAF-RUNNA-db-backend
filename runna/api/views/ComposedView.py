@@ -208,6 +208,35 @@ class RegistroDemandaFormDropdownsView(APIView):
 
         return Response(serialized_data.data)
 
+def process_files(final_data, files_dict):
+    for key in files_dict:
+        files = files_dict.getlist(key)
+        # Procesar archivos que siguen el patrón específico
+        certificado_pattern = r'^personas\[(\d+)\]persona_enfermedades\[(\d+)\]certificado_adjunto\[(\d+)\]archivo$'
+        match = re.match(certificado_pattern, key)
+        if match:
+            persona_index = int(match.group(1))
+            enfermedad_index = int(match.group(2))
+            # Inicializar la estructura si es necesario
+            if "personas" not in final_data:
+                final_data["personas"] = []
+            while len(final_data["personas"]) <= persona_index:
+                final_data["personas"].append({})
+            if "persona_enfermedades" not in final_data["personas"][persona_index]:
+                final_data["personas"][persona_index]["persona_enfermedades"] = []
+            while len(final_data["personas"][persona_index]["persona_enfermedades"]) <= enfermedad_index:
+                final_data["personas"][persona_index]["persona_enfermedades"].append({})
+            if "certificado_adjunto" not in final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]:
+                final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"] = []
+            for f in files:
+                final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"].append({"archivo": f})
+        else:
+            # Procesar archivos generales
+            if "adjuntos" not in final_data:
+                final_data["adjuntos"] = []
+            for f in files:
+                final_data["adjuntos"].append({"archivo": f})
+    return final_data
 
 class RegistroDemandaFormView(BaseViewSet):
     model = TDemanda
@@ -220,7 +249,6 @@ class RegistroDemandaFormView(BaseViewSet):
         description="Create a new TDemanda entry"
     )
     def create(self, request):
-        # Extraer el JSON enviado en el campo "data"
         data_field = request.data.get("data")
         if data_field:
             try:
@@ -230,38 +258,7 @@ class RegistroDemandaFormView(BaseViewSet):
         else:
             final_data = {}
 
-        for key in request.FILES:
-            files = request.FILES.getlist(key)
-            
-            # Actualizar la expresión regular para el nuevo formato
-            certificado_pattern = r'^personas\[(\d+)\]persona_enfermedades\[(\d+)\]certificado_adjunto\[(\d+)\]archivo$'
-            match = re.match(certificado_pattern, key)
-            if match:
-                persona_index = int(match.group(1))
-                enfermedad_index = int(match.group(2))
-                certificado_index = int(match.group(3))
-                
-                # Inicializar la estructura si no existe
-                if "personas" not in final_data:
-                    final_data["personas"] = []
-                while len(final_data["personas"]) <= persona_index:
-                    final_data["personas"].append({})
-                if "persona_enfermedades" not in final_data["personas"][persona_index]:
-                    final_data["personas"][persona_index]["persona_enfermedades"] = []
-                while len(final_data["personas"][persona_index]["persona_enfermedades"]) <= enfermedad_index:
-                    final_data["personas"][persona_index]["persona_enfermedades"].append({})
-                if "certificado_adjunto" not in final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]:
-                    final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"] = []
-                # Agregar el archivo al certificado correspondiente
-                for f in files:
-                    final_data["personas"][persona_index]["persona_enfermedades"][enfermedad_index]["certificado_adjunto"].append({"archivo": f})
-            else:
-                # Procesar archivos que no son certificados adjuntos (ej. adjuntos generales)
-                if "adjuntos" not in final_data:
-                    final_data["adjuntos"] = []
-                for f in files:
-                    final_data["adjuntos"].append({"archivo": f})
-
+        final_data = process_files(final_data, request.FILES)
         serializer = RegistroDemandaFormSerializer(data=final_data)
         if serializer.is_valid():
             try:
@@ -290,11 +287,7 @@ class RegistroDemandaFormView(BaseViewSet):
         else:
             final_data = {}
 
-        final_data["adjuntos"] = []
-        for key in request.FILES:
-            files = request.FILES.getlist(key)
-            for f in files:
-                final_data["adjuntos"].append({"archivo": f})
+        final_data = process_files(final_data, request.FILES)
 
         try:
             instance = self.get_object(pk)
