@@ -22,7 +22,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Load the ordered model list from JSON
         try:
-            with open('./infrastructure/management/fixtures/sorted_models.json', 'r') as f:
+            with open('./runna/infrastructure/management/fixtures/sorted_models.json', 'r') as f:
                 model_order = json.load(f)['models']
         except FileNotFoundError:
             self.stderr.write(self.style.ERROR('sorted_models.json not found!'))
@@ -30,18 +30,18 @@ class Command(BaseCommand):
 
         # Load data from Excel file
         # bloque_datos_remitente_data = load_excel_data(self, './runna/infrastructure/management/fixtures/origen de la demanda.xlsx')
-        tipo_institucion_demanda_data = load_excel_data(self, './infrastructure/management/fixtures/CIRCUNSCRIPCIONES_TIPOS Y ORGANOS JUDICIALES.xlsx', sheet_name='TIPO Y ÓRGANOS judiciales')
-        zonas = load_excel_data(self, './infrastructure/management/fixtures/equipos senaf.xlsx', sheet_name='Hoja1')
-        tipo_codigo_demanda = load_excel_data(self, './infrastructure/management/fixtures/tipo_codigo_demanda.xlsx', sheet_name='Sheet1')
-        motivos_submotivos = load_excel_data(self, './infrastructure/management/fixtures/motivos, submotivos y derechos.xlsx', sheet_name='categ motivo y tipos de motivos')
-        tipos_presuntos_delitos = load_excel_data(self, './infrastructure/management/fixtures/tipos de presuntos delitos.xlsx', sheet_name='Hoja1')
-        ambitos_vulneracion = load_excel_data(self, './infrastructure/management/fixtures/AMBITOS DE LA VULNERACION.xlsx', sheet_name='AMBITOS DE LA VULNERACION')
-        vinculo_de_personas = load_excel_data(self, './infrastructure/management/fixtures/tipos de relaciones vinculares.xlsx', sheet_name='Hoja1')
-        localidades = load_excel_data(self, './infrastructure/management/fixtures/localidades prov cba.xlsx', sheet_name='Hoja1')
-        salud = load_excel_data(self, './infrastructure/management/fixtures/salud.xlsx', sheet_name='Sheet1')
-        condiciones_vulnerabilidad = load_excel_data(self, './infrastructure/management/fixtures/condiciones_vulnerabilidad.xlsx', sheet_name='Sheet1')
-        indicadores_valoracion = load_excel_data(self, './infrastructure/management/fixtures/indicadores_valoracion.xlsx', sheet_name='Sheet1')
-        tipos_actividad = load_excel_data(self, './infrastructure/management/fixtures/tipos_actividad.xlsx', sheet_name='Sheet1')
+        tipo_institucion_demanda_data = load_excel_data(self, './runna/infrastructure/management/fixtures/CIRCUNSCRIPCIONES_TIPOS Y ORGANOS JUDICIALES.xlsx', sheet_name='TIPO Y ÓRGANOS judiciales')
+        zonas = load_excel_data(self, './runna/infrastructure/management/fixtures/equipos senaf.xlsx', sheet_name='Hoja1')
+        tipo_codigo_demanda = load_excel_data(self, './runna/infrastructure/management/fixtures/tipo_codigo_demanda.xlsx', sheet_name='Sheet1')
+        motivos_submotivos = load_excel_data(self, './runna/infrastructure/management/fixtures/motivos, submotivos y derechos.xlsx', sheet_name='categ motivo y tipos de motivos')
+        tipos_presuntos_delitos = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos de presuntos delitos.xlsx', sheet_name='Hoja1')
+        ambitos_vulneracion = load_excel_data(self, './runna/infrastructure/management/fixtures/AMBITOS DE LA VULNERACION.xlsx', sheet_name='AMBITOS DE LA VULNERACION')
+        vinculo_de_personas = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos de relaciones vinculares.xlsx', sheet_name='Hoja1')
+        localidades = load_excel_data(self, './runna/infrastructure/management/fixtures/localidades prov cba.xlsx', sheet_name='Hoja1')
+        salud = load_excel_data(self, './runna/infrastructure/management/fixtures/salud.xlsx', sheet_name='Sheet1')
+        condiciones_vulnerabilidad = load_excel_data(self, './runna/infrastructure/management/fixtures/condiciones_vulnerabilidad.xlsx', sheet_name='Sheet1')
+        indicadores_valoracion = load_excel_data(self, './runna/infrastructure/management/fixtures/indicadores_valoracion.xlsx', sheet_name='Sheet1')
+        tipos_actividad = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos_actividad.xlsx', sheet_name='Sheet1')
 
         for model_name in model_order:
             model = apps.get_model(model_name)  # Adjust 'myapp' to your app name

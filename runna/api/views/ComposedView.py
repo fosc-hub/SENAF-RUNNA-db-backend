@@ -300,6 +300,11 @@ class RegistroDemandaFormView(BaseViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=400)
 
+
+    @extend_schema(
+        responses=RegistroDemandaFormSerializer,
+        description="Demanda Detalle info."
+    )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)
 
