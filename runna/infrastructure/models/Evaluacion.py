@@ -124,6 +124,7 @@ class TRespuesta(models.Model):
     
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     institucion = models.CharField(max_length=255, null=False, blank=False)
+    by_user = models.ForeignKey('customAuth.CustomUser', on_delete=models.SET_NULL, null=True, blank=True)
     etiqueta = models.ForeignKey('TRespuestaEtiqueta', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:

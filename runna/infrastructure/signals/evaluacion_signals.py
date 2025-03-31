@@ -22,8 +22,24 @@ def send_respuesta_mail(sender, instance, **kwargs):
     Signal triggered after a TDemandaZona instance is created.
     Sends an email notification to the assigned user.
     """
+    for frame_record in inspect.stack():
+        if frame_record[3]=='get_response':
+            request = frame_record[0].f_locals['request']
+            break
+    else:
+        request = None
+
+    try:
+        current_user = request.user
+    except AttributeError:
+        current_user = None
+    except Exception as e:
+        current_user = None
+
+
     if instance.pk is None:
         try:
+            instance.by_user = current_user
             print(f"valores de instance {instance.__dict__}")
             extra_adjuntos = getattr(instance, '_adjuntos', None)
             print(f"Extra adjuntos: {extra_adjuntos}")
