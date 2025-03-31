@@ -63,9 +63,6 @@ def set_demanda_constatacion(sender, instance, created, **kwargs):
         if instance.demanda.objetivo_de_demanda == "CONSTATACION":
             instance.demanda.estado_demanda = "CONSTATACION"
             instance.demanda.save()
-        if instance.demanda.objetivo_de_demanda == "ENVÍO_DE_RESPUESTA":
-            instance.demanda.estado_demanda = "RESPUESTA_SIN_ENVIAR"
-            instance.demanda.save()
         if instance.demanda.objetivo_de_demanda == "PETICION_DE_INFORME":
             instance.demanda.estado_demanda = "INFORME_SIN_ENVIAR"
             instance.demanda.save()

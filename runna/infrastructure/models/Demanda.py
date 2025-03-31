@@ -85,9 +85,7 @@ class TDemandaBase(models.Model):
         ('PENDIENTE_AUTORIZACION', 'Pendiente Autorizacion'),
         ('ARCHIVADA', 'Archivada'),
         ('ADMITIDA', 'Admitida'),
-        ('RESPUESTA_SIN_ENVIAR', 'Respuesta Sin Enviar'),
         ('INFORME_SIN_ENVIAR', 'Informe Sin Enviar'),
-        ('REPUESTA_ENVIADA', 'Respuesta Enviada'),
         ('INFORME_ENVIADO', 'Informe Enviado'),
     ]
     estado_demanda = models.CharField(max_length=30, choices=ESTADO_DEMANDA_CHOICES, null=False, blank=False, default='SIN_ASIGNAR')

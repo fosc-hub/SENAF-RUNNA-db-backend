@@ -145,9 +145,11 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
 
     def get_demanda_score(self, obj):
         try:
-            score = TDemandaScore.objects.get(demanda=obj)
-            return TDemandaScoreSerializer(score).data
-        except TDemandaScore.DoesNotExist:
+            demandaPersonas = TDemandaPersona.objects.filter(demanda=obj, vinculo_demanda__in=["NNYA_PRINCIPAL", "NNYA_SECUNDARIO"])
+            max_nnya_score = TNNyAScore.objects.filter(nnya_id__in=[dem.persona.id for dem in demandaPersonas]).order_by('-score').first()
+
+            return TNNyAScoreSerializer(max_nnya_score).data
+        except AttributeError:
             return None
 
     def get_nnya_principal(self, obj):
