@@ -69,13 +69,28 @@ class TDemandaPersonaBase(models.Model):
     deleted = models.BooleanField(default=False)
     
     conviviente = models.BooleanField(null=False, blank=False)
+    legalmente_responsable = models.BooleanField(default=False)
+    OCUPACION_CHOICES = [
+        ('ESTUDIANTE', 'Estudiante'),
+        ('TRABAJADOR', 'Trabajador'),
+        ('DESEMPLEADO', 'Desempleado'),
+        ('JUBILADO', 'Jubilado'),
+        ('PENSIONADO', 'Pensionado'),
+        ('AMA_DE_CASA', 'Ama de Casa'),
+        ('OTRO', 'Otro'),
+    ]
+    ocupacion = models.CharField(
+        max_length=20,
+        choices=OCUPACION_CHOICES,
+        null=True,
+        blank=True
+    )
     VINCULO_DEMANDA_CHOICES = [
         ('NNYA_PRINCIPAL', 'NNYA Principal'),
         ('NNYA_SECUNDARIO', 'NNYA Secundario'),
         ('SUPUESTO_AUTOR_DV', 'Supuesto Autor DV'),
         ('SUPUESTO_AUTOR_DV_PRINCIPAL', 'Supuesto Autor DV Principal'),
         ('GARANTIZA_PROTECCION', 'Garantiza Protección'),
-        ('LEGALMENTE_RESPONSABLE', 'Legalmente Responsable'),
         ('SE_DESCONOCE', 'Se Desconoce'),
     ]
     vinculo_demanda = models.CharField(

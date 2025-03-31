@@ -53,6 +53,7 @@ class TPersonaBase(models.Model):
     nombre_autopercibido = models.CharField(max_length=255, null=True, blank=True)
     apellido = models.CharField(max_length=255, null=False, blank=False)
     fecha_nacimiento = models.DateField(null=True, blank=True)
+    fecha_defuncion = models.DateField(null=True, blank=True)
     edad_aproximada = models.IntegerField(null=True, blank=True)
 
     NACIONALIDAD_CHOICES = [

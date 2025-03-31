@@ -3,7 +3,6 @@ from infrastructure.models import (
     TBloqueDatosRemitente,
     TTipoInstitucionDemanda,
     TAmbitoVulneracion,
-    TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
     TDemandaHistory,
@@ -30,11 +29,6 @@ class TTipoInstitucionDemandaSerializer(serializers.ModelSerializer):
 class TAmbitoVulneracionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TAmbitoVulneracion
-        fields = '__all__'
-
-class TTipoPresuntoDelitoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TTipoPresuntoDelito
         fields = '__all__'
 
 class TInstitucionDemandaSerializer(serializers.ModelSerializer):

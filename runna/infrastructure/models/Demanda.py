@@ -39,17 +39,6 @@ class TAmbitoVulneracion(models.Model):
     def __str__(self):
         return f"{self.nombre}"
 
-class TTipoPresuntoDelito(models.Model):
-    nombre = models.CharField(max_length=255, null=False, blank=False)
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Tipo de Presunto Delito')
-        verbose_name_plural = _('Tipos de Presuntos Delitos')
-
-    def __str__(self):
-        return f"{self.nombre}"
-
 
 class TInstitucionDemanda(models.Model):
     nombre = models.CharField(max_length=255, null=False, blank=False)
@@ -72,11 +61,10 @@ class TDemandaBase(models.Model):
     descripcion = models.TextField(null=True, blank=True)
     
     OBJETIVO_DE_DEMANDA_CHOICES = [
-        ('CONSTATACION', 'Constatacion'),
-        ('ENVÍO_DE_RESPUESTA', 'Envío de Respuesta'),
+        ('PROTECCION', 'Protección'),
         ('PETICION_DE_INFORME', 'Petición de Informe'),
     ]
-    objetivo_de_demanda = models.CharField(max_length=30, choices=OBJETIVO_DE_DEMANDA_CHOICES, null=False, blank=False)
+    objetivo_de_demanda = models.CharField(max_length=30, choices=OBJETIVO_DE_DEMANDA_CHOICES, null=True, blank=True)
 
     ESTADO_DEMANDA_CHOICES = [
         ('SIN_ASIGNAR', 'Sin Asignar'),
@@ -92,24 +80,18 @@ class TDemandaBase(models.Model):
     
     observaciones = models.TextField(null=True, blank=True, help_text="Observaciones sobre los niños, adultos, cantidad de personas, etc.")
     
-    # ENVIO_DE_RESPUESTA_CHOICES = [
-    #     ('NO_NECESARIO', 'No Necesario'),
-    #     ('PENDIENTE', 'Pendiente'),
-    #     ('ENVIADO', 'Enviado')
-    # ]
-    # envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
-
-    TIPO_DEMANDA_CHOICES = [
-        ('DE_PROTECCION', 'De Proteccion'),
-        ('PENAL_JUVENIL', 'Penal Juvenil')
+    ENVIO_DE_RESPUESTA_CHOICES = [
+        ('NO_NECESARIO', 'No Necesario'),
+        ('PENDIENTE', 'Pendiente'),
+        ('ENVIADO', 'Enviado')
     ]
-    tipo_demanda = models.CharField(max_length=20, choices=TIPO_DEMANDA_CHOICES, null=False, blank=False)
+    envio_de_respuesta = models.CharField(max_length=20, choices=ENVIO_DE_RESPUESTA_CHOICES, null=False, blank=False, default='NO_NECESARIO')
+
+    etiqueta = models.ForeignKey('TRespuestaEtiqueta', on_delete=models.SET_NULL, null=True, blank=True)
 
     localizacion = models.ForeignKey('TLocalizacion', on_delete=models.PROTECT, null=False)
 
     ambito_vulneracion = models.ForeignKey('TAmbitoVulneracion', on_delete=models.PROTECT, null=True, blank=True)
-
-    tipos_presuntos_delitos = models.ForeignKey('TTipoPresuntoDelito', on_delete=models.PROTECT, null=True, blank=True)
 
     bloque_datos_remitente = models.ForeignKey('TBloqueDatosRemitente', on_delete=models.PROTECT, null=False)
     tipo_institucion = models.ForeignKey('TTipoInstitucionDemanda', on_delete=models.PROTECT, null=True, blank=True)

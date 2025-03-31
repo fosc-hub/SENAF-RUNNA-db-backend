@@ -42,6 +42,7 @@ class Command(BaseCommand):
         condiciones_vulnerabilidad = load_excel_data(self, './runna/infrastructure/management/fixtures/condiciones_vulnerabilidad.xlsx', sheet_name='Sheet1')
         indicadores_valoracion = load_excel_data(self, './runna/infrastructure/management/fixtures/indicadores_valoracion.xlsx', sheet_name='Sheet1')
         tipos_actividad = load_excel_data(self, './runna/infrastructure/management/fixtures/tipos_actividad.xlsx', sheet_name='Sheet1')
+        etiquetas = load_excel_data(self, './runna/infrastructure/management/fixtures/etiquetas.xlsx', sheet_name='Sheet1')
 
         for model_name in model_order:
             model = apps.get_model(model_name)  # Adjust 'myapp' to your app name
@@ -100,15 +101,15 @@ class Command(BaseCommand):
                         model.objects.get_or_create(**sumbotivo_data)
                     except Exception as e:
                         self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
-            elif model_name == 'infrastructure.TTipoPresuntoDelito':
-                for index, row in tipos_presuntos_delitos.iterrows():
-                    obj_data = {
-                        'nombre': row['Tipos Delito'],
-                    }
-                    try:
-                        model.objects.get_or_create(**obj_data)
-                    except Exception as e:
-                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            # elif model_name == 'infrastructure.TTipoPresuntoDelito':
+            #     for index, row in tipos_presuntos_delitos.iterrows():
+            #         obj_data = {
+            #             'nombre': row['Tipos Delito'],
+            #         }
+            #         try:
+            #             model.objects.get_or_create(**obj_data)
+            #         except Exception as e:
+            #             self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
             elif model_name == 'infrastructure.TTipoCodigoDemanda':
                 for index, row in tipo_codigo_demanda.iterrows():
                     obj_data = {
@@ -212,6 +213,15 @@ class Command(BaseCommand):
                 for index, row in tipos_actividad.iterrows():
                     obj_data = {
                         'nombre': row['tipos_actividad'],
+                    }
+                    try:
+                        model.objects.get_or_create(**obj_data)
+                    except Exception as e:
+                        self.stderr.write(self.style.ERROR(f'Error creating {model_name} object: {e}'))
+            elif model_name == 'infrastructure.TRespuestaEtiqueta':
+                for index, row in etiquetas.iterrows():
+                    obj_data = {
+                        'nombre': row['Nombre'],
                     }
                     try:
                         model.objects.get_or_create(**obj_data)

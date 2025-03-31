@@ -114,7 +114,6 @@ ADMIN_REORDER = [
             "infrastructure.TBloqueDatosRemitente",
             "infrastructure.TTipoInstitucionDemanda",
             "infrastructure.TAmbitoVulneracion",
-            "infrastructure.TTipoPresuntoDelito",
             "infrastructure.TInstitucionDemanda",
             "infrastructure.TDemanda",
             "infrastructure.TDemandaHistory",

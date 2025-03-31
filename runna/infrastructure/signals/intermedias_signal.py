@@ -60,7 +60,7 @@ def set_enviado_recibido(sender, instance, **kwargs):
 @receiver(post_save, sender=TDemandaZona)
 def set_demanda_constatacion(sender, instance, created, **kwargs):
     if created:
-        if instance.demanda.objetivo_de_demanda == "CONSTATACION":
+        if instance.demanda.objetivo_de_demanda == "PROTECCION":
             instance.demanda.estado_demanda = "CONSTATACION"
             instance.demanda.save()
         if instance.demanda.objetivo_de_demanda == "PETICION_DE_INFORME":

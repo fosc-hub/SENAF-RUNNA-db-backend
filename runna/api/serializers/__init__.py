@@ -9,7 +9,6 @@ from .DemandaSerializer import (
     TBloqueDatosRemitenteSerializer,
     TTipoInstitucionDemandaSerializer,
     TAmbitoVulneracionSerializer,
-    TTipoPresuntoDelitoSerializer,
     TInstitucionDemandaSerializer,
     TDemandaSerializer,
     TDemandaHistorySerializer,

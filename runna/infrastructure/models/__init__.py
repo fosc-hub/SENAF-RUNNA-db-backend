@@ -10,7 +10,6 @@ from .Demanda import  (
     TBloqueDatosRemitente,
     TTipoInstitucionDemanda,
     TAmbitoVulneracion,
-    TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
     TDemandaHistory,

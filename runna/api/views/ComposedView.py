@@ -31,10 +31,10 @@ from customAuth.serializers import (
     TCustomUserZonaSerializer,
 )
 from infrastructure.models import (
+    TRespuestaEtiqueta,
     TBloqueDatosRemitente,
     TTipoInstitucionDemanda,
     TAmbitoVulneracion,
-    TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
     TTipoCodigoDemanda,
@@ -100,63 +100,62 @@ class MesaDeEntradaListView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     ordering_fields = ['fecha_creacion', 'estado_demanda']  # Fields allowed for sorting
     ordering = ['-fecha_creacion']  # Default sorting (descending)
-    filterset_fields = ['estado_demanda', 'objetivo_de_demanda', 'tipo_demanda']  # Fields allowed for filtering
+    filterset_fields = ['estado_demanda', 'objetivo_de_demanda', 'envio_de_respuesta', 'etiqueta__nombre', 'bloque_datos_remitente__nombre']  # Fields allowed for filtering
 
     def get_queryset(self):
-        # user = self.request.user
+        user = self.request.user
 
-        # # 1. Get all TCustomUserZona objects for the current user
-        # user_zonas = TCustomUserZona.objects.filter(user=user)
+        # 1. Get all TCustomUserZona objects for the current user
+        user_zonas = TCustomUserZona.objects.filter(user=user)
 
-        # # 2. Split the zones into two sets:
-        # #    (a) Zones where the user is jefe or director
-        # #    (b) Zones where the user is neither jefe nor director
-        # zone_ids_jefe_director = user_zonas.filter(
-        #     Q(jefe=True) | Q(director=True)
-        # ).values_list('zona_id', flat=True)
+        # 2. Split the zones into two sets:
+        #    (a) Zones where the user is jefe or director
+        #    (b) Zones where the user is neither jefe nor director
+        zone_ids_jefe_director = user_zonas.filter(
+            Q(jefe=True) | Q(director=True)
+        ).values_list('zona_id', flat=True)
 
-        # zone_ids_normal = user_zonas.filter(
-        #     jefe=False, director=False
-        # ).values_list('zona_id', flat=True)
+        zone_ids_normal = user_zonas.filter(
+            jefe=False, director=False
+        ).values_list('zona_id', flat=True)
 
-        # # 3. Build Q objects to handle the OR conditions
+        # 3. Build Q objects to handle the OR conditions
 
-        # # (i) For jefe/director zones, include:
-        # #     - All TDemanda objects linked via TDemandaZona to those zones
-        # #       (tdemandazona__zona__in=zone_ids_jefe_director)
-        # #     - All TDemanda objects that have registrado_por_user_zona in those zones
-        # q_jefe_director = (
-        #     Q(tdemandazona__zona__in=zone_ids_jefe_director) |
-        #     Q(registrado_por_user_zona__in=zone_ids_jefe_director)
-        # )
+        # (i) For jefe/director zones, include:
+        #     - All TDemanda objects linked via TDemandaZona to those zones
+        #       (tdemandazona__zona__in=zone_ids_jefe_director)
+        #     - All TDemanda objects that have registrado_por_user_zona in those zones
+        q_jefe_director = (
+            Q(tdemandazona__zona__in=zone_ids_jefe_director) |
+            Q(registrado_por_user_zona__in=zone_ids_jefe_director)
+        )
 
-        # # (ii) For non-jefe/director zones, include TDemanda objects linked 
-        # #      via TDemandaZona and having esta_activo=True
-        # q_normal = (
-        #     Q(tdemandazona__zona__in=zone_ids_normal) &
-        #     Q(tdemandazona__esta_activo=True)
-        # )
+        # (ii) For non-jefe/director zones, include TDemanda objects linked 
+        #      via TDemandaZona and having esta_activo=True
+        q_normal = (
+            Q(tdemandazona__zona__in=zone_ids_normal) &
+            Q(tdemandazona__esta_activo=True)
+        )
 
-        # # 4. Also include TDemanda objects registered directly by the user
-        # #    (via registrado_por_user)
-        # q_registered_by_user = Q(registrado_por_user=user)
+        # 4. Also include TDemanda objects registered directly by the user
+        #    (via registrado_por_user)
+        q_registered_by_user = Q(registrado_por_user=user)
 
-        # # Combine all three conditions with OR
-        # final_filter = q_jefe_director | q_normal | q_registered_by_user
+        # Combine all three conditions with OR
+        final_filter = q_jefe_director | q_normal | q_registered_by_user
 
-        # # Return the distinct results so that the same TDemanda isn't repeated
-        # return TDemanda.objects.filter(final_filter).distinct()
-        return TDemanda.objects.all()
+        # Return the distinct results so that the same TDemanda isn't repeated
+        return TDemanda.objects.filter(final_filter).distinct()
 
 class RegistroDemandaFormDropdownsView(APIView):
     # @method_decorator(cache_page(60*15), name='get')
     def get(self, request):
 
         # Query related models
+        etiqueta = TRespuestaEtiqueta.objects.all()
         bloques_datos_remitente = TBloqueDatosRemitente.objects.all()
         tipo_institucion_demanda = TTipoInstitucionDemanda.objects.all()
         ambito_vulneracion = TAmbitoVulneracion.objects.all()
-        tipo_presunto_delito = TTipoPresuntoDelito.objects.all()
         institucion_demanda = TInstitucionDemanda.objects.all()
         tipo_codigo_demanda = TTipoCodigoDemanda.objects.all()
 
@@ -180,10 +179,10 @@ class RegistroDemandaFormDropdownsView(APIView):
 
         # Serialize data
         serialized_data = RegistroDemandaFormDropdownsSerializer({
+            "etiqueta": etiqueta,
             "bloques_datos_remitente": bloques_datos_remitente,
             "tipo_institucion_demanda": tipo_institucion_demanda,
             "ambito_vulneracion": ambito_vulneracion,
-            "tipo_presunto_delito": tipo_presunto_delito,
             "institucion_demanda": institucion_demanda,
             "tipo_codigo_demanda": tipo_codigo_demanda,
 

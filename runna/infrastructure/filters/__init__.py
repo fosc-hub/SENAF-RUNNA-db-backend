@@ -9,7 +9,6 @@ from .DemandaFilters import (
     TBloqueDatosRemitenteFilter,
     TTipoInstitucionDemandaFilter,
     TAmbitoVulneracionFilter,
-    TTipoPresuntoDelitoFilter,
     TInstitucionDemandaFilter,
     TDemandaFilter,
     TDemandaHistoryFilter,

@@ -3,7 +3,6 @@ from infrastructure.models import (
     TBloqueDatosRemitente,
     TTipoInstitucionDemanda,
     TAmbitoVulneracion,
-    TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
     TDemandaHistory,
@@ -28,11 +27,6 @@ class TTipoInstitucionDemandaFilter(filters.FilterSet):
 class TAmbitoVulneracionFilter(filters.FilterSet):
     class Meta:
         model = TAmbitoVulneracion
-        fields = '__all__'
-
-class TTipoPresuntoDelitoFilter(filters.FilterSet):
-    class Meta:
-        model = TTipoPresuntoDelito
         fields = '__all__'
 
 class TInstitucionDemandaFilter(filters.FilterSet):

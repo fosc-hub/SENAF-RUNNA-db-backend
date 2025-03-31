@@ -15,7 +15,6 @@ from infrastructure.models import (
     TBloqueDatosRemitente,
     TTipoInstitucionDemanda,
     TAmbitoVulneracion,
-    TTipoPresuntoDelito,
     TInstitucionDemanda,
     TDemanda,
     TDemandaAdjunto,
@@ -57,10 +56,10 @@ from infrastructure.models import (
     TVinculoDePersonas,
 )
 from api.serializers import (
+    TRespuestaEtiquetaSerializer,
     TBloqueDatosRemitenteSerializer,
     TTipoInstitucionDemandaSerializer,
     TAmbitoVulneracionSerializer,
-    TTipoPresuntoDelitoSerializer,
     TInstitucionDemandaSerializer,
     TDemandaSerializer,
     TDemandaAdjuntoSerializer,
@@ -131,6 +130,7 @@ class GestionDemandaZonaSerializer(serializers.Serializer):
 
 class MesaDeEntradaSerializer(serializers.ModelSerializer):
     demanda_score = serializers.SerializerMethodField()
+    etiqueta = TRespuestaEtiquetaSerializer()
     bloque_datos_remitente = TBloqueDatosRemitenteSerializer()
     nnya_principal = serializers.SerializerMethodField()
     calificacion = serializers.SerializerMethodField()
@@ -218,7 +218,7 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     
     estado_demanda_choices = serializers.SerializerMethodField()
     objetivo_de_demanda_choices = serializers.SerializerMethodField()
-    tipo_demanda_choices = serializers.SerializerMethodField()
+    envio_de_respuesta_choices = serializers.SerializerMethodField()
     tipo_calle_choices = serializers.SerializerMethodField()
     nacionalidad_choices = serializers.SerializerMethodField()
     situacion_dni_choices = serializers.SerializerMethodField()
@@ -230,12 +230,14 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     intervencion_choices = serializers.SerializerMethodField()
     certificacion_choices = serializers.SerializerMethodField()
     beneficios_choices = serializers.SerializerMethodField()
+    ocupacion_choices = serializers.SerializerMethodField()
     vinculo_demanda_choices = serializers.SerializerMethodField()
+    ocupacion_choices = serializers.SerializerMethodField()
 
+    etiqueta = TRespuestaEtiquetaSerializer(many=True)
     bloques_datos_remitente = TBloqueDatosRemitenteSerializer(many=True)
     tipo_institucion_demanda = TTipoInstitucionDemandaSerializer(many=True)
     ambito_vulneracion = TAmbitoVulneracionSerializer(many=True)
-    tipo_presunto_delito = TTipoPresuntoDelitoSerializer(many=True)
     institucion_demanda = TInstitucionDemandaSerializer(many=True)
     tipo_codigo_demanda = TTipoCodigoDemandaSerializer(many=True)
     
@@ -267,8 +269,8 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     def get_objetivo_de_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemanda.OBJETIVO_DE_DEMANDA_CHOICES)
 
-    def get_tipo_demanda_choices(self, obj):
-        return ChoiceFieldSerializer.from_model(TDemanda.TIPO_DEMANDA_CHOICES)
+    def get_envio_de_respuesta_choices(self, obj):
+        return ChoiceFieldSerializer.from_model(TDemanda.ENVIO_DE_RESPUESTA_CHOICES)
 
     def get_tipo_calle_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TLocalizacion.TIPO_CALLE_CHOICES)
@@ -303,8 +305,14 @@ class RegistroDemandaFormDropdownsSerializer(serializers.Serializer):
     def get_beneficios_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TPersonaEnfermedades.BENEFICIOS_CHOICES)
 
+    def get_ocupacion_choices(self, obj):
+        return ChoiceFieldSerializer.from_model(TDemandaPersona.OCUPACION_CHOICES)
+
     def get_vinculo_demanda_choices(self, obj):
         return ChoiceFieldSerializer.from_model(TDemandaPersona.VINCULO_DEMANDA_CHOICES)
+    
+    def get_ocupacion_choices(self, obj):
+        return ChoiceFieldSerializer.from_model(TDemandaPersona.OCUPACION_CHOICES)
 
 
 class TVulneracionRegistroSerializer(serializers.ModelSerializer):
