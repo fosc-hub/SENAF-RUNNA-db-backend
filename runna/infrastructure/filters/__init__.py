@@ -69,6 +69,5 @@ from .EvaluacionFilter import (
     TIndicadoresValoracionFilter, 
     TEvaluacionesFilter, 
     TDecisionFilter, 
-    TActividadHistoryFilter,
     TEvaluacionesHistoryFilter
 )

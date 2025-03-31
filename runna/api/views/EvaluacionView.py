@@ -20,7 +20,6 @@ from infrastructure.models import (
     TIndicadoresValoracion, 
     TEvaluaciones, 
     TDecision, 
-    TActividadHistory, 
     TEvaluacionesHistory
 )
 from api.serializers import (
@@ -32,7 +31,6 @@ from api.serializers import (
     TIndicadoresValoracionSerializer,
     TEvaluacionesSerializer,
     TDecisionSerializer,
-    TActividadHistorySerializer,
     TEvaluacionesHistorySerializer
 )
 from infrastructure.filters import (
@@ -43,7 +41,6 @@ from infrastructure.filters import (
     TIndicadoresValoracionFilter, 
     TEvaluacionesFilter, 
     TDecisionFilter, 
-    TActividadHistoryFilter,
     TEvaluacionesHistoryFilter
 )
 
@@ -310,28 +307,6 @@ class TDecisionViewSet(BaseViewSet):
     @extend_schema(
         responses=TDecisionSerializer,
         description="Retrieve a single TDecision entry."
-    )
-    def retrieve(self, request, pk=None):
-        return super().retrieve(request, pk=pk)
-
-
-class TActividadHistoryViewSet(BaseViewSet):
-    model = TActividadHistory
-    serializer_class = TActividadHistorySerializer
-    filterset_class = TActividadHistoryFilter
-
-    http_method_names = ['get'] # Only allow GET requests
-
-    @extend_schema(
-        responses=TActividadHistorySerializer(many=True),
-        description="Retrieve a list of TActividadHistory entries with optional filtering."
-    )
-    def list(self, request):
-        return super().list(request)
-
-    @extend_schema(
-        responses=TActividadHistorySerializer,
-        description="Retrieve a single TActividadHistory entry."
     )
     def retrieve(self, request, pk=None):
         return super().retrieve(request, pk=pk)

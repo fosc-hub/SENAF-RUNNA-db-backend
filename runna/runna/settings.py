@@ -177,7 +177,6 @@ ADMIN_REORDER = [
             "infrastructure.TIndicadoresValoracion", 
             "infrastructure.TEvaluaciones", 
             "infrastructure.TDecision", 
-            "infrastructure.TActividadHistory", 
             "infrastructure.TEvaluacionesHistory"
         ]
     },

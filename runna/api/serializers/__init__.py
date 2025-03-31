@@ -76,7 +76,6 @@ from .EvaluacionSerializer import (
     TIndicadoresValoracionSerializer,
     TEvaluacionesSerializer,
     TDecisionSerializer,
-    TActividadHistorySerializer,
     TEvaluacionesHistorySerializer
 )
 from .ComposedSerializer import (

@@ -11,9 +11,9 @@ from infrastructure.models import (
     TIndicadoresValoracion, 
     TEvaluaciones, 
     TDecision, 
-    TActividadHistory, 
     TEvaluacionesHistory
 )
+from customAuth.serializers import CustomUserSerializer
 
 class TActividadTipoModeloSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,6 +39,7 @@ class TActividadAdjuntoSerializer(serializers.ModelSerializer):
 
 class TActividadSerializer(serializers.ModelSerializer):
     adjuntos = TActividadAdjuntoSerializer(many=True, required=False)
+    by_user = CustomUserSerializer(read_only=True)
     class Meta:
         model = TActividad
         fields = '__all__'
@@ -82,6 +83,7 @@ class TRespuestaEtiquetaSerializer(serializers.ModelSerializer):
 
 class TRespuestaSerializer(serializers.ModelSerializer):
     adjuntos = TRespuestaAdjuntoSerializer(many=True, required=False)
+    by_user = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = TRespuesta
@@ -134,12 +136,6 @@ class TEvaluacionesSerializer(serializers.ModelSerializer):
 class TDecisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TDecision
-        fields = '__all__'
-
-
-class TActividadHistorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TActividadHistory
         fields = '__all__'
 
 

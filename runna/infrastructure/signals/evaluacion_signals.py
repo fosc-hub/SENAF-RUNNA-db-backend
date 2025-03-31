@@ -6,7 +6,7 @@ from customAuth.models import (
     TZona,
 )
 from infrastructure.models import (
-    TActividad, TActividadHistory,
+    TActividad,
     TEvaluaciones, TEvaluacionesHistory,
     TRespuesta, TDemandaZona
 )
@@ -107,6 +107,29 @@ def remitir_a_jefe(sender, instance, created, **kwargs):
             except Exception as e:
                 print(f"Error getting request: {e}")
                 pass
+
+@receiver(pre_save, sender=TActividad)
+def set_by_user_actividad(sender, instance, **kwargs):
+    """
+    Signal triggered before a TActividad instance is created.
+    Sets the by_user field to the current user.
+    """
+    for frame_record in inspect.stack():
+        if frame_record[3]=='get_response':
+            request = frame_record[0].f_locals['request']
+            break
+    else:
+        request = None
+
+    try:
+        current_user = request.user
+    except AttributeError:
+        current_user = None
+    except Exception as e:
+        current_user = None
+
+    if instance.pk is None:
+        instance.by_user = current_user
 
 # @receiver(post_save, sender=TActividad)
 # def log_actividad_save(sender, instance, created, **kwargs):

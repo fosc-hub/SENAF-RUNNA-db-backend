@@ -7,7 +7,6 @@ from infrastructure.models import (
     TIndicadoresValoracion, 
     TEvaluaciones, 
     TDecision, 
-    TActividadHistory,
     TEvaluacionesHistory
 )
 
@@ -45,14 +44,6 @@ class TDecisionFilter(filters.FilterSet):
         model = TDecision
         fields = "__all__"
 
-class TActividadHistoryFilter(filters.FilterSet):
-    class Meta:
-        model = TActividadHistory
-        fields = {
-            'parent': ['exact'],
-            'action': ['exact'],
-            'by_user': ['exact'],
-        }
 
 
 class TEvaluacionesHistoryFilter(filters.FilterSet):

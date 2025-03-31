@@ -55,7 +55,6 @@ from api.views import (
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
     TDecisionViewSet, 
-    TActividadHistoryViewSet,
     TEvaluacionesHistoryViewSet
 )
 from api.views import (
@@ -118,7 +117,6 @@ router.register(r'respuesta', TRespuestaViewSet, basename='respuesta')
 router.register(r'indicadores-valoracion', TIndicadoresValoracionViewSet, basename='indicadores-valoracion')
 router.register(r'evaluaciones', TEvaluacionesViewSet, basename='evaluaciones')
 router.register(r'decision', TDecisionViewSet, basename='decision')
-router.register(r'actividad-history', TActividadHistoryViewSet, basename='actividad-history')
 router.register(r'evaluaciones-history', TEvaluacionesHistoryViewSet, basename='evaluaciones-history')
 
 router.register(r'registro-demanda-form', RegistroDemandaFormView, basename='registro-demanda-form')

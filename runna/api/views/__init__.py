@@ -55,7 +55,6 @@ from .EvaluacionView import (
     TIndicadoresValoracionViewSet, 
     TEvaluacionesViewSet, 
     TDecisionViewSet, 
-    TActividadHistoryViewSet,
     TEvaluacionesHistoryViewSet
 )
 from .SuggestDecision import (

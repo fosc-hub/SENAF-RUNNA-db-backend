@@ -77,6 +77,5 @@ from .Evaluacion import (
     TIndicadoresValoracion, 
     TEvaluaciones, 
     TDecision, 
-    TActividadHistory, 
     TEvaluacionesHistory
 )

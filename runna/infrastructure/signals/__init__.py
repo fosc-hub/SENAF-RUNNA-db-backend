@@ -33,6 +33,8 @@ from .intermedias_signal import (
 )
 from .evaluacion_signals import (
     send_respuesta_mail,
+    remitir_a_jefe,
+    set_by_user_actividad,
     # log_actividad_save, log_actividad_delete,
     # log_evaluaciones_save, log_evaluaciones_delete
 )

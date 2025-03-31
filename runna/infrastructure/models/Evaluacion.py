@@ -60,6 +60,7 @@ class TActividadBase(models.Model):
     demanda = models.ForeignKey('TDemanda', on_delete=models.CASCADE)
     tipo = models.ForeignKey('TActividadTipo', on_delete=models.SET_NULL, null=True, blank=True)
     institucion = models.ForeignKey('TInstitucionActividad', on_delete=models.SET_NULL, null=True, blank=True)
+    by_user = models.ForeignKey('customAuth.CustomUser', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         abstract = True  # This model is abstract and won't create a table.
@@ -76,18 +77,6 @@ class TActividad(TActividadBase):
         verbose_name = _('Actividad')
         verbose_name_plural = _('Actividades')
 
-
-class TActividadHistory(TActividadBase, BaseHistory):
-    parent = models.ForeignKey(
-        'infrastructure.TActividad',
-        on_delete=models.CASCADE,
-        related_name='history'
-    )
-
-    class Meta:
-        app_label = 'infrastructure'
-        verbose_name = _('Historial de Actividad')
-        verbose_name_plural = _('Historial de Actividades')
 
 class TActividadAdjunto(BaseAdjunto):
     actividad = models.ForeignKey(

@@ -103,49 +103,50 @@ class MesaDeEntradaListView(generics.ListAPIView):
     filterset_fields = ['estado_demanda', 'objetivo_de_demanda', 'tipo_demanda']  # Fields allowed for filtering
 
     def get_queryset(self):
-        user = self.request.user
+        # user = self.request.user
 
-        # 1. Get all TCustomUserZona objects for the current user
-        user_zonas = TCustomUserZona.objects.filter(user=user)
+        # # 1. Get all TCustomUserZona objects for the current user
+        # user_zonas = TCustomUserZona.objects.filter(user=user)
 
-        # 2. Split the zones into two sets:
-        #    (a) Zones where the user is jefe or director
-        #    (b) Zones where the user is neither jefe nor director
-        zone_ids_jefe_director = user_zonas.filter(
-            Q(jefe=True) | Q(director=True)
-        ).values_list('zona_id', flat=True)
+        # # 2. Split the zones into two sets:
+        # #    (a) Zones where the user is jefe or director
+        # #    (b) Zones where the user is neither jefe nor director
+        # zone_ids_jefe_director = user_zonas.filter(
+        #     Q(jefe=True) | Q(director=True)
+        # ).values_list('zona_id', flat=True)
 
-        zone_ids_normal = user_zonas.filter(
-            jefe=False, director=False
-        ).values_list('zona_id', flat=True)
+        # zone_ids_normal = user_zonas.filter(
+        #     jefe=False, director=False
+        # ).values_list('zona_id', flat=True)
 
-        # 3. Build Q objects to handle the OR conditions
+        # # 3. Build Q objects to handle the OR conditions
 
-        # (i) For jefe/director zones, include:
-        #     - All TDemanda objects linked via TDemandaZona to those zones
-        #       (tdemandazona__zona__in=zone_ids_jefe_director)
-        #     - All TDemanda objects that have registrado_por_user_zona in those zones
-        q_jefe_director = (
-            Q(tdemandazona__zona__in=zone_ids_jefe_director) |
-            Q(registrado_por_user_zona__in=zone_ids_jefe_director)
-        )
+        # # (i) For jefe/director zones, include:
+        # #     - All TDemanda objects linked via TDemandaZona to those zones
+        # #       (tdemandazona__zona__in=zone_ids_jefe_director)
+        # #     - All TDemanda objects that have registrado_por_user_zona in those zones
+        # q_jefe_director = (
+        #     Q(tdemandazona__zona__in=zone_ids_jefe_director) |
+        #     Q(registrado_por_user_zona__in=zone_ids_jefe_director)
+        # )
 
-        # (ii) For non-jefe/director zones, include TDemanda objects linked 
-        #      via TDemandaZona and having esta_activo=True
-        q_normal = (
-            Q(tdemandazona__zona__in=zone_ids_normal) &
-            Q(tdemandazona__esta_activo=True)
-        )
+        # # (ii) For non-jefe/director zones, include TDemanda objects linked 
+        # #      via TDemandaZona and having esta_activo=True
+        # q_normal = (
+        #     Q(tdemandazona__zona__in=zone_ids_normal) &
+        #     Q(tdemandazona__esta_activo=True)
+        # )
 
-        # 4. Also include TDemanda objects registered directly by the user
-        #    (via registrado_por_user)
-        q_registered_by_user = Q(registrado_por_user=user)
+        # # 4. Also include TDemanda objects registered directly by the user
+        # #    (via registrado_por_user)
+        # q_registered_by_user = Q(registrado_por_user=user)
 
-        # Combine all three conditions with OR
-        final_filter = q_jefe_director | q_normal | q_registered_by_user
+        # # Combine all three conditions with OR
+        # final_filter = q_jefe_director | q_normal | q_registered_by_user
 
-        # Return the distinct results so that the same TDemanda isn't repeated
-        return TDemanda.objects.filter(final_filter).distinct()
+        # # Return the distinct results so that the same TDemanda isn't repeated
+        # return TDemanda.objects.filter(final_filter).distinct()
+        return TDemanda.objects.all()
 
 class RegistroDemandaFormDropdownsView(APIView):
     # @method_decorator(cache_page(60*15), name='get')
