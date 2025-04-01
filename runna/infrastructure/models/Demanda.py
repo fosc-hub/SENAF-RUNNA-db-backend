@@ -228,16 +228,16 @@ class TCodigoDemanda(models.Model):
 class TCalificacionDemandaBase(models.Model):
     fecha_y_hora_creacion = models.DateTimeField(auto_now_add=True)
     justificacion = models.TextField(null=False, blank=False)
-    
+
     ESTADO_CALIFICACION_CHOICES = [
-        ('URGENTE', 'Urgente'),
-        ('NO_URGENTE', 'No Urgente'),
-        ('COMPLETAR', 'Completar'),
-        ('NO_PERTINENTE_SIPPDD', 'No Pertinente (SIPPDD)'),
-        ('NO_PERTINENTE_OTRAS_PROVINCIAS', 'No Pertinente (Otras Provincias)'),
-        ('NO_PERTINENTE_OFICIOS_INCOMPLETOS', 'No Pertinente (Oficios Incompletos)'),
-        ('NO_PERTINENTE_LEY_9944', 'No Pertinente (Ley 9944)'),
-        ('PASA_A_LEGAJO', 'Pasa a Legajo')
+        ('PERTINENTE_CONSTATACION_URGENTE', 'Pertinente de Constatación Urgente'),
+        ('PERTINENTE_CONSTATACION_NO_URGENTE', 'Pertinente de Constatación No Urgente'),
+        ('NO_PERTINENTE_NO_CORRESPONDE', 'No Pertinente - No corresponde al 2do o 3er nivel del sistema de protección'),
+        ('NO_PERTINENTE_INCOMPETENCIA', 'No Pertinente - Incompetencia material o territorial'),
+        ('NO_PERTINENTE_OFICIOS_INCOMPLETOS', 'No Pertinente - Oficios incompletos o con error'),
+        ('NO_PERTINENTE_NO_CORRESPONDE_LEY', 'No Pertinente - No corresponde a la Ley 9944'),
+        ('PASA_A_LEGAJO', 'Pasa Directo al Legajo Sin Proceso de Admisión (demandas DE MPJ O MPI/MPE ABIERTAS/VIGENTES)'),
+        ('NO_PERTINENTE_NO_VERACIDAD', 'No Pertinente - No se constata la veracidad de la demanda'),
     ]
     estado_calificacion = models.CharField(max_length=50, choices=ESTADO_CALIFICACION_CHOICES, null=False, blank=False)
     ultima_actualizacion = models.DateTimeField(auto_now=True)
@@ -248,22 +248,22 @@ class TCalificacionDemandaBase(models.Model):
     class Meta:
         abstract = True
 
-    def save(self, *args, **kwargs):
-        if not self.pk:  # onCreate
-            if self.estado_calificacion == 'PASA_A_LEGAJO':
-                self.crear_legajo(self.demanda.nnya)
-                self.demanda.estado_demanda = 'ADMITIDA'
-            if self.estado_calificacion != 'NO_PERTINENTE':
-                self.demanda.estado_demanda = 'ARCHIVADA'
-        else:  # onUpdate
-            if self.estado_calificacion == 'PASA_A_LEGAJO':
-                self.crear_legajo(self.demanda.nnya)
-                self.demanda.estado_demanda = 'ADMITIDA'
-            if self.estado_calificacion != 'NO_PERTINENTE':
-                self.demanda.estado_demanda = 'ARCHIVADA'
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:  # onCreate
+    #         if self.estado_calificacion == 'PASA_A_LEGAJO':
+    #             self.crear_legajo(self.demanda.nnya)
+    #             self.demanda.estado_demanda = 'ADMITIDA'
+    #         if self.estado_calificacion != 'NO_PERTINENTE':
+    #             self.demanda.estado_demanda = 'ARCHIVADA'
+    #     else:  # onUpdate
+    #         if self.estado_calificacion == 'PASA_A_LEGAJO':
+    #             self.crear_legajo(self.demanda.nnya)
+    #             self.demanda.estado_demanda = 'ADMITIDA'
+    #         if self.estado_calificacion != 'NO_PERTINENTE':
+    #             self.demanda.estado_demanda = 'ARCHIVADA'
         
-        self.demanda.save()
-        super().save(*args, **kwargs)
+    #     self.demanda.save()
+    #     super().save(*args, **kwargs)
 
     def crear_legajo(self, nnya):
         # Implement the logic to create a legajo

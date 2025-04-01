@@ -62,6 +62,24 @@ def set_demanda_registrado(sender, instance, **kwargs):
         except Exception as e:
             pass
 
+@receiver(pre_save, sender=TCalificacionDemanda)
+def set_estado_demanda(sender, instance, **kwargs):
+    estado_demanda = "ARCHIVADA" if instance.estado_calificacion in (
+        'PERTINENTE_CONSTATACION_NO_URGENTE',
+        'NO_PERTINENTE_NO_CORRESPONDE',
+        'NO_PERTINENTE_INCOMPETENCIA',
+        'NO_PERTINENTE_NO_CORRESPONDE_LEY',
+        'NO_PERTINENTE_NO_VERACIDAD',
+    ) else 'ADMITIDA' if instance.estado_calificacion in (
+        'PASA_A_LEGAJO',
+    ) else 'ENVIO_DE_RESPUESTA'
+
+    if estado_demanda == 'ENVIO_DE_RESPUESTA':
+        instance.demanda.envio_de_respuesta = "PENDIENTE"
+    else:    
+        instance.demanda.estado_demanda = estado_demanda
+    instance.demanda.save()
+
 # @receiver(post_save, sender=TDemanda)
 # def log_demanda_save(sender, instance, created, **kwargs):
 #     action = 'CREATE' if created else 'UPDATE'
