@@ -67,3 +67,6 @@ from .ComposedView import (
     GestionDemandaZonaZonaView,
     TActividadDropdownView,
 )
+from .ConexionesView import (
+    DemandaBusquedaVinculacionView,
+)

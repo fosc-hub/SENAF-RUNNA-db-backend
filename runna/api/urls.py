@@ -64,6 +64,9 @@ from api.views import (
     GestionDemandaZonaZonaView,
     TActividadDropdownView,
 )
+from api.views import (
+    DemandaBusquedaVinculacionView,
+)
 from api.views import SuggestDecisionView
 from django.urls import path, include
 
@@ -130,4 +133,6 @@ urlpatterns = [
     path('gestion-demanda-zona/<int:pk>/', GestionDemandaZonaZonaView.as_view(), name='demanda-zona-single'),  # Retrieve single
     path('actividad-dropdown/', TActividadDropdownView.as_view(), name='actividad-dropdown'),  # Retrieve choices
     path('auditoria-demanda-zona/<int:pk>', AuditoriaDemandaZonaZonaView.as_view(), name='auditoria-demanda-zona-zona'),  # Retrieve choices
+
+    path('demanda-busqueda-vinculacion/', DemandaBusquedaVinculacionView.as_view(), name='demanda-busqueda-vinculacion'),
 ]
