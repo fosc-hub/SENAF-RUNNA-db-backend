@@ -1,0 +1,2182 @@
+{
+    "TLocalidad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TBarrio": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "localidad",
+            "required": true
+        }
+    ],
+    "TCPC": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "localidad",
+            "required": true
+        }
+    ],
+    "TLocalizacion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "calle",
+            "required": true
+        },
+        {
+            "name": "tipo_calle",
+            "required": false
+        },
+        {
+            "name": "piso_depto",
+            "required": false
+        },
+        {
+            "name": "lote",
+            "required": false
+        },
+        {
+            "name": "mza",
+            "required": false
+        },
+        {
+            "name": "casa_nro",
+            "required": true
+        },
+        {
+            "name": "referencia_geo",
+            "required": true
+        },
+        {
+            "name": "geolocalizacion",
+            "required": false
+        },
+        {
+            "name": "barrio",
+            "required": false
+        },
+        {
+            "name": "localidad",
+            "required": true
+        },
+        {
+            "name": "cpc",
+            "required": false
+        }
+    ],
+    "TLocalizacionHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "calle",
+            "required": true
+        },
+        {
+            "name": "tipo_calle",
+            "required": false
+        },
+        {
+            "name": "piso_depto",
+            "required": false
+        },
+        {
+            "name": "lote",
+            "required": false
+        },
+        {
+            "name": "mza",
+            "required": false
+        },
+        {
+            "name": "casa_nro",
+            "required": true
+        },
+        {
+            "name": "referencia_geo",
+            "required": true
+        },
+        {
+            "name": "geolocalizacion",
+            "required": false
+        },
+        {
+            "name": "barrio",
+            "required": false
+        },
+        {
+            "name": "localidad",
+            "required": true
+        },
+        {
+            "name": "cpc",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TBloqueDatosRemitente": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TTipoInstitucionDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "bloque_datos_remitente",
+            "required": true
+        }
+    ],
+    "TAmbitoVulneracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TInstitucionDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "tipo_institucion",
+            "required": true
+        }
+    ],
+    "TDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "fecha_creacion",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "fecha_ingreso_senaf",
+            "required": true
+        },
+        {
+            "name": "fecha_oficio_documento",
+            "required": true
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "objetivo_de_demanda",
+            "required": false
+        },
+        {
+            "name": "estado_demanda",
+            "required": false
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "envio_de_respuesta",
+            "required": false
+        },
+        {
+            "name": "etiqueta",
+            "required": false
+        },
+        {
+            "name": "localizacion",
+            "required": true
+        },
+        {
+            "name": "ambito_vulneracion",
+            "required": false
+        },
+        {
+            "name": "bloque_datos_remitente",
+            "required": true
+        },
+        {
+            "name": "tipo_institucion",
+            "required": false
+        },
+        {
+            "name": "institucion",
+            "required": false
+        },
+        {
+            "name": "motivo_ingreso",
+            "required": false
+        },
+        {
+            "name": "submotivo_ingreso",
+            "required": false
+        },
+        {
+            "name": "registrado_por_user",
+            "required": false
+        },
+        {
+            "name": "registrado_por_user_zona",
+            "required": false
+        }
+    ],
+    "TDemandaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "fecha_creacion",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "fecha_ingreso_senaf",
+            "required": true
+        },
+        {
+            "name": "fecha_oficio_documento",
+            "required": true
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "objetivo_de_demanda",
+            "required": false
+        },
+        {
+            "name": "estado_demanda",
+            "required": false
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "envio_de_respuesta",
+            "required": false
+        },
+        {
+            "name": "etiqueta",
+            "required": false
+        },
+        {
+            "name": "localizacion",
+            "required": true
+        },
+        {
+            "name": "ambito_vulneracion",
+            "required": false
+        },
+        {
+            "name": "bloque_datos_remitente",
+            "required": true
+        },
+        {
+            "name": "tipo_institucion",
+            "required": false
+        },
+        {
+            "name": "institucion",
+            "required": false
+        },
+        {
+            "name": "motivo_ingreso",
+            "required": false
+        },
+        {
+            "name": "submotivo_ingreso",
+            "required": false
+        },
+        {
+            "name": "registrado_por_user",
+            "required": false
+        },
+        {
+            "name": "registrado_por_user_zona",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDemandaAdjunto": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        }
+    ],
+    "TTipoCodigoDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "datatype",
+            "required": true
+        },
+        {
+            "name": "bloque_datos_remitente",
+            "required": false
+        }
+    ],
+    "TCodigoDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "codigo",
+            "required": true
+        },
+        {
+            "name": "tipo_codigo",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": true
+        }
+    ],
+    "TCalificacionDemanda": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora_creacion",
+            "required": false
+        },
+        {
+            "name": "justificacion",
+            "required": true
+        },
+        {
+            "name": "estado_calificacion",
+            "required": true
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        }
+    ],
+    "TCalificacionDemandaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora_creacion",
+            "required": false
+        },
+        {
+            "name": "justificacion",
+            "required": true
+        },
+        {
+            "name": "estado_calificacion",
+            "required": true
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDemandaScore": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "score",
+            "required": false
+        },
+        {
+            "name": "score_condiciones_vulnerabilidad",
+            "required": false
+        },
+        {
+            "name": "score_vulneracion",
+            "required": false
+        },
+        {
+            "name": "score_motivos_intervencion",
+            "required": false
+        },
+        {
+            "name": "score_indicadores_valoracion",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        }
+    ],
+    "TDemandaScoreHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "score",
+            "required": false
+        },
+        {
+            "name": "score_condiciones_vulnerabilidad",
+            "required": false
+        },
+        {
+            "name": "score_vulneracion",
+            "required": false
+        },
+        {
+            "name": "score_motivos_intervencion",
+            "required": false
+        },
+        {
+            "name": "score_indicadores_valoracion",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TVinculoDePersonas": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TPersona": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "nombre_autopercibido",
+            "required": false
+        },
+        {
+            "name": "apellido",
+            "required": true
+        },
+        {
+            "name": "fecha_nacimiento",
+            "required": false
+        },
+        {
+            "name": "fecha_defuncion",
+            "required": false
+        },
+        {
+            "name": "edad_aproximada",
+            "required": false
+        },
+        {
+            "name": "nacionalidad",
+            "required": true
+        },
+        {
+            "name": "dni",
+            "required": false
+        },
+        {
+            "name": "situacion_dni",
+            "required": true
+        },
+        {
+            "name": "genero",
+            "required": true
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "adulto",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "telefono",
+            "required": false
+        }
+    ],
+    "TPersonaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "nombre_autopercibido",
+            "required": false
+        },
+        {
+            "name": "apellido",
+            "required": true
+        },
+        {
+            "name": "fecha_nacimiento",
+            "required": false
+        },
+        {
+            "name": "fecha_defuncion",
+            "required": false
+        },
+        {
+            "name": "edad_aproximada",
+            "required": false
+        },
+        {
+            "name": "nacionalidad",
+            "required": true
+        },
+        {
+            "name": "dni",
+            "required": false
+        },
+        {
+            "name": "situacion_dni",
+            "required": true
+        },
+        {
+            "name": "genero",
+            "required": true
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "adulto",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "telefono",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TInstitucionEducativa": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TEducacion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "nivel_alcanzado",
+            "required": true
+        },
+        {
+            "name": "esta_escolarizado",
+            "required": true
+        },
+        {
+            "name": "ultimo_cursado",
+            "required": false
+        },
+        {
+            "name": "tipo_escuela",
+            "required": false
+        },
+        {
+            "name": "comentarios_educativos",
+            "required": false
+        },
+        {
+            "name": "institucion_educativa",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        }
+    ],
+    "TEducacionHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "nivel_alcanzado",
+            "required": true
+        },
+        {
+            "name": "esta_escolarizado",
+            "required": true
+        },
+        {
+            "name": "ultimo_cursado",
+            "required": false
+        },
+        {
+            "name": "tipo_escuela",
+            "required": false
+        },
+        {
+            "name": "comentarios_educativos",
+            "required": false
+        },
+        {
+            "name": "institucion_educativa",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TInstitucionSanitaria": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TSituacionSalud": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TEnfermedad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "situacion_salud_categoria",
+            "required": true
+        }
+    ],
+    "TMedico": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "mail",
+            "required": false
+        },
+        {
+            "name": "telefono",
+            "required": false
+        }
+    ],
+    "TCoberturaMedica": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "obra_social",
+            "required": true
+        },
+        {
+            "name": "intervencion",
+            "required": true
+        },
+        {
+            "name": "auh",
+            "required": true
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "institucion_sanitaria",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "medico_cabecera",
+            "required": false
+        }
+    ],
+    "TCoberturaMedicaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "obra_social",
+            "required": true
+        },
+        {
+            "name": "intervencion",
+            "required": true
+        },
+        {
+            "name": "auh",
+            "required": true
+        },
+        {
+            "name": "observaciones",
+            "required": false
+        },
+        {
+            "name": "institucion_sanitaria",
+            "required": false
+        },
+        {
+            "name": "medico_cabecera",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TPersonaEnfermedades": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "certificacion",
+            "required": false
+        },
+        {
+            "name": "beneficios_gestionados",
+            "required": false
+        },
+        {
+            "name": "recibe_tratamiento",
+            "required": true
+        },
+        {
+            "name": "informacion_tratamiento",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "situacion_salud",
+            "required": true
+        },
+        {
+            "name": "enfermedad",
+            "required": true
+        },
+        {
+            "name": "institucion_sanitaria_interviniente",
+            "required": false
+        },
+        {
+            "name": "medico_tratamiento",
+            "required": false
+        }
+    ],
+    "TPersonaEnfermedadesHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "certificacion",
+            "required": false
+        },
+        {
+            "name": "beneficios_gestionados",
+            "required": false
+        },
+        {
+            "name": "recibe_tratamiento",
+            "required": true
+        },
+        {
+            "name": "informacion_tratamiento",
+            "required": false
+        },
+        {
+            "name": "situacion_salud",
+            "required": true
+        },
+        {
+            "name": "enfermedad",
+            "required": true
+        },
+        {
+            "name": "institucion_sanitaria_interviniente",
+            "required": false
+        },
+        {
+            "name": "medico_tratamiento",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TPersonaOficioAdjunto": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "persona_enfermedades",
+            "required": true
+        }
+    ],
+    "TPersonaCertificadoAdjunto": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "persona_enfermedades",
+            "required": true
+        }
+    ],
+    "TNNyAScore": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "score",
+            "required": false
+        },
+        {
+            "name": "score_condiciones_vulnerabilidad",
+            "required": false
+        },
+        {
+            "name": "score_vulneracion",
+            "required": false
+        },
+        {
+            "name": "nnya",
+            "required": true
+        }
+    ],
+    "TNNyAScoreHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "ultima_actualizacion",
+            "required": false
+        },
+        {
+            "name": "score",
+            "required": false
+        },
+        {
+            "name": "score_condiciones_vulnerabilidad",
+            "required": false
+        },
+        {
+            "name": "score_vulneracion",
+            "required": false
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TLegajo": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "info_legajo",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        }
+    ],
+    "TLegajoHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "info_legajo",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TCategoriaMotivo": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "peso",
+            "required": true
+        }
+    ],
+    "TCategoriaSubmotivo": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "peso",
+            "required": true
+        },
+        {
+            "name": "motivo",
+            "required": true
+        }
+    ],
+    "TGravedadVulneracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "peso",
+            "required": true
+        }
+    ],
+    "TUrgenciaVulneracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "peso",
+            "required": true
+        }
+    ],
+    "TCondicionesVulnerabilidad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "peso",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "adulto",
+            "required": true
+        }
+    ],
+    "TVulneracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "fecha_creacion",
+            "required": false
+        },
+        {
+            "name": "ultima_modificacion",
+            "required": false
+        },
+        {
+            "name": "principal_demanda",
+            "required": false
+        },
+        {
+            "name": "transcurre_actualidad",
+            "required": false
+        },
+        {
+            "name": "sumatoria_de_pesos",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": false
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "autor_dv",
+            "required": false
+        },
+        {
+            "name": "categoria_motivo",
+            "required": true
+        },
+        {
+            "name": "categoria_submotivo",
+            "required": true
+        },
+        {
+            "name": "gravedad_vulneracion",
+            "required": true
+        },
+        {
+            "name": "urgencia_vulneracion",
+            "required": true
+        }
+    ],
+    "TVulneracionHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "fecha_creacion",
+            "required": false
+        },
+        {
+            "name": "ultima_modificacion",
+            "required": false
+        },
+        {
+            "name": "principal_demanda",
+            "required": false
+        },
+        {
+            "name": "transcurre_actualidad",
+            "required": false
+        },
+        {
+            "name": "sumatoria_de_pesos",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": false
+        },
+        {
+            "name": "nnya",
+            "required": true
+        },
+        {
+            "name": "autor_dv",
+            "required": false
+        },
+        {
+            "name": "categoria_motivo",
+            "required": true
+        },
+        {
+            "name": "categoria_submotivo",
+            "required": true
+        },
+        {
+            "name": "gravedad_vulneracion",
+            "required": true
+        },
+        {
+            "name": "urgencia_vulneracion",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TLocalizacionPersona": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "localizacion",
+            "required": true
+        },
+        {
+            "name": "principal",
+            "required": false
+        }
+    ],
+    "TLocalizacionPersonaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "localizacion",
+            "required": true
+        },
+        {
+            "name": "principal",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDemandaPersona": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "conviviente",
+            "required": true
+        },
+        {
+            "name": "legalmente_responsable",
+            "required": false
+        },
+        {
+            "name": "ocupacion",
+            "required": false
+        },
+        {
+            "name": "vinculo_demanda",
+            "required": false
+        },
+        {
+            "name": "vinculo_con_nnya_principal",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        }
+    ],
+    "TDemandaPersonaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "conviviente",
+            "required": true
+        },
+        {
+            "name": "legalmente_responsable",
+            "required": false
+        },
+        {
+            "name": "ocupacion",
+            "required": false
+        },
+        {
+            "name": "vinculo_demanda",
+            "required": false
+        },
+        {
+            "name": "vinculo_con_nnya_principal",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDemandaZona": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "esta_activo",
+            "required": false
+        },
+        {
+            "name": "recibido",
+            "required": false
+        },
+        {
+            "name": "comentarios",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "zona",
+            "required": true
+        },
+        {
+            "name": "user_responsable",
+            "required": false
+        },
+        {
+            "name": "enviado_por",
+            "required": false
+        },
+        {
+            "name": "recibido_por",
+            "required": false
+        }
+    ],
+    "TDemandaZonaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "esta_activo",
+            "required": false
+        },
+        {
+            "name": "recibido",
+            "required": false
+        },
+        {
+            "name": "comentarios",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "zona",
+            "required": true
+        },
+        {
+            "name": "user_responsable",
+            "required": false
+        },
+        {
+            "name": "enviado_por",
+            "required": false
+        },
+        {
+            "name": "recibido_por",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDemandaVinculada": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "demanda_1",
+            "required": true
+        },
+        {
+            "name": "demanda_2",
+            "required": true
+        }
+    ],
+    "TDemandaVinculadaHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "deleted",
+            "required": false
+        },
+        {
+            "name": "demanda_1",
+            "required": true
+        },
+        {
+            "name": "demanda_2",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TPersonaCondicionesVulnerabilidad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "si_no",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "condicion_vulnerabilidad",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": false
+        }
+    ],
+    "TPersonaCondicionesVulnerabilidadHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "si_no",
+            "required": true
+        },
+        {
+            "name": "persona",
+            "required": true
+        },
+        {
+            "name": "condicion_vulnerabilidad",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": false
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TActividadTipo": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "remitir_a_jefe",
+            "required": false
+        }
+    ],
+    "TActividadTipoModelo": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "actividad_tipo",
+            "required": true
+        }
+    ],
+    "TInstitucionActividad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TActividad": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora_manual",
+            "required": true
+        },
+        {
+            "name": "descripcion",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "tipo",
+            "required": false
+        },
+        {
+            "name": "institucion",
+            "required": false
+        },
+        {
+            "name": "by_user",
+            "required": false
+        }
+    ],
+    "TActividadAdjunto": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "actividad",
+            "required": true
+        }
+    ],
+    "TRespuestaEtiqueta": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        }
+    ],
+    "TRespuesta": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora",
+            "required": false
+        },
+        {
+            "name": "cc",
+            "required": false
+        },
+        {
+            "name": "bcc",
+            "required": false
+        },
+        {
+            "name": "to",
+            "required": false
+        },
+        {
+            "name": "asunto",
+            "required": true
+        },
+        {
+            "name": "mensaje",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "institucion",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "etiqueta",
+            "required": false
+        }
+    ],
+    "TRespuestaAdjunto": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "archivo",
+            "required": false
+        },
+        {
+            "name": "fecha",
+            "required": false
+        },
+        {
+            "name": "respuesta",
+            "required": true
+        }
+    ],
+    "TIndicadoresValoracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "nombre",
+            "required": true
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "peso",
+            "required": false
+        }
+    ],
+    "TEvaluaciones": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "indicador",
+            "required": true
+        },
+        {
+            "name": "si_no",
+            "required": true
+        }
+    ],
+    "TEvaluacionesHistory": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "descripcion",
+            "required": false
+        },
+        {
+            "name": "action",
+            "required": true
+        },
+        {
+            "name": "by_user",
+            "required": false
+        },
+        {
+            "name": "timestamp",
+            "required": false
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "indicador",
+            "required": true
+        },
+        {
+            "name": "si_no",
+            "required": true
+        },
+        {
+            "name": "parent",
+            "required": true
+        }
+    ],
+    "TDecision": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "fecha_y_hora",
+            "required": false
+        },
+        {
+            "name": "justificacion",
+            "required": true
+        },
+        {
+            "name": "decision",
+            "required": true
+        },
+        {
+            "name": "demanda",
+            "required": true
+        },
+        {
+            "name": "nnya",
+            "required": true
+        }
+    ],
+    "ValidacionConfiguracion": [
+        {
+            "name": "id",
+            "required": false
+        },
+        {
+            "name": "required_fields",
+            "required": false
+        },
+        {
+            "name": "required_activity_types",
+            "required": false
+        },
+        {
+            "name": "required_response_types",
+            "required": false
+        },
+        {
+            "name": "activo",
+            "required": false
+        }
+    ]
+}
