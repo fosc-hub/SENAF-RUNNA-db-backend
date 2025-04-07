@@ -140,6 +140,7 @@ class MesaDeEntradaSerializer(serializers.ModelSerializer):
     cpc = serializers.SerializerMethodField()
     registrado_por_user = CustomUserSerializer()
     registrado_por_user_zona = TZonaSerializer()
+    adjuntos = TDemandaAdjuntoSerializer(many=True, required=False)
     demanda_zona  = serializers.SerializerMethodField()
     calificacion_choices = serializers.SerializerMethodField()
 
