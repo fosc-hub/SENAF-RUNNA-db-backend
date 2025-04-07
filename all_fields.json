@@ -2,2181 +2,3502 @@
     "TLocalidad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TBarrio": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "localidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TCPC": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "localidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TLocalizacion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "calle",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "tipo_calle",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "CALLE",
+                "AVENIDA",
+                "PASAJE",
+                "RUTA",
+                "BOULEVARD",
+                "OTRO"
+            ]
         },
         {
             "name": "piso_depto",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "lote",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "mza",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "casa_nro",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "referencia_geo",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "geolocalizacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "barrio",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "cpc",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TLocalizacionHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "calle",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "tipo_calle",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "CALLE",
+                "AVENIDA",
+                "PASAJE",
+                "RUTA",
+                "BOULEVARD",
+                "OTRO"
+            ]
         },
         {
             "name": "piso_depto",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "lote",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "mza",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "casa_nro",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "referencia_geo",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "geolocalizacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "barrio",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "cpc",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TBloqueDatosRemitente": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TTipoInstitucionDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "bloque_datos_remitente",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TAmbitoVulneracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TInstitucionDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "tipo_institucion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "fecha_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "fecha_ingreso_senaf",
-            "required": true
+            "required": true,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "fecha_oficio_documento",
-            "required": true
+            "required": true,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "objetivo_de_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PROTECCION",
+                "PETICION_DE_INFORME"
+            ]
         },
         {
             "name": "estado_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "SIN_ASIGNAR",
+                "CONSTATACION",
+                "EVALUACION",
+                "PENDIENTE_AUTORIZACION",
+                "ARCHIVADA",
+                "ADMITIDA",
+                "INFORME_SIN_ENVIAR",
+                "INFORME_ENVIADO"
+            ]
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "envio_de_respuesta",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "NO_NECESARIO",
+                "PENDIENTE",
+                "ENVIADO"
+            ]
         },
         {
             "name": "etiqueta",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localizacion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "ambito_vulneracion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "bloque_datos_remitente",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "tipo_institucion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "motivo_ingreso",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "submotivo_ingreso",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "registrado_por_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "registrado_por_user_zona",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "fecha_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "fecha_ingreso_senaf",
-            "required": true
+            "required": true,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "fecha_oficio_documento",
-            "required": true
+            "required": true,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "objetivo_de_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PROTECCION",
+                "PETICION_DE_INFORME"
+            ]
         },
         {
             "name": "estado_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "SIN_ASIGNAR",
+                "CONSTATACION",
+                "EVALUACION",
+                "PENDIENTE_AUTORIZACION",
+                "ARCHIVADA",
+                "ADMITIDA",
+                "INFORME_SIN_ENVIAR",
+                "INFORME_ENVIADO"
+            ]
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "envio_de_respuesta",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "NO_NECESARIO",
+                "PENDIENTE",
+                "ENVIADO"
+            ]
         },
         {
             "name": "etiqueta",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localizacion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "ambito_vulneracion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "bloque_datos_remitente",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "tipo_institucion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "motivo_ingreso",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "submotivo_ingreso",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "registrado_por_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "registrado_por_user_zona",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaAdjunto": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TTipoCodigoDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "datatype",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "INT",
+                "STRING"
+            ]
         },
         {
             "name": "bloque_datos_remitente",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TCodigoDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "codigo",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "tipo_codigo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TCalificacionDemanda": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "justificacion",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "estado_calificacion",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "PERTINENTE_CONSTATACION_URGENTE",
+                "PERTINENTE_CONSTATACION_NO_URGENTE",
+                "NO_PERTINENTE_NO_CORRESPONDE",
+                "NO_PERTINENTE_INCOMPETENCIA",
+                "NO_PERTINENTE_OFICIOS_INCOMPLETOS",
+                "NO_PERTINENTE_NO_CORRESPONDE_LEY",
+                "PASA_A_LEGAJO",
+                "NO_PERTINENTE_NO_VERACIDAD"
+            ]
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         }
     ],
     "TCalificacionDemandaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "justificacion",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "estado_calificacion",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "PERTINENTE_CONSTATACION_URGENTE",
+                "PERTINENTE_CONSTATACION_NO_URGENTE",
+                "NO_PERTINENTE_NO_CORRESPONDE",
+                "NO_PERTINENTE_INCOMPETENCIA",
+                "NO_PERTINENTE_OFICIOS_INCOMPLETOS",
+                "NO_PERTINENTE_NO_CORRESPONDE_LEY",
+                "PASA_A_LEGAJO",
+                "NO_PERTINENTE_NO_VERACIDAD"
+            ]
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaScore": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "score",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_condiciones_vulnerabilidad",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_vulneracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_motivos_intervencion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_indicadores_valoracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         }
     ],
     "TDemandaScoreHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "score",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_condiciones_vulnerabilidad",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_vulneracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_motivos_intervencion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_indicadores_valoracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TVinculoDePersonas": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TPersona": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "nombre_autopercibido",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "apellido",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "fecha_nacimiento",
-            "required": false
+            "required": false,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "fecha_defuncion",
-            "required": false
+            "required": false,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "edad_aproximada",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "nacionalidad",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "ARGENTINA",
+                "EXTRANJERA"
+            ]
         },
         {
             "name": "dni",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "situacion_dni",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "EN_TRAMITE",
+                "VENCIDO",
+                "EXTRAVIADO",
+                "INEXISTENTE",
+                "VALIDO",
+                "OTRO"
+            ]
         },
         {
             "name": "genero",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "MASCULINO",
+                "FEMENINO",
+                "NO_BINARIO"
+            ]
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "adulto",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "telefono",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TPersonaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "nombre_autopercibido",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "apellido",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "fecha_nacimiento",
-            "required": false
+            "required": false,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "fecha_defuncion",
-            "required": false
+            "required": false,
+            "type": "DateField",
+            "choices": null
         },
         {
             "name": "edad_aproximada",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "nacionalidad",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "ARGENTINA",
+                "EXTRANJERA"
+            ]
         },
         {
             "name": "dni",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "situacion_dni",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "EN_TRAMITE",
+                "VENCIDO",
+                "EXTRAVIADO",
+                "INEXISTENTE",
+                "VALIDO",
+                "OTRO"
+            ]
         },
         {
             "name": "genero",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "MASCULINO",
+                "FEMENINO",
+                "NO_BINARIO"
+            ]
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "adulto",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "telefono",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TInstitucionEducativa": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TEducacion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nivel_alcanzado",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "PRIMARIO",
+                "SECUNDARIO",
+                "TERCIARIO",
+                "UNIVERSITARIO",
+                "OTRO"
+            ]
         },
         {
             "name": "esta_escolarizado",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "ultimo_cursado",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PRIMERO",
+                "SEGUNDO",
+                "TERCERO",
+                "CUARTO",
+                "QUINTO",
+                "SEXTO",
+                "SEPTIMO",
+                "OCTAVO",
+                "NOVENO",
+                "PRIMERO_SECUNDARIO",
+                "SEGUNDO_SECUNDARIO",
+                "TERCERO_SECUNDARIO",
+                "CUARTO_SECUNDARIO",
+                "QUINTO_SECUNDARIO",
+                "OTRO"
+            ]
         },
         {
             "name": "tipo_escuela",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PUBLICA",
+                "PRIVADA",
+                "ESTATAL",
+                "COMUN",
+                "ESPECIAL",
+                "OTRO"
+            ]
         },
         {
             "name": "comentarios_educativos",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "institucion_educativa",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         }
     ],
     "TEducacionHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "nivel_alcanzado",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "PRIMARIO",
+                "SECUNDARIO",
+                "TERCIARIO",
+                "UNIVERSITARIO",
+                "OTRO"
+            ]
         },
         {
             "name": "esta_escolarizado",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "ultimo_cursado",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PRIMERO",
+                "SEGUNDO",
+                "TERCERO",
+                "CUARTO",
+                "QUINTO",
+                "SEXTO",
+                "SEPTIMO",
+                "OCTAVO",
+                "NOVENO",
+                "PRIMERO_SECUNDARIO",
+                "SEGUNDO_SECUNDARIO",
+                "TERCERO_SECUNDARIO",
+                "CUARTO_SECUNDARIO",
+                "QUINTO_SECUNDARIO",
+                "OTRO"
+            ]
         },
         {
             "name": "tipo_escuela",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "PUBLICA",
+                "PRIVADA",
+                "ESTATAL",
+                "COMUN",
+                "ESPECIAL",
+                "OTRO"
+            ]
         },
         {
             "name": "comentarios_educativos",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "institucion_educativa",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TInstitucionSanitaria": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TSituacionSalud": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TEnfermedad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "situacion_salud_categoria",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TMedico": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "mail",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "telefono",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TCoberturaMedica": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "obra_social",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "NO_POSEE",
+                "PAMI",
+                "IOMA",
+                "OSECAC",
+                "OSDE",
+                "OTRA"
+            ]
         },
         {
             "name": "intervencion",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "AUH",
+                "OBRA_SOCIAL",
+                "AMBAS",
+                "NINGUNA"
+            ]
         },
         {
             "name": "auh",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "institucion_sanitaria",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         },
         {
             "name": "medico_cabecera",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TCoberturaMedicaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "obra_social",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "NO_POSEE",
+                "PAMI",
+                "IOMA",
+                "OSECAC",
+                "OSDE",
+                "OTRA"
+            ]
         },
         {
             "name": "intervencion",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "AUH",
+                "OBRA_SOCIAL",
+                "AMBAS",
+                "NINGUNA"
+            ]
         },
         {
             "name": "auh",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "observaciones",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "institucion_sanitaria",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "medico_cabecera",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaEnfermedades": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "certificacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "TIENE",
+                "NO_TIENE",
+                "EN_TRAMITE",
+                "SE_INTERVIENE_EN_SU_GESTION",
+                "EN_PERIODO_DE_EVALUACION"
+            ]
         },
         {
             "name": "beneficios_gestionados",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "BOLETO_DE_COLECTIVO",
+                "PROTESIS",
+                "PENSION"
+            ]
         },
         {
             "name": "recibe_tratamiento",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "informacion_tratamiento",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "situacion_salud",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "enfermedad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion_sanitaria_interviniente",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "medico_tratamiento",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaEnfermedadesHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "certificacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "TIENE",
+                "NO_TIENE",
+                "EN_TRAMITE",
+                "SE_INTERVIENE_EN_SU_GESTION",
+                "EN_PERIODO_DE_EVALUACION"
+            ]
         },
         {
             "name": "beneficios_gestionados",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "BOLETO_DE_COLECTIVO",
+                "PROTESIS",
+                "PENSION"
+            ]
         },
         {
             "name": "recibe_tratamiento",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "informacion_tratamiento",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "situacion_salud",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "enfermedad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion_sanitaria_interviniente",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "medico_tratamiento",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaOficioAdjunto": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "persona_enfermedades",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaCertificadoAdjunto": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "persona_enfermedades",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TNNyAScore": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "score",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_condiciones_vulnerabilidad",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_vulneracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         }
     ],
     "TNNyAScoreHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_actualizacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "score",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_condiciones_vulnerabilidad",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "score_vulneracion",
-            "required": false
+            "required": false,
+            "type": "FloatField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TLegajo": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "info_legajo",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "OneToOneField",
+            "choices": null
         }
     ],
     "TLegajoHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "info_legajo",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TCategoriaMotivo": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TCategoriaSubmotivo": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "motivo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TGravedadVulneracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TUrgenciaVulneracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TCondicionesVulnerabilidad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": true
+            "required": true,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "adulto",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         }
     ],
     "TVulneracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "fecha_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_modificacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "principal_demanda",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "transcurre_actualidad",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "sumatoria_de_pesos",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "autor_dv",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "categoria_motivo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "categoria_submotivo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "gravedad_vulneracion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "urgencia_vulneracion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TVulneracionHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "fecha_creacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "ultima_modificacion",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "principal_demanda",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "transcurre_actualidad",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "sumatoria_de_pesos",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "autor_dv",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "categoria_motivo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "categoria_submotivo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "gravedad_vulneracion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "urgencia_vulneracion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TLocalizacionPersona": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localizacion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "principal",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         }
     ],
     "TLocalizacionPersonaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "localizacion",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "principal",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaPersona": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "conviviente",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "legalmente_responsable",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "ocupacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "ESTUDIANTE",
+                "TRABAJADOR",
+                "DESEMPLEADO",
+                "JUBILADO",
+                "PENSIONADO",
+                "AMA_DE_CASA",
+                "OTRO"
+            ]
         },
         {
             "name": "vinculo_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "NNYA_PRINCIPAL",
+                "NNYA_SECUNDARIO",
+                "SUPUESTO_AUTOR_DV",
+                "SUPUESTO_AUTOR_DV_PRINCIPAL",
+                "GARANTIZA_PROTECCION",
+                "SE_DESCONOCE"
+            ]
         },
         {
             "name": "vinculo_con_nnya_principal",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaPersonaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "conviviente",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "legalmente_responsable",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "ocupacion",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "ESTUDIANTE",
+                "TRABAJADOR",
+                "DESEMPLEADO",
+                "JUBILADO",
+                "PENSIONADO",
+                "AMA_DE_CASA",
+                "OTRO"
+            ]
         },
         {
             "name": "vinculo_demanda",
-            "required": false
+            "required": false,
+            "type": "CharField",
+            "choices": [
+                "NNYA_PRINCIPAL",
+                "NNYA_SECUNDARIO",
+                "SUPUESTO_AUTOR_DV",
+                "SUPUESTO_AUTOR_DV_PRINCIPAL",
+                "GARANTIZA_PROTECCION",
+                "SE_DESCONOCE"
+            ]
         },
         {
             "name": "vinculo_con_nnya_principal",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaZona": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "esta_activo",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "recibido",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "comentarios",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "zona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "user_responsable",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "enviado_por",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "recibido_por",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaZonaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "esta_activo",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "recibido",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "comentarios",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "zona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "user_responsable",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "enviado_por",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "recibido_por",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaVinculada": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "demanda_1",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda_2",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDemandaVinculadaHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "deleted",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "demanda_1",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda_2",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaCondicionesVulnerabilidad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "si_no",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "condicion_vulnerabilidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TPersonaCondicionesVulnerabilidadHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "si_no",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "persona",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "condicion_vulnerabilidad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TActividadTipo": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "remitir_a_jefe",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         }
     ],
     "TActividadTipoModelo": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "actividad_tipo",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TInstitucionActividad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TActividad": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora_manual",
-            "required": true
+            "required": true,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "tipo",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TActividadAdjunto": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "actividad",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TRespuestaEtiqueta": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         }
     ],
     "TRespuesta": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "cc",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "bcc",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "to",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "asunto",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "mensaje",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "institucion",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "etiqueta",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TRespuestaAdjunto": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "archivo",
-            "required": false
+            "required": false,
+            "type": "FileField",
+            "choices": null
         },
         {
             "name": "fecha",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "respuesta",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TIndicadoresValoracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "nombre",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "peso",
-            "required": false
+            "required": false,
+            "type": "IntegerField",
+            "choices": null
         }
     ],
     "TEvaluaciones": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "indicador",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "si_no",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         }
     ],
     "TEvaluacionesHistory": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "descripcion",
-            "required": false
+            "required": false,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "action",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "CREATE",
+                "UPDATE",
+                "DELETE"
+            ]
         },
         {
             "name": "by_user",
-            "required": false
+            "required": false,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "timestamp",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "indicador",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "si_no",
-            "required": true
+            "required": true,
+            "type": "BooleanField",
+            "choices": null
         },
         {
             "name": "parent",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "TDecision": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "fecha_y_hora",
-            "required": false
+            "required": false,
+            "type": "DateTimeField",
+            "choices": null
         },
         {
             "name": "justificacion",
-            "required": true
+            "required": true,
+            "type": "TextField",
+            "choices": null
         },
         {
             "name": "decision",
-            "required": true
+            "required": true,
+            "type": "CharField",
+            "choices": [
+                "APERTURA DE LEGAJO",
+                "RECHAZAR CASO",
+                "MPI_MPE"
+            ]
         },
         {
             "name": "demanda",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         },
         {
             "name": "nnya",
-            "required": true
+            "required": true,
+            "type": "ForeignKey",
+            "choices": null
         }
     ],
     "ValidacionConfiguracion": [
         {
             "name": "id",
-            "required": false
+            "required": false,
+            "type": "BigAutoField",
+            "choices": null
         },
         {
             "name": "required_fields",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "required_activity_types",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "required_response_types",
-            "required": false
+            "required": false,
+            "type": "JSONField",
+            "choices": null
         },
         {
             "name": "activo",
-            "required": false
+            "required": false,
+            "type": "BooleanField",
+            "choices": null
         }
     ]
 }

@@ -20,18 +20,32 @@ class Command(BaseCommand):
             for field in model._meta.fields:
                 # Para cada campo se determina si es obligatorio
                 is_required = not field.null and not field.blank and field.default == NOT_PROVIDED
+                
+                # Get field type
+                field_type = field.get_internal_type()
+                
+                # Get choices if available
+                choices = None
+                if hasattr(field, 'choices') and field.choices:
+                    choices = [choice[0] for choice in field.choices]
+                
                 field_data = {
                     "name": field.name,
-                    "required": is_required
+                    "required": is_required,
+                    "type": field_type,
+                    "choices": choices
                 }
                 model_fields.append(field_data)
+                
                 # Se agrega una fila para el Excel
                 rows.append({
                     "Model": model.__name__,
                     "Field": field.name,
+                    "Type": field_type,
+                    "Choices": str(choices) if choices else None,
                     "Required": is_required
                 })
-            output[model.__name__] = model_fields
+                output[model.__name__] = model_fields
 
         # Guardar la salida en un archivo JSON
         json_output = json.dumps(output, indent=4, ensure_ascii=False)
