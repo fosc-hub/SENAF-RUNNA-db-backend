@@ -4,6 +4,7 @@ from infrastructure.models import (
     TDemanda, TDemandaHistory, 
     TCalificacionDemanda, TCalificacionDemandaHistory,
     TDemandaScore, TDemandaScoreHistory,
+    ValidacionConfiguracion, TActividad, TRespuesta, TActividadTipo, TRespuestaEtiqueta
 )
 from customAuth.models import (
     CustomUser,
@@ -17,13 +18,55 @@ import inspect
 @receiver(pre_save, sender=TDemanda)
 def set_evaluacion_validar(sender, instance, **kwargs):
     if instance.estado_demanda == 'EVALUACION':
-        not_null_fields = {
-            "motivo de ingreso": instance.motivo_ingreso,
-            "submotivo de ingreso": instance.submotivo_ingreso,
-            "geolocalizacion de la demanda": instance.localizacion.geolocalizacion if instance.localizacion else None,
-        }
-        if not all(not_null_fields.values()):
-            message = f'Faltan campos obligatorios para la evaluación de la demanda: {[k for k, v in not_null_fields.items() if not v]}'
+        config = ValidacionConfiguracion.objects.filter(activo=True).first()
+        if not config:
+            # Si no hay configuración, se puede permitir o levantar error según la lógica
+            return
+
+        missing_fields = []
+        for field_name in config.required_fields:
+            value = getattr(instance, field_name, None)
+            if not value:
+                missing_fields.append(field_name)
+        
+        # Get all activity types for this demand
+        registered_activity_types = TActividad.objects.filter(
+            demanda=instance
+        ).values_list('tipo', flat=True).distinct()
+        missing_activities = []
+        for activity_type in config.required_activity_types:
+            if activity_type not in registered_activity_types:
+            # Get the activity type name for better error messages
+                try:
+                    activity_type_name = TActividadTipo.objects.get(id=activity_type).nombre
+                    missing_activities.append(f"{activity_type_name} (ID: {activity_type})")
+                except TActividadTipo.DoesNotExist:
+                    missing_activities.append(f"ID: {activity_type}")
+
+        # Get all response types for this demand
+        registered_response_types = TRespuesta.objects.filter(
+            demanda=instance
+        ).values_list('etiqueta', flat=True).distinct()
+        missing_responses = []
+        for response_type in config.required_response_types:
+            if response_type not in registered_response_types:
+                try:
+                    etiqueta_name = TRespuestaEtiqueta.objects.get(id=response_type).nombre
+                    missing_responses.append(f"{etiqueta_name} (ID: {response_type})")
+                except TRespuestaEtiqueta.DoesNotExist:
+                    missing_responses.append(f"ID: {response_type}")
+
+        # Aquí podrías agregar validaciones adicionales: por ejemplo, si existen actividades de tipos
+        # requeridos o respuestas, consultando los modelos TActividad y TRespuesta.
+
+        if missing_fields or missing_activities or missing_responses:
+            concat_message = f"Faltan campos obligatorios: {', '.join(missing_fields)}. " if missing_fields else ""
+            concat_message += f"Faltan actividades requeridas: {', '.join(missing_activities)}. " if missing_activities else ""
+            concat_message += f"Faltan respuestas requeridas: {', '.join(missing_responses)}. " if missing_responses else ""
+            message = (
+                f"El estado de la demanda no se puede cambiar a 'EVALUACION' debido a los siguientes requerimientos: {concat_message}"
+                f"Por favor, complete los campos requeridos y asegúrese de que todas las actividades y respuestas necesarias estén presentes. "
+            )
             raise ValueError(message)
 
 

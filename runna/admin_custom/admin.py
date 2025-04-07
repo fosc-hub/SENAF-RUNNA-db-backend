@@ -3,11 +3,11 @@ from unfold.admin import ModelAdmin
 # from simple_history.admin import SimpleHistoryAdmin
 # from unfold.contrib.auth.admin import UserAdmin
 from django.contrib.auth.admin import UserAdmin
-
+from .ValidacionConfiguracionForm import ValidacionConfiguracionForm
 from django.apps import apps
 
 from customAuth.models import CustomUser
-
+from infrastructure.models import ValidacionConfiguracion
 
 class NoDeleteAdmin(ModelAdmin):
     def has_delete_permission(self, request, obj=None):
@@ -48,6 +48,25 @@ class CustomUserAdmin(ModelAdmin, UserAdmin):
     search_fields = ('username', 'email')
     ordering = ('email',)
 
+@admin.register(ValidacionConfiguracion)
+class ValidacionConfiguracionAdmin(admin.ModelAdmin):
+    def get_form(self, request, obj=None, **kwargs):
+        kwargs['form'] = ValidacionConfiguracionForm
+        # Definimos los campos a mostrar
+        kwargs['fields'] = [
+            'required_fields',
+            'required_activity_types',
+            'required_response_types',
+            'activo',
+        ]
+        return super().get_form(request, obj, **kwargs)
+    
+    def has_add_permission(self, request):
+        if ValidacionConfiguracion.objects.exists():
+            return False
+        return super().has_add_permission(request)
+
+
 """
 DESCOMENTAR ESTO 
 Para acelerar el admin register de los models en el DESARROLLO
@@ -57,6 +76,8 @@ models = apps.get_models()
 for model in models:
     try:
         if model == CustomUser:
+            continue
+        if model == ValidacionConfiguracion:
             continue
         admin.site.register(model)
     except admin.sites.AlreadyRegistered:

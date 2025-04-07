@@ -78,3 +78,6 @@ from .Evaluacion import (
     TDecision, 
     TEvaluacionesHistory
 )
+from .ValidacionConfiguracion import (
+    ValidacionConfiguracion
+)
