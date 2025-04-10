@@ -33,7 +33,10 @@ import inspect
 
 @receiver(pre_save, sender=TDemandaZona)
 def set_enviado_recibido(sender, instance, **kwargs):
-    
+    """
+    Se marca el usuario que envía la demanda(quien deriva de una zona a otra)
+     y el que la recibe.
+    """
     for frame_record in inspect.stack():
         if frame_record[3]=='get_response':
             request = frame_record[0].f_locals['request']
@@ -50,31 +53,137 @@ def set_enviado_recibido(sender, instance, **kwargs):
 
     if instance.pk and current_user is not None:
         previous_values = TDemandaZona.objects.get(pk=instance.pk)
-        if previous_values.recibido != instance.recibido:
+        if previous_values.recibido==False and instance.recibido==True:
             instance.recibido_por = current_user
-        if previous_values.user_responsable != instance.user_responsable:
-            instance.enviado_por = current_user
     elif instance.pk is None and current_user is not None:
         instance.enviado_por = current_user
 
+
 @receiver(post_save, sender=TDemandaZona)
-def set_demanda_constatacion(sender, instance, created, **kwargs):
-    if created:
-        if instance.demanda.objetivo_de_demanda == "PROTECCION":
-            instance.demanda.estado_demanda = "CONSTATACION"
-            instance.demanda.save()
-        if instance.demanda.objetivo_de_demanda == "PETICION_DE_INFORME":
-            instance.demanda.estado_demanda = "INFORME_SIN_ENVIAR"
+def set_estado_demanda_and_send_mail_to_User_asignado(sender, instance, created, **kwargs):
+    """
+    Primero se valida que la derivacion este activa
+    Luego se valida que haya un usuario responsable para la derivacion, de haberlo,
+     se valida si ha sido asignado en esta modificación de la siguiente manera:
+     * instance.demanda.estado_demanda == "SIN_ASIGNAR"
+     de ser asi, se cambia el estado de la demanda según el objetivo y se envía un mail al responsable
+    Luego, se verifica si el responsable no es nulo y la demanda ya ha sido asignada,
+     buscando asi si el responsable ha cambiado,
+     de ser asi se envía un mail a ambos responsables
+    En caso de no haber responsable, se cambia el estado de la Demanda
+    """
+
+    if instance.esta_activo:
+        if instance.user_responsable is not None and instance.demanda.estado_demanda=="SIN_ASIGNAR":
+            if instance.demanda.objetivo_de_demanda == "PROTECCION":
+                instance.demanda.estado_demanda = "CONSTATACION"
+                instance.demanda.save()
+            if instance.demanda.objetivo_de_demanda == "PETICION_DE_INFORME":
+                instance.demanda.estado_demanda = "INFORME_SIN_ENVIAR"
+                instance.demanda.save()
+
+            to = [instance.user_responsable.email]
+            subject = f"Has sido asignado como responsable de la Demanda ID {instance.demanda.id}"
+            html_content = f"""
+                <strong>Estimado/a {instance.user_responsable.first_name} {instance.user_responsable.last_name},</strong><br>
+                Has sido asignado/a como responsable de la demanda ID {instance.demanda.id}.<br>
+                <strong>Details:</strong><br>
+                Zona: {instance.zona.nombre}<br>
+                Comentarios: {instance.comentarios}<br>
+                Saludos,<br>
+                Nuevo RUNNA
+            """
+            print(f"Email sent to {to} with subject: {subject}")
+
+            if len(to) == 0:
+                return None
+
+            # Send email and return the response
+            email_response = EmailService.send_email(to, subject, html_content)
+
+            # return {"to": to, "subject": subject, "html_content": html_content}
+
+            return email_response
+
+        elif instance.user_responsable is not None and instance.demanda.estado_demanda != "SIN_ASIGNAR":
+            previous_values = TDemandaZonaHistory.objects.filter(parent=instance.id).last()
+            if previous_values:
+                if previous_values.user_responsable != instance.user_responsable:
+                    to = [instance.user_responsable.email, previous_values.user_responsable.email]
+                    subject = f"Has sido asignado como responsable de la Demanda ID {instance.demanda.id}"
+                    html_content = f"""
+                        <strong>Estimado/a {instance.user_responsable.email} {instance.user_responsable.last_name},</strong><br>
+                        Has sido asignado/a como responsable de la demanda ID {instance.demanda.id}.<br>
+                        <strong>Details:</strong><br>
+                        Zona: {instance.zona.nombre}<br>
+                        Comentarios: {instance.comentarios}<br>
+                        Saludos,<br>
+                        Nuevo RUNNA
+                    """
+                    print(f"Email sent to {to} with subject: {subject}")
+
+                    if len(to) == 0:
+                        return None
+
+                    # Send email and return the response
+                    email_response = EmailService.send_email(to, subject, html_content)
+
+                    # return {"to": to, "subject": subject, "html_content": html_content}
+                    
+                    return email_response
+            else:
+                to = [instance.user_responsable.email]
+                subject = f"Has sido asignado como responsable de la Demanda ID {instance.demanda.id}"
+                html_content = f"""
+                    <strong>Estimado/a {instance.user_responsable.email} {instance.user_responsable.last_name},</strong><br>
+                    Has sido asignado/a como responsable de la demanda ID {instance.demanda.id}.<br>
+                    <strong>Details:</strong><br>
+                    Zona: {instance.zona.nombre}<br>
+                    Comentarios: {instance.comentarios}<br>
+                    Saludos,<br>
+                    Nuevo RUNNA
+                """
+                print(f"Email sent to {to} with subject: {subject}")
+
+                if len(to) == 0:
+                    return None
+
+                # Send email and return the response
+                email_response = EmailService.send_email(to, subject, html_content)
+
+                # return {"to": to, "subject": subject, "html_content": html_content}
+                
+                return email_response
+
+        elif instance.user_responsable is None:
+            instance.demanda.estado_demanda = "SIN_ASIGNAR"
             instance.demanda.save()
 
 
 @receiver(post_save, sender=TDemandaZona)
-def send_mail_to_zona_derivada(sender, instance, created, **kwargs):
+def send_mail_to_zona_derivada_o_desderivada(sender, instance, created, **kwargs):
     """
-    Signal triggered after a TDemandaZona instance is created.
-    Sends an email notification to the assigned user.
+    Validar que la derivación esté siendo creada
+    Buscar derivaciones activas sobre la demanda, que difieran de la actual creada
+     * cambiar sus estados a inactivas
+     * enviar mail a los usuarios de la zona de cada una de esas derivaciones
+    Enviar mail a los usuarios de la zona de la derivación creada
+    A su vez, si es que la derivacion no está siendo creada, sino, modificada
+     se valida si la derivación fue desactivada,
+     y se envía un mail a los usuarios de la zona
     """
     if created:
+        # Obtener todas las derivaciones activas de la demanda
+        derivaciones_activas = TDemandaZona.objects.filter(
+            demanda=instance.demanda,
+            esta_activo=True
+        ).exclude(pk=instance.pk)
+
+        # Cambiar el estado a inactivas y enviar mail a los usuarios de la zona
+        for derivacion in derivaciones_activas:
+            derivacion.esta_activo = False
+            derivacion.save()
+
         users_zona = TCustomUserZona.objects.filter(zona=instance.zona)
         try:
             to = [user.user.email for user in users_zona]
@@ -103,14 +212,7 @@ def send_mail_to_zona_derivada(sender, instance, created, **kwargs):
         except AttributeError:
             return None
 
-@receiver(post_save, sender=TDemandaZona)
-def send_mail_to_user_responsable(sender, instance, created, **kwargs):
-    """
-    Signal triggered after a TDemandaZona instance is created.
-    Sends an email notification to the assigned user.
-    """
-    if not created:
-
+    else:
         previous_values = TDemandaZonaHistory.objects.filter(parent=instance.id).last()
         
         if instance.esta_activo == False and previous_values.esta_activo == True:
@@ -118,10 +220,10 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
 
             try:
                 to = [user.user.email for user in users_zona]
-                subject = f"Demanda ID {instance.demanda.id} ha sido desactivada"
+                subject = f"Demanda ID {instance.demanda.id} ha sido derivada a otra zona"
                 html_content = f"""
                     <strong>Estimados,</strong><br>
-                    La demanda ID {instance.demanda.id} ha sido desactivada.<br>
+                    La demanda ID {instance.demanda.id} ha sido derivada a otra zona.<br>
                     <strong>Details:</strong><br>
                     Zona: {instance.zona.nombre}<br>
                     Comentarios: {instance.comentarios}<br>
@@ -141,30 +243,6 @@ def send_mail_to_user_responsable(sender, instance, created, **kwargs):
                 return email_response
             except AttributeError:
                 return None
-        
-        if previous_values.user_responsable != instance.user_responsable:
-            to = [instance.user_responsable.email]
-            subject = f"Has sido asignado como responsable de la Demanda ID {instance.demanda.id}"
-            html_content = f"""
-                <strong>Estimado/a {instance.user_responsable.first_name} {instance.user_responsable.last_name},</strong><br>
-                Has sido asignado/a como responsable de la demanda ID {instance.demanda.id}.<br>
-                <strong>Details:</strong><br>
-                Zona: {instance.zona.nombre}<br>
-                Comentarios: {instance.comentarios}<br>
-                Saludos,<br>
-                Nuevo RUNNA
-            """
-            print(f"Email sent to {to} with subject: {subject}")
-
-            if len(to) == 0:
-                return None
-
-            # Send email and return the response
-            email_response = EmailService.send_email(to, subject, html_content)
-
-            # return {"to": to, "subject": subject, "html_content": html_content}
-            
-            return email_response
 
 
 @receiver(post_save, sender=TDemandaZona)
@@ -205,22 +283,22 @@ def log_demandaAsignado_save(sender, instance, created, **kwargs):
     logs(TDemandaZonaHistory, action, instance, current_user=current_user, descripcion_temp=descripcion)
 
 
-@receiver(post_delete, sender=TDemandaZona)
-def log_demandaAsignado_delete(sender, instance, **kwargs):
-    for frame_record in inspect.stack():
-        if frame_record[3]=='get_response':
-            request = frame_record[0].f_locals['request']
-            break
-    else:
-        request = None
+# @receiver(post_delete, sender=TDemandaZona)
+# def log_demandaAsignado_delete(sender, instance, **kwargs):
+#     for frame_record in inspect.stack():
+#         if frame_record[3]=='get_response':
+#             request = frame_record[0].f_locals['request']
+#             break
+#     else:
+#         request = None
 
-    try:
-        current_user = request.user
-    except AttributeError:
-        current_user = None
+#     try:
+#         current_user = request.user
+#     except AttributeError:
+#         current_user = None
 
-    action='DELETE'
-    logs(TDemandaZonaHistory, action, instance, current_user=current_user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
+#     action='DELETE'
+#     logs(TDemandaZonaHistory, action, instance, current_user=current_user, descripcion_temp=f"Ha eliminado la derivacion de la demanda en la zona {instance.zona.nombre}")
 
 
 # @receiver(post_save, sender=TDemandaVinculada)
