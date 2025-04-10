@@ -64,7 +64,7 @@ class TDemandaBase(models.Model):
         ('PROTECCION', 'Protección'),
         ('PETICION_DE_INFORME', 'Petición de Informe'),
     ]
-    objetivo_de_demanda = models.CharField(max_length=30, choices=OBJETIVO_DE_DEMANDA_CHOICES, null=True, blank=True)
+    objetivo_de_demanda = models.CharField(max_length=30, choices=OBJETIVO_DE_DEMANDA_CHOICES, default='PROTECCION', null=False, blank=False)
 
     ESTADO_DEMANDA_CHOICES = [
         ('SIN_ASIGNAR', 'Sin Asignar'),

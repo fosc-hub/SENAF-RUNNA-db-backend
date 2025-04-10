@@ -28,8 +28,8 @@ from .intermedias_signal import (
     # log_vinculoPersonaPersona_save, log_vinculoPersonaPersona_delete,
     # log_personaCondicionesVulnerabilidad_save, log_personaCondicionesVulnerabilidad_delete,
     # log_demandaMotivoIntervencion_save, log_demandaMotivoIntervencion_delete
-    set_demanda_constatacion, send_mail_to_zona_derivada, send_mail_to_user_responsable,
-    log_demandaAsignado_save, log_demandaAsignado_delete, set_enviado_recibido,
+    set_enviado_recibido, set_estado_demanda_and_send_mail_to_User_asignado, 
+    send_mail_to_zona_derivada_o_desderivada, log_demandaAsignado_save,
 )
 from .evaluacion_signals import (
     send_respuesta_mail,
